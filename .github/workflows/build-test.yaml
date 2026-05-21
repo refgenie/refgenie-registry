@@ -1,0 +1,209 @@
+name: Build Test (Recipes)
+
+on:
+  pull_request:
+    paths:
+      - "recipes/**"
+
+permissions:
+  contents: read
+  pull-requests: write
+
+jobs:
+  build-test:
+    runs-on: ubuntu-latest
+    container:
+      image: condaforge/mambaforge:latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Install base tools
+        run: |
+          mamba install -y -c conda-forge python=3.12 pyyaml requests pip
+          pip install jsonschema
+
+      - name: Identify changed recipes
+        id: changed
+        run: |
+          # In container, install git for diff
+          mamba install -y -c conda-forge git
+          git config --global --add safe.directory "$GITHUB_WORKSPACE"
+          FILES=$(git diff --name-only --diff-filter=ACMR origin/${{ github.base_ref }}...HEAD -- 'recipes/**/recipe.yaml')
+          if [ -z "$FILES" ]; then
+            echo "recipes=" >> "$GITHUB_OUTPUT"
+          else
+            # Extract unique recipe directory names
+            DIRS=$(echo "$FILES" | xargs -I{} dirname {} | sort -u | tr '\n' ' ')
+            echo "recipes=$DIRS" >> "$GITHUB_OUTPUT"
+            echo "Recipes to test: $DIRS"
+          fi
+
+      - name: Download test genome
+        if: steps.changed.outputs.recipes != ''
+        run: |
+          mkdir -p /tmp/test_genome
+          # S. cerevisiae R64 -- small genome (~12MB) suitable for CI testing
+          curl -fsSL -o /tmp/test_genome/test.fa.gz \
+            "https://ftp.ensembl.org/pub/release-112/fasta/saccharomyces_cerevisiae/dna/Saccharomyces_cerevisiae.R64-1-1.dna.toplevel.fa.gz"
+          gunzip /tmp/test_genome/test.fa.gz
+
+      - name: Run build tests
+        if: steps.changed.outputs.recipes != ''
+        id: build_test
+        run: |
+          set +e
+          OVERALL_EXIT=0
+          OUTPUT=""
+
+          for RECIPE_DIR in ${{ steps.changed.outputs.recipes }}; do
+            RECIPE_FILE="$RECIPE_DIR/recipe.yaml"
+            if [ ! -f "$RECIPE_FILE" ]; then
+              continue
+            fi
+
+            RECIPE_NAME=$(python3 -c "
+          import yaml
+          with open('$RECIPE_FILE') as f:
+              d = yaml.safe_load(f)
+          print(d.get('name', 'unknown'))
+          ")
+            OUTPUT_DIR="/tmp/build_output/$RECIPE_NAME"
+            mkdir -p "$OUTPUT_DIR"
+
+            echo "=== Testing recipe: $RECIPE_NAME ==="
+
+            # Install required tools via conda
+            TOOL_INSTALLS=$(python3 -c "
+          import yaml
+          with open('$RECIPE_FILE') as f:
+              d = yaml.safe_load(f)
+          tools = d.get('requires', {}).get('tools', [])
+          for t in tools:
+              src = t.get('source', 'bioconda')
+              name = t.get('name', '')
+              if src in ('bioconda', 'conda-forge'):
+                  print(f'-c {src} {name}')
+          " 2>/dev/null)
+
+            if [ -n "$TOOL_INSTALLS" ]; then
+              echo "Installing tools..."
+              # Each line is: -c <channel> <package>
+              echo "$TOOL_INSTALLS" | while read -r line; do
+                mamba install -y $line 2>&1 || true
+              done
+            fi
+
+            # Run setup commands if any
+            SETUP_CMD=$(python3 -c "
+          import yaml
+          with open('$RECIPE_FILE') as f:
+              d = yaml.safe_load(f)
+          print(d.get('build', {}).get('setup', '') or '')
+          ")
+            if [ -n "$SETUP_CMD" ]; then
+              echo "Running setup..."
+              bash -c "$SETUP_CMD" 2>&1
+            fi
+
+            # Run build command with variable substitution
+            BUILD_CMD=$(python3 -c "
+          import yaml
+          with open('$RECIPE_FILE') as f:
+              d = yaml.safe_load(f)
+          cmd = d.get('build', {}).get('command', '')
+          cmd = cmd.replace('{fasta}', '/tmp/test_genome/test.fa')
+          cmd = cmd.replace('{output_dir}', '$OUTPUT_DIR')
+          cmd = cmd.replace('{genome}', 'test_genome')
+          cmd = cmd.replace('{threads}', '2')
+          print(cmd)
+          ")
+
+            echo "Running build command..."
+            BUILD_LOG=$(bash -c "$BUILD_CMD" 2>&1)
+            BUILD_EXIT=$?
+
+            if [ $BUILD_EXIT -ne 0 ]; then
+              OUTPUT="$OUTPUT\nFAIL $RECIPE_NAME (build exited $BUILD_EXIT)\n$BUILD_LOG"
+              OVERALL_EXIT=1
+              continue
+            fi
+
+            # Verify outputs match declared patterns
+            PATTERNS=$(python3 -c "
+          import yaml
+          with open('$RECIPE_FILE') as f:
+              d = yaml.safe_load(f)
+          for o in d.get('outputs', []):
+              print(o.get('pattern', ''))
+          ")
+            MISSING=""
+            for PATTERN in $PATTERNS; do
+              COUNT=$(find "$OUTPUT_DIR" -name "$PATTERN" 2>/dev/null | wc -l)
+              if [ "$COUNT" -eq 0 ]; then
+                MISSING="$MISSING  - No files matching pattern: $PATTERN\n"
+              fi
+            done
+
+            if [ -n "$MISSING" ]; then
+              OUTPUT="$OUTPUT\nFAIL $RECIPE_NAME (missing output files)\n$MISSING"
+              OVERALL_EXIT=1
+            else
+              OUTPUT="$OUTPUT\nPASS $RECIPE_NAME"
+            fi
+
+            # Run recipe tests if defined
+            TEST_CMDS=$(python3 -c "
+          import yaml
+          with open('$RECIPE_FILE') as f:
+              d = yaml.safe_load(f)
+          for cmd in d.get('test', {}).get('commands', []):
+              cmd = cmd.replace('{output_dir}', '$OUTPUT_DIR')
+              cmd = cmd.replace('{genome}', 'test_genome')
+              print(cmd)
+          " 2>/dev/null)
+            if [ -n "$TEST_CMDS" ]; then
+              echo "Running recipe tests..."
+              echo "$TEST_CMDS" | while read -r tcmd; do
+                if ! bash -c "$tcmd" 2>&1; then
+                  OUTPUT="$OUTPUT\nFAIL $RECIPE_NAME (test failed: $tcmd)"
+                  OVERALL_EXIT=1
+                fi
+              done
+            fi
+
+          done
+
+          echo "output<<EOF" >> "$GITHUB_OUTPUT"
+          echo -e "$OUTPUT" >> "$GITHUB_OUTPUT"
+          echo "EOF" >> "$GITHUB_OUTPUT"
+          echo "exit_code=$OVERALL_EXIT" >> "$GITHUB_OUTPUT"
+          echo -e "$OUTPUT"
+          exit $OVERALL_EXIT
+
+      - name: Post build-test results
+        if: always() && steps.changed.outputs.recipes != ''
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const output = `${{ steps.build_test.outputs.output }}`;
+            const exitCode = '${{ steps.build_test.outputs.exit_code }}';
+            const status = exitCode === '0' ? 'Passed' : 'Failed';
+            const body = `## Build Test ${status}
+
+            Recipe build test results (using S. cerevisiae test genome):
+
+            \`\`\`
+            ${output}
+            \`\`\`
+
+            ${exitCode !== '0' ? 'Please review the build errors and fix your recipe.' : 'All recipes built successfully and produced expected outputs.'}
+            `;
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: body
+            });

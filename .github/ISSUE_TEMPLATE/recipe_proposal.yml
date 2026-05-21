@@ -1,0 +1,41 @@
+name: Recipe Proposal
+description: Propose a new build recipe
+title: "Recipe proposal: [ASSET_NAME]"
+labels: ["recipe-proposal"]
+body:
+  - type: input
+    id: asset_name
+    attributes:
+      label: Asset name
+      description: "Name for this asset type (e.g., bwa_index, star_index)"
+      placeholder: bwa_index
+    validations:
+      required: true
+  - type: input
+    id: tool
+    attributes:
+      label: Primary tool
+      description: "Main tool used in the build (e.g., bwa, STAR)"
+      placeholder: bwa
+    validations:
+      required: true
+  - type: input
+    id: tool_source
+    attributes:
+      label: Tool source
+      description: "Where to install the tool (bioconda, conda-forge, pip)"
+      placeholder: bioconda
+    validations:
+      required: true
+  - type: textarea
+    id: build_commands
+    attributes:
+      label: Build commands
+      description: "Draft build commands (use {fasta}, {output_dir}, {genome}, {threads} variables)"
+    validations:
+      required: true
+  - type: textarea
+    id: context
+    attributes:
+      label: Additional context
+      description: "Use case, related recipes, etc."

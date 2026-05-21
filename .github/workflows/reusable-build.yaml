@@ -1,0 +1,236 @@
+name: Reusable Build
+
+on:
+  workflow_call:
+    inputs:
+      genome_name:
+        description: "Genome name (e.g., hg38)"
+        required: true
+        type: string
+      genome_path:
+        description: "Path to genome YAML file"
+        required: true
+        type: string
+      recipe_name:
+        description: "Recipe name (e.g., bwa_index)"
+        required: true
+        type: string
+      recipe_path:
+        description: "Path to recipe YAML file"
+        required: true
+        type: string
+      storage_provider:
+        description: "Storage provider (s3, r2)"
+        required: false
+        type: string
+        default: "s3"
+      request_issue:
+        description: "Issue number for build request (0 if not from issue)"
+        required: false
+        type: number
+        default: 0
+    secrets:
+      STORAGE_ACCESS_KEY:
+        required: true
+      STORAGE_SECRET_KEY:
+        required: true
+      STORAGE_BUCKET:
+        required: true
+      STORAGE_ENDPOINT:
+        required: false
+      REGISTRY_BOT_TOKEN:
+        required: true
+
+permissions:
+  contents: write
+  issues: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 360
+    container:
+      image: condaforge/mambaforge:latest
+    env:
+      AWS_ACCESS_KEY_ID: ${{ secrets.STORAGE_ACCESS_KEY }}
+      AWS_SECRET_ACCESS_KEY: ${{ secrets.STORAGE_SECRET_KEY }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.REGISTRY_BOT_TOKEN }}
+          fetch-depth: 0
+
+      - name: Setup Python and dependencies
+        run: |
+          mamba install -y -c conda-forge python=3.12 pyyaml pip awscli
+          pip install jsonschema
+
+      - name: Parse genome and recipe YAML
+        id: parse
+        run: |
+          python3 - <<'PYEOF'
+          import os, yaml
+
+          with open("${{ inputs.genome_path }}") as f:
+              genome = yaml.safe_load(f)
+          with open("${{ inputs.recipe_path }}") as f:
+              recipe = yaml.safe_load(f)
+
+          gh_out = os.environ["GITHUB_OUTPUT"]
+          with open(gh_out, "a") as f:
+              f.write(f"genome_name={genome['name']}\n")
+              f.write(f"recipe_name={recipe['name']}\n")
+              f.write(f"recipe_version={recipe.get('version', 'unknown')}\n")
+              f.write(f"fasta_url={genome['fasta']['primary_url']}\n")
+              f.write(f"memory={recipe.get('build', {}).get('resources', {}).get('memory', '4GB')}\n")
+          PYEOF
+
+      - name: Install build tools from recipe
+        run: |
+          chmod +x .github/scripts/run-build.sh
+          .github/scripts/run-build.sh setup --recipe-path "${{ inputs.recipe_path }}"
+
+      - name: Download genome FASTA
+        id: download
+        run: |
+          WORKDIR="/tmp/build_${{ inputs.genome_name }}_${{ inputs.recipe_name }}"
+          mkdir -p "$WORKDIR"
+          .github/scripts/run-build.sh download \
+            --genome "${{ inputs.genome_path }}" \
+            --workdir "$WORKDIR"
+          echo "workdir=$WORKDIR" >> "$GITHUB_OUTPUT"
+
+      - name: Initialize refgenie
+        run: |
+          .github/scripts/run-build.sh init \
+            --genome "${{ inputs.genome_path }}" \
+            --workdir "${{ steps.download.outputs.workdir }}"
+
+      - name: Execute build
+        run: |
+          .github/scripts/run-build.sh execute \
+            --genome "${{ inputs.genome_path }}" \
+            --recipe-path "${{ inputs.recipe_path }}" \
+            --workdir "${{ steps.download.outputs.workdir }}"
+
+      - name: Validate outputs
+        run: |
+          .github/scripts/run-build.sh validate \
+            --recipe-path "${{ inputs.recipe_path }}" \
+            --workdir "${{ steps.download.outputs.workdir }}" \
+            --genome-name "${{ inputs.genome_name }}"
+
+      - name: Upload to storage
+        run: |
+          .github/scripts/run-build.sh upload \
+            --workdir "${{ steps.download.outputs.workdir }}" \
+            --genome-name "${{ inputs.genome_name }}" \
+            --recipe "${{ inputs.recipe_name }}" \
+            --provider "${{ inputs.storage_provider }}" \
+            --bucket "${{ secrets.STORAGE_BUCKET }}" \
+            --endpoint "${{ secrets.STORAGE_ENDPOINT }}"
+
+      - name: Generate index entry
+        run: |
+          python3 .github/scripts/generate-index-entry.py \
+            --genome "${{ inputs.genome_name }}" \
+            --recipe "${{ inputs.recipe_name }}" \
+            --recipe-path "${{ inputs.recipe_path }}" \
+            --workdir "${{ steps.download.outputs.workdir }}" \
+            --storage-provider "${{ inputs.storage_provider }}" \
+            --storage-bucket "${{ secrets.STORAGE_BUCKET }}" \
+            --storage-endpoint "${{ secrets.STORAGE_ENDPOINT }}"
+
+      - name: Commit index entry
+        run: |
+          # Install git in container
+          mamba install -y -c conda-forge git
+          git config --global --add safe.directory "$GITHUB_WORKSPACE"
+          git config user.name "refgenie-bot"
+          git config user.email "refgenie-bot@users.noreply.github.com"
+
+          INDEX_FILE="index/${{ inputs.genome_name }}/${{ inputs.recipe_name }}.yaml"
+          MANIFEST_FILE="index/manifest.yaml"
+
+          # Retry loop for concurrent pushes
+          MAX_RETRIES=5
+          for i in $(seq 1 $MAX_RETRIES); do
+            echo "Commit attempt $i of $MAX_RETRIES"
+
+            git add "$INDEX_FILE" "$MANIFEST_FILE"
+
+            # Check if there are changes to commit
+            if git diff --cached --quiet; then
+              echo "No changes to commit."
+              break
+            fi
+
+            git commit -m "index: add ${{ inputs.genome_name }}/${{ inputs.recipe_name }} (build ${{ github.run_id }})"
+
+            if git push; then
+              echo "Push succeeded."
+              break
+            fi
+
+            echo "Push failed (likely concurrent push), rebasing..."
+            git pull --rebase
+            if [ $i -eq $MAX_RETRIES ]; then
+              echo "ERROR: Failed to push after $MAX_RETRIES attempts"
+              exit 1
+            fi
+            sleep $((i * 5))
+          done
+
+      - name: Update build request issue (success)
+        if: success() && inputs.request_issue != 0
+        uses: actions/github-script@v7
+        with:
+          github-token: ${{ secrets.REGISTRY_BOT_TOKEN }}
+          script: |
+            const issue = ${{ inputs.request_issue }};
+            const genome = '${{ inputs.genome_name }}';
+            const recipe = '${{ inputs.recipe_name }}';
+            const runId = '${{ github.run_id }}';
+            const runUrl = `${context.serverUrl}/${context.repo.owner}/${context.repo.repo}/actions/runs/${runId}`;
+
+            await github.rest.issues.createComment({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: issue,
+              body: `## Build Completed Successfully\n\n| Field | Value |\n|---|---|\n| Genome | \`${genome}\` |\n| Recipe | \`${recipe}\` |\n| Status | :white_check_mark: Success |\n| Run | [${runId}](${runUrl}) |\n\nThe asset has been built, uploaded to storage, and the index has been updated.`
+            });
+
+            await github.rest.issues.update({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: issue,
+              state: 'closed',
+              labels: ['build-request', 'build-complete']
+            });
+
+      - name: Report failure on issue
+        if: failure() && inputs.request_issue != 0
+        uses: actions/github-script@v7
+        with:
+          github-token: ${{ secrets.REGISTRY_BOT_TOKEN }}
+          script: |
+            const issue = ${{ inputs.request_issue }};
+            const genome = '${{ inputs.genome_name }}';
+            const recipe = '${{ inputs.recipe_name }}';
+            const runId = '${{ github.run_id }}';
+            const runUrl = `${context.serverUrl}/${context.repo.owner}/${context.repo.repo}/actions/runs/${runId}`;
+
+            await github.rest.issues.createComment({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: issue,
+              body: `## Build Failed\n\n| Field | Value |\n|---|---|\n| Genome | \`${genome}\` |\n| Recipe | \`${recipe}\` |\n| Status | :x: Failed |\n| Run | [${runId}](${runUrl}) |\n\nPlease check the [workflow run](${runUrl}) for details.`
+            });
+
+            await github.rest.issues.addLabels({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: issue,
+              labels: ['build-failed']
+            });

@@ -1,0 +1,43 @@
+name: fasta
+version: 1.0.0
+
+description: |
+  Downloads and decompresses the reference genome FASTA file.
+  This is the foundational asset -- most other recipes depend on it.
+  The FASTA file contains all reference sequences (chromosomes,
+  scaffolds, contigs) for the genome assembly.
+
+tags:
+  - reference
+  - sequence
+  - foundational
+
+requires:
+  assets: []
+  tools: []
+
+build:
+  command: |
+    curl -fSL -o {output_dir}/{genome}.fa.gz {fasta_url}
+    gunzip {output_dir}/{genome}.fa.gz
+
+  resources:
+    memory: 4GB
+    disk: 15GB
+    time: 1h
+
+outputs:
+  - pattern: "*.fa"
+    description: Reference genome FASTA file
+
+test:
+  commands:
+    - test -f {output_dir}/{genome}.fa
+    - head -1 {output_dir}/{genome}.fa | grep -q "^>"
+    - test "$(wc -c < {output_dir}/{genome}.fa)" -gt 1000000
+
+metadata:
+  author: nsheff
+  created: 2026-05-20
+  license: BSD-2-Clause
+  upstream_docs: https://en.wikipedia.org/wiki/FASTA_format

@@ -1,0 +1,58 @@
+name: bwa_index
+version: 1.0.0
+
+description: |
+  BWA index for short-read alignment. Creates the FM-index files
+  required by bwa mem, bwa aln, and other BWA alignment commands.
+  Uses the bwtsw algorithm, which is suitable for large genomes
+  (the default auto-selects this for genomes > 10MB).
+
+tags:
+  - alignment
+  - dna-seq
+  - short-read
+
+requires:
+  assets:
+    - name: fasta
+      description: Reference FASTA file
+  tools:
+    - name: bwa
+      version: ">=0.7.18"
+      source: bioconda
+
+build:
+  command: |
+    bwa index -p {output_dir}/{genome} {fasta}
+
+  resources:
+    memory: 8GB
+    disk: 10GB
+    time: 2h
+
+outputs:
+  - pattern: "*.amb"
+    description: BWA index - sequence ambiguity information
+  - pattern: "*.ann"
+    description: BWA index - sequence annotation (names, lengths)
+  - pattern: "*.bwt"
+    description: BWA index - Burrows-Wheeler transform
+  - pattern: "*.pac"
+    description: BWA index - packed reference sequence
+  - pattern: "*.sa"
+    description: BWA index - suffix array
+
+test:
+  commands:
+    - test -f {output_dir}/{genome}.bwt
+    - test -f {output_dir}/{genome}.sa
+    - test -f {output_dir}/{genome}.amb
+    - test -f {output_dir}/{genome}.ann
+    - test -f {output_dir}/{genome}.pac
+    - test "$(wc -c < {output_dir}/{genome}.bwt)" -gt 1000000
+
+metadata:
+  author: nsheff
+  created: 2026-05-20
+  license: BSD-2-Clause
+  upstream_docs: https://github.com/lh3/bwa

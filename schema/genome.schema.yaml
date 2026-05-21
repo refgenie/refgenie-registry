@@ -1,0 +1,105 @@
+$schema: https://json-schema.org/draft/2020-12/schema
+$id: https://refgenie.org/schemas/genome.schema.yaml
+title: Refgenie Genome Entry
+description: Schema for a genome definition in the refgenie-registry.
+type: object
+required:
+  - name
+  - organism
+  - fasta
+properties:
+  name:
+    type: string
+    pattern: "^[a-zA-Z0-9_.-]+$"
+    description: Primary identifier for this genome assembly (e.g., hg38, mm10).
+  aliases:
+    type: array
+    items:
+      type: string
+    description: Alternative names for this assembly (e.g., GRCh38 for hg38).
+  description:
+    type: string
+    description: Human-readable description of this genome assembly.
+  organism:
+    type: object
+    required:
+      - scientific_name
+    properties:
+      scientific_name:
+        type: string
+        description: Binomial name (e.g., Homo sapiens).
+      common_name:
+        type: string
+        description: Common name (e.g., human).
+      taxon_id:
+        type: integer
+        description: NCBI Taxonomy ID.
+    additionalProperties: false
+  assembly:
+    type: object
+    properties:
+      source:
+        type: string
+        enum: [NCBI, Ensembl, UCSC, other]
+        description: Authoritative source of this assembly.
+      accession:
+        type: string
+        description: Assembly accession number (e.g., GCF_000001405.40).
+      level:
+        type: string
+        enum: [chromosome, scaffold, contig]
+        description: Assembly level.
+    additionalProperties: false
+  fasta:
+    type: object
+    required:
+      - primary_url
+      - checksum
+    properties:
+      primary_url:
+        type: string
+        format: uri
+        description: Canonical download URL for the FASTA file.
+      mirrors:
+        type: array
+        items:
+          type: string
+          format: uri
+        description: Alternative download URLs.
+      checksum:
+        type: object
+        required:
+          - sha256
+        properties:
+          sha256:
+            type: string
+            pattern: "^[a-f0-9]{64}$"
+            description: SHA-256 hash of the uncompressed FASTA file.
+        additionalProperties: false
+    additionalProperties: false
+  seqcol:
+    type: object
+    properties:
+      digest:
+        type: string
+        description: Sequence collection digest from the seqcol API.
+      compute:
+        type: boolean
+        description: If true, compute the seqcol digest on registration.
+    additionalProperties: false
+  metadata:
+    type: object
+    properties:
+      added:
+        type: string
+        format: date
+        description: Date this genome was added (YYYY-MM-DD).
+      added_by:
+        type: string
+        description: GitHub username of the contributor.
+      last_verified:
+        type: string
+        format: date
+        description: Date the FASTA URL and checksum were last verified.
+    additionalProperties: false
+additionalProperties: false

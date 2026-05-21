@@ -1,0 +1,17 @@
+# AI Review Configuration
+# Changing this file does NOT require workflow changes.
+
+model: claude-sonnet-4-20250514
+max_tokens: 4096
+
+# Labels
+labels:
+  trigger: programmatic-check-passed
+  complete: ai-review-complete
+  security: security-concern
+  ready: ready-for-human-review
+
+# Contribution type detection
+paths:
+  genomes: genomes/
+  recipes: recipes/

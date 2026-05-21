@@ -1,0 +1,104 @@
+name: Build on Merge
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "genomes/**"
+      - "recipes/**"
+
+permissions:
+  contents: write
+  issues: write
+
+jobs:
+  enumerate:
+    runs-on: ubuntu-latest
+    outputs:
+      matrix: ${{ steps.enumerate.outputs.matrix }}
+      has_builds: ${{ steps.enumerate.outputs.has_builds }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 2
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install dependencies
+        run: pip install pyyaml
+
+      - name: Identify changed files
+        id: changed
+        run: |
+          CHANGED=$(git diff --name-only --diff-filter=ACMR HEAD~1 HEAD -- 'genomes/' 'recipes/' | tr '\n' ',' | sed 's/,$//')
+          echo "files=$CHANGED" >> "$GITHUB_OUTPUT"
+          echo "Changed files: $CHANGED"
+
+      - name: Enumerate builds
+        id: enumerate
+        run: |
+          python3 .github/scripts/enumerate-builds.py \
+            --changed-files "${{ steps.changed.outputs.files }}" \
+            --genomes-dir genomes \
+            --recipes-dir recipes \
+            --index-dir index \
+            --output-json matrix.json
+          cat matrix.json
+
+  build:
+    needs: enumerate
+    if: needs.enumerate.outputs.has_builds == 'true'
+    strategy:
+      fail-fast: false
+      max-parallel: 4
+      matrix: ${{ fromJson(needs.enumerate.outputs.matrix) }}
+    uses: ./.github/workflows/reusable-build.yaml
+    with:
+      genome_name: ${{ matrix.genome_name }}
+      genome_path: ${{ matrix.genome_path }}
+      recipe_name: ${{ matrix.recipe_name }}
+      recipe_path: ${{ matrix.recipe_path }}
+      storage_provider: ${{ vars.STORAGE_PROVIDER || 's3' }}
+    secrets: inherit
+
+  summary:
+    needs: [enumerate, build]
+    if: always()
+    runs-on: ubuntu-latest
+    steps:
+      - name: Post build summary
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const matrix = JSON.parse('${{ needs.enumerate.outputs.matrix }}' || '{"include":[]}');
+            const builds = matrix.include || [];
+            const buildJob = '${{ needs.build.result }}';
+            const hasBuilds = '${{ needs.enumerate.outputs.has_builds }}';
+
+            let body = '## Build Summary\n\n';
+
+            if (hasBuilds !== 'true') {
+              body += 'No new builds were needed for this push.\n';
+            } else {
+              body += `| Genome | Recipe | Size Class |\n`;
+              body += `|--------|--------|------------|\n`;
+              for (const b of builds) {
+                body += `| \`${b.genome_name}\` | \`${b.recipe_name}\` | ${b.size_class} |\n`;
+              }
+              body += `\n**Overall result:** ${buildJob || 'unknown'}\n`;
+              body += `**Total builds:** ${builds.length}\n`;
+            }
+
+            const runUrl = `${context.serverUrl}/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId}`;
+            body += `\n[View workflow run](${runUrl})`;
+
+            await github.rest.repos.createCommitComment({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              commit_sha: context.sha,
+              body: body
+            });
