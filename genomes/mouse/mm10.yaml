@@ -1,12 +1,9 @@
 name: mm10
 aliases:
   - GRCm38
-  - GRCm38.p6
 
 description: |
-  Genome Reference Consortium Mouse Build 38 (patch 6).
-  Legacy mouse reference genome. Still commonly used by
-  many existing datasets and some analysis pipelines.
+  The GCA_000001635.5 seqs_for_alignment_pipelines from NCBI.
 
 organism:
   scientific_name: Mus musculus
@@ -15,15 +12,13 @@ organism:
 
 assembly:
   source: NCBI
-  accession: GCF_000001635.26
+  accession: GCA_000001635.5
   level: chromosome
 
 fasta:
-  primary_url: https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/001/635/GCF_000001635.26_GRCm38.p6/GCF_000001635.26_GRCm38.p6_genomic.fna.gz
-  mirrors:
-    - https://hgdownload.soe.ucsc.edu/goldenPath/mm10/bigZips/mm10.fa.gz
-    - https://ftp.ensembl.org/pub/release-102/fasta/mus_musculus/dna/Mus_musculus.GRCm38.dna.primary_assembly.fa.gz
+  primary_url: ftp://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/000/001/635/GCA_000001635.5_GRCm38.p3/seqs_for_alignment_pipelines.ucsc_ids/GCA_000001635.5_GRCm38.p3_no_alt_analysis_set.fna.gz
   checksum:
+    md5: 044703b3196ec8909c910ff52b3a407f
     sha256: compute_on_registration
 
 seqcol:
@@ -32,4 +27,3 @@ seqcol:
 metadata:
   added: 2026-05-20
   added_by: nsheff
-  last_verified: 2026-05-20

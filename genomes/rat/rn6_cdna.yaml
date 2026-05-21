@@ -1,0 +1,25 @@
+name: rn6_cdna
+
+description: |
+  The Rnor_6.0 cDNA (transcript) reference sequence from Ensembl.
+
+organism:
+  scientific_name: Rattus norvegicus
+  common_name: rat
+  taxon_id: 10116
+
+assembly:
+  source: Ensembl
+
+fasta:
+  primary_url: ftp://ftp.ensembl.org/pub/release-97/fasta/rattus_norvegicus/cdna/Rattus_norvegicus.Rnor_6.0.cdna.all.fa.gz
+  checksum:
+    md5: 49422984447dee3fca93c970f58ee09b
+    sha256: compute_on_registration
+
+seqcol:
+  compute: true
+
+metadata:
+  added: 2026-05-20
+  added_by: nsheff

@@ -1,0 +1,25 @@
+name: hg38_cdna
+
+description: |
+  The GRCh38 cDNA (transcript) reference sequence from Ensembl.
+
+organism:
+  scientific_name: Homo sapiens
+  common_name: human
+  taxon_id: 9606
+
+assembly:
+  source: Ensembl
+
+fasta:
+  primary_url: ftp://ftp.ensembl.org/pub/release-97/fasta/homo_sapiens/cdna/Homo_sapiens.GRCh38.cdna.all.fa.gz
+  checksum:
+    md5: b99e0ed778d922c87cd5ab70dfecd544
+    sha256: compute_on_registration
+
+seqcol:
+  compute: true
+
+metadata:
+  added: 2026-05-20
+  added_by: nsheff

@@ -1,0 +1,27 @@
+name: dm6
+
+description: |
+  Drosophila reference genome GCF_000001215.4 from NCBI.
+
+organism:
+  scientific_name: Drosophila melanogaster
+  common_name: fruit fly
+  taxon_id: 7227
+
+assembly:
+  source: NCBI
+  accession: GCF_000001215.4
+  level: chromosome
+
+fasta:
+  primary_url: https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/001/215/GCF_000001215.4_Release_6_plus_ISO1_MT/GCF_000001215.4_Release_6_plus_ISO1_MT_genomic.fna.gz
+  checksum:
+    md5: 869cf40e4f5c7ca27d04ca9ae7baee4f
+    sha256: compute_on_registration
+
+seqcol:
+  compute: true
+
+metadata:
+  added: 2026-05-20
+  added_by: nsheff

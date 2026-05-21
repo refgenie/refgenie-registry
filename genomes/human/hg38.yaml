@@ -1,13 +1,9 @@
 name: hg38
 aliases:
   - GRCh38
-  - GRCh38.p14
 
 description: |
-  Genome Reference Consortium Human Build 38 (patch 14).
-  Primary assembly plus unlocalized/unplaced scaffolds.
-  This is the current standard human reference genome used
-  by most genomics pipelines.
+  The GCA_000001405.15 GRCh38_no_alt_analysis_set from NCBI.
 
 organism:
   scientific_name: Homo sapiens
@@ -16,15 +12,13 @@ organism:
 
 assembly:
   source: NCBI
-  accession: GCF_000001405.40
+  accession: GCA_000001405.15
   level: chromosome
 
 fasta:
-  primary_url: https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/001/405/GCF_000001405.40_GRCh38.p14/GCF_000001405.40_GRCh38.p14_genomic.fna.gz
-  mirrors:
-    - https://hgdownload.soe.ucsc.edu/goldenPath/hg38/bigZips/hg38.fa.gz
-    - https://ftp.ensembl.org/pub/release-113/fasta/homo_sapiens/dna/Homo_sapiens.GRCh38.dna.primary_assembly.fa.gz
+  primary_url: ftp://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/000/001/405/GCA_000001405.15_GRCh38/seqs_for_alignment_pipelines.ucsc_ids/GCA_000001405.15_GRCh38_no_alt_analysis_set.fna.gz
   checksum:
+    md5: a08035b6a6e31780e96a34008ff21bd6
     sha256: compute_on_registration
 
 seqcol:
@@ -33,4 +27,3 @@ seqcol:
 metadata:
   added: 2026-05-20
   added_by: nsheff
-  last_verified: 2026-05-20

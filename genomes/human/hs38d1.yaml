@@ -1,0 +1,25 @@
+name: hs38d1
+
+description: |
+  Decoy version 1 for GRCh38 from NCBI.
+
+organism:
+  scientific_name: Homo sapiens
+  common_name: human
+  taxon_id: 9606
+
+assembly:
+  source: NCBI
+
+fasta:
+  primary_url: http://big.databio.org/refgenomes/hs38d1.fa.gz
+  checksum:
+    md5: 6edb27808eb28092683b65cb2e64add5
+    sha256: compute_on_registration
+
+seqcol:
+  compute: true
+
+metadata:
+  added: 2026-05-20
+  added_by: nsheff

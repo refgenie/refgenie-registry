@@ -1,0 +1,25 @@
+name: mm10_cdna
+
+description: |
+  The GRCm38 cDNA (transcript) reference sequence from Ensembl.
+
+organism:
+  scientific_name: Mus musculus
+  common_name: mouse
+  taxon_id: 10090
+
+assembly:
+  source: Ensembl
+
+fasta:
+  primary_url: ftp://ftp.ensembl.org/pub/release-97/fasta/mus_musculus/cdna/Mus_musculus.GRCm38.cdna.all.fa.gz
+  checksum:
+    md5: 5414320f79c131c1f83b079a9a8370b1
+    sha256: compute_on_registration
+
+seqcol:
+  compute: true
+
+metadata:
+  added: 2026-05-20
+  added_by: nsheff

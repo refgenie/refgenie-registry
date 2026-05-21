@@ -1,9 +1,7 @@
-name: hg19
-aliases:
-  - GRCh37
+name: hg38_chr22
 
 description: |
-  The GRCh37 reference sequence from UCSC.
+  Includes only chromosome 22 from the hg38 reference. Useful for testing.
 
 organism:
   scientific_name: Homo sapiens
@@ -12,13 +10,11 @@ organism:
 
 assembly:
   source: UCSC
-  accession: GCF_000001405.25
-  level: chromosome
 
 fasta:
-  primary_url: http://hgdownload.cse.ucsc.edu/goldenPath/hg19/bigZips/hg19.fa.gz
+  primary_url: http://big.databio.org/refgenomes/hg38_chr22.fa.gz
   checksum:
-    md5: 806c02398f5ac5da8ffd6da2d1d5d1a9
+    md5: 6da24cadfe7566c501da07bd54555eb2
     sha256: compute_on_registration
 
 seqcol:
