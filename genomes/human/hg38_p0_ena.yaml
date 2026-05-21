@@ -1,0 +1,26 @@
+name: hg38_p0_ena
+aliases:
+  - GRCh38-ena-15
+
+description: |
+  ref genome hosted on ENA Genome Reference Consortium Human Build 38 (GRCh38.p0)
+
+organism:
+  scientific_name: Homo sapiens
+  common_name: human
+  taxon_id: 9606
+
+assembly:
+  source: ENA
+
+fasta:
+  checksum:
+    sha256: compute_on_registration
+
+seqcol:
+  digest: 6chutju9QVJW0rdA-wgubHbtoTQ42o-6
+  length: 67
+
+metadata:
+  added: 2026-05-20
+  added_by: nsheff

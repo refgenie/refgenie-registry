@@ -1,0 +1,27 @@
+name: hg19_hs37d5
+aliases:
+  - hs37d5
+  - hs37d5.fa
+
+description: |
+  hs37d5 genome referenced on HL blog 2017 hs37 with decoy (recommended GRCh37)
+
+organism:
+  scientific_name: Homo sapiens
+  common_name: human
+  taxon_id: 9606
+
+assembly:
+  source: 1000 Genomes Project
+
+fasta:
+  checksum:
+    sha256: compute_on_registration
+
+seqcol:
+  digest: Q3xii3AkJDCTXSO6Vg13kjbOutQu0KP9
+  length: 86
+
+metadata:
+  added: 2026-05-20
+  added_by: nsheff

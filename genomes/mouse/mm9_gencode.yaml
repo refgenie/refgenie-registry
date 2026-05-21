@@ -1,0 +1,29 @@
+name: mm9_gencode
+aliases:
+  - GRCm39-all-M1-gencode
+
+description: |
+  gencode all M1 mm9 corresponds to Ensembl version 65
+
+organism:
+  scientific_name: Mus musculus
+  common_name: mouse
+  taxon_id: 10090
+
+assembly:
+  source: GENCODE
+
+fasta:
+  sources:
+    - provider: Gencode
+      url: https://ftp.ebi.ac.uk/pub/databases/gencode/Gencode_mouse/release_M1/genome.NCBIM37.fa.gz
+  checksum:
+    sha256: compute_on_registration
+
+seqcol:
+  digest: qtPKGcXii2OuiyIoDA9K0jSKR62qCyzd
+  length: 211
+
+metadata:
+  added: 2026-05-20
+  added_by: nsheff

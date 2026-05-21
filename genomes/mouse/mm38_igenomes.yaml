@@ -1,0 +1,27 @@
+name: mm38_igenomes
+aliases:
+  - GRCm38-igenomes-ensembl
+  - mm38-igenomes-ncbi
+
+description: |
+  igenomes's GRCm38 from Ensembl
+
+organism:
+  scientific_name: Mus musculus
+  common_name: mouse
+  taxon_id: 10090
+
+assembly:
+  source: iGenomes
+
+fasta:
+  checksum:
+    sha256: compute_on_registration
+
+seqcol:
+  digest: TQORtixTJqM3Su9dmtACKc7hNHAceE4I
+  length: 22
+
+metadata:
+  added: 2026-05-20
+  added_by: nsheff

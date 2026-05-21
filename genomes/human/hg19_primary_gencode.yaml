@@ -1,0 +1,32 @@
+name: hg19_primary_gencode
+aliases:
+  - GRCh37-primary-assembly-47-gencode
+  - GRCh37-primary-assembly-46-gencode
+
+description: |
+  release 47 of gencode primary assembly GRCh37
+
+organism:
+  scientific_name: Homo sapiens
+  common_name: human
+  taxon_id: 9606
+
+assembly:
+  source: GENCODE
+
+fasta:
+  sources:
+    - provider: Gencode
+      url: https://ftp.ebi.ac.uk/pub/databases/gencode/Gencode_human/release_47/GRCh37_mapping/GRCh37.primary_assembly.genome.fa.gz
+    - provider: Gencode
+      url: https://ftp.ebi.ac.uk/pub/databases/gencode/Gencode_human/release_46/GRCh37_mapping/GRCh37.primary_assembly.genome.fa.gz
+  checksum:
+    sha256: compute_on_registration
+
+seqcol:
+  digest: k4mLJvbFzZiw3o6SL8hh63V2u7AjDMrE
+  length: 84
+
+metadata:
+  added: 2026-05-20
+  added_by: nsheff

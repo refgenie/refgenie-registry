@@ -16,13 +16,18 @@ assembly:
   level: chromosome
 
 fasta:
-  primary_url: ftp://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/000/001/405/GCA_000001405.15_GRCh38/seqs_for_alignment_pipelines.ucsc_ids/GCA_000001405.15_GRCh38_no_alt_analysis_set.fna.gz
+  sources:
+    - provider: NCBI
+      url: ftp://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/000/001/405/GCA_000001405.15_GRCh38/seqs_for_alignment_pipelines.ucsc_ids/GCA_000001405.15_GRCh38_no_alt_analysis_set.fna.gz
+    - provider: NCBI
+      url: https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/001/405/GCF_000001405.40_GRCh38.p14/GRCh38_major_release_seqs_for_alignment_pipelines/GCA_000001405.15_GRCh38_no_alt_analysis_set.fna.gz
   checksum:
     md5: a08035b6a6e31780e96a34008ff21bd6
     sha256: compute_on_registration
 
 seqcol:
-  compute: true
+  digest: EiFob05aCWgVU_B_Ae0cypnQut3cxUP1
+  length: 195
 
 metadata:
   added: 2026-05-20

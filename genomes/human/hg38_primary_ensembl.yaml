@@ -1,0 +1,32 @@
+name: hg38_primary_ensembl
+aliases:
+  - hg38-primary-113-ensembl
+  - hg38-primary-sm-113-ensembl
+
+description: |
+  primary fasta of GRCh38 release 113
+
+organism:
+  scientific_name: Homo sapiens
+  common_name: human
+  taxon_id: 9606
+
+assembly:
+  source: Ensembl
+
+fasta:
+  sources:
+    - provider: Ensembl
+      url: https://ftp.ensembl.org/pub/release-113/fasta/homo_sapiens/dna/Homo_sapiens.GRCh38.dna.primary_assembly.fa.gz
+    - provider: Ensembl
+      url: https://ftp.ensembl.org/pub/release-113/fasta/homo_sapiens/dna/Homo_sapiens.GRCh38.dna_sm.primary_assembly.fa.gz
+  checksum:
+    sha256: compute_on_registration
+
+seqcol:
+  digest: oLfPx0NOBKKXMIngGeQ4YewtU4Ge_wKz
+  length: 194
+
+metadata:
+  added: 2026-05-20
+  added_by: nsheff

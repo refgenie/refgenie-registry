@@ -1,0 +1,34 @@
+name: hg38_full_decoy_hla
+aliases:
+  - GRCh38-full-decoy-hla-ddbj
+  - homo-sapiens-assembly38-ddbj
+  - hg38-broad
+  - hs38DH
+
+description: |
+  GRCh38 with ALT decoy and HLA genes (not recommended)
+
+organism:
+  scientific_name: Homo sapiens
+  common_name: human
+  taxon_id: 9606
+
+assembly:
+  source: 1000 Genomes Project
+
+fasta:
+  sources:
+    - provider: DDBJ
+      url: https://ddbj.nig.ac.jp/public/public-human-genomes/GRCh38/fasta/GRCh38_full_analysis_set_plus_decoy_hla.fa
+    - provider: DDBJ
+      url: https://ddbj.nig.ac.jp/public/public-human-genomes/GRCh38/fasta/Homo_sapiens_assembly38.fasta
+  checksum:
+    sha256: compute_on_registration
+
+seqcol:
+  digest: gHcfbUVnFzHv3QSqz2sSqVHdUQbDO8N5
+  length: 3366
+
+metadata:
+  added: 2026-05-20
+  added_by: nsheff

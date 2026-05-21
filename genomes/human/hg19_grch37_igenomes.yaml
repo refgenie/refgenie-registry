@@ -1,0 +1,26 @@
+name: hg19_grch37_igenomes
+aliases:
+  - GRCh37-igenomes-ensembl
+
+description: |
+  igenomes hosted GRCh37
+
+organism:
+  scientific_name: Homo sapiens
+  common_name: human
+  taxon_id: 9606
+
+assembly:
+  source: iGenomes
+
+fasta:
+  checksum:
+    sha256: compute_on_registration
+
+seqcol:
+  digest: lXa-sGAmSafYXHN4iEwup0EsQh5F1krA
+  length: 25
+
+metadata:
+  added: 2026-05-20
+  added_by: nsheff

@@ -1,0 +1,32 @@
+name: hg38_toplevel_ensembl
+aliases:
+  - hg38-toplevel-113-ensembl
+  - hg38-toplevel-sm-113-ensembl
+
+description: |
+  top level fasta of GRCh38 release 113
+
+organism:
+  scientific_name: Homo sapiens
+  common_name: human
+  taxon_id: 9606
+
+assembly:
+  source: Ensembl
+
+fasta:
+  sources:
+    - provider: Ensembl
+      url: https://ftp.ensembl.org/pub/release-113/fasta/homo_sapiens/dna/Homo_sapiens.GRCh38.dna.toplevel.fa.gz
+    - provider: Ensembl
+      url: https://ftp.ensembl.org/pub/release-113/fasta/homo_sapiens/dna/Homo_sapiens.GRCh38.dna_sm.toplevel.fa.gz
+  checksum:
+    sha256: compute_on_registration
+
+seqcol:
+  digest: 5ryrHdbJHIgyZuE29h5uzITRL4kinZWG
+  length: 706
+
+metadata:
+  added: 2026-05-20
+  added_by: nsheff

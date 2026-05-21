@@ -1,0 +1,31 @@
+name: hg38_p14_genomic
+aliases:
+  - GRCh38.p14-fasta-genomic
+  - GRCh38.p14-fasta-genomic
+
+description: |
+  GCF_000001405.40_GRCh38.p14_genomic from NCBI
+
+organism:
+  scientific_name: Homo sapiens
+  common_name: human
+  taxon_id: 9606
+
+assembly:
+  source: NCBI
+  accession: GCF_000001405.40
+
+fasta:
+  sources:
+    - provider: NCBI
+      url: https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/001/405/GCF_000001405.40_GRCh38.p14/GCF_000001405.40_GRCh38.p14_genomic.fna.gz
+  checksum:
+    sha256: compute_on_registration
+
+seqcol:
+  digest: u1HyLgIlq8M_XvEwy0oGqAvKGHJMGtxH
+  length: 705
+
+metadata:
+  added: 2026-05-20
+  added_by: nsheff

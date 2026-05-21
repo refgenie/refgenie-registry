@@ -40,8 +40,7 @@ properties:
     properties:
       source:
         type: string
-        enum: [NCBI, Ensembl, UCSC, other]
-        description: Authoritative source of this assembly.
+        description: Authoritative source of this assembly (e.g., NCBI, Ensembl, UCSC, Gencode, Broad).
       accession:
         type: string
         description: Assembly accession number (e.g., GCF_000001405.40).
@@ -52,29 +51,32 @@ properties:
     additionalProperties: false
   fasta:
     type: object
-    required:
-      - primary_url
-      - checksum
     properties:
-      primary_url:
-        type: string
-        format: uri
-        description: Canonical download URL for the FASTA file.
-      mirrors:
+      sources:
         type: array
         items:
-          type: string
-          format: uri
-        description: Alternative download URLs.
+          type: object
+          required:
+            - url
+          properties:
+            provider:
+              type: string
+              description: Name of the provider (e.g., NCBI, UCSC, Ensembl, Gencode, Broad).
+            url:
+              type: string
+              format: uri
+              description: Download URL for this FASTA file.
+          additionalProperties: false
+        description: Download sources for this FASTA, each with a URL and optional provider name.
       checksum:
         type: object
-        required:
-          - sha256
         properties:
           sha256:
             type: string
-            pattern: "^[a-f0-9]{64}$"
-            description: SHA-256 hash of the uncompressed FASTA file.
+            description: SHA-256 hash of the uncompressed FASTA file, or "compute_on_registration".
+          md5:
+            type: string
+            description: MD5 hash of the compressed FASTA file.
         additionalProperties: false
     additionalProperties: false
   seqcol:
@@ -82,7 +84,10 @@ properties:
     properties:
       digest:
         type: string
-        description: Sequence collection digest from the seqcol API.
+        description: Sequence collection digest (the canonical genome identifier).
+      length:
+        type: integer
+        description: Number of sequences in the collection.
       compute:
         type: boolean
         description: If true, compute the seqcol digest on registration.

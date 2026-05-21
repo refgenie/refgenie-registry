@@ -19,15 +19,19 @@ assembly:
   level: chromosome
 
 fasta:
-  primary_url: https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/001/635/GCF_000001635.27_GRCm39/GCF_000001635.27_GRCm39_genomic.fna.gz
-  mirrors:
-    - https://hgdownload.soe.ucsc.edu/goldenPath/mm39/bigZips/mm39.fa.gz
-    - https://ftp.ensembl.org/pub/release-113/fasta/mus_musculus/dna/Mus_musculus.GRCm39.dna.primary_assembly.fa.gz
+  sources:
+    - provider: NCBI
+      url: https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/001/635/GCF_000001635.27_GRCm39/GCF_000001635.27_GRCm39_genomic.fna.gz
+    - provider: UCSC
+      url: https://hgdownload.soe.ucsc.edu/goldenPath/mm39/bigZips/mm39.fa.gz
+    - provider: Ensembl
+      url: https://ftp.ensembl.org/pub/release-113/fasta/mus_musculus/dna/Mus_musculus.GRCm39.dna.primary_assembly.fa.gz
   checksum:
     sha256: compute_on_registration
 
 seqcol:
-  compute: true
+  digest: fXjBOJjw-DYsSnnfDBl5vtZu1N7lbnUl
+  length: 61
 
 metadata:
   added: 2026-05-20

@@ -1,0 +1,29 @@
+name: mm9_ucsc
+aliases:
+  - mm9-ucsc-initial
+
+description: |
+  mm9 initial 2007
+
+organism:
+  scientific_name: Mus musculus
+  common_name: mouse
+  taxon_id: 10090
+
+assembly:
+  source: UCSC
+
+fasta:
+  sources:
+    - provider: UCSC
+      url: https://hgdownload.soe.ucsc.edu/goldenPath/mm9/bigZips/mm9.fa.gz
+  checksum:
+    sha256: compute_on_registration
+
+seqcol:
+  digest: vygX07e7feibvucSnWj6hRScGMfc7B6P
+  length: 35
+
+metadata:
+  added: 2026-05-20
+  added_by: nsheff

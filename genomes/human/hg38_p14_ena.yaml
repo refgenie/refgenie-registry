@@ -1,0 +1,26 @@
+name: hg38_p14_ena
+aliases:
+  - GRCh38-ena-29
+
+description: |
+  ref genome hosted on ENA Genome Reference Consortium Human Build 38 patch release 14 (GRCh38.p14)
+
+organism:
+  scientific_name: Homo sapiens
+  common_name: human
+  taxon_id: 9606
+
+assembly:
+  source: ENA
+
+fasta:
+  checksum:
+    sha256: compute_on_registration
+
+seqcol:
+  digest: lWRRNMNypacEjnJCy-AYiDNUPy1brQGC
+  length: 68
+
+metadata:
+  added: 2026-05-20
+  added_by: nsheff

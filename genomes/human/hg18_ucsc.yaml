@@ -1,0 +1,27 @@
+name: hg18_ucsc
+
+description: |
+  2006 release of hg18 ucsc
+
+organism:
+  scientific_name: Homo sapiens
+  common_name: human
+  taxon_id: 9606
+
+assembly:
+  source: UCSC
+
+fasta:
+  sources:
+    - provider: UCSC
+      url: https://hgdownload.cse.ucsc.edu/goldenpath/hg18/bigZips/hg18.fa.gz
+  checksum:
+    sha256: compute_on_registration
+
+seqcol:
+  digest: H9er8ocYfIN2TOfyf6zMyeXXm7trXGP7
+  length: 49
+
+metadata:
+  added: 2026-05-20
+  added_by: nsheff

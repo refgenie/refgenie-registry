@@ -1,0 +1,29 @@
+name: mm39_ucsc_masked
+aliases:
+  - mm39-ucsc-initial-hard-masked
+
+description: |
+  mm39 initial ucsc hard masked
+
+organism:
+  scientific_name: Mus musculus
+  common_name: mouse
+  taxon_id: 10090
+
+assembly:
+  source: UCSC
+
+fasta:
+  sources:
+    - provider: UCSC
+      url: https://hgdownload.soe.ucsc.edu/goldenPath/mm39/bigZips/mm39.fa.masked.gz
+  checksum:
+    sha256: compute_on_registration
+
+seqcol:
+  digest: 3MS1-4k87pZ0-C80QDoUvhFmC0usPH28
+  length: 61
+
+metadata:
+  added: 2026-05-20
+  added_by: nsheff

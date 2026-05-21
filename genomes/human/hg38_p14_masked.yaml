@@ -1,0 +1,29 @@
+name: hg38_p14_masked
+aliases:
+  - hg38-p14-masked-ucsc
+
+description: |
+  hg38 masked from UCSC patch 14
+
+organism:
+  scientific_name: Homo sapiens
+  common_name: human
+  taxon_id: 9606
+
+assembly:
+  source: UCSC
+
+fasta:
+  sources:
+    - provider: UCSC
+      url: https://hgdownload.soe.ucsc.edu/goldenPath/hg38/bigZips/p14/hg38.p14.fa.masked.gz
+  checksum:
+    sha256: compute_on_registration
+
+seqcol:
+  digest: xEg2q8K9gV4027DMTCiaUGLCcrqySglR
+  length: 455
+
+metadata:
+  added: 2026-05-20
+  added_by: nsheff

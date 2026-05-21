@@ -16,13 +16,18 @@ assembly:
   level: chromosome
 
 fasta:
-  primary_url: http://hgdownload.cse.ucsc.edu/goldenPath/hg19/bigZips/hg19.fa.gz
+  sources:
+    - provider: UCSC
+      url: http://hgdownload.cse.ucsc.edu/goldenPath/hg19/bigZips/hg19.fa.gz
+    - provider: UCSC
+      url: https://hgdownload.soe.ucsc.edu/goldenPath/hg19/bigZips/hg19.fa.gz
   checksum:
     md5: 806c02398f5ac5da8ffd6da2d1d5d1a9
     sha256: compute_on_registration
 
 seqcol:
-  compute: true
+  digest: ThZcNYiLuWWL86NdJ8dvvJG15K9mW3Fo
+  length: 93
 
 metadata:
   added: 2026-05-20

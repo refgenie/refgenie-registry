@@ -1,0 +1,28 @@
+name: mm37_igenomes
+aliases:
+  - NCBIM37-igenomes-ensembl
+  - mm37-build37.1-igenomes-ncbi
+  - mm37-build37.2-igenomes-ncbi
+
+description: |
+  igenomes's NCBIM37 from Ensembl
+
+organism:
+  scientific_name: Mus musculus
+  common_name: mouse
+  taxon_id: 10090
+
+assembly:
+  source: iGenomes
+
+fasta:
+  checksum:
+    sha256: compute_on_registration
+
+seqcol:
+  digest: 6-UTIAyR94-nanfrhd_sAF6oHLyMd0zH
+  length: 22
+
+metadata:
+  added: 2026-05-20
+  added_by: nsheff

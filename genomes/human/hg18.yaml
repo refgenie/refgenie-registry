@@ -17,13 +17,16 @@ assembly:
   level: chromosome
 
 fasta:
-  primary_url: http://big.databio.org/refgenomes/hg18.fa.gz
+  sources:
+    - provider: refgenie
+      url: http://big.databio.org/refgenomes/hg18.fa.gz
   checksum:
     md5: 52e8b1332fb849677623bc00a905b116
     sha256: compute_on_registration
 
 seqcol:
-  compute: true
+  digest: YfZ0rklv8KY9DCtqG0iIX16zsgbuBgmM
+  length: 49
 
 metadata:
   added: 2026-05-20

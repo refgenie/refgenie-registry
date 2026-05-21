@@ -1,0 +1,32 @@
+name: hg38_initial
+aliases:
+  - hg38-initial-ucsc
+  - hg38-ddbj
+
+description: |
+  hg38 from UCSC representing initial 2013 release
+
+organism:
+  scientific_name: Homo sapiens
+  common_name: human
+  taxon_id: 9606
+
+assembly:
+  source: UCSC
+
+fasta:
+  sources:
+    - provider: UCSC
+      url: https://hgdownload.soe.ucsc.edu/goldenPath/hg38/bigZips/hg38.fa.gz
+    - provider: DDBJ
+      url: https://ddbj.nig.ac.jp/public/public-human-genomes/GRCh38/fasta/hg38.fa.gz
+  checksum:
+    sha256: compute_on_registration
+
+seqcol:
+  digest: NTeQ1GQMt2ocCFkS8Z3_qkvetZjabWSt
+  length: 455
+
+metadata:
+  added: 2026-05-20
+  added_by: nsheff

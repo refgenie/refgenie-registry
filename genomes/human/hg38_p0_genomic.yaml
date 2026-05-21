@@ -1,0 +1,27 @@
+name: hg38_p0_genomic
+aliases:
+  - GRCh38.p0-fasta-genomic
+
+description: |
+  GCF_000001405.26_GRCh38_genomic from NCBI
+
+organism:
+  scientific_name: Homo sapiens
+  common_name: human
+  taxon_id: 9606
+
+assembly:
+  source: NCBI
+  accession: GCF_000001405.26
+
+fasta:
+  checksum:
+    sha256: compute_on_registration
+
+seqcol:
+  digest: XemD97fxYMS4q-FBm_n5CHQgmzh1_67a
+  length: 455
+
+metadata:
+  added: 2026-05-20
+  added_by: nsheff

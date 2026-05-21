@@ -1,0 +1,29 @@
+name: mm10_ucsc_masked
+aliases:
+  - mm10-ucsc-initial-hard-masked
+
+description: |
+  mm10 from ucsc representing the 2012 release hard masked
+
+organism:
+  scientific_name: Mus musculus
+  common_name: mouse
+  taxon_id: 10090
+
+assembly:
+  source: UCSC
+
+fasta:
+  sources:
+    - provider: UCSC
+      url: https://hgdownload.soe.ucsc.edu/goldenPath/mm10/bigZips/mm10.fa.masked.gz
+  checksum:
+    sha256: compute_on_registration
+
+seqcol:
+  digest: FTBYBUoMhkOJ_-8lWpERVTxe62kstAol
+  length: 66
+
+metadata:
+  added: 2026-05-20
+  added_by: nsheff
