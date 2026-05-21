@@ -1,0 +1,34 @@
+name: suffixerator_index
+version: 0.0.1
+description: |
+  Enhanced suffix array index for genomes using the gt (GenomeTools)
+  suffixerator program. Used as input for tallymer k-mer indexing.
+tags:
+- index
+- suffix-array
+- genomics
+requires:
+  assets:
+  - name: fasta
+    description: FASTA asset for genome
+  tools:
+  - name: genometools
+    version: '>=1.6.0'
+    source: bioconda
+build:
+  command: |
+    gt suffixerator -dna -pl -tis -suf -lcp -v -showprogress -memlimit {memlimit} -db {fasta} -indexname {output_dir}/{genome}.sft
+  resources:
+    memory: 8GB
+    disk: 10GB
+    time: 2h
+outputs:
+- pattern: '*.sft.*'
+  description: Enhanced suffix array index files
+test:
+  commands:
+  - ls {output_dir}/{genome}.sft.* >/dev/null 2>&1
+metadata:
+  author: nsheff
+  created: '2026-05-20'
+  license: BSD-2-Clause

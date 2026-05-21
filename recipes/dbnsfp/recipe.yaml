@@ -1,0 +1,47 @@
+name: dbnsfp
+version: 0.0.1
+description: |
+  A database developed for functional prediction and annotation of all
+  potential non-synonymous single-nucleotide variants (nsSNVs) in the
+  human genome (Gencode release 29/Ensembl 94).
+tags:
+- variant-annotation
+- database
+- human
+requires:
+  assets: []
+  files:
+  - name: dbnsfp
+    description: Zipped dbNSFP database file
+  tools:
+  - name: htslib
+    version: '>=1.17'
+    source: bioconda
+build:
+  command: |
+    cp {dbnsfp} {output_dir}/{genome}.zip
+    unzip {output_dir}/{genome}.zip -d {output_dir}
+    gunzip -v {output_dir}/*variant.chr*.gz
+    head -n1 {output_dir}/dbNSFP*_variant.chr1 > {output_dir}/{genome}_dbNSFP.txt
+    cat {output_dir}/dbNSFP*variant.chr* | grep -v '#' >> {output_dir}/{genome}_dbNSFP.txt
+    rm {output_dir}/dbNSFP*_variant.chr*
+    bgzip -@ {threads} {output_dir}/{genome}_dbNSFP.txt
+    tabix -s 1 -b 2 -e 2 {output_dir}/{genome}_dbNSFP.txt.gz
+    rm $(find {output_dir} -type f -not -path '{output_dir}/_refgenie_build*' -not -path '{output_dir}/{genome}_dbNSFP.txt.*')
+  resources:
+    memory: 8GB
+    disk: 100GB
+    time: 4h
+outputs:
+- pattern: '*_dbNSFP.txt.gz'
+  description: dbNSFP database file (bgzipped)
+- pattern: '*_dbNSFP.txt.gz.tbi'
+  description: Tabix index file
+test:
+  commands:
+  - test -f {output_dir}/{genome}_dbNSFP.txt.gz
+  - test -f {output_dir}/{genome}_dbNSFP.txt.gz.tbi
+metadata:
+  author: nsheff
+  created: '2026-05-20'
+  license: BSD-2-Clause

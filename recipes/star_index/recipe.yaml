@@ -1,0 +1,46 @@
+name: star_index
+version: 0.0.1
+description: |
+  Genome index for STAR RNA-seq aligner, produced with
+  STAR --runMode genomeGenerate. STAR is an ultrafast universal
+  RNA-seq aligner.
+tags:
+- alignment
+- rna-seq
+- spliced-alignment
+requires:
+  assets:
+  - name: fasta
+    description: FASTA asset for genome
+  tools:
+  - name: star
+    version: '>=2.7.10'
+    source: bioconda
+build:
+  command: |
+    mkdir -p {output_dir}
+    STAR --runThreadN {threads} --runMode genomeGenerate --genomeDir {output_dir} --genomeFastaFiles {fasta}
+  resources:
+    memory: 32GB
+    disk: 30GB
+    time: 2h
+outputs:
+- pattern: Genome
+  description: STAR genome index binary
+- pattern: SA
+  description: STAR suffix array
+- pattern: SAindex
+  description: STAR suffix array index
+- pattern: chrName.txt
+  description: Chromosome names
+- pattern: chrLength.txt
+  description: Chromosome lengths
+test:
+  commands:
+  - test -f {output_dir}/Genome
+  - test -f {output_dir}/SA
+  - test -f {output_dir}/SAindex
+metadata:
+  author: nsheff
+  created: '2026-05-20'
+  license: BSD-2-Clause

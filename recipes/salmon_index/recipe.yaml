@@ -1,0 +1,40 @@
+name: salmon_index
+version: 0.0.1
+description: |
+  Transcriptome index for Salmon, produced with salmon index.
+  Salmon is a tool for quantifying the expression of transcripts
+  using RNA-seq data.
+tags:
+- quantification
+- rna-seq
+- pseudoalignment
+requires:
+  assets:
+  - name: fasta
+    description: FASTA asset for transcriptome
+  tools:
+  - name: salmon
+    version: '>=1.10.0'
+    source: bioconda
+build:
+  command: |
+    salmon index -t {fasta} -i {output_dir} -k {kmer} -p {threads}
+  resources:
+    memory: 8GB
+    disk: 10GB
+    time: 1h
+outputs:
+- pattern: '*.json'
+  description: Salmon index metadata files
+- pattern: seq.bin
+  description: Salmon sequence binary
+- pattern: pos.bin
+  description: Salmon position binary
+test:
+  commands:
+  - test -d {output_dir}
+  - test -f {output_dir}/seq.bin
+metadata:
+  author: nsheff
+  created: '2026-05-20'
+  license: BSD-2-Clause

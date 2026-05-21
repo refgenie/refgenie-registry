@@ -1,0 +1,31 @@
+name: tgMap
+version: 0.0.1
+description: |
+  Transcript to gene map file, containing two columns mapping each
+  transcript present in the reference to the corresponding gene.
+tags:
+- annotation
+- rna-seq
+- transcript-gene-map
+requires:
+  assets:
+  - name: salmon_partial_sa_index
+    description: Partial Salmon selective alignment index
+  tools: []
+build:
+  command: |
+    grep '^>' {salmon_partial_sa_index}/gentrome.fa | cut -d ' ' -f 1,7 | tr -s ' ' '\t' | sed "s/[>'gene_symbol:']//g" > {output_dir}/{genome}_txp2gene.tsv
+  resources:
+    memory: 2GB
+    disk: 1GB
+    time: 30m
+outputs:
+- pattern: '*_txp2gene.tsv'
+  description: Transcript to gene mapping TSV file
+test:
+  commands:
+  - test -f {output_dir}/{genome}_txp2gene.tsv
+metadata:
+  author: nsheff
+  created: '2026-05-20'
+  license: BSD-2-Clause

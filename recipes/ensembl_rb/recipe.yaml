@@ -1,0 +1,33 @@
+name: ensembl_rb
+version: 0.0.1
+description: |
+  A regulatory annotation file from Ensembl in GFF format.
+  Contains regulatory build features such as promoters, enhancers,
+  and other regulatory elements.
+tags:
+- annotation
+- regulatory
+- ensembl
+requires:
+  assets: []
+  files:
+  - name: gff
+    description: Regulatory build annotation file in GFF format from Ensembl
+  tools: []
+build:
+  command: |
+    cp {gff} {output_dir}/{genome}.gff.gz
+  resources:
+    memory: 2GB
+    disk: 5GB
+    time: 30m
+outputs:
+- pattern: '*.gff.gz'
+  description: Ensembl regulatory build GFF file (gzipped)
+test:
+  commands:
+  - test -f {output_dir}/{genome}.gff.gz
+metadata:
+  author: nsheff
+  created: '2026-05-20'
+  license: BSD-2-Clause

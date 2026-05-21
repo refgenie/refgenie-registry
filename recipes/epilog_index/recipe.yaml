@@ -1,0 +1,43 @@
+name: epilog_index
+version: 0.0.1
+description: |
+  Genome index for CpG sites, produced by the epilog DNA methylation
+  caller. Indexes specified sequence contexts (e.g. CG, CA, CT, CC)
+  for methylation analysis.
+tags:
+- methylation
+- epigenetics
+- index
+requires:
+  assets:
+  - name: fasta
+    description: FASTA asset for genome
+  tools:
+  - name: epilog
+    version: '>=0.1.0'
+    source: bioconda
+  - name: htslib
+    version: '>=1.17'
+    source: bioconda
+build:
+  command: |
+    epilog index -- --infile {fasta} --outfile {output_dir}/{genome}_{context}.tsv --contexts {context}
+    bgzip {output_dir}/{genome}_{context}.tsv
+    tabix -s 1 -b 2 -e 2 {output_dir}/{genome}_{context}.tsv.gz
+  resources:
+    memory: 4GB
+    disk: 5GB
+    time: 1h
+outputs:
+- pattern: '*_{context}.tsv.gz'
+  description: Indexed genome file for the specified context
+- pattern: '*_{context}.tsv.gz.tbi'
+  description: Tabix index file
+test:
+  commands:
+  - test -f {output_dir}/{genome}_{context}.tsv.gz
+  - test -f {output_dir}/{genome}_{context}.tsv.gz.tbi
+metadata:
+  author: nsheff
+  created: '2026-05-20'
+  license: BSD-2-Clause

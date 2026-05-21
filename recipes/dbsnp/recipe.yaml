@@ -1,0 +1,39 @@
+name: dbsnp
+version: 0.0.1
+description: |
+  The database of single nucleotide polymorphisms (SNPs) and multiple
+  small-scale variations that include insertions/deletions, microsatellites,
+  and non-polymorphic variants.
+tags:
+- variant-annotation
+- database
+- snp
+requires:
+  assets: []
+  files:
+  - name: dbsnp_vcf
+    description: SNP database file in Variant Call Format (VCF)
+  - name: dbsnp_tbi
+    description: Tabix index of the dbSNP VCF file
+  tools: []
+build:
+  command: |
+    cp {dbsnp_vcf} {output_dir}/{genome}_dbSNP.gz
+    cp {dbsnp_tbi} {output_dir}/{genome}_dbSNP.gz.tbi
+  resources:
+    memory: 2GB
+    disk: 20GB
+    time: 30m
+outputs:
+- pattern: '*_dbSNP.gz'
+  description: dbSNP VCF file (compressed)
+- pattern: '*_dbSNP.gz.tbi'
+  description: Tabix index for dbSNP VCF
+test:
+  commands:
+  - test -f {output_dir}/{genome}_dbSNP.gz
+  - test -f {output_dir}/{genome}_dbSNP.gz.tbi
+metadata:
+  author: nsheff
+  created: '2026-05-20'
+  license: BSD-2-Clause

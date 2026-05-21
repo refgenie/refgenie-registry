@@ -1,0 +1,39 @@
+name: small_rna
+version: 0.0.1
+description: |
+  Small RNA sequences in the FASTA format. A predicted hairpin portion
+  of a miRNA transcript and information on the location and sequence
+  of the mature miRNA sequence.
+tags:
+- small-rna
+- mirna
+- non-coding
+requires:
+  assets: []
+  files:
+  - name: hairpin
+    description: FASTA format sequences of all miRNA hairpins
+  - name: mature
+    description: FASTA format sequences of all mature miRNA sequences
+  tools: []
+build:
+  command: |
+    cp {hairpin} {output_dir}/{genome}_hairpin.fa
+    cp {mature} {output_dir}/{genome}_mature.fa
+  resources:
+    memory: 1GB
+    disk: 1GB
+    time: 10m
+outputs:
+- pattern: '*_hairpin.fa'
+  description: miRNA hairpin sequences in FASTA format
+- pattern: '*_mature.fa'
+  description: Mature miRNA sequences in FASTA format
+test:
+  commands:
+  - test -f {output_dir}/{genome}_hairpin.fa
+  - test -f {output_dir}/{genome}_mature.fa
+metadata:
+  author: nsheff
+  created: '2026-05-20'
+  license: BSD-2-Clause

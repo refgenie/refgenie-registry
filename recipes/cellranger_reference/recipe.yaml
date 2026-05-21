@@ -1,0 +1,41 @@
+name: cellranger_reference
+version: 0.0.1
+description: |
+  Cell Ranger custom genome reference for read alignment and gene
+  expression quantification. Built using cellranger mkref with a
+  filtered GTF annotation from Gencode.
+tags:
+- single-cell
+- rna-seq
+- 10x-genomics
+requires:
+  assets:
+  - name: fasta
+    description: FASTA asset for genome
+  - name: gtf
+    description: Annotation file in GTF format from Gencode
+    default: gencode_gtf
+  tools:
+  - name: cellranger
+    version: '>=7.0.0'
+    source: 10x-genomics
+build:
+  command: |
+    gunzip {gtf} -c > {output_dir}/{genome}.gtf
+    cellranger mkgtf {output_dir}/{genome}.gtf {output_dir}/{genome}_filtered.gtf
+    rm {output_dir}/{genome}.gtf
+    cd {output_dir}; cellranger mkref --genome=ref --fasta={fasta} --genes={output_dir}/{genome}_filtered.gtf --nthreads={threads}
+  resources:
+    memory: 16GB
+    disk: 20GB
+    time: 3h
+outputs:
+- pattern: ref/**
+  description: Cell Ranger reference directory
+test:
+  commands:
+  - test -d {output_dir}/ref
+metadata:
+  author: nsheff
+  created: '2026-05-20'
+  license: BSD-2-Clause

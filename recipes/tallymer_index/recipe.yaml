@@ -1,0 +1,39 @@
+name: tallymer_index
+version: 0.0.1
+description: |
+  Indexed k-mers for a given enhanced suffix array at a fixed value of k.
+  Uses GenomeTools tallymer for k-mer occurrence indexing and search.
+tags:
+- index
+- k-mer
+- genomics
+requires:
+  assets:
+  - name: suffixerator_index
+    description: Enhanced suffix array index for genome
+  - name: fasta
+    description: FASTA asset for genome
+  tools:
+  - name: genometools
+    version: '>=1.6.0'
+    source: bioconda
+build:
+  command: |
+    gt tallymer mkindex -v -counts -pl -mersize {mersize} -minocc {minocc} -indexname {output_dir}/{genome}.tal_{mersize} -esa {suffixerator_index}/{genome}.sft
+    gt tallymer search -output qseqnum qpos -strand fp -tyr {output_dir}/{genome}.tal_{mersize} -q {fasta} > {output_dir}/{genome}.tal_{mersize}.gtTxt
+  resources:
+    memory: 8GB
+    disk: 10GB
+    time: 2h
+outputs:
+- pattern: '*.tal_*'
+  description: Tallymer index files
+- pattern: '*.tal_*.gtTxt'
+  description: Tallymer search output
+test:
+  commands:
+  - test -f {output_dir}/{genome}.tal_{mersize}.gtTxt
+metadata:
+  author: nsheff
+  created: '2026-05-20'
+  license: BSD-2-Clause

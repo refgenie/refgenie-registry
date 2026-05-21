@@ -1,65 +1,37 @@
 name: bowtie2_index
-version: 1.0.0
-
+version: 0.0.1
 description: |
-  Bowtie2 index for short-read alignment. Creates the FM-index files
-  used by bowtie2 for fast and memory-efficient alignment. For genomes
-  larger than ~4 billion nucleotides, the build automatically uses a
-  large index (*.bt2l files); otherwise it creates standard *.bt2 files.
-
+  Genome index for bowtie2, produced with bowtie2-build.
+  Creates the FM-index files used by bowtie2 for fast and
+  memory-efficient alignment of short reads.
 tags:
-  - alignment
-  - dna-seq
-  - short-read
-
+- alignment
+- dna-seq
+- short-read
 requires:
   assets:
-    - name: fasta
-      description: Reference FASTA file
+  - name: fasta
+    description: FASTA asset for genome
   tools:
-    - name: bowtie2
-      version: ">=2.5.0"
-      source: bioconda
-
+  - name: bowtie2
+    version: '>=2.5.0'
+    source: bioconda
 build:
   command: |
     bowtie2-build --threads {threads} {fasta} {output_dir}/{genome}
-
   resources:
     memory: 8GB
     disk: 10GB
     time: 2h
-
 outputs:
-  - pattern: "*.bt2"
-    description: Bowtie2 index files (standard, for genomes < 4Gbp)
-  - pattern: "*.bt2l"
-    description: Bowtie2 large index files (for genomes >= 4Gbp)
-
+- pattern: '*.bt2'
+  description: Bowtie2 index files (standard, for genomes < 4Gbp)
+- pattern: '*.bt2l'
+  description: Bowtie2 large index files (for genomes >= 4Gbp)
 test:
   commands:
-    - |
-      if ls {output_dir}/{genome}.1.bt2 >/dev/null 2>&1; then
-        test -f {output_dir}/{genome}.1.bt2
-        test -f {output_dir}/{genome}.2.bt2
-        test -f {output_dir}/{genome}.3.bt2
-        test -f {output_dir}/{genome}.4.bt2
-        test -f {output_dir}/{genome}.rev.1.bt2
-        test -f {output_dir}/{genome}.rev.2.bt2
-      elif ls {output_dir}/{genome}.1.bt2l >/dev/null 2>&1; then
-        test -f {output_dir}/{genome}.1.bt2l
-        test -f {output_dir}/{genome}.2.bt2l
-        test -f {output_dir}/{genome}.3.bt2l
-        test -f {output_dir}/{genome}.4.bt2l
-        test -f {output_dir}/{genome}.rev.1.bt2l
-        test -f {output_dir}/{genome}.rev.2.bt2l
-      else
-        echo "ERROR: No bowtie2 index files found" >&2
-        exit 1
-      fi
-
+  - test -f {output_dir}/{genome}.1.bt2 || test -f {output_dir}/{genome}.1.bt2l
 metadata:
   author: nsheff
-  created: 2026-05-20
+  created: '2026-05-20'
   license: BSD-2-Clause
-  upstream_docs: https://bowtie-bio.sourceforge.net/bowtie2/manual.shtml

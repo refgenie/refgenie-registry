@@ -1,0 +1,36 @@
+name: bismark_bt1_index
+version: 0.0.1
+description: |
+  Genome index for Bisulfite-Seq applications, produced by
+  bismark_genome_preparation using bowtie1. Used for bisulfite
+  sequencing alignment with Bismark.
+tags:
+- alignment
+- bisulfite-seq
+- methylation
+- epigenetics
+requires:
+  assets:
+  - name: fasta
+    description: FASTA asset for genome
+  tools:
+  - name: bismark
+    version: '>=0.24.0'
+    source: bioconda
+build:
+  command: |
+    bismark_genome_preparation {output_dir}
+  resources:
+    memory: 8GB
+    disk: 10GB
+    time: 3h
+outputs:
+- pattern: Bisulfite_Genome/**
+  description: Bismark bowtie1 bisulfite genome index directory
+test:
+  commands:
+  - test -d {output_dir}/Bisulfite_Genome
+metadata:
+  author: nsheff
+  created: '2026-05-20'
+  license: BSD-2-Clause

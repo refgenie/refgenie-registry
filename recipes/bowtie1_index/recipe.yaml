@@ -1,0 +1,34 @@
+name: bowtie1_index
+version: 0.0.1
+description: |
+  Genome index for bowtie, produced with bowtie-build.
+  Creates index files used by bowtie for short-read alignment.
+tags:
+- alignment
+- dna-seq
+- short-read
+requires:
+  assets:
+  - name: fasta
+    description: FASTA asset for genome
+  tools:
+  - name: bowtie
+    version: '>=1.3.0'
+    source: bioconda
+build:
+  command: |
+    bowtie-build --threads {threads} {fasta} {output_dir}/{genome}
+  resources:
+    memory: 8GB
+    disk: 10GB
+    time: 2h
+outputs:
+- pattern: '*.ebwt'
+  description: Bowtie1 index files
+test:
+  commands:
+  - test -f {output_dir}/{genome}.1.ebwt
+metadata:
+  author: nsheff
+  created: '2026-05-20'
+  license: BSD-2-Clause

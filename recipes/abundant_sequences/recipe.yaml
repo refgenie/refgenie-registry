@@ -1,0 +1,51 @@
+name: abundant_sequences
+version: 0.0.1
+description: |
+  Abundant sequences in the FASTA format -- PhiX spike-in, Poly(A),
+  Poly(C) and adapter sequences. Commonly used for contamination
+  screening in sequencing experiments.
+tags:
+- contamination
+- qc
+- spike-in
+requires:
+  assets: []
+  files:
+  - name: phix
+    description: PhiX sequences in FASTA format
+  - name: polyA
+    description: Poly(A) sequences in FASTA format
+  - name: polyC
+    description: Poly(C) sequences in FASTA format
+  - name: adapter_contam
+    description: Adapter sequences in FASTA format
+  tools: []
+build:
+  command: |
+    cp {phix} {output_dir}/{genome}_phix.fa
+    cp {polyA} {output_dir}/{genome}_polyA.fa
+    cp {polyC} {output_dir}/{genome}_polyC.fa
+    cp {adapter_contam} {output_dir}/{genome}_adapter_contam.fa
+  resources:
+    memory: 1GB
+    disk: 1GB
+    time: 10m
+outputs:
+- pattern: '*_phix.fa'
+  description: PhiX spike-in sequence
+- pattern: '*_polyA.fa'
+  description: Poly(A) sequence
+- pattern: '*_polyC.fa'
+  description: Poly(C) sequence
+- pattern: '*_adapter_contam.fa'
+  description: Adapter contamination sequence
+test:
+  commands:
+  - test -f {output_dir}/{genome}_phix.fa
+  - test -f {output_dir}/{genome}_polyA.fa
+  - test -f {output_dir}/{genome}_polyC.fa
+  - test -f {output_dir}/{genome}_adapter_contam.fa
+metadata:
+  author: nsheff
+  created: '2026-05-20'
+  license: BSD-2-Clause

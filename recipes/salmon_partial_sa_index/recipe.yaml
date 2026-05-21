@@ -1,0 +1,65 @@
+name: salmon_partial_sa_index
+version: 0.0.1
+description: |
+  Transcriptome index for Salmon, produced with salmon index using partial
+  selective alignment method. Preparation includes transcriptome mapping to
+  the genome and extraction of the relevant portion out from the genome and
+  indexing it along with the transcriptome.
+tags:
+- quantification
+- rna-seq
+- pseudoalignment
+- selective-alignment
+requires:
+  assets:
+  - name: fasta
+    description: FASTA asset for genome
+  - name: fasta_txome
+    description: FASTA asset for transcriptome
+  - name: ensembl_gtf
+    description: GTF file for exonic features extraction
+  tools:
+  - name: salmon
+    version: '>=1.10.0'
+    source: bioconda
+  - name: bedtools
+    version: '>=2.30.0'
+    source: bioconda
+  - name: mashmap
+    version: '>=2.0'
+    source: bioconda
+build:
+  command: |
+    gunzip -c {ensembl_gtf} > {output_dir}/{genome}.gtf
+    awk -v OFS='\t' '{{if ($3=="exon") {{print $1,$4,$5}}}}' {output_dir}/{genome}.gtf > {output_dir}/exons.bed
+    bedtools maskfasta -fi {fasta} -bed {output_dir}/exons.bed -fo {output_dir}/reference.masked.genome.fa
+    mashmap -r {output_dir}/reference.masked.genome.fa -q {fasta_txome} -t {threads} --pi 80 -s 500 -o {output_dir}/mashmap.out
+    awk -v OFS='\t' '{{print $6,$8,$9}}' {output_dir}/mashmap.out | sort -k1,1 -k2,2n - > {output_dir}/genome_found.sorted.bed
+    bedtools merge -i {output_dir}/genome_found.sorted.bed > {output_dir}/genome_found_merged.bed
+    bedtools getfasta -fi {output_dir}/reference.masked.genome.fa -bed {output_dir}/genome_found_merged.bed -fo {output_dir}/genome_found.fa
+    awk '{{a=$0; getline;split(a, b, ":"); r[b[1]] = r[b[1]]""$0}} END {{ for (k in r) {{ print k"\n"r[k] }} }}' {output_dir}/genome_found.fa > {output_dir}/decoy.fa
+    cat {fasta_txome} {output_dir}/decoy.fa > {output_dir}/gentrome.fa
+    grep '>' {output_dir}/decoy.fa | awk '{{print substr($1,2); }}' > {output_dir}/decoys.txt
+    rm {output_dir}/exons.bed {output_dir}/reference.masked.genome.fa {output_dir}/mashmap.out {output_dir}/genome_found.sorted.bed {output_dir}/genome_found_merged.bed {output_dir}/genome_found.fa {output_dir}/decoy.fa {output_dir}/reference.masked.genome.fa.fai
+    salmon index -t {output_dir}/gentrome.fa -d {output_dir}/decoys.txt -i {output_dir} -k {kmer} -p {threads}
+  resources:
+    memory: 16GB
+    disk: 30GB
+    time: 4h
+outputs:
+- pattern: '*.json'
+  description: Salmon index metadata files
+- pattern: seq.bin
+  description: Salmon sequence binary
+- pattern: pos.bin
+  description: Salmon position binary
+- pattern: gentrome.fa
+  description: Combined genome and transcriptome FASTA
+test:
+  commands:
+  - test -d {output_dir}
+  - test -f {output_dir}/seq.bin
+metadata:
+  author: nsheff
+  created: '2026-05-20'
+  license: BSD-2-Clause

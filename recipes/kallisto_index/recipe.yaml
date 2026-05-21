@@ -1,0 +1,35 @@
+name: kallisto_index
+version: 0.0.1
+description: |
+  Transcriptome index for kallisto, produced with kallisto index.
+  Kallisto is a program for quantifying abundances of transcripts
+  from RNA-seq data using pseudoalignment.
+tags:
+- quantification
+- rna-seq
+- pseudoalignment
+requires:
+  assets:
+  - name: fasta
+    description: FASTA asset for transcriptome
+  tools:
+  - name: kallisto
+    version: '>=0.48.0'
+    source: bioconda
+build:
+  command: |
+    kallisto index -i {output_dir}/{genome}_kallisto_index.idx {fasta}
+  resources:
+    memory: 8GB
+    disk: 5GB
+    time: 1h
+outputs:
+- pattern: '*_kallisto_index.idx'
+  description: Kallisto index file
+test:
+  commands:
+  - test -f {output_dir}/{genome}_kallisto_index.idx
+metadata:
+  author: nsheff
+  created: '2026-05-20'
+  license: BSD-2-Clause
