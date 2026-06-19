@@ -44,7 +44,33 @@ fi
 # registry's own genomes input root if the operator did not set one.
 export REFGENIE_INPUTS="${REFGENIE_INPUTS:-${REFGETSTORE_FASTA:-$REGISTRY_DIR/build/inputs}}"
 
+# Resolve refgenie to an ABSOLUTE path. snakemake submits each build rule as its
+# own `srun` SLURM child whose non-interactive, non-login shell does NOT inherit
+# the dispatcher's PATH (e.g. ~/.local/bin), so a bare `refgenie` token fails with
+#   FATAL: "refgenie": executable file not found in $PATH
+# Substituting the absolute path into the Snakefile makes every rule PATH-immune.
 REFGENIE_BIN="${REFGENIE_BIN:-refgenie}"
+if [[ "$REFGENIE_BIN" != /* ]]; then
+    _refgenie_abs="$(command -v "$REFGENIE_BIN" 2>/dev/null || true)"
+    if [[ -n "$_refgenie_abs" ]]; then
+        REFGENIE_BIN="$_refgenie_abs"
+        echo "$(date) | run_builds: resolved REFGENIE_BIN -> $REFGENIE_BIN"
+    else
+        echo "$(date) | run_builds: WARNING could not resolve absolute path for '$REFGENIE_BIN'; build rules may fail in SLURM children with PATH issues" >&2
+    fi
+fi
+# Put the refgenie bin dir on PATH and EXPORT it. snakemake's SLURM executor
+# sbatch's children with --export=ALL, so the driver's PATH propagates to every
+# build job. This covers the recipe sub-commands too (e.g. `refgenie-build-fasta`,
+# which the fasta recipe runs on the host) — not just the top-level `refgenie`.
+if [[ "$REFGENIE_BIN" == /* ]]; then
+    _refgenie_bindir="$(dirname "$REFGENIE_BIN")"
+    case ":$PATH:" in
+        *":$_refgenie_bindir:"*) ;;
+        *) export PATH="$_refgenie_bindir:$PATH" ;;
+    esac
+    echo "$(date) | run_builds: PATH includes $_refgenie_bindir for SLURM children"
+fi
 SNAKEMAKE_PROFILE="${SNAKEMAKE_PROFILE:-$REGISTRY_DIR/build/profiles/rivanna}"
 
 BUILD_DIR="$REGISTRY_DIR/build"
@@ -87,7 +113,14 @@ python3 tools/import_recipes.py --db-config "$REFGENIE_DB_CONFIG_PATH" --snakefi
 # (a) refgenie1's template hardcodes `refgenie1` in shell rules; the installed
 #     entry point is `refgenie`. Rewrite only the leading command token.
 if [[ "$REFGENIE_BIN" != "refgenie1" ]]; then
-    sed -i "s/refgenie1 /$REFGENIE_BIN /g" "$SNAKEFILE"
+    # Build rules emit `refgenie1 ...`; the genome_init sentinel rule emits a
+    # literal `refgenie genome init ...`. Rewrite BOTH leading command tokens to
+    # $REFGENIE_BIN (absolute path) so every rule is PATH-immune in SLURM children.
+    # Use '#' delimiter because $REFGENIE_BIN may contain '/'.
+    sed -i \
+        -e "s#refgenie1 #$REFGENIE_BIN #g" \
+        -e "s#\"refgenie genome init #\"$REFGENIE_BIN genome init #g" \
+        "$SNAKEFILE"
     echo "$(date) | run_builds: patched Snakefile shell rules -> '$REFGENIE_BIN'"
 fi
 # (b) The template uses relative `configfile:`/`pepfile:` paths resolved against
