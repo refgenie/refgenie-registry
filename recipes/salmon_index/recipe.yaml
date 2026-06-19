@@ -1,0 +1,46 @@
+name: salmon_index
+version: 0.0.1
+output_asset_class: salmon_index
+description: Transcriptome index for salmon, produced with salmon index
+input_files: {}
+input_params:
+  threads:
+    default: "8"
+    description: Number of threads to use for parallel computing
+  kmer:
+    default: "31"
+    description: The length of kmer to use to create the indices
+input_assets:
+  fasta_txome:
+    asset_class: fasta
+    default: fasta_txome
+    description: fasta asset for transcriptome
+docker_image: combinelab/salmon
+command_templates:
+  - salmon index -t {{values.genome_folder}}/{{values.assets["fasta_txome"].seek_keys_dict["fasta"]}} -i {{values.output_folder}} -k {{values.params["kmer"]}} -p {{values.params["threads"]}}
+custom_seek_keys:
+  version: salmon --version | awk '{print $2}'
+default_asset: "{{values.custom_seek_keys.version}}"
+tags:
+- quantification
+- rna-seq
+- pseudoalignment
+outputs:
+- pattern: '*.json'
+  description: Salmon index metadata files
+- pattern: seq.bin
+  description: Salmon sequence binary
+- pattern: pos.bin
+  description: Salmon position binary
+resources:
+  memory: 8GB
+  disk: 10GB
+  time: 1h
+test:
+  commands:
+  - test -d {output_dir}
+  - test -f {output_dir}/seq.bin
+metadata:
+  author: nsheff
+  created: '2026-05-20'
+  license: BSD-2-Clause

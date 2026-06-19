@@ -1,0 +1,29 @@
+name: mm39_primary_rm_ensembl
+aliases:
+  - GRCm39-primary-rm-113-ensembl
+
+description: |
+  ensembl 113 primary assembly rm
+
+organism:
+  scientific_name: Mus musculus
+  common_name: mouse
+  taxon_id: 10090
+
+assembly:
+  source: Ensembl
+
+fasta:
+  sources:
+    - provider: Ensembl
+      url: https://ftp.ensembl.org/pub/release-113/fasta/mus_musculus/dna/Mus_musculus.GRCm39.dna_rm.primary_assembly.fa.gz
+  checksum:
+    sha256: compute_on_registration
+
+seqcol:
+  digest: D-6wf8dsOttiVNnLSImSglRJvw_8Zr_j
+  length: 61
+
+metadata:
+  added: 2026-05-20
+  added_by: nsheff

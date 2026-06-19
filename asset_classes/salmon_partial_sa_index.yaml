@@ -1,0 +1,14 @@
+name: salmon_partial_sa_index
+version: 0.0.1
+description: >
+  Transcriptome index for salmon, produced with salmon index using partial selective
+  alignment method. Preparation includes transcriptome mapping to the genome and
+  extraction of the relevant portion out from the genome and indexing it along with
+  the transcriptome. Recipe source --
+  https://github.com/COMBINE-lab/SalmonTools/blob/master/scripts/generateDecoyTranscriptome.sh
+serving_modes: [archive]
+seek_keys:
+  salmon_partial_sa_index:
+    value: "."
+    type: directory
+    description: Directory with the partial Salmon index

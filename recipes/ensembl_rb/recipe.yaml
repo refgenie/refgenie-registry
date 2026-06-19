@@ -1,0 +1,35 @@
+name: ensembl_rb
+version: 0.0.1
+output_asset_class: ensembl_rb
+description: A regulatory annotation file
+input_files:
+  gff:
+    description:
+      Regulatory build annotation file in Gene Feature Format (GFF) from
+      Ensembl
+input_params: {}
+input_assets: {}
+docker_image: databio/refgenie
+command_templates:
+  - cp {{values.files["gff"]}} {{values.output_folder}}/{{values.genome_digest}}.gff.gz
+default_asset: "default"
+
+# --- Additive non-runtime metadata (ignored by the builder) ---
+tags:
+- annotation
+- regulatory
+- ensembl
+outputs:
+- pattern: '*.gff.gz'
+  description: Ensembl regulatory build GFF file (gzipped)
+test:
+  commands:
+  - test -f {output_dir}/{genome}.gff.gz
+resources:
+  memory: 2GB
+  disk: 5GB
+  time: 30m
+metadata:
+  author: nsheff
+  created: '2026-05-20'
+  license: BSD-2-Clause

@@ -1,0 +1,27 @@
+name: mm38_p1_ena
+aliases:
+  - GRCm39-ena-03
+  - GRCm39-ena-02
+
+description: |
+  ref genome hosted on ENA Genome Reference Consortium Mouse Build 38 patch release 1 (GRCm38.p1)
+
+organism:
+  scientific_name: Mus musculus
+  common_name: mouse
+  taxon_id: 10090
+
+assembly:
+  source: ENA
+
+fasta:
+  checksum:
+    sha256: compute_on_registration
+
+seqcol:
+  digest: bLbjXXCz_5qAonaDXcVuadx65QZkC7mb
+  length: 50
+
+metadata:
+  added: 2026-05-20
+  added_by: nsheff

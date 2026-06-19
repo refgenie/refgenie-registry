@@ -1,0 +1,26 @@
+name: mm39_ena
+aliases:
+  - GRCm39-ena-09
+
+description: |
+  ref genome hosted on ENA Genome Reference Consortium Mouse Build 39
+
+organism:
+  scientific_name: Mus musculus
+  common_name: mouse
+  taxon_id: 10090
+
+assembly:
+  source: ENA
+
+fasta:
+  checksum:
+    sha256: compute_on_registration
+
+seqcol:
+  digest: ABEupc6KHmxtHGarfWFXTmu9mUcNnfoM
+  length: 40
+
+metadata:
+  added: 2026-05-20
+  added_by: nsheff

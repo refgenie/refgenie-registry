@@ -1,0 +1,30 @@
+name: hg19_p13_genomic
+aliases:
+  - GRCh37.p13-fasta-genomic
+
+description: |
+  GCF_000001405.25_GRCh37.p13_genomic from NCBI
+
+organism:
+  scientific_name: Homo sapiens
+  common_name: human
+  taxon_id: 9606
+
+assembly:
+  source: NCBI
+  accession: GCF_000001405.25
+
+fasta:
+  sources:
+    - provider: NCBI
+      url: https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/001/405/GCF_000001405.25_GRCh37.p13/GCF_000001405.25_GRCh37.p13_genomic.fna.gz
+  checksum:
+    sha256: compute_on_registration
+
+seqcol:
+  digest: XJWKh8nsSqBFfcU0DIHMZohYyCWF-vcA
+  length: 297
+
+metadata:
+  added: 2026-05-20
+  added_by: nsheff

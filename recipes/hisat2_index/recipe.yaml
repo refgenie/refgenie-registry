@@ -1,0 +1,39 @@
+name: hisat2_index
+version: 0.0.1
+output_asset_class: hisat2_index
+description: Genome index for HISAT2, produced with hisat2-build
+input_files: {}
+input_params: {}
+input_assets:
+  fasta:
+    asset_class: fasta
+    default: fasta
+    description: fasta asset for genome
+docker_image: databio/refgenie
+command_templates:
+  - hisat2-build {{values.genome_folder}}/{{values.assets["fasta"].seek_keys_dict["fasta"]}} {{values.output_folder}}/{{values.genome_digest}}
+custom_seek_keys:
+  version: "hisat2-build --version | awk 'NR==5{print $4}'"
+default_asset: "{{values.custom_seek_keys.version}}"
+
+# --- Additive non-runtime metadata (ignored by the builder) ---
+tags:
+- alignment
+- rna-seq
+- spliced-alignment
+outputs:
+- pattern: '*.ht2'
+  description: HISAT2 index files
+- pattern: '*.ht2l'
+  description: HISAT2 large index files (for genomes >= 4Gbp)
+test:
+  commands:
+  - test -f {output_dir}/{genome}.1.ht2 || test -f {output_dir}/{genome}.1.ht2l
+resources:
+  memory: 8GB
+  disk: 10GB
+  time: 2h
+metadata:
+  author: nsheff
+  created: '2026-05-20'
+  license: BSD-2-Clause

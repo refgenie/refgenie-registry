@@ -1,0 +1,45 @@
+name: bismark_bt1_index
+version: 0.0.1
+output_asset_class: bismark_bt1_index
+description: |
+  Genome index for Bisulfite-Seq applications, produced by
+  bismark_genome_preparation using bowtie1. Used for bisulfite
+  sequencing alignment with Bismark.
+input_files: {}
+input_params:
+  parallel:
+    default: "4"
+    description: Number of threads to use for parallel computing
+input_assets:
+  fasta:
+    asset_class: fasta
+    default: fasta
+    description: fasta asset for genome
+    colocate:
+      - source_key: fasta
+docker_image: databio/refgenie
+command_templates:
+  - bismark_genome_preparation {{values.output_folder}} --parallel {{values.params["parallel"]}}
+custom_seek_keys:
+  version: "bismark_genome_preparation --version | awk 'NR==4{print $5}' | cut -c2-"
+default_asset: "{{values.custom_seek_keys.version}}"
+
+tags:
+- alignment
+- bisulfite-seq
+- methylation
+- epigenetics
+outputs:
+- pattern: Bisulfite_Genome/**
+  description: Bismark bowtie1 bisulfite genome index directory
+test:
+  commands:
+  - test -d {output_dir}/Bisulfite_Genome
+resources:
+  memory: 8GB
+  disk: 10GB
+  time: 3h
+metadata:
+  author: nsheff
+  created: '2026-05-20'
+  license: BSD-2-Clause

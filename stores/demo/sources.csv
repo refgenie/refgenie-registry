@@ -1,0 +1,7 @@
+fasta,name
+../../refget/test_fasta/base.fa,base
+../../refget/test_fasta/different_names.fa,different_names
+../../refget/test_fasta/different_order.fa,different_order
+../../refget/test_fasta/pair_swap.fa,pair_swap
+../../refget/test_fasta/subset.fa,subset
+../../refget/test_fasta/swap_wo_coords.fa,swap_wo_coords

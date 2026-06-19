@@ -1,0 +1,39 @@
+name: small_rna
+version: 0.0.1
+output_asset_class: small_rna
+description: Small RNA sequences in the FASTA format. A predicted hairpin portion of a miRNA transcript and information on the location and sequence of the mature miRNA sequence
+input_files:
+  hairpin:
+    description: FASTA format sequences of all miRNA hairpins
+  mature:
+    description: FASTA format sequences of all mature miRNA sequences
+input_params: null
+input_assets: null
+docker_image: databio/refgenie
+command_templates:
+  - cp {{values.files["hairpin"]}} {{values.output_folder}}/{{values.genome_digest}}_hairpin.fa
+  - cp {{values.files["mature"]}} {{values.output_folder}}/{{values.genome_digest}}_mature.fa
+custom_seek_keys:
+  version: ""
+default_asset: "{{values.custom_seek_keys.version}}"
+tags:
+- small-rna
+- mirna
+- non-coding
+outputs:
+- pattern: '*_hairpin.fa'
+  description: miRNA hairpin sequences in FASTA format
+- pattern: '*_mature.fa'
+  description: Mature miRNA sequences in FASTA format
+resources:
+  memory: 1GB
+  disk: 1GB
+  time: 10m
+test:
+  commands:
+  - test -f {output_dir}/{genome}_hairpin.fa
+  - test -f {output_dir}/{genome}_mature.fa
+metadata:
+  author: nsheff
+  created: '2026-05-20'
+  license: BSD-2-Clause

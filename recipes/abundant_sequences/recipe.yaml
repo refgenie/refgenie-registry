@@ -1,0 +1,53 @@
+name: abundant_sequences
+version: 0.0.1
+output_asset_class: abundant_sequences
+description: |
+  Abundant sequences in the FASTA format -- PhiX spike-in, Poly(A),
+  Poly(C) and adapter sequences. Commonly used for contamination
+  screening in sequencing experiments.
+input_files:
+  phix:
+    description: PhiX sequences in FASTA format
+  polyA:
+    description: Poly(A) sequences in FASTA format
+  polyC:
+    description: Poly(C) sequences in FASTA format
+  adapter_contam:
+    description: Adapter sequences in FASTA format
+input_params: null
+input_assets: null
+docker_image: databio/refgenie
+command_templates:
+  - cp {{values.files["phix"]}} {{values.output_folder}}/{{values.genome_digest}}_phix.fa
+  - cp {{values.files["polyA"]}} {{values.output_folder}}/{{values.genome_digest}}_polyA.fa
+  - cp {{values.files["polyC"]}} {{values.output_folder}}/{{values.genome_digest}}_polyC.fa
+  - cp {{values.files["adapter_contam"]}} {{values.output_folder}}/{{values.genome_digest}}_adapter_contam.fa
+default_asset: "{{values.custom_seek_keys.version}}"
+
+tags:
+- contamination
+- qc
+- spike-in
+outputs:
+- pattern: '*_phix.fa'
+  description: PhiX spike-in sequence
+- pattern: '*_polyA.fa'
+  description: Poly(A) sequence
+- pattern: '*_polyC.fa'
+  description: Poly(C) sequence
+- pattern: '*_adapter_contam.fa'
+  description: Adapter contamination sequence
+test:
+  commands:
+  - test -f {output_dir}/{genome}_phix.fa
+  - test -f {output_dir}/{genome}_polyA.fa
+  - test -f {output_dir}/{genome}_polyC.fa
+  - test -f {output_dir}/{genome}_adapter_contam.fa
+resources:
+  memory: 1GB
+  disk: 1GB
+  time: 10m
+metadata:
+  author: nsheff
+  created: '2026-05-20'
+  license: BSD-2-Clause

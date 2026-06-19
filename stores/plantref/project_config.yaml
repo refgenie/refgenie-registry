@@ -1,0 +1,6 @@
+pep_version: 2.1.0
+sample_table: sources.csv
+sample_table_index: pep_sample_name
+
+# Root for relative fasta paths in sources.csv ($REFGETSTORE_FASTA set by env.sh).
+fasta_root: $REFGETSTORE_FASTA/plantref

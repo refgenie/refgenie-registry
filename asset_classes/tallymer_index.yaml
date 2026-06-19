@@ -1,0 +1,13 @@
+name: tallymer_index
+version: 0.0.1
+description: Indexed k-mers for a given enhanced suffix array at a fixed value of k
+serving_modes: [archive]
+seek_keys:
+  tindex:
+    value: "{genome}.tal_{mersize}"
+    type: prefix
+    description: The basename (prefix) of the tallymer index files
+  search_file:
+    value: "{genome}.tal_{mersize}.gtTxt"
+    type: file
+    description: Tallymer index search file

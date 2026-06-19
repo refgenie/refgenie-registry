@@ -1,0 +1,26 @@
+name: hg19_b37
+aliases:
+  - b37-broad
+
+description: |
+  broad institute b37
+
+organism:
+  scientific_name: Homo sapiens
+  common_name: human
+  taxon_id: 9606
+
+assembly:
+  source: Broad Institute
+
+fasta:
+  checksum:
+    sha256: compute_on_registration
+
+seqcol:
+  digest: eN7J_gZz_meakMCeXXBEvY_njignMPxl
+  length: 85
+
+metadata:
+  added: 2026-05-20
+  added_by: nsheff

@@ -1,0 +1,32 @@
+name: mm10
+aliases:
+  - GRCm38
+
+description: |
+  The GCA_000001635.5 seqs_for_alignment_pipelines from NCBI.
+
+organism:
+  scientific_name: Mus musculus
+  common_name: mouse
+  taxon_id: 10090
+
+assembly:
+  source: NCBI
+  accession: GCA_000001635.5
+  level: chromosome
+
+fasta:
+  sources:
+    - provider: NCBI
+      url: ftp://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/000/001/635/GCA_000001635.5_GRCm38.p3/seqs_for_alignment_pipelines.ucsc_ids/GCA_000001635.5_GRCm38.p3_no_alt_analysis_set.fna.gz
+  checksum:
+    md5: 044703b3196ec8909c910ff52b3a407f
+    sha256: compute_on_registration
+
+seqcol:
+  digest: wsDErYxgCXiPnb2FWZ4sXtx3B0YyruRu
+  length: 66
+
+metadata:
+  added: 2026-05-20
+  added_by: nsheff

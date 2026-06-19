@@ -1,0 +1,47 @@
+name: fasta_index
+version: 1.0.0
+output_asset_class: fasta_index
+description:
+  Creates a FASTA index (.fa.fai) and chromosome sizes file using samtools faidx.
+  The .fai file enables random access to sequences within the FASTA. The
+  chrom.sizes file lists each sequence name and its length, required by many
+  tools (bedtools, UCSC utilities)
+input_files: {}
+input_params: {}
+input_assets:
+  fasta:
+    asset_class: fasta
+    description: fasta asset for genome
+    default: fasta
+    colocate:
+      - source_key: fasta
+docker_image: databio/refgenie
+command_templates:
+  - samtools faidx {{values.output_folder}}/{{values.genome_digest}}.fa
+  - cut -f1,2 {{values.output_folder}}/{{values.genome_digest}}.fa.fai > {{values.output_folder}}/{{values.genome_digest}}.chrom.sizes
+default_asset: "default"
+
+# --- Additive non-runtime metadata (ignored by the builder) ---
+tags:
+- index
+- reference
+- foundational
+outputs:
+- pattern: '*.fa.fai'
+  description: FASTA index file (samtools format)
+- pattern: '*.chrom.sizes'
+  description: Chromosome/sequence sizes (name<tab>length)
+test:
+  commands:
+  - test -f {output_dir}/{genome}.fa.fai
+  - test -f {output_dir}/{genome}.chrom.sizes
+  - test "$(wc -l < {output_dir}/{genome}.fa.fai)" -gt 0
+  - test "$(wc -l < {output_dir}/{genome}.chrom.sizes)" -gt 0
+resources:
+  memory: 2GB
+  disk: 1GB
+  time: 30m
+metadata:
+  author: nsheff
+  created: '2026-05-20'
+  license: BSD-2-Clause

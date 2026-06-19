@@ -1,0 +1,26 @@
+name: hg18_igenomes
+aliases:
+  - hg18-igenomes-ucsc
+
+description: |
+  igenomes hosted hg18
+
+organism:
+  scientific_name: Homo sapiens
+  common_name: human
+  taxon_id: 9606
+
+assembly:
+  source: iGenomes
+
+fasta:
+  checksum:
+    sha256: compute_on_registration
+
+seqcol:
+  digest: ieWVCws5MC2QFRKgH9QcN3u5_Y_3hPG6
+  length: 25
+
+metadata:
+  added: 2026-05-20
+  added_by: nsheff

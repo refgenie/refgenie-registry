@@ -1,0 +1,29 @@
+name: mm10_p6_masked
+aliases:
+  - mm10-ucsc-p6-hard-masked
+
+description: |
+  mm10 p6 from ucsc hard masked
+
+organism:
+  scientific_name: Mus musculus
+  common_name: mouse
+  taxon_id: 10090
+
+assembly:
+  source: UCSC
+
+fasta:
+  sources:
+    - provider: UCSC
+      url: https://hgdownload.soe.ucsc.edu/goldenPath/mm10/bigZips/p6/mm10.p6.fa.masked.gz
+  checksum:
+    sha256: compute_on_registration
+
+seqcol:
+  digest: 9k1WrFA4Ys2fPifOOVswhOEdurvsaLfI
+  length: 239
+
+metadata:
+  added: 2026-05-20
+  added_by: nsheff

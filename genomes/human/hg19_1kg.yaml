@@ -1,0 +1,26 @@
+name: hg19_1kg
+aliases:
+  - hs37-1kg
+
+description: |
+  hs37-1kg genome referenced on HL blog 2017 1000 Genomes Project (1000G) reference in 2010
+
+organism:
+  scientific_name: Homo sapiens
+  common_name: human
+  taxon_id: 9606
+
+assembly:
+  source: 1000 Genomes Project
+
+fasta:
+  checksum:
+    sha256: compute_on_registration
+
+seqcol:
+  digest: 5SdkZCnuZL2YIptqjSBZfupo_O7HpD_B
+  length: 84
+
+metadata:
+  added: 2026-05-20
+  added_by: nsheff

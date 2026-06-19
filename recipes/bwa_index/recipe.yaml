@@ -1,0 +1,53 @@
+name: bwa_index
+version: 0.1.0
+output_asset_class: bwa_index
+description: |
+  Genome index for Burrows-Wheeler Alignment Tool, produced with bwa index.
+  Creates the FM-index files required by bwa mem, bwa aln, and other BWA
+  alignment commands.
+input_files: {}
+input_params: {}
+input_assets:
+  fasta:
+    asset_class: fasta
+    description: fasta asset for genome
+    default: fasta
+    colocate:
+      - source_key: fasta
+docker_image: databio/refgenie
+command_templates:
+  - bwa index {{values.output_folder}}/{{values.genome_digest}}.fa
+custom_seek_keys:
+  version: "bwa 2>&1 | grep Version | cut -d' ' -f2 | awk -F- '{print $1}'" # uses stderr; monitor https://github.com/lh3/bwa/issues/202
+default_asset: "{{values.custom_seek_keys.version}}"
+
+tags:
+- alignment
+- dna-seq
+- short-read
+outputs:
+- pattern: '*.amb'
+  description: BWA index - sequence ambiguity information
+- pattern: '*.ann'
+  description: BWA index - sequence annotation (names, lengths)
+- pattern: '*.bwt'
+  description: BWA index - Burrows-Wheeler transform
+- pattern: '*.pac'
+  description: BWA index - packed reference sequence
+- pattern: '*.sa'
+  description: BWA index - suffix array
+test:
+  commands:
+  - test -f {output_dir}/{genome}.fa.bwt
+  - test -f {output_dir}/{genome}.fa.sa
+  - test -f {output_dir}/{genome}.fa.amb
+  - test -f {output_dir}/{genome}.fa.ann
+  - test -f {output_dir}/{genome}.fa.pac
+resources:
+  memory: 8GB
+  disk: 10GB
+  time: 2h
+metadata:
+  author: nsheff
+  created: '2026-05-20'
+  license: BSD-2-Clause

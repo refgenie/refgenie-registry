@@ -1,0 +1,16 @@
+# Lives at the repo root because yoke/mutagen sync the directory containing this
+# file (Alpha) to riva:~/code/refgenie-registry (Beta). The Rivanna build env and
+# SLURM jobs are isolated under infra/rivanna/.
+name = "refgenie-registry"
+remote = "riva"
+env_files = ["infra/rivanna/env.sh"]
+
+# Mutagen sync: working files in this repo <-> riva:~/code/refgenie-registry.
+# Start with `yoke sync start` from this directory. `.git` is ignored so version
+# control stays git-managed (this repo is GitHub-backed and CI commits to it);
+# mutagen only keeps the working files in sync for live iteration on Rivanna.
+[[syncs]]
+name   = "refgenie-registry"
+local  = "~/Dropbox/workspaces/refgenie/repos/refgenie-registry"
+remote = "riva:~/code/refgenie-registry"
+ignore = [".git", "__pycache__", "*.log", "*.bak-*", ".staging_map.tsv", "target", ".pytest_cache", ".venv"]

@@ -1,0 +1,16 @@
+name: dbnsfp
+version: 0.0.1
+description: >
+  A database developed for functional prediction and annotation of all potential
+  non-synonymous single-nucleotide variants (nsSNVs) in the human genome
+  (Gencode release 29/Ensembl 94)
+serving_modes: [file]
+seek_keys:
+  dbnsfp:
+    value: "{genome}_dbNSFP.txt.gz"
+    type: file
+    description: dbNSFP file
+  tabix:
+    value: "{genome}_dbNSFP.txt.gz.tbi"
+    type: file
+    description: Tabix index file

@@ -1,0 +1,35 @@
+name: Build Request
+description: Request an asset build for a specific genome
+title: "Build request: [ASSET] for [GENOME]"
+labels: ["build-request"]
+body:
+  - type: input
+    id: genome
+    attributes:
+      label: Genome
+      description: "Genome name as it appears in genomes/ (e.g., hg38)"
+      placeholder: hg38
+    validations:
+      required: true
+  - type: input
+    id: asset
+    attributes:
+      label: Asset
+      description: "Recipe name as it appears in recipes/ (e.g., bwa_index)"
+      placeholder: bwa_index
+    validations:
+      required: true
+  - type: dropdown
+    id: rebuild
+    attributes:
+      label: Rebuild
+      description: "Force rebuild even if the asset already exists?"
+      options:
+        - "false"
+        - "true"
+      default: 0
+  - type: textarea
+    id: notes
+    attributes:
+      label: Notes
+      description: "Why do you need this asset? Any special requirements?"

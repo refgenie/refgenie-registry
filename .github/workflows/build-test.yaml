@@ -1,0 +1,93 @@
+name: Build Test (Recipes)
+
+# refgenie IS the build system. Recipes are refgenie-native and are NOT built
+# with conda. This workflow verifies the real build path: load the registry
+# into a refgenie DB and generate the build Snakefile (`refgenie generate
+# snakefile`). A full container build of every asset is too heavy for PR CI, so
+# this asserts that the changed recipes load and the workflow renders -- the
+# contract the real builder depends on.
+
+on:
+  pull_request:
+    paths:
+      - "recipes/**"
+      - "asset_classes/**"
+      - "tools/import_recipes.py"
+
+permissions:
+  contents: read
+  pull-requests: write
+
+jobs:
+  build-test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install refgenie1 and deps
+        run: |
+          python -m pip install --upgrade pip
+          pip install pyyaml
+          # refgenie1 (package name "refgenie", v1.x) IS the build system.
+          pip install "refgenie @ git+https://github.com/refgenie/refgenie1.git"
+
+      - name: Load registry and generate build Snakefile
+        id: build_test
+        run: |
+          set +e
+          OUTPUT=""
+          EXIT=0
+
+          # Load the whole registry (asset classes + native recipes) into an
+          # in-memory refgenie DB and render the build Snakefile. This is the
+          # real build entrypoint; if recipes don't load or the workflow can't
+          # be generated, the registry cannot be built.
+          if .github/scripts/run-build.sh snakefile --output /tmp/Snakefile > /tmp/build_test.log 2>&1; then
+            RULES=$(grep -c "^rule build_" /tmp/Snakefile || echo 0)
+            OUTPUT="PASS: registry loaded; build Snakefile generated with $RULES build rules (invokes 'refgenie1 build')."
+          else
+            EXIT=1
+            OUTPUT="FAIL: registry load / Snakefile generation failed.\n$(cat /tmp/build_test.log)"
+          fi
+
+          echo "output<<EOF" >> "$GITHUB_OUTPUT"
+          echo -e "$OUTPUT" >> "$GITHUB_OUTPUT"
+          echo "EOF" >> "$GITHUB_OUTPUT"
+          echo "exit_code=$EXIT" >> "$GITHUB_OUTPUT"
+          echo -e "$OUTPUT"
+          exit $EXIT
+
+      - name: Post build-test results
+        if: always()
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const output = `${{ steps.build_test.outputs.output }}`;
+            const exitCode = '${{ steps.build_test.outputs.exit_code }}';
+            const status = exitCode === '0' ? 'Passed' : 'Failed';
+            const body = `## Build Test ${status}
+
+            refgenie is the build system; recipes are not built with conda. This
+            check loads the registry into a refgenie DB and generates the build
+            Snakefile (\`refgenie generate snakefile\`):
+
+            \`\`\`
+            ${output}
+            \`\`\`
+
+            ${exitCode !== '0' ? 'Please review the errors above and fix your recipe.' : 'The registry loads and the build workflow generates.'}
+            `;
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: body
+            });

@@ -1,0 +1,55 @@
+name: Import Recipes
+
+# Verifies that the entire registry (refgenie-native asset classes + recipes)
+# can be loaded into a refgenie1 database via tools/import_recipes.py (a thin
+# loader -- no bioconda translation) AND that the loaded registry drives
+# refgenie's real build system (a build Snakefile is generated). This is the
+# contract that mobot and the build workflows rely on to ingest the registry.
+
+on:
+  pull_request:
+    paths:
+      - "recipes/**"
+      - "asset_classes/**"
+      - "schema/asset_class.schema.yaml"
+      - "schema/recipe.schema.yaml"
+      - "tools/import_recipes.py"
+      - "tools/test_import_recipes.py"
+      - ".github/workflows/import-recipes.yaml"
+  push:
+    branches:
+      - main
+    paths:
+      - "recipes/**"
+      - "asset_classes/**"
+      - "tools/import_recipes.py"
+      - "tools/test_import_recipes.py"
+
+permissions:
+  contents: read
+
+jobs:
+  import-recipes:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install pytest pyyaml
+          # refgenie1 (package name "refgenie", v1.x) provides the loader API
+          # and the build system.
+          pip install "refgenie @ git+https://github.com/refgenie/refgenie1.git"
+
+      - name: Run loader test (load + Snakefile generation)
+        run: python -m pytest tools/test_import_recipes.py -v
+
+      - name: Dry-run load + generate Snakefile (in-memory)
+        run: python tools/import_recipes.py --snakefile /tmp/Snakefile

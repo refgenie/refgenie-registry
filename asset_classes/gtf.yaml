@@ -1,0 +1,17 @@
+name: gtf
+version: 0.0.1
+description: GTF annotation asset which provides access to all annotated transcripts
+serving_modes: [file]
+seek_keys:
+  gtf:
+    value: "{genome}.gtf.gz"
+    type: file
+    description: GTF annotation file (gzipped)
+  ensembl_tss:
+    value: "{genome}_ensembl_TSS.bed"
+    type: file
+    description: Ensembl TSS annotation BED file (only produced by the ensembl_gtf recipe)
+  ensembl_gene_body:
+    value: "{genome}_ensembl_gene_body.bed"
+    type: file
+    description: Ensembl gene body annotation BED file (only produced by the ensembl_gtf recipe)

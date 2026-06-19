@@ -1,0 +1,29 @@
+name: hg19_p13
+aliases:
+  - hg19-p13-plusMT-ucsc
+
+description: |
+  hg19 p13 plusMT from ucsc
+
+organism:
+  scientific_name: Homo sapiens
+  common_name: human
+  taxon_id: 9606
+
+assembly:
+  source: UCSC
+
+fasta:
+  sources:
+    - provider: UCSC
+      url: https://hgdownload.gi.ucsc.edu/goldenPath/hg19/bigZips/p13.plusMT/hg19.p13.plusMT.fa.gz
+  checksum:
+    sha256: compute_on_registration
+
+seqcol:
+  digest: 6pxZqxG0TYtyVb8yp14ONpaxZ8msQqKr
+  length: 298
+
+metadata:
+  added: 2026-05-20
+  added_by: nsheff

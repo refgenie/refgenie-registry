@@ -1,0 +1,58 @@
+name: salmon_sa_index
+version: 0.0.1
+output_asset_class: salmon_sa_index
+description:
+  Transcriptome index for salmon, produced with salmon index using selective
+  alignment method. Improves quantification accuracy compared to the regular index.
+input_files: {}
+input_params:
+  threads:
+    default: "8"
+    description: Number of threads to use for parallel computing
+  kmer:
+    default: "31"
+    description: The length of kmer to use to create the indices
+input_assets:
+  fasta:
+    asset_class: fasta
+    default: fasta
+    description: fasta asset for genome
+  fasta_txome:
+    asset_class: fasta
+    default: fasta_txome
+    description: fasta asset for transcriptome
+docker_image: combinelab/salmon
+command_templates:
+  - grep '^>' {{values.genome_folder}}/{{values.assets["fasta"].seek_keys_dict["fasta"]}} | cut -d ' ' -f 1 > {{values.output_folder}}/decoys.txt
+  - sed -i.bak -e 's/>//g' {{values.output_folder}}/decoys.txt
+  - rm {{values.output_folder}}/decoys.txt.bak
+  - cat {{values.genome_folder}}/{{values.assets["fasta_txome"].seek_keys_dict["fasta"]}} {{values.genome_folder}}/{{values.assets["fasta"].seek_keys_dict["fasta"]}} > {{values.output_folder}}/gentrome.fa
+  - salmon index -t {{values.output_folder}}/gentrome.fa -d {{values.output_folder}}/decoys.txt -i {{values.output_folder}} -k {{values.params["kmer"]}} -p {{values.params["threads"]}}
+  - rm {{values.output_folder}}/gentrome.fa {{values.output_folder}}/decoys.txt
+custom_seek_keys:
+  version: salmon --version | awk '{print $2}'
+default_asset: "{{values.custom_seek_keys.version}}"
+tags:
+- quantification
+- rna-seq
+- pseudoalignment
+- selective-alignment
+outputs:
+- pattern: '*.json'
+  description: Salmon index metadata files
+- pattern: seq.bin
+  description: Salmon sequence binary
+- pattern: pos.bin
+  description: Salmon position binary
+resources:
+  memory: 16GB
+  disk: 20GB
+  time: 2h
+test:
+  commands:
+  - test -d {output_dir}
+  - test -f {output_dir}/seq.bin
+metadata:
+  author: nsheff
+  created: '2026-05-20'
+  license: BSD-2-Clause

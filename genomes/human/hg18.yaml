@@ -1,0 +1,33 @@
+name: hg18
+aliases:
+  - NCBI36
+
+description: |
+  The NCBI36 reference sequence from UCSC. The individual chromosome
+  files were concatenated prior to the asset building.
+
+organism:
+  scientific_name: Homo sapiens
+  common_name: human
+  taxon_id: 9606
+
+assembly:
+  source: NCBI
+  accession: GCF_000001405.12
+  level: chromosome
+
+fasta:
+  sources:
+    - provider: refgenie
+      url: http://big.databio.org/refgenomes/hg18.fa.gz
+  checksum:
+    md5: 52e8b1332fb849677623bc00a905b116
+    sha256: compute_on_registration
+
+seqcol:
+  digest: YfZ0rklv8KY9DCtqG0iIX16zsgbuBgmM
+  length: 49
+
+metadata:
+  added: 2026-05-20
+  added_by: nsheff

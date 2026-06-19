@@ -1,0 +1,55 @@
+name: Mark Ready for Human Review
+
+on:
+  pull_request:
+    types: [labeled]
+
+permissions:
+  pull-requests: write
+  issues: write
+
+jobs:
+  mark-ready:
+    if: github.event.label.name == 'ai-review-complete'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check AI recommendation
+        id: check
+        uses: actions/github-script@60a0d83039c74a4aee543508d2ffcb1c3799cdea  # v7.0.1
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            // Find the most recent RefgenieBot AI Review comment
+            const comments = await github.rest.issues.listComments({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: context.payload.pull_request.number,
+              per_page: 50
+            });
+
+            const reviewComments = comments.data
+              .filter(c => c.body.includes('## RefgenieBot AI Review'))
+              .sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
+
+            if (reviewComments.length === 0) {
+              core.setOutput('should_label', 'false');
+              return;
+            }
+
+            const latest = reviewComments[0].body;
+            const isApprovish = latest.includes('**Recommendation:** APPROVE') ||
+                                latest.includes('**Recommendation:** APPROVE_WITH_NOTES');
+            core.setOutput('should_label', isApprovish.toString());
+
+      - name: Add ready-for-human-review label
+        if: steps.check.outputs.should_label == 'true'
+        uses: actions/github-script@60a0d83039c74a4aee543508d2ffcb1c3799cdea  # v7.0.1
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            await github.rest.issues.addLabels({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: context.payload.pull_request.number,
+              labels: ['ready-for-human-review']
+            });

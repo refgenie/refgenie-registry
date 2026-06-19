@@ -1,0 +1,27 @@
+name: hg38_p12_genomic
+aliases:
+  - GRCh38.p12-fasta-genomic
+
+description: |
+  GCF_000001405.38_GRCh38.p12_genomic from NCBI
+
+organism:
+  scientific_name: Homo sapiens
+  common_name: human
+  taxon_id: 9606
+
+assembly:
+  source: NCBI
+  accession: GCF_000001405.38
+
+fasta:
+  checksum:
+    sha256: compute_on_registration
+
+seqcol:
+  digest: CbeNHqwFVEdeNKe6Obm77fX6U9-fzVUL
+  length: 594
+
+metadata:
+  added: 2026-05-20
+  added_by: nsheff

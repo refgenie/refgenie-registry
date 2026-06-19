@@ -1,0 +1,24 @@
+# Review pipeline labels
+- name: programmatic-check-passed
+  color: "0e8a16"
+  description: "All programmatic validations (schema, lint, build test) passed"
+
+- name: ai-review-complete
+  color: "1d76db"
+  description: "AI review has been posted as a PR comment"
+
+- name: security-concern
+  color: "d93f0b"
+  description: "AI review flagged potential security issues in recipe"
+
+- name: ready-for-human-review
+  color: "fbca04"
+  description: "Both programmatic and AI review passed; awaiting human approval"
+
+- name: genome-contribution
+  color: "c5def5"
+  description: "PR adds or modifies genome definitions"
+
+- name: recipe-contribution
+  color: "bfdadc"
+  description: "PR adds or modifies asset recipes"

@@ -1,0 +1,27 @@
+name: hg18_cdna
+
+description: |
+  The NCBI36 cDNA (transcript) reference sequence from Ensembl.
+
+organism:
+  scientific_name: Homo sapiens
+  common_name: human
+  taxon_id: 9606
+
+assembly:
+  source: Ensembl
+
+fasta:
+  sources:
+    - provider: Ensembl
+      url: ftp://ftp.ensembl.org/pub/release-40/homo_sapiens_40_36b/data/fasta/cdna/Homo_sapiens.NCBI36.40.cdna.all.fa.gz
+  checksum:
+    md5: 404e4603578c95a0d8c5410729d1f568
+    sha256: compute_on_registration
+
+seqcol:
+  compute: true
+
+metadata:
+  added: 2026-05-20
+  added_by: nsheff

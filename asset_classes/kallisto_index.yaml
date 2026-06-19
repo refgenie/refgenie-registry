@@ -1,0 +1,9 @@
+name: kallisto_index
+version: 0.0.1
+description: Transcriptome index for kallisto, produced with kallisto index
+serving_modes: [archive]
+seek_keys:
+  kallisto_index:
+    value: "{genome}_kallisto_index.idx"
+    type: file
+    description: The kallisto index file

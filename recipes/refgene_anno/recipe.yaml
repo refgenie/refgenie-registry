@@ -1,0 +1,51 @@
+name: refgene_anno
+version: 0.0.1
+output_asset_class: refgene_anno
+description: gene, TSS, exon, intron, and premature mRNA annotation files
+input_files:
+  refgene:
+    description: gzipped RefGene database annotation file
+input_params: {}
+input_assets: {}
+docker_image: databio/refgenie
+command_templates:
+  - cp {{values.files["refgene"]}} {{values.output_folder}}/{{values.genome_digest}}_refGene.txt.gz
+  - gzip -dcf {{values.output_folder}}/{{values.genome_digest}}_refGene.txt.gz | awk '{if($4=="+"){print $3"\\t"$5"\\t"$5"\\t"$13"\\t.\\t"$4}else{print $3"\\t"$6"\\t"$6"\\t"$13"\\t.\\t"$4}}' | LC_COLLATE=C sort -k1,1 -k2,2n -k4,4 -u > {{values.output_folder}}/{{values.genome_digest}}_TSS.bed
+  - gzip -dcf {{values.output_folder}}/{{values.genome_digest}}_refGene.txt.gz | awk '{if($4=="+"){print $3"\\t"$5"\\t"$5"\\t"$13"\\t.\\t"$4}else{print $3"\\t"$6"\\t"$6"\\t"$13"\\t.\\t"$4}}' | LC_COLLATE=C sort -k1,1 -k2,2n -u > {{values.output_folder}}/{{values.genome_digest}}_TSS_unique.bed
+  - gzip -dcf {{values.output_folder}}/{{values.genome_digest}}_refGene.txt.gz | awk -v OFS='\\t' '$9>1' | awk -v OFS='\\t' '{ n = split($10, a, ","); split($11, b, ","); for(i=1; i<n; ++i) print $3, a[i], b[i], $13, i, $4 }' | awk -v OFS='\\t' '$6=="+" && $5!=1 {print $0} $6=="-" {print $0}' | awk '$4!=prev4 && prev6=="-" {prev4=$4; prev6=$6; delete line[NR-1]; idx-=1} {line[++idx]=$0; prev4=$4; prev6=$6} END {for (x=1; x<=idx; x++) print line[x]}' | LC_COLLATE=C sort -k1,1 -k2,2n -u > {{values.output_folder}}/{{values.genome_digest}}_exons.bed
+  - gzip -dcf {{values.output_folder}}/{{values.genome_digest}}_refGene.txt.gz | awk -v OFS='\\t' '$9>1' | awk -F'\\t' '{ exonCount=int($9);split($10,exonStarts,"[,]"); split($11,exonEnds,"[,]"); for(i=1;i<exonCount;i++) {printf("%s\\t%s\\t%s\\t%s\\t%d\\t%s\\n",$3,exonEnds[i],exonStarts[i+1],$13,($3=="+"?i:exonCount-i),$4);}}' | LC_COLLATE=C sort -k1,1 -k2,2n -u > {{values.output_folder}}/{{values.genome_digest}}_introns.bed
+  - gzip -dcf {{values.output_folder}}/{{values.genome_digest}}_refGene.txt.gz | grep 'cmpl' | awk '{print $3"\\t"$5"\\t"$6"\\t"$13"\\t.\\t"$4}' | LC_COLLATE=C sort -k1,1 -k2,2n -u > {{values.output_folder}}/{{values.genome_digest}}_pre-mRNA.bed
+default_asset: "default"
+tags:
+- annotation
+- refgene
+- tss
+- gene-model
+outputs:
+- pattern: '*_refGene.txt.gz'
+  description: RefGene annotation file
+- pattern: '*_TSS.bed'
+  description: RefGene TSS annotation (preserving genes sharing a start site)
+- pattern: '*_TSS_unique.bed'
+  description: RefGene TSS annotation (unique by genomic position)
+- pattern: '*_exons.bed'
+  description: RefGene exon annotation file
+- pattern: '*_introns.bed'
+  description: RefGene intron annotation file
+- pattern: '*_pre-mRNA.bed'
+  description: RefGene premature mRNA annotation file
+resources:
+  memory: 4GB
+  disk: 5GB
+  time: 1h
+test:
+  commands:
+  - test -f {output_dir}/{genome}_refGene.txt.gz
+  - test -f {output_dir}/{genome}_TSS.bed
+  - test -f {output_dir}/{genome}_exons.bed
+  - test -f {output_dir}/{genome}_introns.bed
+  - test -f {output_dir}/{genome}_pre-mRNA.bed
+metadata:
+  author: nsheff
+  created: '2026-05-20'
+  license: BSD-2-Clause

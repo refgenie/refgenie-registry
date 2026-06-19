@@ -1,0 +1,46 @@
+name: epilog_index
+version: 0.0.1
+output_asset_class: epilog_index
+description: Genome index for CpG sites, produced by the epilog DNA methylation caller
+input_files: {}
+input_params:
+  context:
+    default: CG
+    description:
+      Substring to index. One or more space-separated strings to index.
+      e.g. 'CG' or 'CG CA CT CC'
+input_assets:
+  fasta:
+    asset_class: fasta
+    default: fasta
+    description: fasta asset for genome
+docker_image: databio/refgenie
+command_templates:
+  - epilog index -- --infile {{values.genome_folder}}/{{values.assets["fasta"].seek_keys_dict["fasta"]}} --outfile {{values.output_folder}}/{{values.genome_digest}}_{{values.params["context"]}}.tsv
+    --contexts {{values.params["context"]}}
+  - bgzip {{values.output_folder}}/{{values.genome_digest}}_{{values.params["context"]}}.tsv
+  - tabix -s 1 -b 2 -e 2 {{values.output_folder}}/{{values.genome_digest}}_{{values.params["context"]}}.tsv.gz
+default_asset: "{{values.custom_seek_keys.version}}"
+
+# --- Additive non-runtime metadata (ignored by the builder) ---
+tags:
+- methylation
+- epigenetics
+- index
+outputs:
+- pattern: '*_{context}.tsv.gz'
+  description: Indexed genome file for the specified context
+- pattern: '*_{context}.tsv.gz.tbi'
+  description: Tabix index file
+test:
+  commands:
+  - test -f {output_dir}/{genome}_{context}.tsv.gz
+  - test -f {output_dir}/{genome}_{context}.tsv.gz.tbi
+resources:
+  memory: 4GB
+  disk: 5GB
+  time: 1h
+metadata:
+  author: nsheff
+  created: '2026-05-20'
+  license: BSD-2-Clause

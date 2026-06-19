@@ -1,0 +1,39 @@
+name: t2t-chm13
+aliases:
+  - T2T-CHM13v2.0
+  - chm13v2
+  - hs1
+
+description: |
+  Telomere-to-Telomere CHM13 v2.0 assembly. The first complete,
+  gapless sequence of a human genome. Includes all centromeres,
+  rDNA arrays, and segmental duplications missing from GRCh38.
+  Recommended as the new standard human reference for applications
+  that benefit from a complete assembly.
+
+organism:
+  scientific_name: Homo sapiens
+  common_name: human
+  taxon_id: 9606
+
+assembly:
+  source: NCBI
+  accession: GCF_009914755.1
+  level: chromosome
+
+fasta:
+  sources:
+    - provider: NCBI
+      url: https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/009/914/755/GCF_009914755.1_T2T-CHM13v2.0/GCF_009914755.1_T2T-CHM13v2.0_genomic.fna.gz
+    - provider: T2T Consortium
+      url: https://s3-us-west-2.amazonaws.com/human-pangenomics/T2T/CHM13/assemblies/analysis_set/chm13v2.0.fa.gz
+  checksum:
+    sha256: compute_on_registration
+
+seqcol:
+  compute: true
+
+metadata:
+  added: 2026-05-20
+  added_by: nsheff
+  last_verified: 2026-05-20

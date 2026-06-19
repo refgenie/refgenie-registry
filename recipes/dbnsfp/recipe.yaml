@@ -1,0 +1,52 @@
+name: dbnsfp
+version: 0.0.1
+output_asset_class: dbnsfp
+description: |
+  A database developed for functional prediction and annotation of all
+  potential non-synonymous single-nucleotide variants (nsSNVs) in the
+  human genome (Gencode release 29/Ensembl 94).
+input_files:
+  dbnsfp:
+    description: zipped dbNSFP database file
+input_params:
+  threads:
+    default: "8"
+    description: Number of threads to use for parallel computing
+input_assets: {}
+docker_image: databio/refgenie
+command_templates:
+  - cp {{values.files["dbnsfp"]}} {{values.output_folder}}/{{values.genome_digest}}.zip
+  - unzip {{values.output_folder}}/{{values.genome_digest}}.zip -d {{values.output_folder}}
+  - gunzip -v {{values.output_folder}}/*variant.chr*.gz
+  - head -n1 {{values.output_folder}}/dbNSFP*_variant.chr1 > {{values.output_folder}}/{{values.genome_digest}}_dbNSFP.txt
+  - cat {{values.output_folder}}/dbNSFP*variant.chr* | grep -v '#' >> {{values.output_folder}}/{{values.genome_digest}}_dbNSFP.txt
+  - rm {{values.output_folder}}/dbNSFP*_variant.chr*
+  - bgzip -@ {{values.params["threads"]}} {{values.output_folder}}/{{values.genome_digest}}_dbNSFP.txt
+  - tabix -s 1 -b 2 -e 2 {{values.output_folder}}/{{values.genome_digest}}_dbNSFP.txt.gz
+  - rm `find {{values.output_folder}} -type f -not -path '{{values.output_folder}}/_refgenie_build*'
+    -not -path '{{values.output_folder}}/{{values.genome_digest}}_dbNSFP.txt.*'`
+custom_seek_keys:
+  version: tabix --version | awk '{print $3}' | head -1
+default_asset: "{{values.custom_seek_keys.version}}"
+
+tags:
+- variant-annotation
+- database
+- human
+outputs:
+- pattern: '*_dbNSFP.txt.gz'
+  description: dbNSFP database file (bgzipped)
+- pattern: '*_dbNSFP.txt.gz.tbi'
+  description: Tabix index file
+test:
+  commands:
+  - test -f {output_dir}/{genome}_dbNSFP.txt.gz
+  - test -f {output_dir}/{genome}_dbNSFP.txt.gz.tbi
+resources:
+  memory: 8GB
+  disk: 100GB
+  time: 4h
+metadata:
+  author: nsheff
+  created: '2026-05-20'
+  license: BSD-2-Clause

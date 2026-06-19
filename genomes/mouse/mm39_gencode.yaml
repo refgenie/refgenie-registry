@@ -1,0 +1,32 @@
+name: mm39_gencode
+aliases:
+  - GRCm39-primary-M36-gencode
+  - GRCm39-all-M36-gencode
+
+description: |
+  gencode primary release m36 mm39
+
+organism:
+  scientific_name: Mus musculus
+  common_name: mouse
+  taxon_id: 10090
+
+assembly:
+  source: GENCODE
+
+fasta:
+  sources:
+    - provider: Gencode
+      url: https://ftp.ebi.ac.uk/pub/databases/gencode/Gencode_mouse/release_M36/GRCm39.primary_assembly.genome.fa.gz
+    - provider: Gencode
+      url: https://ftp.ebi.ac.uk/pub/databases/gencode/Gencode_mouse/release_M36/GRCm39.genome.fa.gz
+  checksum:
+    sha256: compute_on_registration
+
+seqcol:
+  digest: WsOG-InFnIta0rqSy1KUBjrFrukbnE5j
+  length: 61
+
+metadata:
+  added: 2026-05-20
+  added_by: nsheff

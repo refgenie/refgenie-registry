@@ -1,0 +1,51 @@
+name: feat_annotation
+version: 0.0.1
+output_asset_class: feat_annotation
+description:
+  Combined genomic feature annotation created using an Ensembl GTF annotation
+  asset and an Ensembl regulatory build annotation asset
+input_files: {}
+input_params: {}
+input_assets:
+  ensembl_gtf:
+    asset_class: gtf
+    default: ensembl_gtf
+    description: Annotation file in Gene Transfer Format (GTF) from Ensembl
+  ensembl_rb:
+    asset_class: ensembl_rb
+    default: ensembl_rb
+    description: Regulatory annotation file in General Feature Format (GTF) from
+      Ensembl
+docker_image: databio/refgenie
+command_templates:
+  - gzip -dcf {{values.genome_folder}}/{{values.assets["ensembl_gtf"].seek_keys_dict["gtf"]}} | awk '$3=="exon"' | grep -v 'pseudogene' | awk -v OFS='\t' '{print "chr"$1, $4-1, $5, "Exon", $6, $7}' | awk '$2<$3' | env LC_COLLATE=C sort -k1,1 -k2,2n -k3,3n -u > {{values.output_folder}}/{{values.genome_digest}}_exons.bed
+  - gzip -dcf {{values.genome_folder}}/{{values.assets["ensembl_gtf"].seek_keys_dict["gtf"]}} | awk '$3=="exon"' | grep -v 'pseudogene' | awk -v OFS='\t' '{ split($20, a, """); print "chr"$1, $4-1, $5, a[2], $6, $7}' | env LC_COLLATE=C sort -k1,1 -k2,2n -k3,3n -u | awk 'seen[$4]++ && seen[$4] > 1' | env LC_COLLATE=C sort -k1,1 -k2,2n -k3,3nr | env LC_COLLATE=C sort -k1,1 -k2,2n -u | env LC_COLLATE=C sort -k1,1 -k3,3n -u | awk -v OFS='\t' '{if($4==prev4){new2=prev3+1;} {prev4=$4; prev3=$3; print $1, new2, $2-1, "Intron", $5, $6}}' | awk -F'\t' '$2' | awk '$2<$3' | env LC_COLLATE=C sort -k1,1 -k2,2n -u > {{values.output_folder}}/{{values.genome_digest}}_introns.bed
+  - gzip -dcf {{values.genome_folder}}/{{values.assets["ensembl_gtf"].seek_keys_dict["gtf"]}} | awk '$3=="three_prime_utr"' | grep -v 'pseudogene' | awk -v OFS='\t' '{print "chr"$1, $4-1, $5, "3''' UTR", $6, $7}' | awk '$2<$3' | env LC_COLLATE=C sort -k1,1 -k2,2n -u > {{values.output_folder}}/{{values.genome_digest}}_3utr.bed
+  - gzip -dcf {{values.genome_folder}}/{{values.assets["ensembl_gtf"].seek_keys_dict["gtf"]}} | awk '$3=="five_prime_utr"' | grep -v 'pseudogene' | awk -v OFS='\t' '{print "chr"$1, $4-1, $5, "5''' UTR", $6, $7}' | awk '$2<$3' | env LC_COLLATE=C sort -k1,1 -k2,2n -u > {{values.output_folder}}/{{values.genome_digest}}_5utr.bed
+  - gzip -dcf {{values.genome_folder}}/{{values.assets["ensembl_rb"].seek_keys_dict["ensembl_rb"]}} | awk '$3=="promoter"' | awk -v OFS='\t' '{print "chr"$1, $4, $5, "Promoter", $6, $7}' | awk '$2<$3' | env LC_COLLATE=C sort -k1,1 -k2,2n -k3,3n -u > {{values.output_folder}}/{{values.genome_digest}}_promoter.bed
+  - gzip -dcf {{values.genome_folder}}/{{values.assets["ensembl_rb"].seek_keys_dict["ensembl_rb"]}} | awk '$3=="promoter_flanking_region"' | awk -v OFS='\t' '{print "chr"$1, $4, $5, "Promoter Flanking Region", $6, $7}' | awk '$2<$3' | env LC_COLLATE=C sort -k1,1 -k2,2n -k3,3n -u > {{values.output_folder}}/{{values.genome_digest}}_promoter_flanking.bed
+  - gzip -dcf {{values.genome_folder}}/{{values.assets["ensembl_rb"].seek_keys_dict["ensembl_rb"]}} | awk '$3=="enhancer"' | awk -v OFS='\t' '{print "chr"$1, $4, $5, "Enhancer", $6, $7}' | awk '$2<$3' | env LC_COLLATE=C sort -k1,1 -k2,2n -k3,3n -u > {{values.output_folder}}/{{values.genome_digest}}_enhancer.bed
+  - cat {{values.output_folder}}/{{values.genome_digest}}_enhancer.bed {{values.output_folder}}/{{values.genome_digest}}_promoter.bed {{values.output_folder}}/{{values.genome_digest}}_promoter_flanking.bed {{values.output_folder}}/{{values.genome_digest}}_5utr.bed {{values.output_folder}}/{{values.genome_digest}}_3utr.bed {{values.output_folder}}/{{values.genome_digest}}_exons.bed {{values.output_folder}}/{{values.genome_digest}}_introns.bed | awk -F'\t' '!seen[$1, $2, $3]++' > {{values.output_folder}}/{{values.genome_digest}}_annotations.bed
+  - rm -f {{values.output_folder}}/{{values.genome_digest}}_enhancer.bed {{values.output_folder}}/{{values.genome_digest}}_promoter.bed {{values.output_folder}}/{{values.genome_digest}}_promoter_flanking.bed {{values.output_folder}}/{{values.genome_digest}}_5utr.bed {{values.output_folder}}/{{values.genome_digest}}_3utr.bed {{values.output_folder}}/{{values.genome_digest}}_exons.bed {{values.output_folder}}/{{values.genome_digest}}_introns.bed
+  - gzip -f {{values.output_folder}}/{{values.genome_digest}}_annotations.bed
+default_asset: "default"
+
+# --- Additive non-runtime metadata (ignored by the builder) ---
+tags:
+- annotation
+- genomic-features
+- ensembl
+outputs:
+- pattern: '*_annotations.bed.gz'
+  description: Combined genomic feature annotation file (gzipped)
+test:
+  commands:
+  - test -f {output_dir}/{genome}_annotations.bed.gz
+resources:
+  memory: 4GB
+  disk: 5GB
+  time: 1h
+metadata:
+  author: nsheff
+  created: '2026-05-20'
+  license: BSD-2-Clause

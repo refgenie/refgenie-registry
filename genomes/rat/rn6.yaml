@@ -1,0 +1,31 @@
+name: rn6
+aliases:
+  - Rnor_6.0
+
+description: |
+  The GCA_000001895.4_Rnor_6.0_genomic from NCBI.
+
+organism:
+  scientific_name: Rattus norvegicus
+  common_name: rat
+  taxon_id: 10116
+
+assembly:
+  source: NCBI
+  accession: GCA_000001895.4
+  level: chromosome
+
+fasta:
+  sources:
+    - provider: NCBI
+      url: ftp://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/000/001/895/GCA_000001895.4_Rnor_6.0/GCA_000001895.4_Rnor_6.0_genomic.fna.gz
+  checksum:
+    md5: b999f2e4c3b90d46c19d37149484971b
+    sha256: compute_on_registration
+
+seqcol:
+  compute: true
+
+metadata:
+  added: 2026-05-20
+  added_by: nsheff

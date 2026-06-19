@@ -1,0 +1,33 @@
+name: mm39_full_analysis
+aliases:
+  - GRCm39-fasta-full-analysis
+  - GRCm39-fasta-full-analysis-ucsc-ids
+
+description: |
+  GCA_000001635.9_GRCm39_full_analysis_set from NCBI
+
+organism:
+  scientific_name: Mus musculus
+  common_name: mouse
+  taxon_id: 10090
+
+assembly:
+  source: NCBI
+  accession: GCA_000001635.9
+
+fasta:
+  sources:
+    - provider: NCBI
+      url: https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/001/635/GCF_000001635.27_GRCm39/seqs_for_alignment_pipelines/GCA_000001635.9_GRCm39_full_analysis_set.fna.gz
+    - provider: NCBI
+      url: https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/000/001/635/GCA_000001635.9_GRCm39/seqs_for_alignment_pipelines.ucsc_ids/GCA_000001635.9_GRCm39_full_analysis_set.fna.gz
+  checksum:
+    sha256: compute_on_registration
+
+seqcol:
+  digest: -e70JAQq4NJDg8-1Ab2XhHu6yYjeW-zu
+  length: 61
+
+metadata:
+  added: 2026-05-20
+  added_by: nsheff

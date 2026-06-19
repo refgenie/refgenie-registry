@@ -1,0 +1,30 @@
+name: mm39_genomic_gca
+aliases:
+  - GRCm39-fasta-genomic-GCA
+
+description: |
+  GCA_000001635.9_GRCm39_genomic.fna.gz from NCBI
+
+organism:
+  scientific_name: Mus musculus
+  common_name: mouse
+  taxon_id: 10090
+
+assembly:
+  source: NCBI
+  accession: GCA_000001635.9
+
+fasta:
+  sources:
+    - provider: NCBI
+      url: https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/000/001/635/GCA_000001635.9_GRCm39/GCA_000001635.9_GRCm39_genomic.fna.gz
+  checksum:
+    sha256: compute_on_registration
+
+seqcol:
+  digest: PM8ODmBlTISp4Onv0aSBFaAfi3QVCGzx
+  length: 61
+
+metadata:
+  added: 2026-05-20
+  added_by: nsheff

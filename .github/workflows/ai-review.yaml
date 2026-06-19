@@ -1,0 +1,271 @@
+name: AI Review
+
+on:
+  pull_request:
+    types: [labeled]
+
+permissions:
+  contents: read
+  pull-requests: write
+  issues: write
+
+jobs:
+  ai-review:
+    if: github.event.label.name == 'programmatic-check-passed'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout PR
+        uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11  # v4.1.1
+        with:
+          fetch-depth: 0
+
+      - name: Determine contribution type
+        id: contrib-type
+        run: |
+          BASE_SHA="${{ github.event.pull_request.base.sha }}"
+          HEAD_SHA="${{ github.event.pull_request.head.sha }}"
+
+          GENOME_CHANGES=$(git diff --name-only "$BASE_SHA" "$HEAD_SHA" -- 'genomes/' | head -50)
+          RECIPE_CHANGES=$(git diff --name-only "$BASE_SHA" "$HEAD_SHA" -- 'recipes/' | head -50)
+
+          HAS_GENOMES="false"
+          HAS_RECIPES="false"
+          if [ -n "$GENOME_CHANGES" ]; then HAS_GENOMES="true"; fi
+          if [ -n "$RECIPE_CHANGES" ]; then HAS_RECIPES="true"; fi
+
+          if [ "$HAS_GENOMES" = "true" ] && [ "$HAS_RECIPES" = "true" ]; then
+            echo "type=both" >> "$GITHUB_OUTPUT"
+          elif [ "$HAS_GENOMES" = "true" ]; then
+            echo "type=genome" >> "$GITHUB_OUTPUT"
+          elif [ "$HAS_RECIPES" = "true" ]; then
+            echo "type=recipe" >> "$GITHUB_OUTPUT"
+          else
+            echo "type=unknown" >> "$GITHUB_OUTPUT"
+          fi
+
+          echo "genome_files<<EOF" >> "$GITHUB_OUTPUT"
+          echo "$GENOME_CHANGES" >> "$GITHUB_OUTPUT"
+          echo "EOF" >> "$GITHUB_OUTPUT"
+
+          echo "recipe_files<<EOF" >> "$GITHUB_OUTPUT"
+          echo "$RECIPE_CHANGES" >> "$GITHUB_OUTPUT"
+          echo "EOF" >> "$GITHUB_OUTPUT"
+
+      - name: Collect changed file contents
+        id: file-contents
+        run: |
+          BASE_SHA="${{ github.event.pull_request.base.sha }}"
+          HEAD_SHA="${{ github.event.pull_request.head.sha }}"
+
+          ALL_CHANGED=$(git diff --name-only "$BASE_SHA" "$HEAD_SHA" -- 'genomes/' 'recipes/')
+
+          CONTENT=""
+          for f in $ALL_CHANGED; do
+            if [ -f "$f" ]; then
+              CONTENT="${CONTENT}--- FILE: ${f} ---\n"
+              CONTENT="${CONTENT}$(cat "$f")\n\n"
+            fi
+          done
+
+          # Also collect the diff for context
+          DIFF=$(git diff "$BASE_SHA" "$HEAD_SHA" -- 'genomes/' 'recipes/')
+
+          # Write to files to avoid shell escaping issues
+          echo "$CONTENT" > /tmp/file_contents.txt
+          echo "$DIFF" > /tmp/diff_contents.txt
+
+          # Limit prompt size to prevent prompt injection via extremely large PRs
+          MAX_PROMPT_SIZE=50000
+          CONTENT_SIZE=$(wc -c < /tmp/file_contents.txt)
+          if [ "$CONTENT_SIZE" -gt "$MAX_PROMPT_SIZE" ]; then
+            truncate -s "$MAX_PROMPT_SIZE" /tmp/file_contents.txt
+            echo "[TRUNCATED - file contents exceeded ${MAX_PROMPT_SIZE} bytes]" >> /tmp/file_contents.txt
+          fi
+
+      - name: Collect existing genomes and recipes for context
+        id: existing-context
+        run: |
+          # List existing genomes for alias conflict detection
+          EXISTING_GENOMES=""
+          if [ -d genomes ]; then
+            EXISTING_GENOMES=$(find genomes -name '*.yaml' -o -name '*.yml' | sort | head -100)
+          fi
+
+          # List existing recipes for duplicate detection
+          EXISTING_RECIPES=""
+          if [ -d recipes ]; then
+            EXISTING_RECIPES=$(find recipes -maxdepth 1 -type d | sort | tail -n +2 | head -100)
+          fi
+
+          echo "existing_genomes<<EOF" >> "$GITHUB_OUTPUT"
+          echo "$EXISTING_GENOMES" >> "$GITHUB_OUTPUT"
+          echo "EOF" >> "$GITHUB_OUTPUT"
+
+          echo "existing_recipes<<EOF" >> "$GITHUB_OUTPUT"
+          echo "$EXISTING_RECIPES" >> "$GITHUB_OUTPUT"
+          echo "EOF" >> "$GITHUB_OUTPUT"
+
+      - name: Build AI review prompt
+        id: build-prompt
+        run: |
+          CONTRIB_TYPE="${{ steps.contrib-type.outputs.type }}"
+
+          # Start with system prompt
+          cat .github/prompts/system.md > /tmp/prompt.txt
+
+          # Add contribution context (dynamic)
+          cat >> /tmp/prompt.txt << CONTEXT_BLOCK
+
+          CONTRIBUTION TYPE: ${CONTRIB_TYPE}
+          SUBMITTER: ${{ github.event.pull_request.user.login }}
+          PR TITLE: ${{ github.event.pull_request.title }}
+
+          PR DESCRIPTION:
+          ${{ github.event.pull_request.body }}
+
+          FILES CHANGED:
+          Genome files: ${{ steps.contrib-type.outputs.genome_files }}
+          Recipe files: ${{ steps.contrib-type.outputs.recipe_files }}
+
+          SUBMITTED FILE CONTENTS:
+          $(cat /tmp/file_contents.txt)
+
+          DIFF:
+          $(cat /tmp/diff_contents.txt)
+
+          EXISTING GENOMES IN REGISTRY:
+          ${{ steps.existing-context.outputs.existing_genomes }}
+
+          EXISTING RECIPES IN REGISTRY:
+          ${{ steps.existing-context.outputs.existing_recipes }}
+          CONTEXT_BLOCK
+
+          # Add type-specific criteria
+          if [ "$CONTRIB_TYPE" = "genome" ] || [ "$CONTRIB_TYPE" = "both" ]; then
+            cat .github/prompts/genome-criteria.md >> /tmp/prompt.txt
+          fi
+          if [ "$CONTRIB_TYPE" = "recipe" ] || [ "$CONTRIB_TYPE" = "both" ]; then
+            cat .github/prompts/recipe-criteria.md >> /tmp/prompt.txt
+          fi
+
+          # Add output format
+          cat .github/prompts/output-format.md >> /tmp/prompt.txt
+
+      - name: Call Claude API
+        id: claude-review
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+        run: |
+          PROMPT=$(cat /tmp/prompt.txt)
+
+          # Escape for JSON
+          ESCAPED_PROMPT=$(python3 -c "
+          import json, sys
+          with open('/tmp/prompt.txt', 'r') as f:
+              content = f.read()
+          print(json.dumps(content))
+          ")
+
+          RESPONSE=$(curl -s -w "\n%{http_code}" \
+            https://api.anthropic.com/v1/messages \
+            -H "content-type: application/json" \
+            -H "x-api-key: ${ANTHROPIC_API_KEY}" \
+            -H "anthropic-version: 2023-06-01" \
+            -d "{
+              \"model\": \"claude-sonnet-4-20250514\",
+              \"max_tokens\": 4096,
+              \"messages\": [
+                {
+                  \"role\": \"user\",
+                  \"content\": ${ESCAPED_PROMPT}
+                }
+              ]
+            }")
+
+          HTTP_CODE=$(echo "$RESPONSE" | tail -1)
+          BODY=$(echo "$RESPONSE" | sed '$d')
+
+          if [ "$HTTP_CODE" != "200" ]; then
+            echo "Claude API returned HTTP $HTTP_CODE"
+            echo "$BODY" > /tmp/api_error.txt
+            echo "api_error=true" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+
+          # Extract the text content from the response
+          REVIEW=$(python3 -c "
+          import json, sys
+          data = json.loads(sys.stdin.read())
+          for block in data.get('content', []):
+              if block.get('type') == 'text':
+                  print(block['text'])
+                  break
+          " <<< "$BODY")
+
+          echo "$REVIEW" > /tmp/review.txt
+          echo "api_error=false" >> "$GITHUB_OUTPUT"
+
+          # Extract recommendation for label logic
+          RECOMMENDATION=$(echo "$REVIEW" | grep -oP '(?<=\*\*Recommendation:\*\* )\S+' | head -1)
+          echo "recommendation=$RECOMMENDATION" >> "$GITHUB_OUTPUT"
+
+      - name: Post review comment
+        if: steps.claude-review.outputs.api_error == 'false'
+        uses: actions/github-script@60a0d83039c74a4aee543508d2ffcb1c3799cdea  # v7.0.1
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const fs = require('fs');
+            const review = fs.readFileSync('/tmp/review.txt', 'utf8');
+
+            await github.rest.issues.createComment({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: context.payload.pull_request.number,
+              body: review
+            });
+
+      - name: Post error comment
+        if: steps.claude-review.outputs.api_error == 'true'
+        uses: actions/github-script@60a0d83039c74a4aee543508d2ffcb1c3799cdea  # v7.0.1
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            await github.rest.issues.createComment({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: context.payload.pull_request.number,
+              body: '## RefgenieBot AI Review\n\n:warning: **AI review could not be completed.** The automated review service encountered an error. A maintainer has been notified. Human review will proceed without AI assistance.\n\n---\n*This is an automated message.*'
+            });
+
+      - name: Add ai-review-complete label
+        if: steps.claude-review.outputs.api_error == 'false'
+        uses: actions/github-script@60a0d83039c74a4aee543508d2ffcb1c3799cdea  # v7.0.1
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            await github.rest.issues.addLabels({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: context.payload.pull_request.number,
+              labels: ['ai-review-complete']
+            });
+
+      - name: Add security-concern label if needed
+        if: steps.claude-review.outputs.api_error == 'false' && (steps.claude-review.outputs.recommendation == 'REQUEST_CHANGES' || steps.claude-review.outputs.recommendation == 'REJECT')
+        uses: actions/github-script@60a0d83039c74a4aee543508d2ffcb1c3799cdea  # v7.0.1
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const fs = require('fs');
+            const review = fs.readFileSync('/tmp/review.txt', 'utf8');
+
+            // Only add security-concern label if the review contains security findings
+            if (review.includes('### Security Findings')) {
+              await github.rest.issues.addLabels({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: context.payload.pull_request.number,
+                labels: ['security-concern']
+              });
+            }

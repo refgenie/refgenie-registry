@@ -1,0 +1,17 @@
+name: fasta
+version: 0.1.0
+description: Sequences in the FASTA format, indexed FASTA and chromosome sizes file
+serving_modes: [file, archive]
+seek_keys:
+  fasta:
+    value: "{genome}.fa"
+    type: file
+    description: FASTA file
+  fai:
+    value: "{genome}.fa.fai"
+    type: file
+    description: FASTA index file
+  chrom_sizes:
+    value: "{genome}.chrom.sizes"
+    type: file
+    description: Chromosome sizes file

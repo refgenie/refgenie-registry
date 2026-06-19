@@ -1,0 +1,13 @@
+name: fasta_index
+version: 0.1.0
+description: FASTA index and chromosome sizes derived from an existing FASTA asset
+serving_modes: [file]
+seek_keys:
+  fai:
+    value: "{genome}.fa.fai"
+    type: file
+    description: FASTA index file (samtools faidx format)
+  chrom_sizes:
+    value: "{genome}.chrom.sizes"
+    type: file
+    description: Chromosome/sequence sizes file (name<tab>length)

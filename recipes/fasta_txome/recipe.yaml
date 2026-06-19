@@ -1,0 +1,47 @@
+name: fasta_txome
+version: 0.0.1
+output_asset_class: fasta
+description:
+  cDNA sequences in the FASTA format, indexed FASTA (produced with samtools
+  index) and chromosome sizes file
+input_files:
+  fasta_txome:
+    description: A taxome FASTA file. Gzipped or not.
+input_params: {}
+input_assets: {}
+docker_image: databio/refgenie
+command_templates:
+  - cp {{values.files["fasta_txome"]}} {{values.output_folder}}/{{values.genome_digest}}.fa.gz
+  - if (file {{values.output_folder}}/{{values.genome_digest}}.fa.gz | grep -q compressed ) ; then gzip -df {{values.output_folder}}/{{values.genome_digest}}.fa.gz ; else mv {{values.output_folder}}/{{values.genome_digest}}.fa.gz {{values.output_folder}}/{{values.genome_digest}}.fa ; fi
+  - samtools faidx {{values.output_folder}}/{{values.genome_digest}}.fa
+  - cut -f 1,2 {{values.output_folder}}/{{values.genome_digest}}.fa.fai > {{values.output_folder}}/{{values.genome_digest}}.chrom.sizes
+  - cat {{values.output_folder}}/{{values.genome_digest}}.fa | samtools dict -o {{values.output_folder}}/{{values.genome_digest}}.dict
+custom_seek_keys:
+  version: "samtools --version-only | awk -F+ '{print $1}'"
+default_asset: "samtools-{{values.custom_seek_keys.version}}"
+
+# --- Additive non-runtime metadata (ignored by the builder) ---
+tags:
+- reference
+- sequence
+- transcriptome
+outputs:
+- pattern: '*.fa'
+  description: Transcriptome FASTA file
+- pattern: '*.fa.fai'
+  description: FASTA index file
+- pattern: '*.chrom.sizes'
+  description: Chromosome sizes file
+test:
+  commands:
+  - test -f {output_dir}/{genome}.fa
+  - test -f {output_dir}/{genome}.fa.fai
+  - test -f {output_dir}/{genome}.chrom.sizes
+resources:
+  memory: 4GB
+  disk: 10GB
+  time: 1h
+metadata:
+  author: nsheff
+  created: '2026-05-20'
+  license: BSD-2-Clause

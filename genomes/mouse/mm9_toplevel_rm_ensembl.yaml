@@ -1,0 +1,29 @@
+name: mm9_toplevel_rm_ensembl
+aliases:
+  - GRCm39-toplevel-rm-65-ensembl
+
+description: |
+  ensembl NCBIM37.65 rm top level
+
+organism:
+  scientific_name: Mus musculus
+  common_name: mouse
+  taxon_id: 10090
+
+assembly:
+  source: Ensembl
+
+fasta:
+  sources:
+    - provider: Ensembl
+      url: https://ftp.ensembl.org/pub/release-65/fasta/mus_musculus/dna/Mus_musculus.NCBIM37.65.dna_rm.toplevel.fa.gz
+  checksum:
+    sha256: compute_on_registration
+
+seqcol:
+  digest: JPyo8AqZzCyVaUx1lAkk6LbpyQPX4VUB
+  length: 211
+
+metadata:
+  added: 2026-05-20
+  added_by: nsheff

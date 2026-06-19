@@ -1,0 +1,11 @@
+# Genome changes require genome-team review
+/genomes/    @refgenie/genome-reviewers
+
+# Recipe changes require recipe-team review (security-sensitive)
+/recipes/    @refgenie/recipe-reviewers
+
+# Schema changes require core-team review
+/schema/     @refgenie/core
+
+# Tooling changes require core-team review
+/tools/      @refgenie/core

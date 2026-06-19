@@ -1,0 +1,32 @@
+name: hg38_primary_gencode
+aliases:
+  - GRCh38-primary-assembly-47-gencode
+  - GRCh38-primary-assembly-46-gencode
+
+description: |
+  release 47 of gencode primary assembly GRCh38
+
+organism:
+  scientific_name: Homo sapiens
+  common_name: human
+  taxon_id: 9606
+
+assembly:
+  source: GENCODE
+
+fasta:
+  sources:
+    - provider: Gencode
+      url: https://ftp.ebi.ac.uk/pub/databases/gencode/Gencode_human/release_47/GRCh38.primary_assembly.genome.fa.gz
+    - provider: Gencode
+      url: https://ftp.ebi.ac.uk/pub/databases/gencode/Gencode_human/release_46/GRCh38.primary_assembly.genome.fa.gz
+  checksum:
+    sha256: compute_on_registration
+
+seqcol:
+  digest: tmnbiAyj2fke68d_TYjq2g487US8C15r
+  length: 194
+
+metadata:
+  added: 2026-05-20
+  added_by: nsheff

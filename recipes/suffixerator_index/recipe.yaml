@@ -1,0 +1,41 @@
+name: suffixerator_index
+version: 0.0.1
+output_asset_class: suffixerator_index
+description:
+  Enhanced suffix array index for genomes using gt (GenomeTools) suffixerator
+  program
+input_files: {}
+input_params:
+  memlimit:
+    default: 8
+    description: The maximum amount of memory available to be used during index
+      construction.
+input_assets:
+  fasta:
+    asset_class: fasta
+    default: fasta
+    description: fasta asset for genome
+docker_image: databio/refgenie
+command_templates:
+  - gt suffixerator -dna -pl -tis -suf -lcp -v -showprogress -memlimit {{values.params["memlimit"]}}GB -db {{values.genome_folder}}/{{values.assets["fasta"].seek_keys_dict["fasta"]}} -indexname {{values.output_folder}}/{{values.genome_digest}}.sft
+custom_seek_keys:
+  version: "gt suffixerator --version | awk 'NR==1{print $4}'"
+default_asset: "{{values.custom_seek_keys.version}}"
+tags:
+- index
+- suffix-array
+- genomics
+outputs:
+- pattern: '*.sft.*'
+  description: Enhanced suffix array index files
+resources:
+  memory: 8GB
+  disk: 10GB
+  time: 2h
+test:
+  commands:
+  - ls {output_dir}/{genome}.sft.* >/dev/null 2>&1
+metadata:
+  author: nsheff
+  created: '2026-05-20'
+  license: BSD-2-Clause

@@ -1,0 +1,41 @@
+name: bowtie1_index
+version: 0.0.1
+output_asset_class: bowtie1_index
+description: |
+  Genome index for bowtie, produced with bowtie-build.
+  Creates index files used by bowtie for short-read alignment.
+input_files: null
+input_params:
+  threads:
+    description: Number of threads to use
+    default: 1
+input_assets:
+  fasta:
+    asset_class: fasta
+    description: fasta asset for genome
+    default: fasta
+docker_image: databio/refgenie
+command_templates:
+  - bowtie-build --threads {{values.params["threads"]}} {{values.genome_folder}}/{{values.assets["fasta"].seek_keys_dict["fasta"]}} {{values.output_folder}}/{{values.genome_digest}}
+custom_seek_keys:
+  version: bowtie-build --version | awk 'NR==1{print $3}'
+default_asset: "{{values.custom_seek_keys.version}}"
+
+tags:
+- alignment
+- dna-seq
+- short-read
+outputs:
+- pattern: '*.ebwt'
+  description: Bowtie1 index files
+test:
+  commands:
+  - test -f {output_dir}/{genome}.1.ebwt
+resources:
+  memory: 8GB
+  disk: 10GB
+  time: 2h
+metadata:
+  author: nsheff
+  created: '2026-05-20'
+  license: BSD-2-Clause

@@ -1,0 +1,44 @@
+name: bowtie2_index
+version: 0.0.1
+output_asset_class: bowtie2_index
+description: |
+  Genome index for bowtie2, produced with bowtie2-build.
+  Creates the FM-index files used by bowtie2 for fast and
+  memory-efficient alignment of short reads.
+input_files: null
+input_params:
+  threads:
+    description: Number of threads to use
+    default: 1
+input_assets:
+  fasta:
+    asset_class: fasta
+    description: fasta asset for genome
+    default: fasta
+docker_image: databio/refgenie
+command_templates:
+  - bowtie2-build --threads {{values.params["threads"]}} {{values.genome_folder}}/{{values.assets["fasta"].seek_keys_dict["fasta"]}} {{values.output_folder}}/{{values.genome_digest}}
+custom_seek_keys:
+  version: bowtie2-build --version | awk 'NR==1{print $3}'
+default_asset: "{{values.custom_seek_keys.version}}"
+
+tags:
+- alignment
+- dna-seq
+- short-read
+outputs:
+- pattern: '*.bt2'
+  description: Bowtie2 index files (standard, for genomes < 4Gbp)
+- pattern: '*.bt2l'
+  description: Bowtie2 large index files (for genomes >= 4Gbp)
+test:
+  commands:
+  - test -f {output_dir}/{genome}.1.bt2 || test -f {output_dir}/{genome}.1.bt2l
+resources:
+  memory: 8GB
+  disk: 10GB
+  time: 2h
+metadata:
+  author: nsheff
+  created: '2026-05-20'
+  license: BSD-2-Clause

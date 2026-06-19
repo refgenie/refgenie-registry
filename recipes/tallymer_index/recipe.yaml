@@ -1,0 +1,59 @@
+name: tallymer_index
+version: 0.0.1
+output_asset_class: tallymer_index
+description:
+  Indexed k-mers for a given enhanced suffix array at a fixed value of
+  k
+input_files: {}
+input_params:
+  mersize:
+    default: "30"
+    description: The mer size.
+  minocc:
+    default: "2"
+    description: The minimum occurrence number for the mers to index.
+input_assets:
+  suffixerator_index:
+    asset_class: suffixerator_index
+    default: suffixerator_index
+    description: enhanced suffix array index for genome
+  fasta:
+    asset_class: fasta
+    default: fasta
+    description: fasta asset for genome
+docker_image: databio/refgenie
+command_templates:
+  - |
+    gt tallymer mkindex -v -counts -pl \
+    -mersize {{values.params["mersize"]}} \
+    -minocc {{values.params["minocc"]}} \
+    -indexname {{values.output_folder}}/{{values.genome_digest}}.tal_{{values.params["mersize"]}} \
+    -esa {{values.genome_folder}}/{{values.assets["suffixerator_index"].seek_keys_dict["esa"]}}
+  - |
+    gt tallymer search -output qseqnum qpos -strand fp \
+    -tyr {{values.output_folder}}/{{values.genome_digest}}.tal_{{values.params["mersize"]}} \
+    -q {{values.genome_folder}}/{{values.assets["fasta"].seek_keys_dict["fasta"]}} \
+    > {{values.output_folder}}/{{values.genome_digest}}.tal_{{values.params["mersize"]}}.gtTxt
+custom_seek_keys:
+  version: "gt tallymer --version | awk 'NR==1{print $4}'"
+default_asset: "{{values.custom_seek_keys.version}}"
+tags:
+- index
+- k-mer
+- genomics
+outputs:
+- pattern: '*.tal_*'
+  description: Tallymer index files
+- pattern: '*.tal_*.gtTxt'
+  description: Tallymer search output
+resources:
+  memory: 8GB
+  disk: 10GB
+  time: 2h
+test:
+  commands:
+  - test -f {output_dir}/{genome}.tal_{mersize}.gtTxt
+metadata:
+  author: nsheff
+  created: '2026-05-20'
+  license: BSD-2-Clause

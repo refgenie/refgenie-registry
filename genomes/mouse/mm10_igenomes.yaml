@@ -1,0 +1,26 @@
+name: mm10_igenomes
+aliases:
+  - mm10-igenomes-ucsc
+
+description: |
+  igenomes's UCSC mm10
+
+organism:
+  scientific_name: Mus musculus
+  common_name: mouse
+  taxon_id: 10090
+
+assembly:
+  source: iGenomes
+
+fasta:
+  checksum:
+    sha256: compute_on_registration
+
+seqcol:
+  digest: hW3Ba5zoufl3-MGXQESlWXjsW56R5vPG
+  length: 22
+
+metadata:
+  added: 2026-05-20
+  added_by: nsheff

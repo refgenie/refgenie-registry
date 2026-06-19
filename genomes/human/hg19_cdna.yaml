@@ -1,0 +1,27 @@
+name: hg19_cdna
+
+description: |
+  The GRCh37 cDNA (transcript) reference sequence from Ensembl.
+
+organism:
+  scientific_name: Homo sapiens
+  common_name: human
+  taxon_id: 9606
+
+assembly:
+  source: Ensembl
+
+fasta:
+  sources:
+    - provider: Ensembl
+      url: ftp://ftp.ensembl.org/pub/release-75/fasta/homo_sapiens/cdna/Homo_sapiens.GRCh37.75.cdna.all.fa.gz
+  checksum:
+    md5: fdc309998a384129b364ac630b42b54a
+    sha256: compute_on_registration
+
+seqcol:
+  compute: true
+
+metadata:
+  added: 2026-05-20
+  added_by: nsheff

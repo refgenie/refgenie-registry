@@ -1,0 +1,220 @@
+$schema: https://json-schema.org/draft/2020-12/schema
+$id: https://refgenie.org/schemas/recipe.schema.yaml
+title: Refgenie Recipe (native model)
+description: >
+  Schema for a refgenie-native build recipe in the refgenie-registry. This is the
+  single canonical recipe model: refgenie is the build system, and a recipe is
+  consumed directly by refgenie1 (no bioconda->refgenie translation). A recipe
+  renders into a Snakemake rule that runs its `command_templates` inside its
+  `docker_image` via `refgenie1 build`, deriving the asset tag from
+  `custom_seek_keys` + `default_asset`. See the ADR
+  "Single canonical recipe model: refgenie-native".
+type: object
+required:
+  - name
+  - version
+  - output_asset_class
+  - command_templates
+properties:
+  name:
+    type: string
+    pattern: "^[a-zA-Z0-9_]+$"
+    description: Recipe identifier (letters, digits, underscores).
+  version:
+    type: string
+    pattern: "^\\d+\\.\\d+\\.\\d+$"
+    description: Semantic version of this recipe (MAJOR.MINOR.PATCH).
+  description:
+    type: string
+    description: Human-readable description of what this recipe builds.
+  output_asset_class:
+    type: string
+    pattern: "^[a-zA-Z0-9_]+$"
+    description: >
+      Name of the output asset class this recipe produces. Must reference an
+      existing asset class definition (asset_classes/<name>.yaml). This is the
+      recipe's type link.
+  command_templates:
+    type: array
+    minItems: 1
+    items:
+      type: string
+    description: >
+      Ordered list of shell command templates (Jinja) executed by refgenie to
+      build the asset. May reference refgenie template values such as
+      {{values.output_folder}}, {{values.genome_digest}}, and
+      {{values.assets["<handle>"].seek_keys_dict["<key>"]}}.
+  docker_image:
+    type:
+      - string
+      - "null"
+    description: >
+      Container image in which the command templates run. Use null to run
+      without a per-recipe container.
+  default_asset:
+    type: string
+    description: >
+      Template that resolves to the asset tag/name (often
+      "{{values.custom_seek_keys.version}}" or a literal like "default").
+  custom_seek_keys:
+    type:
+      - object
+      - "null"
+    description: >
+      Map of seek-key name -> shell command whose stdout becomes the value
+      (e.g. a tool version used for tagging the asset).
+    additionalProperties:
+      type: string
+  input_files:
+    type:
+      - object
+      - "null"
+    description: >
+      Map of input-file handle -> metadata. User-supplied files the build needs.
+    additionalProperties:
+      type: object
+      properties:
+        description:
+          type: string
+          description: What this input file is.
+      additionalProperties: false
+  input_params:
+    type:
+      - object
+      - "null"
+    description: >
+      Map of parameter name -> metadata. Build-time scalar parameters, available
+      as {{values.params["<name>"]}}.
+    additionalProperties:
+      type: object
+      properties:
+        default:
+          type:
+            - string
+            - number
+            - integer
+            - boolean
+          description: Default value for this parameter (refgenie accepts any scalar).
+        description:
+          type: string
+          description: What this parameter controls.
+      additionalProperties: false
+  input_assets:
+    type:
+      - object
+      - "null"
+    description: >
+      Map of input-asset handle -> spec. Each handle names an asset the build
+      consumes, addressable as {{values.assets["<handle>"]...}}.
+    additionalProperties:
+      type: object
+      required:
+        - asset_class
+      properties:
+        asset_class:
+          type: string
+          pattern: "^[a-zA-Z0-9_]+$"
+          description: >
+            Asset class of this input. Must reference an existing asset class
+            definition (asset_classes/<name>.yaml).
+        default:
+          type: string
+          description: Default asset name to satisfy this input when unspecified.
+        description:
+          type: string
+          description: What this input asset is used for.
+        colocate:
+          type: array
+          items:
+            type: object
+            required:
+              - source_key
+            properties:
+              source_key:
+                type: string
+                description: Seek key in the source asset to colocate.
+              dest:
+                type: string
+                description: Optional destination name/path for the colocated file.
+            additionalProperties: false
+          description: >
+            Files from this input asset to colocate into the build's output
+            folder before running the command templates.
+      additionalProperties: false
+
+  # ---------------------------------------------------------------------------
+  # Optional ADDITIVE non-runtime metadata. refgenie (the builder) IGNORES these
+  # fields; they exist for provenance, CI, and human-facing documentation only.
+  # ---------------------------------------------------------------------------
+  tags:
+    type: array
+    items:
+      type: string
+    description: Categorization tags (e.g., alignment, dna-seq). Non-runtime.
+  outputs:
+    type: array
+    items:
+      type: object
+      required:
+        - pattern
+      properties:
+        pattern:
+          type: string
+          description: Glob pattern for an expected output file.
+        description:
+          type: string
+          description: What this output file is.
+      additionalProperties: false
+    description: >
+      Human-facing description of expected output files. CI/documentation only;
+      NOT the type system (seek keys live on the asset class). Non-runtime.
+  test:
+    type: object
+    properties:
+      commands:
+        type: array
+        items:
+          type: string
+        description: Commands to validate the build outputs.
+      test_data:
+        type: object
+        additionalProperties:
+          type: string
+        description: >
+          Named test data URLs. Keys become variable names in test commands.
+    additionalProperties: false
+    description: Build-validation tests. Non-runtime.
+  resources:
+    type: object
+    properties:
+      memory:
+        type: string
+        description: Estimated memory requirement (e.g., 8GB).
+      disk:
+        type: string
+        description: Estimated disk requirement (e.g., 10GB).
+      time:
+        type: string
+        description: Estimated wall time (e.g., 2h).
+    additionalProperties: false
+    description: Estimated build resource requirements. Non-runtime hint.
+  metadata:
+    type: object
+    properties:
+      author:
+        type: string
+        description: GitHub username of the recipe author.
+      created:
+        type: string
+        format: date
+        description: Date this recipe was created (YYYY-MM-DD).
+      license:
+        type: string
+        description: License for this recipe (e.g., MIT).
+      upstream_docs:
+        type: string
+        format: uri
+        description: URL for the upstream tool documentation.
+    additionalProperties: false
+    description: Provenance metadata. Non-runtime.
+additionalProperties: false

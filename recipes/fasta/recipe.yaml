@@ -1,0 +1,41 @@
+name: fasta
+version: 0.1.0
+output_asset_class: fasta
+description:
+  DNA sequences in the FASTA format, exported from RefgetStore. Includes
+  FASTA index (.fai) and chromosome sizes file. Requires genome to be
+  initialized in RefgetStore first (via refgenie genome init).
+input_files: null
+input_params: null
+input_assets: null
+docker_image: null
+command_templates:
+  - refgenie-build-fasta {{values.refget_store_path}} {{values.genome_digest}} {{values.output_folder}}
+default_asset: "default"
+
+# --- Additive non-runtime metadata (ignored by the builder) ---
+tags:
+- reference
+- sequence
+- foundational
+outputs:
+- pattern: '*.fa'
+  description: Reference genome FASTA file
+- pattern: '*.fa.fai'
+  description: FASTA index file
+- pattern: '*.chrom.sizes'
+  description: Chromosome sizes file
+test:
+  commands:
+  - test -f {output_dir}/{genome}.fa
+  - test -f {output_dir}/{genome}.fa.fai
+  - test -f {output_dir}/{genome}.chrom.sizes
+  - head -1 {output_dir}/{genome}.fa | grep -q "^>"
+resources:
+  memory: 4GB
+  disk: 15GB
+  time: 1h
+metadata:
+  author: nsheff
+  created: '2026-05-20'
+  license: BSD-2-Clause

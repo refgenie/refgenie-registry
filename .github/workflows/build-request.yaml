@@ -1,0 +1,170 @@
+name: Build Request
+
+on:
+  issues:
+    types: [labeled]
+
+permissions:
+  contents: write
+  issues: write
+
+jobs:
+  validate:
+    if: github.event.label.name == 'build-request'
+    runs-on: ubuntu-latest
+    outputs:
+      valid: ${{ steps.final.outputs.valid }}
+      genome_name: ${{ steps.validate.outputs.genome_name }}
+      genome_path: ${{ steps.final.outputs.genome_path }}
+      recipe_name: ${{ steps.validate.outputs.recipe_name }}
+      recipe_path: ${{ steps.final.outputs.recipe_path }}
+      rebuild: ${{ steps.validate.outputs.rebuild }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install dependencies
+        run: pip install pyyaml
+
+      - name: Parse and validate request
+        id: validate
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const issue = context.payload.issue;
+            const body = issue.body || '';
+
+            // Parse fields from issue body
+            // The issue template uses form fields, so we look for the rendered format
+            const genomeMatch = body.match(/### Genome\s*\n+\s*(\S+)/);
+            const recipeMatch = body.match(/### Asset\s*\n+\s*(\S+)/);
+            const rebuildMatch = body.match(/### Rebuild\s*\n+\s*(true|false)/i)
+              || body.match(/### Rebuild\s*\n+\s*_?No response_?\s*/i);
+
+            const genomeName = genomeMatch ? genomeMatch[1].trim() : '';
+            const recipeName = recipeMatch ? recipeMatch[1].trim() : '';
+            const rebuild = rebuildMatch ? rebuildMatch[1].trim().toLowerCase() === 'true' : false;
+
+            if (!genomeName || !recipeName) {
+              await github.rest.issues.createComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: issue.number,
+                body: '## Invalid Request\n\nCould not parse `genome` and `recipe` fields from the issue body. Please use the issue template and fill in all required fields.'
+              });
+              await github.rest.issues.addLabels({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: issue.number,
+                labels: ['invalid-request']
+              });
+              core.setOutput('valid', 'false');
+              return;
+            }
+
+            core.setOutput('genome_name', genomeName);
+            core.setOutput('recipe_name', recipeName);
+            core.setOutput('rebuild', rebuild.toString());
+
+      - name: Check genome and recipe exist
+        id: check_files
+        if: steps.validate.outputs.genome_name != ''
+        run: |
+          GENOME_NAME="${{ steps.validate.outputs.genome_name }}"
+          RECIPE_NAME="${{ steps.validate.outputs.recipe_name }}"
+          REBUILD="${{ steps.validate.outputs.rebuild }}"
+
+          # Find genome file
+          GENOME_PATH=$(find genomes -name "${GENOME_NAME}.yaml" -o -name "${GENOME_NAME}.yml" | head -1)
+          if [ -z "$GENOME_PATH" ]; then
+            echo "error=Genome '${GENOME_NAME}' not found in the registry." >> "$GITHUB_OUTPUT"
+            echo "valid=false" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+
+          # Find recipe file
+          RECIPE_PATH="recipes/${RECIPE_NAME}/recipe.yaml"
+          if [ ! -f "$RECIPE_PATH" ]; then
+            echo "error=Recipe '${RECIPE_NAME}' not found in the registry." >> "$GITHUB_OUTPUT"
+            echo "valid=false" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+
+          # Check if already built (unless rebuild requested)
+          INDEX_PATH="index/${GENOME_NAME}/${RECIPE_NAME}.yaml"
+          if [ -f "$INDEX_PATH" ] && [ "$REBUILD" != "true" ]; then
+            echo "error=Asset '${RECIPE_NAME}' for genome '${GENOME_NAME}' is already built. Set rebuild to 'true' to force a rebuild." >> "$GITHUB_OUTPUT"
+            echo "valid=false" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+
+          echo "genome_path=$GENOME_PATH" >> "$GITHUB_OUTPUT"
+          echo "recipe_path=$RECIPE_PATH" >> "$GITHUB_OUTPUT"
+          echo "valid=true" >> "$GITHUB_OUTPUT"
+
+      - name: Set final outputs
+        id: final
+        run: |
+          VALID="${{ steps.check_files.outputs.valid || 'false' }}"
+          echo "valid=$VALID" >> "$GITHUB_OUTPUT"
+          if [ "$VALID" == "true" ]; then
+            echo "genome_path=${{ steps.check_files.outputs.genome_path }}" >> "$GITHUB_OUTPUT"
+            echo "recipe_path=${{ steps.check_files.outputs.recipe_path }}" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Post validation failure
+        if: steps.check_files.outputs.valid == 'false' && steps.check_files.outputs.error != ''
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const error = `${{ steps.check_files.outputs.error }}`;
+            await github.rest.issues.createComment({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: context.payload.issue.number,
+              body: `## Validation Failed\n\n${error}`
+            });
+            await github.rest.issues.addLabels({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: context.payload.issue.number,
+              labels: ['invalid-request']
+            });
+
+      - name: Post validation success
+        if: steps.check_files.outputs.valid == 'true'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const genome = '${{ steps.validate.outputs.genome_name }}';
+            const recipe = '${{ steps.validate.outputs.recipe_name }}';
+            await github.rest.issues.createComment({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: context.payload.issue.number,
+              body: `## Build Queued\n\nBuilding \`${recipe}\` for \`${genome}\`.\n\nYou will be notified when the build completes.`
+            });
+            await github.rest.issues.addLabels({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: context.payload.issue.number,
+              labels: ['build-queued']
+            });
+
+  build:
+    needs: validate
+    if: needs.validate.outputs.valid == 'true'
+    uses: ./.github/workflows/reusable-build.yaml
+    with:
+      genome_name: ${{ needs.validate.outputs.genome_name }}
+      genome_path: ${{ needs.validate.outputs.genome_path }}
+      recipe_name: ${{ needs.validate.outputs.recipe_name }}
+      recipe_path: ${{ needs.validate.outputs.recipe_path }}
+      storage_provider: ${{ vars.STORAGE_PROVIDER || 's3' }}
+      request_issue: ${{ github.event.issue.number }}
+    secrets: inherit

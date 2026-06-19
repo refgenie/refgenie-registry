@@ -1,0 +1,9 @@
+name: bowtie1_index
+version: 0.0.1
+description: Genome index for bowtie1, produced with bowtie-build
+serving_modes: [archive]
+seek_keys:
+  bowtie1_index:
+    value: "{genome}"
+    type: prefix
+    description: The basename (prefix) of the bowtie1 index files (.ebwt)

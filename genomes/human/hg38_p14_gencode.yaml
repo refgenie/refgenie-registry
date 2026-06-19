@@ -1,0 +1,32 @@
+name: hg38_p14_gencode
+aliases:
+  - GRCh38-p14-47-gencode
+  - GRCh38-p14-46-gencode
+
+description: |
+  release 47 of gencode GRCh38
+
+organism:
+  scientific_name: Homo sapiens
+  common_name: human
+  taxon_id: 9606
+
+assembly:
+  source: GENCODE
+
+fasta:
+  sources:
+    - provider: Gencode
+      url: https://ftp.ebi.ac.uk/pub/databases/gencode/Gencode_human/release_47/GRCh38.p14.genome.fa.gz
+    - provider: Gencode
+      url: https://ftp.ebi.ac.uk/pub/databases/gencode/Gencode_human/release_46/GRCh38.p14.genome.fa.gz
+  checksum:
+    sha256: compute_on_registration
+
+seqcol:
+  digest: tkRdBlSp5hewK4OpEJC87J9pw-ac0vOa
+  length: 706
+
+metadata:
+  added: 2026-05-20
+  added_by: nsheff

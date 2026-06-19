@@ -1,0 +1,30 @@
+name: hg38_full_analysis_plus_decoy
+aliases:
+  - GRCh38.p14-fasta-full-analysis-plus-hs38d1
+
+description: |
+  GCA_000001405.15_GRCh38_full_analysis_set from NCBI plus hs38d1 decoy sequences
+
+organism:
+  scientific_name: Homo sapiens
+  common_name: human
+  taxon_id: 9606
+
+assembly:
+  source: NCBI
+  accession: GCA_000001405.15
+
+fasta:
+  sources:
+    - provider: NCBI
+      url: https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/001/405/GCF_000001405.40_GRCh38.p14/GRCh38_major_release_seqs_for_alignment_pipelines/GCA_000001405.15_GRCh38_full_plus_hs38d1_analysis_set.fna.gz
+  checksum:
+    sha256: compute_on_registration
+
+seqcol:
+  digest: MkXYxV2-83BEcPmzskEVGJsJ7Qkb--gX
+  length: 2841
+
+metadata:
+  added: 2026-05-20
+  added_by: nsheff

@@ -1,0 +1,27 @@
+name: t7
+
+description: |
+  Genome of T7 phage, V01146.1 from GenBank.
+
+organism:
+  scientific_name: Enterobacteria phage T7
+  common_name: T7 phage
+  taxon_id: 10760
+
+assembly:
+  source: GenBank
+
+fasta:
+  sources:
+    - provider: refgenie
+      url: http://big.databio.org/refgenomes/t7.fa.gz
+  checksum:
+    md5: 9d87b4924b17c031ea55895359a1e140
+    sha256: compute_on_registration
+
+seqcol:
+  compute: true
+
+metadata:
+  added: 2026-05-20
+  added_by: nsheff

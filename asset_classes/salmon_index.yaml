@@ -1,0 +1,9 @@
+name: salmon_index
+version: 0.0.1
+description: Transcriptome index for salmon, produced with salmon index
+serving_modes: [archive]
+seek_keys:
+  salmon_index:
+    value: "."
+    type: directory
+    description: Directory containing the Salmon index

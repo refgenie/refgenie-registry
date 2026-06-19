@@ -1,0 +1,9 @@
+name: ensembl_rb
+version: 0.0.1
+description: An Ensembl regulatory build annotation file
+serving_modes: [file]
+seek_keys:
+  ensembl_rb:
+    value: "{genome}.gff.gz"
+    type: file
+    description: GFF file with regulatory elements (gzipped)

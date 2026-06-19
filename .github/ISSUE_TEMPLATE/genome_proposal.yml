@@ -1,0 +1,41 @@
+name: Genome Proposal
+description: Propose a new genome to add to the registry
+title: "Genome proposal: [ORGANISM] [ASSEMBLY]"
+labels: ["genome-proposal"]
+body:
+  - type: input
+    id: assembly_name
+    attributes:
+      label: Assembly name
+      description: "Primary identifier (e.g., hg38, mm10)"
+      placeholder: hg38
+    validations:
+      required: true
+  - type: input
+    id: organism
+    attributes:
+      label: Organism
+      description: "Scientific name (e.g., Homo sapiens)"
+      placeholder: Homo sapiens
+    validations:
+      required: true
+  - type: input
+    id: source_url
+    attributes:
+      label: FASTA source URL
+      description: "URL to the canonical FASTA file"
+      placeholder: "https://ftp.ncbi.nlm.nih.gov/..."
+    validations:
+      required: true
+  - type: input
+    id: accession
+    attributes:
+      label: Assembly accession
+      description: "NCBI or Ensembl accession (e.g., GCF_000001405.40)"
+    validations:
+      required: false
+  - type: textarea
+    id: context
+    attributes:
+      label: Additional context
+      description: "Why should this genome be in the registry? Any aliases?"

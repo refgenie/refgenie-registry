@@ -1,0 +1,26 @@
+name: hg38_build37_2_igenomes
+aliases:
+  - GRCh38-igenomes-build37-2-ncbi
+
+description: |
+  igenomes hosted GRCh38 build 37.2
+
+organism:
+  scientific_name: Homo sapiens
+  common_name: human
+  taxon_id: 9606
+
+assembly:
+  source: iGenomes
+
+fasta:
+  checksum:
+    sha256: compute_on_registration
+
+seqcol:
+  digest: Dx_M8skbJqROkfXhhQRtWejcCyewRbdL
+  length: 25
+
+metadata:
+  added: 2026-05-20
+  added_by: nsheff

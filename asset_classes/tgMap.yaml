@@ -1,0 +1,11 @@
+name: tgMap
+version: 0.0.1
+description: >
+  Transcript to gene map file, containing two columns mapping each transcript present
+  in the reference to the corresponding gene.
+serving_modes: [file]
+seek_keys:
+  tgMap:
+    value: "{genome}_txp2gene.tsv"
+    type: file
+    description: A TSV file containing two columns mapping transcripts to genes

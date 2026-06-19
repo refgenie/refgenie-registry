@@ -1,0 +1,35 @@
+name: kallisto_index
+version: 0.0.1
+output_asset_class: kallisto_index
+description: Genome index for kallisto, produced with kallisto index
+input_files: {}
+input_params: {}
+input_assets:
+  fasta_txome:
+    asset_class: fasta
+    default: fasta_txome
+    description: fasta asset for transcriptome
+docker_image: databio/refgenie
+command_templates:
+  - kallisto index -i {{values.output_folder}}/{{values.genome_digest}}_kallisto_index.idx {{values.genome_folder}}/{{values.assets["fasta_txome"].seek_keys_dict["fasta"]}}
+custom_seek_keys:
+  version: "kallisto version | awk '{print $3}'"
+default_asset: "{{values.custom_seek_keys.version}}"
+tags:
+- quantification
+- rna-seq
+- pseudoalignment
+outputs:
+- pattern: '*_kallisto_index.idx'
+  description: Kallisto index file
+resources:
+  memory: 8GB
+  disk: 5GB
+  time: 1h
+test:
+  commands:
+  - test -f {output_dir}/{genome}_kallisto_index.idx
+metadata:
+  author: nsheff
+  created: '2026-05-20'
+  license: BSD-2-Clause

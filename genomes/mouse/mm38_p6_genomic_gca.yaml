@@ -1,0 +1,30 @@
+name: mm38_p6_genomic_gca
+aliases:
+  - GRCm38.p6-fasta-genomic-GCA
+
+description: |
+  GCA_000001635.8_GRCm38.p6_genomic.fna.gz from NCIBI
+
+organism:
+  scientific_name: Mus musculus
+  common_name: mouse
+  taxon_id: 10090
+
+assembly:
+  source: NCBI
+  accession: GCA_000001635.8
+
+fasta:
+  sources:
+    - provider: NCBI
+      url: https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/000/001/635/GCA_000001635.8_GRCm38.p6/GCA_000001635.8_GRCm38.p6_genomic.fna.gz
+  checksum:
+    sha256: compute_on_registration
+
+seqcol:
+  digest: JL56x8L1q1Fs_-jHvZxBG01Vitac-CmO
+  length: 239
+
+metadata:
+  added: 2026-05-20
+  added_by: nsheff

@@ -1,0 +1,9 @@
+name: bismark_bt2_index
+version: 0.0.1
+description: Genome index for Bisulfite-Seq applications, produced by bismark_genome_preparation using bowtie2
+serving_modes: [archive]
+seek_keys:
+  bismark_bt2_index:
+    value: "."
+    type: directory
+    description: Path to the directory containing the Bismark Bowtie2 index

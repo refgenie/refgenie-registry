@@ -1,0 +1,29 @@
+name: hg19_p13_no_alt_analysis
+aliases:
+  - hg19-p13-no-alt-analysis-ucsc
+
+description: |
+  no alt analysis set hg19 p13 from ucsc
+
+organism:
+  scientific_name: Homo sapiens
+  common_name: human
+  taxon_id: 9606
+
+assembly:
+  source: UCSC
+
+fasta:
+  sources:
+    - provider: UCSC
+      url: https://hgdownload.soe.ucsc.edu/goldenPath/hg19/bigZips/analysisSet/hg19.p13.plusMT.no_alt_analysis_set.fa.gz
+  checksum:
+    sha256: compute_on_registration
+
+seqcol:
+  digest: svwHqvgassl0loigdqVIQJdjo7NWDIx3
+  length: 85
+
+metadata:
+  added: 2026-05-20
+  added_by: nsheff

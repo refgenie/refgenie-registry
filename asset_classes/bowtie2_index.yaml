@@ -1,0 +1,9 @@
+name: bowtie2_index
+version: 0.0.1
+description: Genome index for bowtie2, produced with bowtie2-build
+serving_modes: [archive]
+seek_keys:
+  bowtie2_index:
+    value: "{genome}"
+    type: prefix
+    description: The basename (prefix) of the bowtie2 index files (.bt2 / .bt2l)
