@@ -1,3 +1,13 @@
 sample_name,genome_name,asset_group_name,fasta_file_path
-t7,t7,fasta,default_input
-t7,t7,bwa_index,default_input
+yeast_s288c,yeast_s288c,fasta,yeast_s288c_fa
+yeast_s288c,yeast_s288c,fasta_index,yeast_s288c_fa
+yeast_s288c,yeast_s288c,bwa_index,yeast_s288c_fa
+yeast_s288c,yeast_s288c,bowtie2_index,yeast_s288c_fa
+yeast_s288c,yeast_s288c,hisat2_index,yeast_s288c_fa
+yeast_s288c,yeast_s288c,suffixerator_index,yeast_s288c_fa
+hg38,hg38,fasta,hg38_fa
+hg38,hg38,fasta_index,hg38_fa
+hg38,hg38,bwa_index,hg38_fa
+hg38,hg38,bowtie2_index,hg38_fa
+hg38,hg38,hisat2_index,hg38_fa
+hg38,hg38,suffixerator_index,hg38_fa

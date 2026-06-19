@@ -12,10 +12,19 @@
 # becomes the LIST of assets to build for that genome — exactly what the
 # generated Snakefile's `get_all_asset_targets()` iterates over.
 #
-# fasta_file_path is DERIVED from $REFGENIE_INPUTS so the queue is host-portable:
-# the same samples.csv works anywhere once REFGENIE_INPUTS points at the FASTA
-# root (set in infra/rivanna/env.sh / defaulted in build/run_builds.sh). Default
-# layout:  $REFGENIE_INPUTS/<genome_name>/<genome_name>.fa
+# SCOPE (intentionally SMALL — nightly self-resubmitting mobot build):
+#   Only two genomes are queued so nightly runs stay bounded:
+#     - yeast_s288c : tiny canary (~12 MB) so a full asset set finishes in minutes
+#     - hg38        : human reference (real multi-hour churn for bwa/hisat2/etc.)
+#   Only fasta-DERIVABLE assets are queued (those whose sole input is the `fasta`
+#   asset): fasta, fasta_index, bwa_index, bowtie2_index, hisat2_index,
+#   suffixerator_index. Recipes needing external inputs (gtf/dbsnp/blacklist/etc.)
+#   and the salmon/fasta_txome chain are intentionally EXCLUDED.
+#
+# fasta_file_path is DERIVED via named sources rooted at $REFGETSTORE_FASTA (set in
+# infra/rivanna/env.sh and confirmed staged). Each genome's row sets its
+# fasta_file_path column to the matching source key below. This keeps the absolute
+# Rivanna FASTA paths centralized here and host-portable.
 pep_version: "2.1.0"
 name: refgenie-registry-builds
 sample_table: samples.csv
@@ -24,4 +33,8 @@ sample_modifiers:
   derive:
     attributes: [fasta_file_path]
     sources:
+      # Legacy default layout (kept for portability): $REFGENIE_INPUTS/<genome>/<genome>.fa
       default_input: "${REFGENIE_INPUTS}/{genome_name}/{genome_name}.fa"
+      # Staged Rivanna FASTAs (gzipped is fine; `refgenie genome init` ingests it):
+      yeast_s288c_fa: "${REFGETSTORE_FASTA}/plantref/saccharomyces_cerevisiae_strain_s288c/ensembl/ENSEMBL_release_81.fa.gz"
+      hg38_fa: "${REFGETSTORE_FASTA}/pangenome_reference/hg38.fa.gz"
