@@ -1,0 +1,9 @@
+# Snakemake configfile for refgenie asset builds.
+#
+# The generated Snakefile declares `configfile: "config.yaml"`, but none of the
+# build rules read `config[...]` — refgenie derives every build path itself and
+# resources come from the SLURM profile (build/profiles/rivanna/). This file
+# exists only to satisfy the `configfile:` directive. Add keys here only if a
+# future recipe/template starts reading them.
+output_base: "/project/shefflab/brickyard/refgenie_assets"
+s3_bucket: "s3://refgenie/assets"

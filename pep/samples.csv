@@ -1,0 +1,3 @@
+sample_name,genome_name,asset_group_name,fasta_file_path
+t7,t7,fasta,default_input
+t7,t7,bwa_index,default_input

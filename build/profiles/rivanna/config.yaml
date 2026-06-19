@@ -1,0 +1,60 @@
+# Snakemake profile for Rivanna (UVA HPC) — refgenie asset builds.
+#
+# Used by build/run_builds.sh:  snakemake --profile build/profiles/rivanna/
+# Requires snakemake >= 8 with the SLURM executor plugin
+# (snakemake-executor-plugin-slurm), both present in the databio/lab bulker crate
+# that the mobot job activates.
+#
+# Each rule becomes one SLURM job on the shefflab allocation. mobot dispatches
+# this from a lightweight job; the heavy builds run as the SLURM jobs created
+# here. Per design.md, resources come from THIS profile, not from recipes.
+
+executor: slurm
+jobs: 20                       # max concurrent SLURM jobs
+latency-wait: 60               # tolerate shared-FS latency on output files
+rerun-incomplete: true
+keep-going: true               # one failed asset must not abort the batch
+printshellcmds: true
+use-singularity: false         # recipes run in containers via refgenie/bulker, not snakemake
+
+# Default SLURM resources for every rule (shefflab standard partition).
+# Override per-rule below for memory-hungry indexers.
+default-resources:
+  slurm_account: "shefflab"
+  slurm_partition: "standard"
+  mem_mb: 8000
+  runtime: 120                 # minutes
+  cpus_per_task: 4
+
+# Per-rule resource overrides for the heavy indexers. Rule names match the
+# generated Snakefile (build_<recipe>) and the genome_init sentinel rule.
+set-resources:
+  genome_init:
+    mem_mb: 8000
+    runtime: 60
+  build_star_index:
+    mem_mb: 64000
+    runtime: 480
+  build_cellranger_reference:
+    mem_mb: 64000
+    runtime: 480
+  build_bwa_index:
+    mem_mb: 16000
+    runtime: 180
+  build_hisat2_index:
+    mem_mb: 32000
+    runtime: 240
+  build_bowtie2_index:
+    mem_mb: 16000
+    runtime: 180
+  build_salmon_index:
+    mem_mb: 16000
+    runtime: 180
+
+set-threads:
+  build_star_index: 8
+  build_cellranger_reference: 8
+  build_hisat2_index: 8
+  build_bowtie2_index: 4
+  build_salmon_index: 4
+  build_bwa_index: 4

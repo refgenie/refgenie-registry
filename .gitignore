@@ -20,3 +20,9 @@ venv/
 *.log
 *.bak-*
 .staging_map.tsv
+
+# Recipe-build artifacts (regenerated each run by build/run_builds.sh)
+build/Snakefile
+build/inputs/
+build/.refgenie_build*
+.snakemake/

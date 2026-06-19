@@ -1,0 +1,27 @@
+# PEP for the refgenie-registry nightly asset-build queue.
+#
+# Consumed by the generated Snakefile (build/Snakefile -> `pepfile: pep/config.yaml`).
+# The Snakefile reads, per genome:
+#   - genome_name        : passed to `refgenie build <genome_name>/<asset>` and
+#                          `refgenie genome init --name <genome_name>`
+#   - asset_group_name   : the recipe(s) to build for this genome
+#   - fasta_file_path    : input FASTA for `refgenie genome init` (derived below)
+#
+# QUEUE FORMAT: one row per (genome, asset) build request. Rows that share a
+# `sample_name` are collated by peppy, so `pep.get_sample(name).asset_group_name`
+# becomes the LIST of assets to build for that genome — exactly what the
+# generated Snakefile's `get_all_asset_targets()` iterates over.
+#
+# fasta_file_path is DERIVED from $REFGENIE_INPUTS so the queue is host-portable:
+# the same samples.csv works anywhere once REFGENIE_INPUTS points at the FASTA
+# root (set in infra/rivanna/env.sh / defaulted in build/run_builds.sh). Default
+# layout:  $REFGENIE_INPUTS/<genome_name>/<genome_name>.fa
+pep_version: "2.1.0"
+name: refgenie-registry-builds
+sample_table: samples.csv
+
+sample_modifiers:
+  derive:
+    attributes: [fasta_file_path]
+    sources:
+      default_input: "${REFGENIE_INPUTS}/{genome_name}/{genome_name}.fa"
