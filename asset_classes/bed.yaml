@@ -1,0 +1,9 @@
+name: bed
+version: 0.0.1
+description: Genomic feature annotations asset which provides access to all annotated transcripts in BED format
+serving_modes: [file]
+seek_keys:
+  bedgz:
+    value: "{genome}.bed.gz"
+    type: file
+    description: BED annotation file (gzipped)

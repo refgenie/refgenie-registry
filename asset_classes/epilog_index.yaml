@@ -1,0 +1,13 @@
+name: epilog_index
+version: 0.0.1
+description: Genome index for CpG sites, produced by the epilog DNA methylation caller
+serving_modes: [archive]
+seek_keys:
+  epilog_index:
+    value: "{genome}_{context}.tsv.gz"
+    type: file
+    description: The indexed genome file for the specified context
+  tabix:
+    value: "{genome}_{context}.tsv.gz.tbi"
+    type: file
+    description: Tabix index file for the indexed genome

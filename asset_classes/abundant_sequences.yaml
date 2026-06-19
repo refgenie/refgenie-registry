@@ -1,0 +1,25 @@
+name: abundant_sequences
+version: 0.0.1
+description: Abundant sequences in the FASTA format -- PhiX spike-in, Poly(A), Poly(C) and adapter sequences
+serving_modes: [archive]
+seek_keys:
+  abundant_sequences:
+    value: "."
+    type: directory
+    description: Path to the directory containing the abundant sequences
+  phix:
+    value: "{genome}_phix.fa"
+    type: file
+    description: PhiX spike-in sequence
+  polyA:
+    value: "{genome}_polyA.fa"
+    type: file
+    description: Poly(A) sequence
+  polyC:
+    value: "{genome}_polyC.fa"
+    type: file
+    description: Poly(C) sequence
+  adapter_contam:
+    value: "{genome}_adapter_contam.fa"
+    type: file
+    description: Adapter contaminated sequence

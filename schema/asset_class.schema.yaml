@@ -1,0 +1,70 @@
+$schema: https://json-schema.org/draft/2020-12/schema
+$id: https://refgenie.org/schemas/asset_class.schema.yaml
+title: Refgenie Asset Class
+description: >
+  Schema for a typed asset class in the refgenie-registry. An asset class is the
+  source of truth for the seek keys (named, addressable handles) that an asset of
+  this class exposes, and for how the asset is served.
+type: object
+required:
+  - name
+  - version
+  - description
+  - seek_keys
+  - serving_modes
+properties:
+  name:
+    type: string
+    pattern: "^[a-zA-Z0-9_]+$"
+    description: Asset class identifier (letters, digits, underscores).
+  version:
+    type: string
+    pattern: "^\\d+\\.\\d+\\.\\d+$"
+    description: Semantic version of this asset class.
+  description:
+    type: string
+    description: Human-readable description of what this asset class represents.
+  seek_keys:
+    type: object
+    minProperties: 1
+    description: >
+      Named handles for addressable components of the asset. Each key is a handle
+      (e.g., 'fasta', 'fai') used for seek-key addressing (genome/asset.handle).
+    additionalProperties:
+      type: object
+      required:
+        - value
+        - type
+      properties:
+        value:
+          type: string
+          description: >
+            File path / prefix template relative to the asset directory.
+            May contain placeholders such as {genome}, {context}, {mersize}.
+            Use "." to refer to the asset directory itself.
+        type:
+          type: string
+          enum: [file, prefix, directory, string]
+          description: >
+            The kind of thing the seek key resolves to - a single file, a path
+            prefix shared by several files, a directory, or a literal string value.
+        description:
+          type: string
+          description: Human-readable description of this seek key.
+      additionalProperties: false
+  serving_modes:
+    type: array
+    minItems: 1
+    uniqueItems: true
+    items:
+      type: string
+      enum: [file, archive]
+    description: >
+      How assets of this class may be served - 'file' for direct per-file access,
+      'archive' for bundled (tarred) delivery of the whole asset.
+  parents:
+    type: array
+    items:
+      type: string
+    description: Names of asset classes this class derives from (optional).
+additionalProperties: false

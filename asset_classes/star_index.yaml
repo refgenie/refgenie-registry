@@ -1,0 +1,9 @@
+name: star_index
+version: 0.0.1
+description: Genome index for STAR RNA-seq aligner, produced with STAR --runMode genomeGenerate
+serving_modes: [archive]
+seek_keys:
+  star_index:
+    value: "."
+    type: directory
+    description: Directory containing the STAR index

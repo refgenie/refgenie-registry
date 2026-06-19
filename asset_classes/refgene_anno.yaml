@@ -1,0 +1,29 @@
+name: refgene_anno
+version: 0.0.1
+description: gene, TSS, exon, intron, and premature mRNA annotation files
+serving_modes: [file]
+seek_keys:
+  refgene_anno:
+    value: "{genome}_refGene.txt.gz"
+    type: file
+    description: refGene annotation file
+  refgene_tss:
+    value: "{genome}_TSS.bed"
+    type: file
+    description: refGene TSS annotation file (all TSS, preserving genes sharing a start site)
+  refgene_tss_unique:
+    value: "{genome}_TSS_unique.bed"
+    type: file
+    description: refGene TSS annotation file (unique by genomic position)
+  refgene_exon:
+    value: "{genome}_exons.bed"
+    type: file
+    description: refGene exon annotation file
+  refgene_intron:
+    value: "{genome}_introns.bed"
+    type: file
+    description: refGene intron annotation file
+  refgene_pre_mRNA:
+    value: "{genome}_pre-mRNA.bed"
+    type: file
+    description: refGene premature mRNA annotation file

@@ -1,0 +1,9 @@
+name: bwa_index
+version: 0.1.0
+description: Genome index for Burrows-Wheeler Alignment Tool, produced with bwa index
+serving_modes: [archive]
+seek_keys:
+  bwa_index:
+    value: "{genome}"
+    type: prefix
+    description: The basename (prefix) of the BWA index files; pass directly to bwa mem/aln

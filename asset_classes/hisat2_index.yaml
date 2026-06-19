@@ -1,0 +1,9 @@
+name: hisat2_index
+version: 0.0.1
+description: Genome index for HISAT2, produced with hisat2-build
+serving_modes: [archive]
+seek_keys:
+  hisat2_index:
+    value: "{genome}"
+    type: prefix
+    description: The basename (prefix) of the HISAT2 index files (.ht2 / .ht2l)
