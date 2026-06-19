@@ -1,0 +1,6 @@
+# Lives at the repo root because yoke/mutagen sync the directory containing this
+# file (Alpha) to riva:~/code/refgenie-registry (Beta). The Rivanna build env and
+# SLURM jobs are isolated under infra/rivanna/.
+name = "refgenie-registry"
+remote = "riva"
+env_files = ["infra/rivanna/env.sh"]

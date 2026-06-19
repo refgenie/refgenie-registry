@@ -200,4 +200,4 @@ Rivanna/HPC execution layer ([`infra/rivanna/`](../infra/rivanna/)):
 | [`infra/rivanna/download_igenomes.slurm`](../infra/rivanna/download_igenomes.slurm) | SLURM job to stage iGenomes FASTAs |
 | [`infra/rivanna/download_salmon_txomes.slurm`](../infra/rivanna/download_salmon_txomes.slurm) | SLURM job to stage Salmon transcriptomes |
 | [`infra/rivanna/sync_to_s3.slurm`](../infra/rivanna/sync_to_s3.slurm) | SLURM job to `aws s3 sync` a store to S3 |
-| [`infra/rivanna/yoke.toml`](../infra/rivanna/yoke.toml) | Yoke session config for running the above on Rivanna |
+| [`yoke.toml`](../yoke.toml) | Yoke session config (at the repo root, so mutagen syncs the whole repo) |

@@ -1,3 +1,0 @@
-name = "refgenie-registry"
-remote = "riva"
-env_files = ["env.sh"]

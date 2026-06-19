@@ -12,7 +12,10 @@ rest of the repo reads cleanly for external contributors.
 | `download_igenomes.slurm` | SLURM job to stage iGenomes FASTAs into the download cache. |
 | `download_salmon_txomes.slurm` | SLURM job to stage Salmon transcriptome FASTAs. |
 | `sync_to_s3.slurm` | SLURM job that `aws s3 sync`s built stores to S3 (`refgenie` profile). |
-| `yoke.toml` | Yoke session config (`remote = "riva"`) for driving the above from a laptop. |
+
+The yoke session config lives at the **repo root** ([`../../yoke.toml`](../../yoke.toml)),
+not here: yoke/mutagen sync the directory that contains `yoke.toml`, so it must sit at the
+root to sync the whole repo to `riva:~/code/refgenie-registry`.
 
 ## Assumptions
 
@@ -29,9 +32,8 @@ These scripts are specific to the `shefflab` allocation on Rivanna and assume:
 # Build a store (submit from the repo root):
 sbatch --job-name=build-vgp infra/rivanna/build_store.slurm vgp
 
-# Or drive it from a laptop via yoke (run from this directory):
-cd infra/rivanna
-yoke -c 'sbatch build_store.slurm vgp' -s refgenie-registry
+# Or drive it from a laptop via yoke (run from the repo root, where yoke.toml is):
+yoke -c '@sbatch infra/rivanna/build_store.slurm vgp' -s refgenie-registry
 ```
 
 The build/validation tooling these jobs invoke lives in [`../../stores/`](../../stores/);
