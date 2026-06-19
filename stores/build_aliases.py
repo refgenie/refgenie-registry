@@ -31,17 +31,19 @@ registers two further kinds of aliases:
       digest. This is the richest option and mirrors the legacy
       ``backfill_sequence_aliases.py`` from refget/analysis.
 
-Per-store behaviour is controlled by ``STORE_CONFIGS`` below (and overridable
-on the command line). Output is written into the store in place.
+Per-store behaviour is read from the ``aliasing:`` block in each store's
+``project_config.yaml`` (and is overridable on the command line). A store with
+no ``aliasing:`` block gets collection aliases only. Output is written into the
+store in place.
 
 Usage:
     source ../infra/rivanna/env.sh
-    python build_aliases.py jungle                 # use STORE_CONFIGS default
+    python build_aliases.py jungle                 # use the store's aliasing: config
     python build_aliases.py vgp --dry-run
     python build_aliases.py vgp --store-path /tmp/test_store
     python build_aliases.py jungle --seq-strategy header_names
 
-Requirements: refget + gtars (RefgetStore), Python stdlib only otherwise.
+Requirements: refget + gtars (RefgetStore) and pyyaml; Python stdlib otherwise.
 """
 
 import argparse
@@ -56,7 +58,10 @@ import urllib.request
 from collections import defaultdict
 from pathlib import Path
 
+import yaml
+
 SCRIPT_DIR = Path(__file__).parent
+PEP_CONFIG = "project_config.yaml"
 ACCESSION_PATTERN = re.compile(r"(GC[AF]_\d+\.\d+)")
 NCBI_FTP_BASE = "https://ftp.ncbi.nlm.nih.gov/genomes/all"
 # get_collection_level2() returns VRS-style "SQ."/"ga4gh:SQ." prefixed sequence
@@ -73,32 +78,39 @@ def normalize_seq_digest(digest):
 # ---------------------------------------------------------------------------
 # Per-store configuration
 # ---------------------------------------------------------------------------
-# seq_strategy:
-#   "none"            - collection aliases only
-#   "header_names"    - register FASTA header names as sequence aliases
-#   "assembly_report" - parse NCBI assembly reports for cross-accession aliases
-# header_namespace: namespace (or column whose value names the namespace, see
-#   header_namespace_col) under which header-name sequence aliases are filed.
-STORE_CONFIGS = {
-    # vgp: all rows carry a GCA/GCF accession and NCBI FASTAs whose headers are
-    # RefSeq/GenBank accessions. The assembly report gives us the full
-    # RefSeq<->GenBank<->UCSC<->chrom-name web.
-    "vgp": {
-        "seq_strategy": "assembly_report",
-    },
-    # jungle: mixed authorities (UCSC/Ensembl/NCBI/ENA/...). Header names differ
-    # by source, so file them per-source-authority. Rows that also carry a
-    # GCA/GCF accession additionally get assembly-report cross-aliases.
-    "jungle": {
-        "seq_strategy": "header_names",
-        "header_namespace_col": "source",  # one namespace per authority
-        "assembly_report_when_accession": True,
-    },
-    # vrs already ships its own build_aliases.py; included for completeness.
-    "vrs": {
-        "seq_strategy": "assembly_report",
-    },
-}
+# Each store declares how its sequence aliases are built in the `aliasing:`
+# block of its stores/<store>/project_config.yaml. Recognized keys:
+#   seq_strategy:
+#     "none"            - collection aliases only (default when no block)
+#     "header_names"    - register FASTA header names as sequence aliases
+#     "assembly_report" - parse NCBI assembly reports for cross-accession aliases
+#   header_namespace:     namespace under which header-name aliases are filed
+#   header_namespace_col: column whose value names the namespace (per authority)
+#   assembly_report_when_accession: also pull assembly-report aliases for rows
+#                                    that carry a GCA/GCF accession
+#
+# (vrs is deliberately absent: it ships its own stores/vrs/build_aliases.py with
+# VRS-specific namespace logic, so it has no `aliasing:` block here.)
+def load_aliasing_config(store_name):
+    """Read the `aliasing:` block from stores/<store>/project_config.yaml.
+
+    Returns a config dict for build_aliases(), defaulting to collection-aliases
+    only ({"seq_strategy": "none"}) when the store declares no `aliasing:` block.
+    """
+    default = {"seq_strategy": "none"}
+    config_path = SCRIPT_DIR / store_name / PEP_CONFIG
+    if not config_path.exists():
+        return dict(default)
+    try:
+        with open(config_path) as f:
+            pep = yaml.safe_load(f) or {}
+    except Exception as e:
+        print(f"WARNING: could not read {config_path}: {e}", file=sys.stderr)
+        return dict(default)
+    aliasing = pep.get("aliasing")
+    if not isinstance(aliasing, dict):
+        return dict(default)
+    return {**default, **aliasing}
 
 
 # ---------------------------------------------------------------------------
@@ -413,7 +425,7 @@ def main():
     from refget.store import RefgetStore
 
     store_name = args.store
-    config = dict(STORE_CONFIGS.get(store_name, {"seq_strategy": "none"}))
+    config = load_aliasing_config(store_name)
     if args.seq_strategy:
         config["seq_strategy"] = args.seq_strategy
 

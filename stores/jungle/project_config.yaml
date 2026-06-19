@@ -1,3 +1,12 @@
 pep_version: 2.1.0
 sample_table: sources.csv
 sample_table_index: pep_sample_name
+
+# Sequence-alias strategy for build_aliases.py. Mixed authorities
+# (UCSC/Ensembl/NCBI/ENA/...), so header names are filed per source authority;
+# rows that also carry a GCA/GCF accession additionally get assembly-report
+# cross-aliases.
+aliasing:
+  seq_strategy: header_names
+  header_namespace_col: source
+  assembly_report_when_accession: true

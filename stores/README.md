@@ -27,8 +27,15 @@ Each store folder is a PEP project:
 store_name/
 ├── README.md            # what's in this store
 ├── sources.csv          # sample table of FASTAs (paths or URLs)
-└── project_config.yaml  # PEP config
+└── project_config.yaml  # PEP config (+ optional `aliasing:` block, see below)
 ```
+
+The store-build scripts in this directory are generic — they take a store name
+and read everything store-specific from that store's `project_config.yaml` /
+`sources.csv`. A store needing non-default sequence aliasing declares it in an
+`aliasing:` block in its `project_config.yaml` (see [Aliases](#aliases-post-build)).
+A store with genuinely bespoke logic can instead ship its own script in its
+folder (e.g. [`vrs/build_aliases.py`](vrs/build_aliases.py)).
 
 ## Building
 
@@ -61,16 +68,31 @@ python validate_files.py all --check-urls        # also HEAD-probe uncached URLs
 ## Aliases (post-build)
 
 Aliases are registered **after** building, as a separate step (build.py itself only adds the
-collection-level `name`/`accession`/`genome_assembly` aliases from sources.csv). Run:
+collection-level `name`/`accession`/`genome_assembly` aliases from sources.csv). The sequence-alias
+strategy is read from each store's `aliasing:` block in `project_config.yaml`; a store with no block
+gets collection aliases only. Recognized keys:
+
+```yaml
+# stores/<store>/project_config.yaml
+aliasing:
+  seq_strategy: none | header_names | assembly_report
+  header_namespace_col: source        # column naming the namespace (header_names)
+  assembly_report_when_accession: true # also pull assembly-report aliases for accession rows
+```
+
+Run:
 
 ```bash
 source ../infra/rivanna/env.sh
-python build_aliases.py vgp       # NCBI assembly-report based: insdc/refseq/ucsc seq + insdc/refseq collection aliases
-python build_aliases.py jungle    # header-name seq aliases per source authority (+ accession cross-aliases where present)
-python build_aliases.py vgp --dry-run   # preview without writing
+python build_aliases.py vgp       # strategy from vgp/project_config.yaml (assembly_report)
+python build_aliases.py jungle    # strategy from jungle/project_config.yaml (header_names + accession cross-aliases)
+python build_aliases.py vgp --dry-run            # preview without writing
+python build_aliases.py jungle --seq-strategy header_names  # CLI override of the config
 ```
 
 Notes:
+- **vrs** is not config-driven — it ships its own [`vrs/build_aliases.py`](vrs/build_aliases.py) with
+  VRS-specific namespace logic (Ensembl ENST/ENSP, multiple assembly versions). Run that directly.
 - **vgp** fetches NCBI `assembly_report.txt` per accession (rate-limited). Reuse the already-staged
   reports at `$REFGETSTORE_BASE/../refget_staging/assembly_reports/` (`<accession>_assembly_report.txt`)
   to avoid re-downloading — pre-seed the script's `.assembly_reports_vgp/` cache from there.
