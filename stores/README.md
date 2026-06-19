@@ -1,5 +1,8 @@
 # RefgetStores
 
+> Part of [refgenie-registry](../README.md). See the top-level README for the
+> repo layout (`genomes/`, `recipes/`, `index/`, `schema/`, `tools/`).
+
 Each subfolder defines a refgetstore — a content-addressable sequence collection. Store folders contain source manifests and any store-specific scripts. The core build tooling is in the `refget`/`gtars` packages.
 
 ## Stores
@@ -13,6 +16,7 @@ Each subfolder defines a refgetstore — a content-addressable sequence collecti
 | **vrs** | VRS allele identification reference sequences |
 | **salmon_txomes** | Salmon/tximeta transcriptomes |
 | **igenomes** | AWS iGenomes reference genomes |
+| **plantref** | Plant + model-organism genomes (recovered from legacy big.databio.org) |
 | **demo** | Test data for development |
 
 ## Per-store structure
@@ -43,8 +47,8 @@ heavier per worker — drop `-j` if a build OOMs. Each build writes a **`build_r
 store dir (start/end/duration, loaded/skipped/failed counts, n_collections/n_sequences, gtars/refget
 versions, git rev, per-collection records).
 
-On the HPC, submit via `build_store.slurm` (8 CPU / 32 GB):
-`sbatch --job-name=build-<store> build_store.slurm <store>`.
+On the HPC, submit via `../build_store.slurm` (8 CPU / 32 GB):
+`sbatch --job-name=build-<store> ../build_store.slurm <store>`.
 
 ## Validation
 
@@ -95,3 +99,24 @@ aws s3 sync "$REFGETSTORE_BASE/vgp" "$REFGETSTORE_S3/vgp" --profile refgenie --d
 
 Note: `build.py --sync` runs `aws s3 sync` with the **default** profile, so it fails on this bucket —
 either export `AWS_PROFILE=refgenie` first, or sync manually as above.
+
+## Files & infrastructure
+
+Build/validation tooling lives in this `stores/` directory; environment and HPC
+job scripts live at the repo root (one level up).
+
+| Path | Role |
+|------|------|
+| [`stores/build.py`](build.py) | Build one/all stores (parallel Rust ingest) |
+| [`stores/build_aliases.py`](build_aliases.py) | Register sequence/collection aliases (post-build) |
+| [`stores/validate_sources.py`](validate_sources.py) | Check a `sources.csv` schema/structure |
+| [`stores/validate_files.py`](validate_files.py) | Check every FASTA path/URL resolves |
+| [`stores/compare_store_to_sources.py`](compare_store_to_sources.py) | Diff a built store against its `sources.csv` |
+| [`stores/fasta_naming.py`](fasta_naming.py) | Shared FASTA name-parsing helpers |
+| [`../env.sh`](../env.sh) | Sets `REFGETSTORE_BASE` / `REFGETSTORE_S3` — `source ../env.sh` before building |
+| [`../build_store.slurm`](../build_store.slurm) | SLURM job (8 CPU / 32 GB): `sbatch --job-name=build-<store> ../build_store.slurm <store>` |
+| [`stores/download_igenomes.slurm`](download_igenomes.slurm) | SLURM job to stage iGenomes FASTAs |
+| [`../download_salmon_txomes.slurm`](../download_salmon_txomes.slurm) | SLURM job to stage Salmon transcriptomes |
+| [`../download_fastas.py`](../download_fastas.py) | Helper to fetch source FASTAs |
+| [`../sync_to_s3.slurm`](../sync_to_s3.slurm) | SLURM job to `aws s3 sync` a store to S3 |
+| [`../yoke.toml`](../yoke.toml) | Yoke session config for running the above on Rivanna |
