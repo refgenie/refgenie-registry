@@ -31,7 +31,8 @@ import peppy
 
 from refget.store import RefgetStore
 
-from fasta_naming import is_url, s3_to_https, cache_name_for
+from fasta_naming import is_url, s3_to_https, cache_name_for, resolve_fasta_token
+from store_config import fasta_root as store_fasta_root
 
 
 SCRIPT_DIR = Path(__file__).parent
@@ -187,6 +188,10 @@ def build_store(store_name: str, store_dir: Path, sync: bool = False, jobs: int 
     s3_path = get_s3_path(store_name)
     samples = project.samples
 
+    # Relative fasta tokens in sources.csv resolve against the store's fasta_root
+    # (from project_config.yaml). Absolute tokens / URLs are unaffected.
+    fasta_root = store_fasta_root(store_dir)
+
     # The PEP's sample_table (sources.csv) is the real source of record.
     sources_csv = store_dir / "sources.csv"
     sources_path = sources_csv if sources_csv.exists() else config_path
@@ -221,7 +226,7 @@ def build_store(store_name: str, store_dir: Path, sync: bool = False, jobs: int 
                     failed = True
                     break
             else:
-                files.append(token)
+                files.append(resolve_fasta_token(token, fasta_root))
         if failed:
             failures += 1
             continue

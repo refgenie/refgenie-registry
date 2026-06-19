@@ -26,14 +26,22 @@ Each store folder is a PEP project:
 ```
 store_name/
 ├── README.md            # what's in this store
-├── sources.csv          # sample table of FASTAs (paths or URLs)
-└── project_config.yaml  # PEP config (+ optional `aliasing:` block, see below)
+├── sources.csv          # sample table: one FASTA per row (URL, or path relative to fasta_root)
+└── project_config.yaml  # PEP config (+ optional `fasta_root:` / `aliasing:`, see below)
 ```
 
 The store-build scripts in this directory are generic — they take a store name
 and read everything store-specific from that store's `project_config.yaml` /
-`sources.csv`. A store needing non-default sequence aliasing declares it in an
-`aliasing:` block in its `project_config.yaml` (see [Aliases](#aliases-post-build)).
+`sources.csv`. Two optional `project_config.yaml` keys configure them:
+
+- **`fasta_root:`** — base directory for **relative** `fasta` paths in `sources.csv`.
+  Environment variables are expanded, so the absolute machine location stays out of
+  the committed data: e.g. `fasta_root: $REFGETSTORE_FASTA/jungle` (with
+  `$REFGETSTORE_FASTA` set by [`infra/rivanna/env.sh`](../infra/rivanna/env.sh)) lets
+  `sources.csv` hold `homo_sapiens/ENA/.../GRCh38.fa.gz`. A `fasta` value that is a URL
+  or an absolute path is used as-is and ignores `fasta_root`.
+- **`aliasing:`** — non-default sequence-alias strategy (see [Aliases](#aliases-post-build)).
+
 A store with genuinely bespoke logic can instead ship its own script in its
 folder (e.g. [`vrs/build_aliases.py`](vrs/build_aliases.py)).
 

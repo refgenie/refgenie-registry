@@ -35,7 +35,8 @@ import sys
 import urllib.request
 from pathlib import Path
 
-from fasta_naming import is_url, cache_name_for
+from fasta_naming import is_url, cache_name_for, resolve_fasta_token
+from store_config import fasta_root as store_fasta_root
 
 SCRIPT_DIR = Path(__file__).parent  # the stores/ directory
 PEP_CONFIG = "project_config.yaml"
@@ -66,20 +67,24 @@ def head_ok(url: str, timeout: int = 20) -> bool:
             return False
 
 
-def resolve_local(token: str) -> Path:
+def resolve_local(token: str, fasta_root: str | None = None) -> Path:
     """Resolve a non-URL token to an absolute path the way build.py would.
 
-    build.py runs from the stores/ directory and passes the raw string to
-    Path(...), so relative paths are interpreted relative to stores/.
+    Absolute tokens are used as-is; relative tokens are joined onto the store's
+    `fasta_root` (from project_config.yaml), falling back to the stores/ dir when
+    no fasta_root is configured (legacy behaviour).
     """
     p = Path(token)
     if p.is_absolute():
         return p
+    if fasta_root:
+        return Path(resolve_fasta_token(token, fasta_root))
     return (SCRIPT_DIR / p).resolve()
 
 
 def validate_store(store_name: str, csv_path: Path, check_urls: bool) -> dict:
     cache = downloads_dir(store_name)
+    fasta_root = store_fasta_root(SCRIPT_DIR / store_name)
     with open(csv_path) as f:
         rows = list(csv.DictReader(f))
 
@@ -108,7 +113,7 @@ def validate_store(store_name: str, csv_path: Path, check_urls: bool) -> dict:
                 else:
                     url_uncached += 1
             else:
-                path = resolve_local(token)
+                path = resolve_local(token, fasta_root)
                 if path.exists():
                     local_found += 1
                 else:

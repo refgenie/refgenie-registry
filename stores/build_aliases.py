@@ -58,10 +58,9 @@ import urllib.request
 from collections import defaultdict
 from pathlib import Path
 
-import yaml
+from store_config import aliasing as store_aliasing
 
 SCRIPT_DIR = Path(__file__).parent
-PEP_CONFIG = "project_config.yaml"
 ACCESSION_PATTERN = re.compile(r"(GC[AF]_\d+\.\d+)")
 NCBI_FTP_BASE = "https://ftp.ncbi.nlm.nih.gov/genomes/all"
 # get_collection_level2() returns VRS-style "SQ."/"ga4gh:SQ." prefixed sequence
@@ -91,26 +90,7 @@ def normalize_seq_digest(digest):
 #
 # (vrs is deliberately absent: it ships its own stores/vrs/build_aliases.py with
 # VRS-specific namespace logic, so it has no `aliasing:` block here.)
-def load_aliasing_config(store_name):
-    """Read the `aliasing:` block from stores/<store>/project_config.yaml.
-
-    Returns a config dict for build_aliases(), defaulting to collection-aliases
-    only ({"seq_strategy": "none"}) when the store declares no `aliasing:` block.
-    """
-    default = {"seq_strategy": "none"}
-    config_path = SCRIPT_DIR / store_name / PEP_CONFIG
-    if not config_path.exists():
-        return dict(default)
-    try:
-        with open(config_path) as f:
-            pep = yaml.safe_load(f) or {}
-    except Exception as e:
-        print(f"WARNING: could not read {config_path}: {e}", file=sys.stderr)
-        return dict(default)
-    aliasing = pep.get("aliasing")
-    if not isinstance(aliasing, dict):
-        return dict(default)
-    return {**default, **aliasing}
+# The `aliasing:` block is read via store_config.aliasing() (see main()).
 
 
 # ---------------------------------------------------------------------------
@@ -425,7 +405,7 @@ def main():
     from refget.store import RefgetStore
 
     store_name = args.store
-    config = load_aliasing_config(store_name)
+    config = store_aliasing(SCRIPT_DIR / store_name)
     if args.seq_strategy:
         config["seq_strategy"] = args.seq_strategy
 

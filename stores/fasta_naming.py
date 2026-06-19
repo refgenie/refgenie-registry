@@ -13,12 +13,29 @@ collision-free name from the row's disambiguating columns.
 
 from __future__ import annotations
 
+import os
+
 # Public-bucket regions for s3:// sources we know how to fetch over HTTPS.
 S3_BUCKET_REGION = {"ngi-igenomes": "eu-west-1"}
 
 
 def is_url(s: str) -> bool:
     return s.startswith(("http://", "https://", "ftp://", "s3://"))
+
+
+def resolve_fasta_token(token: str, fasta_root: str | None = None) -> str:
+    """Resolve a non-URL `sources.csv` fasta token to a filesystem path.
+
+    Absolute tokens are returned unchanged. A relative token is joined onto
+    `fasta_root` (env vars expanded) when one is given; otherwise it is returned
+    as-is (interpreted relative to the caller's CWD, the legacy behaviour).
+    Callers handle URL tokens separately (see `is_url`).
+    """
+    if os.path.isabs(token):
+        return token
+    if fasta_root:
+        return os.path.join(os.path.expandvars(fasta_root), token)
+    return token
 
 
 def s3_to_https(url: str) -> str:

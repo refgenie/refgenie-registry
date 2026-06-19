@@ -2,6 +2,9 @@ pep_version: 2.1.0
 sample_table: sources.csv
 sample_table_index: pep_sample_name
 
+# Root for relative fasta paths in sources.csv ($REFGETSTORE_FASTA set by env.sh).
+fasta_root: $REFGETSTORE_FASTA/jungle
+
 # Sequence-alias strategy for build_aliases.py. Mixed authorities
 # (UCSC/Ensembl/NCBI/ENA/...), so header names are filed per source authority;
 # rows that also carry a GCA/GCF accession additionally get assembly-report
