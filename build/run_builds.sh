@@ -98,6 +98,14 @@ sed -i \
     -e "s#^pepfile: \"pep/config.yaml\"#pepfile: \"$REGISTRY_DIR/pep/config.yaml\"#" \
     "$SNAKEFILE"
 echo "$(date) | run_builds: pinned configfile/pepfile paths in Snakefile"
+# (c) refgenie1's Snakefile template emits the singular `--param name=value` flag
+#     in build shell rules, but the installed `refgenie build` CLI expects the
+#     PLURAL `--params name=value` (see `refgenie build --help`). Without this the
+#     every build_* rule fails immediately with
+#     "refgenie: error: unrecognized arguments: --param threads=4".
+#     Trailing space anchors the match so an already-plural `--params ` is untouched.
+sed -i "s/--param /--params /g" "$SNAKEFILE"
+echo "$(date) | run_builds: patched Snakefile build flag --param -> --params"
 
 # --- 3. dispatch builds via snakemake ------------------------------------
 SNAKEMAKE_ARGS=(
