@@ -9,6 +9,9 @@ A monorepo holding genome definitions, build recipes, and an auto-generated asse
 - **`genomes/`** — YAML definitions of genome assemblies (community-contributed via PR)
 - **`recipes/`** — YAML build recipes for creating genome assets (community-contributed via PR)
 - **`index/`** — Auto-generated manifest of built assets (CI-only, no human edits)
+- **`stores/`** — RefgetStore source manifests: content-addressable sequence collections, one PEP project per store (see [`stores/README.md`](stores/README.md))
+- **`schema/`** — JSON Schemas for genome and recipe entries
+- **`tools/`** — Validation scripts and helpers (see [`tools/README.md`](tools/README.md))
 
 ## Contributing
 
