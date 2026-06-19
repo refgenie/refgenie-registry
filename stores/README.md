@@ -45,6 +45,48 @@ and read everything store-specific from that store's `project_config.yaml` /
 A store with genuinely bespoke logic can instead ship its own script in its
 folder (e.g. [`vrs/build_aliases.py`](vrs/build_aliases.py)).
 
+## Adding a new store
+
+1. **Create the folder** `stores/<name>/`.
+
+2. **Write `project_config.yaml`** (a PEP). Minimal:
+
+   ```yaml
+   pep_version: 2.1.0
+   sample_table: sources.csv
+   sample_table_index: fasta        # or another unique column, e.g. pep_sample_name
+   ```
+
+   Add `fasta_root:` if `sources.csv` uses relative local paths (see
+   [Per-store structure](#per-store-structure)), and an `aliasing:` block if the
+   store needs sequence aliases (see [Aliases](#aliases-post-build)).
+
+3. **Write `sources.csv`** — one FASTA per row. Only the **`fasta`** column is
+   required; each value is either a URL (`http(s)://`, `ftp://`, `s3://`) or a
+   path relative to `fasta_root` (a row may list several space-separated FASTAs
+   that get concatenated into one collection). Recommended columns, used for
+   collision-free download caching and for collection aliases:
+   `name`, `organism`, `source`, `genome_assembly`, `accession`.
+
+4. **Write `README.md`** describing what's in the store.
+
+5. **Validate** before building:
+
+   ```bash
+   python validate_sources.py <name>/sources.csv   # schema/structure
+   python validate_files.py <name>                 # every fasta path/URL resolves
+   ```
+
+6. **Build** (on Rivanna; sets `$REFGETSTORE_*` first):
+
+   ```bash
+   source ../infra/rivanna/env.sh
+   python build.py <name>                           # local
+   sbatch --job-name=build-<name> infra/rivanna/build_store.slurm <name>   # or as a SLURM job
+   ```
+
+7. **Aliases** (optional, post-build) and **deploy to S3** — see the sections below.
+
 ## Building
 
 ```bash

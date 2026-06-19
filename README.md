@@ -11,15 +11,19 @@ unique digest, so analysis tools can fetch exactly the resource they need
 instead of every group rebuilding the same indexes by hand. Assets are served
 publicly from a refgenie server:
 
-- [**rg.databio.org**](https://rg.databio.org) — browse and search available genomes and assets (web interface)
-- [**refgenomes.databio.org**](http://refgenomes.databio.org) — the refgenie server API that clients pull assets from
-- [**refgenie.org**](https://refgenie.org) — documentation and the `refgenie` CLI
+- [**api.refgenie.org**](https://api.refgenie.org) — the **current** refgenie server. This is
+  the live service that **this registry populates**: assets built here are published to it,
+  and clients pull from it.
+- [**refgenomes.databio.org**](http://refgenomes.databio.org) — the **legacy** refgenie server.
+  It predates this registry and is fed by a different (older) mechanism; it remains online for
+  existing users but is not driven by this repo.
+- [**refgenie.org**](https://refgenie.org) — documentation and the `refgenie` CLI.
 
-This repository is the **data layer behind that service.** It is a monorepo of
+This repository is the **data layer behind the current service.** It is a monorepo of
 reference-genome metadata, modeled after [bioconda](https://bioconda.github.io/):
 contributors add small YAML files via pull request, automated checks plus a
 maintainer validate them, and CI builds and indexes the resulting assets, which
-are then published to the servers above. Rather than storing large genome files,
+are then published to **api.refgenie.org**. Rather than storing large genome files,
 the registry stores the **definitions** (where a genome comes from, how to build
 its assets) and a generated index of what has been built.
 
