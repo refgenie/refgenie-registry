@@ -1,68 +1,78 @@
 # refgenie-registry
 
-Community-curated genome definitions and build recipes for refgenie.
-
 ## Overview
 
-A monorepo holding genome definitions, build recipes, and an auto-generated asset index — modeled after [bioconda](https://bioconda.github.io/).
+Community-curated genome definitions and build recipes for refgenie.
+
+refgenie-registry is a monorepo of reference-genome metadata, modeled after
+[bioconda](https://bioconda.github.io/): contributors add small YAML files via
+pull request, automated checks plus a maintainer validate them, and CI builds
+and indexes the resulting assets. Rather than storing large genome files, the
+registry stores the **definitions** (where a genome comes from, how to build its
+assets) and a generated index of what has been built.
+
+The repository is organized as:
 
 - **`genomes/`** — YAML definitions of genome assemblies (community-contributed via PR)
 - **`recipes/`** — YAML build recipes for creating genome assets (community-contributed via PR)
-- **`index/`** — Auto-generated manifest of built assets (CI-only, no human edits)
+- **`index/`** — Auto-generated manifest of built assets (CI-only, no human edits — see [`index/README.md`](index/README.md))
 - **`stores/`** — RefgetStore source manifests: content-addressable sequence collections, one PEP project per store (see [`stores/README.md`](stores/README.md))
 - **`schema/`** — JSON Schemas for genome and recipe entries
 - **`tools/`** — Validation scripts and helpers (see [`tools/README.md`](tools/README.md))
 
 ## Contributing
 
-See [CONTRIBUTING.md](./CONTRIBUTING.md) for how to add genomes, recipes, or request builds.
+Contributions happen through pull requests and build-request issues. There are
+three ways to contribute; full field references, examples, and security
+guidelines are in [CONTRIBUTING.md](./CONTRIBUTING.md).
 
-**Quick start:**
-- Add a genome: create `genomes/<organism>/<assembly>.yaml`
-- Add a recipe: create `recipes/<asset_name>/recipe.yaml`
-- Request a build: [open an issue](../../issues/new?template=build_request.yml)
+### Add a genome
 
-## Seed Content
+Define a new genome assembly. Fork, branch, and create
+`genomes/<organism>/<assembly>.yaml`, then open a PR titled
+"Add genome: \<organism\> \<assembly\>".
 
-### Genomes
+- **Required fields:** `name`, `organism.scientific_name`, `fasta.primary_url`, `fasta.checksum.sha256`
+- The checksum is the SHA-256 of the **uncompressed** FASTA; use NCBI, Ensembl, or UCSC as the source.
+- See [`genomes/human/hg38.yaml`](genomes/human/hg38.yaml) for a complete reference and [CONTRIBUTING.md § Adding a Genome](./CONTRIBUTING.md#adding-a-genome).
 
-| Name | Organism | Assembly | Accession | Source |
-|------|----------|----------|-----------|--------|
-| hg38 | Homo sapiens | GRCh38.p14 | GCF_000001405.40 | NCBI |
-| hg19 | Homo sapiens | GRCh37.p13 | GCF_000001405.25 | NCBI |
-| t2t-chm13 | Homo sapiens | T2T-CHM13v2.0 | GCF_009914755.1 | NCBI |
-| mm10 | Mus musculus | GRCm38.p6 | GCF_000001635.26 | NCBI |
-| mm39 | Mus musculus | GRCm39 | GCF_000001635.27 | NCBI |
+### Add a recipe
 
-### Recipes
+Define how to build an asset (e.g. an aligner index). Fork, branch, and create
+`recipes/<asset_name>/recipe.yaml`, then open a PR titled
+"Add recipe: \<asset_name\>".
 
-| Name | Tool | Version | Purpose |
-|------|------|---------|---------|
-| fasta | curl/gunzip | (system) | Download and decompress reference FASTA |
-| fasta_index | samtools | >=1.17 | FASTA index (.fai) and chrom.sizes |
-| bwa_index | bwa | >=0.7.18 | BWA FM-index for short-read alignment |
-| bowtie2_index | bowtie2 | >=2.5.0 | Bowtie2 FM-index for short-read alignment |
+- **Required fields:** `name`, `version`, `description`, `build.command`, `outputs`
+- **Build variables:** `{fasta}`, `{output_dir}`, `{genome}`, `{threads}`
+- Recipes must follow the [security guidelines](./CONTRIBUTING.md#adding-a-recipe) (no piped shell installs, no credentials, no access outside `{output_dir}`, tools from bioconda/conda-forge only).
+- See [`recipes/bwa_index/recipe.yaml`](recipes/bwa_index/recipe.yaml) for a complete reference.
+
+### Request a build
+
+If a genome and recipe both exist but the asset hasn't been built yet,
+[open a build request issue](../../issues/new?template=build_request.yml) naming
+the genome and recipe. The bot validates both exist and queues the build.
+
+### Validate locally before submitting
+
+```bash
+pip install -r tools/requirements.txt
+python tools/validate_genome.py genomes/<organism>/<assembly>.yaml
+python tools/validate_recipe.py recipes/<asset_name>/recipe.yaml
+```
 
 ## Review Process
 
 Contributions go through three layers of review:
 
-1. **Programmatic validation** — schema checks, URL verification, security scanning
-2. **AI review** — Claude evaluates appropriateness, quality, and security
-3. **Human confirmation** — maintainer reviews AI summary and approves
+1. **Programmatic validation** — schema checks, URL verification, security scanning (< 2 min)
+2. **AI review** — Claude evaluates appropriateness, quality, and security (< 5 min)
+3. **Human confirmation** — a maintainer reviews the AI summary and approves
 
 ## Schemas
 
 - [`schema/genome.schema.yaml`](schema/genome.schema.yaml) — JSON Schema for genome entries
 - [`schema/recipe.schema.yaml`](schema/recipe.schema.yaml) — JSON Schema for recipe entries
-
-## Local Validation
-
-```bash
-pip install -r tools/requirements.txt
-python tools/validate_genome.py genomes/human/hg38.yaml
-python tools/validate_recipe.py recipes/bwa_index/recipe.yaml
-```
 
 ## Links
 
