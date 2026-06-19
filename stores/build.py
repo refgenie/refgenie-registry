@@ -8,7 +8,7 @@ sources.csv. Store output paths are derived from env vars:
     REFGETSTORE_S3/<store_name>     (S3 sync target)
 
 Usage:
-    source ../env.sh
+    source ../infra/rivanna/env.sh
     python build.py jungle          # Build one store
     python build.py all             # Build all stores
     python build.py jungle --sync   # Build and sync to S3

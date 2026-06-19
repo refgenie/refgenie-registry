@@ -41,7 +41,7 @@ The store provides these alias namespaces for sequence lookup:
 1. Build the store with the standard build script:
 
 ```bash
-source ../env.sh
+source ../../infra/rivanna/env.sh
 python ../build.py vrs
 ```
 

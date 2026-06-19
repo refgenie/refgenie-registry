@@ -11,7 +11,7 @@ module load gcc/11.4.0 openmpi/4.1.4 python/3.11.4
 source ~/envs/refgetstore-analysis/bin/activate
 
 cd ~/code/refgenie-registry/stores
-source ../env.sh
+source ~/code/refgenie-registry/infra/rivanna/env.sh
 
 export DOWNLOAD_DIR=$REFGETSTORE_BASE/.downloads_igenomes
 mkdir -p $DOWNLOAD_DIR

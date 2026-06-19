@@ -35,7 +35,7 @@ Per-store behaviour is controlled by ``STORE_CONFIGS`` below (and overridable
 on the command line). Output is written into the store in place.
 
 Usage:
-    source ../env.sh
+    source ../infra/rivanna/env.sh
     python build_aliases.py jungle                 # use STORE_CONFIGS default
     python build_aliases.py vgp --dry-run
     python build_aliases.py vgp --store-path /tmp/test_store

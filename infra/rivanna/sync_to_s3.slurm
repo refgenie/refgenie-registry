@@ -13,7 +13,7 @@
 
 module load gcc/11.4.0 openmpi/4.1.4 python/3.11.4
 source ~/envs/refgetstore-analysis/bin/activate
-source ~/code/refgenie-registry/env.sh
+source ~/code/refgenie-registry/infra/rivanna/env.sh
 
 # RefgetStores are millions of tiny per-sequence files (salmon ~1.5M, vrs ~780k).
 # aws s3 sync defaults to 10 concurrent requests -> latency-bound, days slow.

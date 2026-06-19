@@ -8,14 +8,14 @@
 #SBATCH --output=build_%x_%j.log
 
 # Build one RefgetStore from its PEP. Pass the store name as the first arg:
-#   sbatch --job-name=build-salmon build_store.slurm salmon_txomes
+#   sbatch --job-name=build-salmon infra/rivanna/build_store.slurm salmon_txomes
 # FASTAs are read from the per-store download cache (already populated).
 
 module load gcc/11.4.0 openmpi/4.1.4 python/3.11.4
 source ~/envs/refgetstore-analysis/bin/activate
 
 cd ~/code/refgenie-registry/stores
-source ../env.sh
+source ~/code/refgenie-registry/infra/rivanna/env.sh
 
 STORE="$1"
 echo "Building store '$STORE' at $(date)"

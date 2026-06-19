@@ -1,5 +1,7 @@
 # RefgetStore registry environment.
-# Source from the stores/ directory before building:  source ../env.sh
+# Source before building, e.g. from the stores/ directory:
+#   source ../infra/rivanna/env.sh
+# (the SLURM jobs in this folder source it by absolute path).
 
 # Local build output directory (Rivanna brickyard).
 export REFGETSTORE_BASE=/project/shefflab/brickyard/datasets_downloaded/refgenomes_fasta/refget-store

@@ -31,6 +31,7 @@ The repository is organized as:
 - **`stores/`** — RefgetStore source manifests: content-addressable sequence collections, one PEP project per store (see [`stores/README.md`](stores/README.md))
 - **`schema/`** — JSON Schemas for genome and recipe entries
 - **`tools/`** — Validation scripts and helpers (see [`tools/README.md`](tools/README.md))
+- **`infra/`** — Operator-side build/deploy infrastructure, e.g. the Rivanna HPC layer ([`infra/rivanna/`](infra/rivanna/)); not needed to use the registry
 
 ## Contributing
 

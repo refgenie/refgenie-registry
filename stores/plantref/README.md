@@ -59,10 +59,10 @@ metadata is parsed from each legacy filename:
 ## Build
 
 ```bash
-source ../env.sh
+source ../infra/rivanna/env.sh
 python build.py plantref            # local
-# on Rivanna:
-sbatch --job-name=build-plantref build_store.slurm plantref
+# on Rivanna (submit from repo root):
+sbatch --job-name=build-plantref infra/rivanna/build_store.slurm plantref
 ```
 
 ## Aliases (post-build)
