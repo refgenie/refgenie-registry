@@ -13,3 +13,12 @@ export REFGETSTORE_FASTA=/project/shefflab/brickyard/datasets_downloaded/refgeno
 
 # S3 sync target.
 export REFGETSTORE_S3=s3://refgenie/refget-store
+
+# Absolute path to the host refgenie (refgenie1) entry point used by the build
+# rules. MUST be the real host binary, NOT a bulker shim: the mobot driver job
+# runs under `bulker activate databio/lab`, so a bare `command -v refgenie`
+# resolves to an EPHEMERAL bulker shim under /scratch/.../bulker_XXXX/ that does
+# not exist in the snakemake-submitted SLURM build children (genome_init then
+# fails with "command exited with non-zero exit code"). Pin the host wrapper so
+# run_builds.sh substitutes a stable absolute path into the generated Snakefile.
+export REFGENIE_BIN="${REFGENIE_BIN:-/home/ns5bc/.local/bin/refgenie}"
