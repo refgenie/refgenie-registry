@@ -7,6 +7,7 @@ tags:
 - annotation
 - rna-seq
 - transcript-gene-map
+produces: tgMap
 requires:
   assets:
   - name: salmon_partial_sa_index

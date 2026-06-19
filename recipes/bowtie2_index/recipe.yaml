@@ -8,6 +8,7 @@ tags:
 - alignment
 - dna-seq
 - short-read
+produces: bowtie2_index
 requires:
   assets:
   - name: fasta

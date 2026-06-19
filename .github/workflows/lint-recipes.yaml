@@ -4,7 +4,9 @@ on:
   pull_request:
     paths:
       - "recipes/**"
+      - "asset_classes/**"
       - "schema/recipe.schema.yaml"
+      - "schema/asset_class.schema.yaml"
 
 permissions:
   contents: read
@@ -28,6 +30,50 @@ jobs:
         run: |
           pip install -r tools/requirements.txt
           sudo apt-get update && sudo apt-get install -y shellcheck
+
+      - name: Validate asset class definitions
+        run: |
+          python - <<'PY'
+          import glob
+          import sys
+          import yaml
+          from jsonschema import Draft202012Validator
+
+          schema_path = "schema/asset_class.schema.yaml"
+          try:
+              with open(schema_path) as f:
+                  schema = yaml.safe_load(f)
+          except FileNotFoundError:
+              print(f"ERROR: {schema_path} not found")
+              sys.exit(1)
+
+          validator = Draft202012Validator(schema)
+          files = sorted(glob.glob("asset_classes/*.yaml"))
+          if not files:
+              print("No asset_classes/*.yaml files found.")
+              sys.exit(0)
+
+          failed = False
+          for path in files:
+              with open(path) as f:
+                  data = yaml.safe_load(f)
+              errors = [e.message for e in validator.iter_errors(data)]
+              if errors:
+                  failed = True
+                  print(f"FAIL {path}")
+                  for e in errors:
+                      print(f"  - {e}")
+              else:
+                  print(f"PASS {path}")
+          sys.exit(1 if failed else 0)
+          PY
+
+      - name: Cross-check recipe asset-class references
+        run: |
+          # validate_recipe.py verifies that every recipe's `produces` and
+          # `requires.assets[].name` resolve to an asset_classes/<name>.yaml file.
+          # Run across all recipes so an asset-class change re-checks references.
+          python tools/validate_recipe.py --no-url-check recipes/*/recipe.yaml
 
       - name: Identify changed recipe files
         id: changed

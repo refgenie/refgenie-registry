@@ -18,8 +18,10 @@ import yaml
 from jsonschema import Draft202012Validator
 
 
-SCHEMA_PATH = Path(__file__).resolve().parent.parent / "schema" / "recipe.schema.yaml"
-RECIPES_DIR = Path(__file__).resolve().parent.parent / "recipes"
+REPO_ROOT = Path(__file__).resolve().parent.parent
+SCHEMA_PATH = REPO_ROOT / "schema" / "recipe.schema.yaml"
+RECIPES_DIR = REPO_ROOT / "recipes"
+ASSET_CLASSES_DIR = REPO_ROOT / "asset_classes"
 
 SUSPICIOUS_PATTERNS = [
     (r"curl\s.*\|\s*(?:ba)?sh", "Piping curl output to shell is not allowed"),
@@ -66,6 +68,8 @@ def check_required_fields(data: dict) -> list[str]:
         errors.append("Missing required field: name")
     if not data.get("version"):
         errors.append("Missing required field: version")
+    if not data.get("produces"):
+        errors.append("Missing required field: produces (output asset class name)")
     build = data.get("build", {})
     if not build.get("command"):
         errors.append("Missing required field: build.command")
@@ -155,6 +159,65 @@ def check_test_data_urls(data: dict, timeout: int = 15) -> list[str]:
     return errors
 
 
+def _asset_class_exists(name: str) -> bool:
+    return (ASSET_CLASSES_DIR / f"{name}.yaml").exists()
+
+
+def check_asset_class_references(data: dict) -> list[str]:
+    """Hard check: `produces` must reference an existing asset class.
+
+    The asset class must have a definition file at asset_classes/<name>.yaml.
+    If the asset_classes/ directory does not exist yet (e.g., it is being
+    created in a separate change), report that clearly rather than crashing.
+    Input references (requires.assets[].name) are checked separately and
+    reported as warnings -- see check_input_asset_references.
+    """
+    errors = []
+    produces = data.get("produces")
+    if not produces:
+        return errors  # missing-field error handled in check_required_fields
+
+    if not ASSET_CLASSES_DIR.is_dir():
+        errors.append(
+            f"Cannot verify 'produces' reference '{produces}': asset class "
+            f"directory not found ({ASSET_CLASSES_DIR})"
+        )
+        return errors
+
+    if not _asset_class_exists(produces):
+        errors.append(
+            f"produces references asset class '{produces}', but "
+            f"asset_classes/{produces}.yaml does not exist"
+        )
+    return errors
+
+
+def check_input_asset_references(data: dict) -> list[str]:
+    """Soft check (warnings): requires.assets[].name should reference an
+    existing asset class.
+
+    NOTE: these are non-fatal WARNINGS, not errors. In the current recipe
+    format the asset `name` doubles as the build-command template variable
+    (e.g. {fasta_txome}, {ensembl_gtf}), so it cannot always equal the
+    asset-class name without a discriminator field. Resolving that coupling
+    is a known input-modeling gap owned by the importer/asset-class redesign
+    follow-up; until then, mismatches are reported but do not fail validation.
+    """
+    warnings = []
+    assets = data.get("requires", {}).get("assets", []) or []
+    if not ASSET_CLASSES_DIR.is_dir():
+        return warnings  # can't check; produces check already flagged this
+    for asset in assets:
+        name = asset.get("name")
+        if name and not _asset_class_exists(name):
+            warnings.append(
+                f"requires.assets[].name '{name}' does not resolve to an asset "
+                f"class (asset_classes/{name}.yaml missing). Likely a build "
+                f"template variable; input-asset modeling is a known follow-up."
+            )
+    return warnings
+
+
 def check_version_format(data: dict) -> list[str]:
     """Validate semver format."""
     errors = []
@@ -168,18 +231,23 @@ def check_version_format(data: dict) -> list[str]:
 
 def validate_recipe(
     path: Path, schema: dict, check_urls: bool = True
-) -> list[str]:
-    """Run all validation checks on a single recipe file. Return list of errors."""
+) -> tuple[list[str], list[str]]:
+    """Run all validation checks on a single recipe file.
+
+    Return (errors, warnings). Errors are fatal (non-zero exit); warnings are
+    reported but do not fail validation.
+    """
     errors = []
+    warnings = []
 
     # 1. YAML syntax
     syntax_err = check_yaml_syntax(path)
     if syntax_err:
-        return [syntax_err]
+        return [syntax_err], []
 
     data = load_recipe(path)
     if not isinstance(data, dict):
-        return [f"Expected a YAML mapping, got {type(data).__name__}"]
+        return [f"Expected a YAML mapping, got {type(data).__name__}"], []
 
     # 2. JSON Schema validation
     errors.extend(validate_schema(data, schema))
@@ -199,6 +267,12 @@ def validate_recipe(
     # 7. Tool source check
     errors.extend(check_tool_sources(data))
 
+    # 7b. Asset class output reference (produces) -- hard error
+    errors.extend(check_asset_class_references(data))
+
+    # 7c. Asset class input references (requires.assets[].name) -- warnings
+    warnings.extend(check_input_asset_references(data))
+
     # 8. Shellcheck
     errors.extend(check_shellcheck(data))
 
@@ -206,7 +280,7 @@ def validate_recipe(
     if check_urls:
         errors.extend(check_test_data_urls(data))
 
-    return errors
+    return errors, warnings
 
 
 def main():
@@ -227,7 +301,9 @@ def main():
             print(f"SKIP {filepath} (file not found)")
             continue
 
-        errors = validate_recipe(filepath, schema, check_urls=not args.no_url_check)
+        errors, warnings = validate_recipe(
+            filepath, schema, check_urls=not args.no_url_check
+        )
         if errors:
             all_passed = False
             print(f"FAIL {filepath}")
@@ -235,6 +311,8 @@ def main():
                 print(f"  - {err}")
         else:
             print(f"PASS {filepath}")
+        for warn in warnings:
+            print(f"  ! WARNING: {warn}")
 
     sys.exit(0 if all_passed else 1)
 

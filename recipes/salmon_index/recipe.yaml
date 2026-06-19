@@ -8,6 +8,7 @@ tags:
 - quantification
 - rna-seq
 - pseudoalignment
+produces: salmon_index
 requires:
   assets:
   - name: fasta

@@ -9,6 +9,7 @@ tags:
 - reference
 - sequence
 - foundational
+produces: fasta
 requires:
   assets: []
   tools:

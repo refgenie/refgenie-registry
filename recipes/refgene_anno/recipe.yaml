@@ -8,6 +8,7 @@ tags:
 - refgene
 - tss
 - gene-model
+produces: refgene_anno
 requires:
   assets: []
   files:

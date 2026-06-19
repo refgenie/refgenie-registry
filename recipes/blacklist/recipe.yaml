@@ -8,6 +8,7 @@ tags:
 - qc
 - filtering
 - encode
+produces: blacklist
 requires:
   assets: []
   files:

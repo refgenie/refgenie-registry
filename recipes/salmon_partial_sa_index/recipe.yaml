@@ -10,6 +10,7 @@ tags:
 - rna-seq
 - pseudoalignment
 - selective-alignment
+produces: salmon_partial_sa_index
 requires:
   assets:
   - name: fasta

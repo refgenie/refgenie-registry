@@ -9,6 +9,7 @@ tags:
 - bisulfite-seq
 - methylation
 - epigenetics
+produces: bismark_bt1_index
 requires:
   assets:
   - name: fasta

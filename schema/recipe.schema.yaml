@@ -7,13 +7,14 @@ required:
   - name
   - version
   - description
+  - produces
   - build
   - outputs
 properties:
   name:
     type: string
-    pattern: "^[a-z0-9_]+$"
-    description: Recipe identifier (lowercase, underscores allowed).
+    pattern: "^[a-zA-Z0-9_]+$"
+    description: Recipe identifier (alphanumeric and underscores allowed).
   version:
     type: string
     pattern: "^\\d+\\.\\d+\\.\\d+$"
@@ -21,6 +22,12 @@ properties:
   description:
     type: string
     description: Human-readable description of what this recipe builds.
+  produces:
+    type: string
+    pattern: "^[a-zA-Z0-9_]+$"
+    description: >
+      Name of the output asset class this recipe produces. Must reference
+      an existing asset class definition (asset_classes/<name>.yaml).
   tags:
     type: array
     items:
@@ -38,12 +45,37 @@ properties:
           properties:
             name:
               type: string
-              description: Name of the required asset (e.g., fasta).
+              description: >
+                Name of a required input asset class (e.g., fasta). Must
+                reference an existing asset class definition
+                (asset_classes/<name>.yaml).
             description:
               type: string
               description: What this asset is used for.
+            default:
+              type: string
+              description: >
+                Default asset class to satisfy this input when none is
+                specified (e.g., gencode_gtf for a generic gtf input).
           additionalProperties: false
         description: Assets that must exist before this recipe can build.
+      files:
+        type: array
+        items:
+          type: object
+          required:
+            - name
+          properties:
+            name:
+              type: string
+              description: >
+                Name of a required input file. Doubles as the build-command
+                template variable (e.g., {dbsnp_vcf}).
+            description:
+              type: string
+              description: What this file is used for.
+          additionalProperties: false
+        description: User-supplied input files that must be provided to build.
       tools:
         type: array
         items:

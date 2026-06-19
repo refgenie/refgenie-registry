@@ -9,6 +9,7 @@ tags:
 - index
 - reference
 - foundational
+produces: fasta_index
 requires:
   assets:
   - name: fasta

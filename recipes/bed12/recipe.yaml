@@ -5,6 +5,7 @@ description: |
 tags:
 - annotation
 - bed
+produces: bed
 requires:
   assets: []
   files:

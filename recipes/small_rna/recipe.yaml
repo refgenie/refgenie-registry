@@ -8,6 +8,7 @@ tags:
 - small-rna
 - mirna
 - non-coding
+produces: small_rna
 requires:
   assets: []
   files:

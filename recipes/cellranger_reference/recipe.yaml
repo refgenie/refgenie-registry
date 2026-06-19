@@ -8,6 +8,7 @@ tags:
 - single-cell
 - rna-seq
 - 10x-genomics
+produces: cellranger_reference
 requires:
   assets:
   - name: fasta
@@ -18,7 +19,6 @@ requires:
   tools:
   - name: cellranger
     version: '>=7.0.0'
-    source: 10x-genomics
 build:
   command: |
     gunzip {gtf} -c > {output_dir}/{genome}.gtf

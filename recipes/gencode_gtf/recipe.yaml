@@ -7,6 +7,7 @@ tags:
 - annotation
 - gtf
 - gencode
+produces: gtf
 requires:
   assets: []
   files:

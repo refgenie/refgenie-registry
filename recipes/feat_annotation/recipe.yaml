@@ -8,6 +8,7 @@ tags:
 - annotation
 - genomic-features
 - ensembl
+produces: feat_annotation
 requires:
   assets:
   - name: ensembl_gtf

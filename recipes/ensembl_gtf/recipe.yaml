@@ -8,6 +8,7 @@ tags:
 - gtf
 - ensembl
 - tss
+produces: gtf
 requires:
   assets: []
   files:

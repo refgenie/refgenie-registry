@@ -8,6 +8,7 @@ tags:
 - alignment
 - rna-seq
 - spliced-alignment
+produces: star_index
 requires:
   assets:
   - name: fasta

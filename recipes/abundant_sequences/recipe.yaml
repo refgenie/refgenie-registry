@@ -8,6 +8,7 @@ tags:
 - contamination
 - qc
 - spike-in
+produces: abundant_sequences
 requires:
   assets: []
   files:

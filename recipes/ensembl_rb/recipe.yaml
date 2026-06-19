@@ -8,6 +8,7 @@ tags:
 - annotation
 - regulatory
 - ensembl
+produces: ensembl_rb
 requires:
   assets: []
   files:

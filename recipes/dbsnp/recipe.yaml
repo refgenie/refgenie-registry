@@ -8,6 +8,7 @@ tags:
 - variant-annotation
 - database
 - snp
+produces: dbsnp
 requires:
   assets: []
   files:

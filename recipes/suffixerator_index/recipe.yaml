@@ -7,6 +7,7 @@ tags:
 - index
 - suffix-array
 - genomics
+produces: suffixerator_index
 requires:
   assets:
   - name: fasta

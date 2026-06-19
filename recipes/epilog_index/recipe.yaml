@@ -8,6 +8,7 @@ tags:
 - methylation
 - epigenetics
 - index
+produces: epilog_index
 requires:
   assets:
   - name: fasta
