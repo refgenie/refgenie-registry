@@ -29,7 +29,7 @@ The repository is organized as:
 - **`recipes/`** — YAML build recipes for creating genome assets (community-contributed via PR)
 - **`index/`** — Auto-generated manifest of built assets (CI-only, no human edits — see [`index/README.md`](index/README.md))
 - **`stores/`** — RefgetStore source manifests: content-addressable sequence collections, one PEP project per store (see [`stores/README.md`](stores/README.md))
-- **`schema/`** — JSON Schemas for genome and recipe entries
+- **`schema/`** — JSON Schemas that genome and recipe entries are validated against (see [`schema/README.md`](schema/README.md))
 - **`tools/`** — Validation scripts and helpers (see [`tools/README.md`](tools/README.md))
 - **`infra/`** — Operator-side build/deploy infrastructure, e.g. the Rivanna HPC layer ([`infra/rivanna/`](infra/rivanna/)); not needed to use the registry
 
@@ -81,13 +81,3 @@ Contributions go through three layers of review:
 1. **Programmatic validation** — schema checks, URL verification, security scanning (< 2 min)
 2. **AI review** — Claude evaluates appropriateness, quality, and security (< 5 min)
 3. **Human confirmation** — a maintainer reviews the AI summary and approves
-
-## Schemas
-
-- [`schema/genome.schema.yaml`](schema/genome.schema.yaml) — JSON Schema for genome entries
-- [`schema/recipe.schema.yaml`](schema/recipe.schema.yaml) — JSON Schema for recipe entries
-
-## Links
-
-- [refgenie.org](https://refgenie.org) — Documentation
-- [github.com/refgenie](https://github.com/refgenie) — Organization
