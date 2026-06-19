@@ -66,19 +66,42 @@ def main():
         if genome_assets:
             assets[genome_entry] = genome_assets
 
+    manifest_path = os.path.join(index_dir, "manifest.yaml")
+
+    # Load the existing manifest (if any) so we only refresh the `updated`
+    # timestamp when the substantive content actually changed. Otherwise every
+    # run would bump the timestamp and produce a no-op "regenerate" commit.
+    existing = {}
+    if os.path.isfile(manifest_path):
+        try:
+            with open(manifest_path) as f:
+                existing = yaml.safe_load(f) or {}
+        except Exception as e:
+            print(f"WARNING: Failed to read existing manifest: {e}")
+
+    content_changed = (
+        existing.get("assets") != assets
+        or existing.get("total_assets") != total
+    )
+
+    if content_changed or not existing.get("updated"):
+        updated = datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
+    else:
+        updated = existing["updated"]
+
     manifest = {
-        "updated": datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"),
+        "updated": updated,
         "assets": assets,
         "total_assets": total,
     }
 
-    manifest_path = os.path.join(index_dir, "manifest.yaml")
     with open(manifest_path, "w") as f:
         yaml.dump(manifest, f, default_flow_style=False, sort_keys=False)
 
     print(f"Regenerated manifest: {manifest_path}")
     print(f"  Genomes: {len(assets)}")
     print(f"  Total assets: {total}")
+    print(f"  Content changed: {content_changed}")
 
 
 if __name__ == "__main__":
