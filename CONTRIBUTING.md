@@ -56,13 +56,22 @@ metadata:
 
 ## Adding a Recipe
 
+Recipes use a **bioconda-style format**. A recipe needs two things: the recipe
+file itself, and a matching **asset class** that types its output (defines the
+seek keys). Both reference asset classes by name.
+
 1. Fork this repo and create a branch.
-2. Create `recipes/<asset_name>/recipe.yaml` following the schema.
-3. Open a PR with title: "Add recipe: \<asset_name\>"
+2. **Write the recipe** at `recipes/<asset_name>/recipe.yaml`, including a
+   `produces:` field naming the output asset class.
+3. **Add or reference an asset class** at `asset_classes/<name>.yaml` for the
+   class named in `produces:` (and for any input class in
+   `requires.assets[].name`). If a matching asset class already exists, just
+   reference it; if not, contribute it in the same PR.
+4. Open a PR with title: "Add recipe: \<asset_name\>"
 
-**Required fields:** `name`, `version`, `description`, `build.command`, `outputs`
+**Required recipe fields:** `name`, `version`, `description`, `produces`, `build.command`, `outputs`
 
-**Example** (see `recipes/bwa_index/recipe.yaml` for a complete reference):
+**Example recipe** (see `recipes/bwa_index/recipe.yaml` for a complete reference):
 
 ```yaml
 name: my_asset
@@ -71,7 +80,11 @@ version: 1.0.0
 description: |
   What this recipe builds and why.
 
+# Output asset class this recipe produces. Must match an asset_classes/<name>.yaml.
+produces: my_asset
+
 requires:
+  # Input asset classes. Each `name` must match an asset_classes/<name>.yaml.
   assets:
     - name: fasta
       description: Reference FASTA file
@@ -89,6 +102,8 @@ build:
     disk: 10GB
     time: 2h
 
+# CI / file validation only. These globs do NOT define seek keys — the asset
+# class does (see below).
 outputs:
   - pattern: "*.ext"
     description: What this output file is
@@ -103,7 +118,36 @@ metadata:
   license: MIT
 ```
 
-**Build variables:** `{fasta}`, `{output_dir}`, `{genome}`, `{threads}`
+**Example asset class** (`asset_classes/my_asset.yaml`) — the **source of truth**
+for the asset's seek keys:
+
+```yaml
+name: my_asset
+version: 1.0.0
+
+description: |
+  What this asset class represents.
+
+# Named handles into the asset's files, addressable as genome/asset.<seek_key>.
+seek_keys:
+  index:
+    value: "{genome}.ext"
+    type: file
+    description: The main output file
+
+serving_modes:
+  - drs
+```
+
+**Build variables** (available in `build.command` and `test.commands`):
+`{fasta}`, `{output_dir}`, `{genome}`, `{threads}`.
+
+> The recipe and asset class are separate layers: the recipe says *how to build*,
+> the asset class says *what the output is* (its seek keys / serving modes). At
+> import time a converting importer translates both into refgenie1
+> (`build.command` -> command templates, `requires.assets` -> input assets,
+> `produces` -> output asset class, seek keys from the asset class). See
+> [design.md](./design.md) and the recipe-format ADR for details.
 
 **Security guidelines:**
 - No `curl | bash` or `wget | sh`
@@ -130,6 +174,10 @@ pip install -r tools/requirements.txt
 python tools/validate_genome.py genomes/<organism>/<assembly>.yaml
 python tools/validate_recipe.py recipes/<asset_name>/recipe.yaml
 ```
+
+Validation also checks that every recipe's `produces` and
+`requires.assets[].name` reference an existing `asset_classes/<name>.yaml`, so add
+the asset class in the same PR if it doesn't already exist.
 
 ## Review Process
 

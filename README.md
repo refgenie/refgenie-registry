@@ -27,10 +27,18 @@ are then published to **api.refgenie.org**. Rather than storing large genome fil
 the registry stores the **definitions** (where a genome comes from, how to build
 its assets) and a generated index of what has been built.
 
+The registry is the human-facing layer. Its bioconda-style recipes and typed
+asset classes are translated into refgenie1's native model by a **converting
+importer** (`tools/import_recipes.py`): recipe `build.command` becomes command
+templates, `requires.assets` become input assets, `produces` becomes the output
+asset class, and seek keys come from the asset class. See [design.md](./design.md)
+for the full data model.
+
 The repository is organized as:
 
 - **`genomes/`** — YAML definitions of genome assemblies (community-contributed via PR)
-- **`recipes/`** — YAML build recipes for creating genome assets (community-contributed via PR)
+- **`recipes/`** — Bioconda-style YAML build recipes for creating genome assets (community-contributed via PR)
+- **`asset_classes/`** — Typed asset-class definitions: the **source of truth** for an asset's seek keys and serving modes. Recipes reference these by name (community-contributed via PR)
 - **`index/`** — Auto-generated manifest of built assets (CI-only, no human edits — see [`index/README.md`](index/README.md))
 - **`stores/`** — RefgetStore source manifests: content-addressable sequence collections, one PEP project per store (see [`stores/README.md`](stores/README.md))
 - **`schema/`** — JSON Schemas that genome and recipe entries are validated against (see [`schema/README.md`](schema/README.md))
@@ -55,14 +63,16 @@ Define a new genome assembly. Fork, branch, and create
 
 ### Add a recipe
 
-Define how to build an asset (e.g. an aligner index). Fork, branch, and create
-`recipes/<asset_name>/recipe.yaml`, then open a PR titled
+Define how to build an asset (e.g. an aligner index) in the bioconda-style recipe
+format. Fork, branch, create `recipes/<asset_name>/recipe.yaml`, add or reference
+a matching `asset_classes/<name>.yaml`, then open a PR titled
 "Add recipe: \<asset_name\>".
 
-- **Required fields:** `name`, `version`, `description`, `build.command`, `outputs`
+- **Required recipe fields:** `name`, `version`, `description`, `produces`, `build.command`, `outputs`
+- **`produces`** names the output asset class; `requires.assets[].name` names input asset classes. Both must reference an existing `asset_classes/<name>.yaml` (the source of truth for seek keys). `outputs` globs are for CI/file validation only.
 - **Build variables:** `{fasta}`, `{output_dir}`, `{genome}`, `{threads}`
 - Recipes must follow the [security guidelines](./CONTRIBUTING.md#adding-a-recipe) (no piped shell installs, no credentials, no access outside `{output_dir}`, tools from bioconda/conda-forge only).
-- See [`recipes/bwa_index/recipe.yaml`](recipes/bwa_index/recipe.yaml) for a complete reference.
+- See [`recipes/bwa_index/recipe.yaml`](recipes/bwa_index/recipe.yaml) for a complete reference and [design.md](./design.md) for the data model.
 
 ### Request a build
 
