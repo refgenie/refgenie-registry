@@ -19,6 +19,16 @@ What this tool does:
    EXCEPT for stripping optional additive non-runtime keys that refgenie1's
    strict ``Recipe`` model does not accept.
 
+Import is IDEMPOTENT ("sync", not "overwrite"). The build catalog is persistent
+and re-imported every night, so any asset class or recipe whose ``(name,
+version)`` is already present is left untouched and SKIPPED — versioned
+definitions are immutable, so a matching version in the catalog is by definition
+identical. A genuinely changed definition bumps its version and imports as a new
+version. This deliberately avoids the overwrite path: ``AssetClassManager.add(
+exists_overwrite=True)`` would call ``remove()``, which raises ``ConfigError``
+when an existing recipe references the asset class, aborting the whole import.
+The overwrite path is never exercised.
+
 The ONLY transformation performed is dropping the additive non-runtime keys
 ``tags``, ``outputs``, ``test``, ``resources``, and ``metadata`` (provenance /
 CI / UX metadata that the builder ignores). No runtime field is renamed or
@@ -95,13 +105,17 @@ def strip_non_native_keys(recipe_dict: dict[str, Any]) -> tuple[dict[str, Any], 
 def import_registry(
     refgenie: Any,
     registry_root: Path,
-    exists_overwrite: bool = True,
     verbose: bool = True,
 ) -> dict[str, Any]:
     """Load all asset classes and (native) recipes from ``registry_root`` into
     the provided ``Refgenie`` instance.
 
-    Returns a summary dict with counts and any notes.
+    Idempotent "sync" semantics: any asset class or recipe whose ``(name,
+    version)`` is already present in the (persistent) catalog is SKIPPED, not
+    re-added or overwritten. Only genuinely new ``(name, version)`` definitions
+    are added, via the default ``exists_overwrite=False`` path.
+
+    Returns a summary dict with counts, skips, and any notes.
     """
 
     def log(msg: str) -> None:
@@ -111,47 +125,62 @@ def import_registry(
     summary: dict[str, Any] = {
         "asset_classes_imported": [],
         "recipes_imported": [],
+        "skipped": [],
         "notes": [],
         "errors": [],
     }
 
     # 1. Asset classes first (no interdependencies). Registry asset classes are
-    #    already refgenie-native and are loaded unchanged.
+    #    already refgenie-native and are loaded unchanged. Skip any (name,
+    #    version) already present so re-import into a populated catalog is a
+    #    no-op (never touches the ConfigError-raising overwrite/remove path).
     for path in discover_asset_classes(registry_root):
         d = load_yaml(path)
+        name, version = d["name"], d.get("version")
         try:
-            refgenie.asset_class.add(path, exists_overwrite=exists_overwrite)
-            summary["asset_classes_imported"].append(d["name"])
-            log(f"[asset_class] loaded {d['name']} v{d.get('version')}")
+            if version is not None and refgenie.asset_class.exists(name, version):
+                summary["skipped"].append(f"asset_class {name} v{version}")
+                log(f"[asset_class] skip {name} v{version} (already present)")
+                continue
+            refgenie.asset_class.add(path)
+            summary["asset_classes_imported"].append(name)
+            log(f"[asset_class] loaded {name} v{version}")
         except Exception as exc:  # noqa: BLE001
-            summary["errors"].append(f"asset_class {d.get('name')}: {exc}")
+            summary["errors"].append(f"asset_class {name}: {exc}")
             raise
 
     # 2. Recipes. They are already refgenie-native; the only transformation is
     #    stripping additive non-runtime keys (tags/outputs/test/resources/
     #    metadata), which the strict Recipe model does not accept. The
     #    native-only recipe is written to a temp YAML so RecipeManager.add()
-    #    (which loads from a path/URL) can ingest it.
+    #    (which loads from a path/URL) can ingest it. Skip any (name, version)
+    #    already present; only write the temp file when actually adding.
     for path in discover_recipes(registry_root):
         recipe_dict = load_yaml(path)
+        name, version = recipe_dict["name"], recipe_dict["version"]
+        if refgenie.recipe.exists(name, version):
+            summary["skipped"].append(f"recipe {name} v{version}")
+            log(f"[recipe] skip {name} v{version} (already present)")
+            continue
+
         native_recipe, stripped = strip_non_native_keys(recipe_dict)
         if stripped:
             note = f"stripped non-native keys: {', '.join(stripped)}"
-            summary["notes"].append(f"{recipe_dict['name']}: {note}")
-            log(f"[recipe:{recipe_dict['name']}] {note}")
+            summary["notes"].append(f"{name}: {note}")
+            log(f"[recipe:{name}] {note}")
 
         with tempfile.NamedTemporaryFile("w", suffix=".yaml", delete=False) as tmp:
             yaml.safe_dump(native_recipe, tmp, default_flow_style=False, sort_keys=False)
             tmp_path = Path(tmp.name)
         try:
-            refgenie.recipe.add(tmp_path, exists_overwrite=exists_overwrite)
-            summary["recipes_imported"].append(recipe_dict["name"])
+            refgenie.recipe.add(tmp_path)
+            summary["recipes_imported"].append(name)
             log(
-                f"[recipe] loaded {recipe_dict['name']} v{recipe_dict['version']} "
+                f"[recipe] loaded {name} v{version} "
                 f"-> {native_recipe['output_asset_class']}"
             )
         except Exception as exc:  # noqa: BLE001
-            summary["errors"].append(f"recipe {recipe_dict['name']}: {exc}")
+            summary["errors"].append(f"recipe {name}: {exc}")
             raise
         finally:
             tmp_path.unlink(missing_ok=True)
@@ -228,6 +257,7 @@ def main(argv: list[str] | None = None) -> int:
     print("\n=== Load summary ===")
     print(f"Asset classes loaded: {len(summary['asset_classes_imported'])}")
     print(f"Recipes loaded:       {len(summary['recipes_imported'])}")
+    print(f"Skipped (present):    {len(summary['skipped'])}")
     if summary["notes"]:
         print(f"Notes:                {len(summary['notes'])}")
     if summary["errors"]:

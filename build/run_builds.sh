@@ -82,30 +82,42 @@ SNAKEFILE="$BUILD_DIR/Snakefile"
 # for the snakemake subprocess. Without this the importer writes to a throwaway
 # DB and the Snakefile can't find any recipes ("MissingRecipeError").
 #
-# We REBUILD this DB from scratch every run: the registry's asset_classes/ +
-# recipes/ are the source of truth and are reloaded in full each time. Re-importing
-# into a populated DB fails (an existing recipe blocks overwriting its asset class),
-# so starting clean keeps the build idempotent. Genomes are re-initialized with
-# `--force` and assets are rebuilt, so nothing of value is lost by resetting.
-# Operators can point REFGENIE_DB_CONFIG_PATH elsewhere to use their own DB.
+# This catalog is PERSISTENT and shared across nightly runs (and by every SLURM
+# build child via the exported REFGENIE_DB_CONFIG_PATH). It is refgenie1's
+# durable metadata store that drives the build->stage->push lifecycle, so it is
+# NOT wiped each run. Instead:
+#   - recipes/asset_classes are synced idempotently (import_recipes.py skips any
+#     (name, version) already present), and
+#   - genomes are reconciled (reconcile_genomes.py) so a fresh/empty catalog
+#     always ends up with its genome + alias rows before any build stages.
+# The default paths (see infra/rivanna/env.sh) live on brickyard, OUTSIDE the
+# git checkout, so a nightly git pull/clean on the mobot host cannot destroy the
+# catalog. Operators can point REFGENIE_DB_CONFIG_PATH/REFGENIE_BUILD_DB
+# elsewhere (e.g. a laptop) via the ${VAR:-default} fallbacks below.
 export REFGENIE_DB_CONFIG_PATH="${REFGENIE_DB_CONFIG_PATH:-$BUILD_DIR/.refgenie_build_db_config.yaml}"
 REFGENIE_BUILD_DB="${REFGENIE_BUILD_DB:-$BUILD_DIR/.refgenie_build.sqlite}"
 
 echo "$(date) | run_builds: REGISTRY_DIR=$REGISTRY_DIR"
 echo "$(date) | run_builds: REFGENIE_INPUTS=$REFGENIE_INPUTS"
 echo "$(date) | run_builds: REFGENIE_DB_CONFIG_PATH=$REFGENIE_DB_CONFIG_PATH"
+echo "$(date) | run_builds: REFGENIE_BUILD_DB=$REFGENIE_BUILD_DB"
 echo "$(date) | run_builds: REFGENIE_BIN=$REFGENIE_BIN  DRY_RUN=${DRY_RUN:-0}"
 
-# Fresh build DB config + sqlite file each run.
+# (Re)write the small DB config each run (idempotent) and ensure the persistent
+# catalog's parent directory exists. The sqlite file itself is NOT removed — it
+# persists across runs and is updated in place.
+mkdir -p "$(dirname "$REFGENIE_BUILD_DB")"
+mkdir -p "$(dirname "$REFGENIE_DB_CONFIG_PATH")"
 cat > "$REFGENIE_DB_CONFIG_PATH" <<EOF
 path: $REFGENIE_BUILD_DB
 type: sqlite
 EOF
-rm -f "$REFGENIE_BUILD_DB"
-echo "$(date) | run_builds: reset build DB at $REFGENIE_BUILD_DB"
+echo "$(date) | run_builds: using persistent build DB at $REFGENIE_BUILD_DB"
 
 # --- 1. import recipes + render Snakefile (single refgenie1 instance) -----
 # Import into the build DB AND render the Snakefile from that same instance.
+# Recipe/asset-class import is idempotent (sync): anything already present is
+# skipped, so re-importing into the populated persistent catalog is safe.
 echo "$(date) | run_builds: importing asset_classes + recipes and generating Snakefile..."
 python3 tools/import_recipes.py --db-config "$REFGENIE_DB_CONFIG_PATH" --snakefile "$SNAKEFILE"
 
@@ -139,6 +151,36 @@ echo "$(date) | run_builds: pinned configfile/pepfile paths in Snakefile"
 #     Trailing space anchors the match so an already-plural `--params ` is untouched.
 sed -i "s/--param /--params /g" "$SNAKEFILE"
 echo "$(date) | run_builds: patched Snakefile build flag --param -> --params"
+
+# --- 2b. reconcile genomes with the persistent catalog --------------------
+# The genome_init sentinels (under the persistent alias folder) can outlive the
+# genome rows they represent (e.g. an earlier wipe, or a fresh catalog on a new
+# machine). When that happens snakemake skips genome_init but the catalog has no
+# `genome` row, so `refgenie build .../fasta --stage` dies with MissingGenomeError.
+# reconcile_genomes.py prunes stale sentinels for any PEP genome NOT registered
+# in the persistent catalog, forcing genome_init to re-run and repopulate the
+# genome + alias rows before any build stages. It also prints catalog counts.
+echo "$(date) | run_builds: reconciling genomes with persistent catalog..."
+python3 build/reconcile_genomes.py --db-config "$REFGENIE_DB_CONFIG_PATH"
+
+# Guard: for a real run, refuse to dispatch a build that is doomed to
+# MissingGenomeError. After reconcile, a PEP genome is safe to build iff it is
+# EITHER already registered in the catalog OR its genome_init sentinel is now
+# absent (so snakemake's genome_init rule will run and register it). A genome
+# that is still unregistered AND still sentinel-gated would have genome_init
+# skipped and its build would crash at staging. reconcile_genomes.py exits
+# non-zero from --check-dispatch-safe if any such genome remains. (A fresh
+# catalog legitimately has genome=0 here: reconcile prunes all sentinels, so
+# every genome is dispatch-safe and gets initialized during the snakemake run.)
+if [[ "${DRY_RUN:-0}" != "1" ]]; then
+    if ! python3 build/reconcile_genomes.py --db-config "$REFGENIE_DB_CONFIG_PATH" --check-dispatch-safe; then
+        echo "$(date) | run_builds: FATAL — one or more PEP genomes are unregistered in the" >&2
+        echo "  persistent catalog AND still sentinel-gated, so genome_init would be skipped" >&2
+        echo "  and their builds would fail with MissingGenomeError. Aborting before dispatch." >&2
+        echo "  Check genome_init inputs/logs and the reconcile output above." >&2
+        exit 1
+    fi
+fi
 
 # --- 3. dispatch builds via snakemake ------------------------------------
 SNAKEMAKE_ARGS=(

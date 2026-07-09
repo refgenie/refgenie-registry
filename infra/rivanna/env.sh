@@ -22,3 +22,14 @@ export REFGETSTORE_S3=s3://refgenie/refget-store
 # fails with "command exited with non-zero exit code"). Pin the host wrapper so
 # run_builds.sh substitutes a stable absolute path into the generated Snakefile.
 export REFGENIE_BIN="${REFGENIE_BIN:-/home/ns5bc/.local/bin/refgenie}"
+
+# Persistent refgenie1 build catalog (SQLite) + its DB config. This is
+# refgenie1's durable metadata store that drives the build->stage->push
+# lifecycle; it MUST persist across nightly runs, not be wiped. Co-locate it on
+# brickyard next to the genome store and the genome_init sentinels it must stay
+# consistent with (a nightly git pull/clean on the mobot host would blow away
+# anything kept inside the repo checkout). run_builds.sh mkdir -p's the parent
+# and writes the DB config here each run (idempotent); recipes are synced
+# idempotently and genomes are reconciled so the catalog self-heals.
+export REFGENIE_BUILD_DB="${REFGENIE_BUILD_DB:-/project/shefflab/brickyard/results_pipeline/refgenie/catalog/refgenie_build.sqlite}"
+export REFGENIE_DB_CONFIG_PATH="${REFGENIE_DB_CONFIG_PATH:-/project/shefflab/brickyard/results_pipeline/refgenie/catalog/refgenie_build_db_config.yaml}"
