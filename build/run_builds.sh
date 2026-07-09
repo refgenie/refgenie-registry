@@ -46,6 +46,21 @@ if [[ -f infra/rivanna/env.sh ]]; then
     source infra/rivanna/env.sh
 fi
 
+# Put a working `aws` ahead of the broken host ~/.local/bin/aws (dead-anaconda
+# shebang) so the folder_sync push_command resolves a real CLI. The bin dir
+# comes from env.sh ($REFGENIE_AWS_BINDIR) but the PATH prepend lives HERE, in
+# plain bash, because a `PATH="...:$PATH"` line inside env.sh gets mangled by
+# yoke's env_files parser. This runs in the mobot nightly AND the canaries.
+if [[ -n "${REFGENIE_AWS_BINDIR:-}" && -x "$REFGENIE_AWS_BINDIR/aws" ]]; then
+    case ":$PATH:" in
+        *":$REFGENIE_AWS_BINDIR:"*) ;;
+        *) export PATH="$REFGENIE_AWS_BINDIR:$PATH" ;;
+    esac
+    echo "$(date) | run_builds: prepended aws bindir $REFGENIE_AWS_BINDIR to PATH"
+else
+    echo "$(date) | run_builds: WARNING no working aws at \$REFGENIE_AWS_BINDIR (${REFGENIE_AWS_BINDIR:-unset}); push may fail" >&2
+fi
+
 # REFGENIE_INPUTS is required by the generated Snakefile (envvars: stanza) and
 # by the PEP sample modifier that derives fasta_file_path. Default it to the
 # registry's own genomes input root if the operator did not set one.

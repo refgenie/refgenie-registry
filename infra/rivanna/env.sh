@@ -39,12 +39,13 @@ export AWS_PROFILE=refgenie
 
 # aws CLI: ~/.local/bin/aws is BROKEN on this host (its shebang points at a
 # removed anaconda python -> "bad interpreter"), and it shadows everything else
-# on PATH. Prepend the Lmod awscli module's self-contained binary so a bare
-# `aws` (as invoked by the folder_sync push_command) resolves to a working CLI
-# WITHOUT relying on `module load` (non-interactive shells don't auto-load Lmod).
-# Verified working by absolute path: aws-cli/2.35.13. Bump the version here if
-# the module is upgraded/removed.
-export PATH="/apps/software/standard/core/awscli/2.35.13/bin:$PATH"
+# on PATH, so a working `aws` must be put ahead of it. That PATH fix is applied
+# in build/run_builds.sh (REFGENIE_AWS_BINDIR), NOT here: this file is loaded by
+# yoke's env_files parser, which mangles a `PATH="...:$PATH"` self-reference and
+# wipes the interactive session PATH. run_builds.sh sources this file in plain
+# bash (both the real mobot nightly and the canaries), so the prepend belongs
+# there where $PATH expands correctly and yoke never sees it.
+export REFGENIE_AWS_BINDIR=/apps/software/standard/core/awscli/2.35.13/bin
 
 # Absolute path to the host refgenie (refgenie1) entry point used by the build
 # rules. MUST be the real host binary, NOT a bulker shim: the mobot driver job
