@@ -54,6 +54,26 @@ The repository is organized as:
 - **`tools/`** — Validation scripts and helpers (see [`tools/README.md`](tools/README.md))
 - **`infra/`** — Operator-side build/deploy infrastructure, e.g. the Rivanna HPC layer ([`infra/rivanna/`](infra/rivanna/)); not needed to use the registry
 
+## Data channel
+
+This registry **publishes the refgenie1 client data channel** — the `index.yaml`
+plus recipe and asset-class YAML files that a refgenie1 client syncs to build
+assets. It is served from GitHub Pages in the registry's **native layout** (no
+flattening, no conversion): a channel path maps 1:1 to a registry path
+(`asset_classes/<name>.yaml`, `recipes/<name>/recipe.yaml`). refgenie1 clients
+point their data channel directly at the published `index.yaml`; there is no
+proxy in between.
+
+- **Published at:** `https://refgenie.github.io/refgenie-registry/index.yaml`
+- **Built by:** [`tools/build_channel.py`](tools/build_channel.py) (assembles the
+  channel), validated by [`tools/validate_channel.py`](tools/validate_channel.py),
+  and deployed on every push to `master` by
+  [`.github/workflows/publish-channel.yaml`](.github/workflows/publish-channel.yaml).
+
+This **replaces** the legacy [`recipes`](https://github.com/refgenie/recipes) repo
+channel (`refgenie.github.io/recipes`), which served end-of-life refgenie and is
+no longer used by refgenie1.
+
 ## Contributing
 
 Contributions happen through pull requests and build-request issues. There are
