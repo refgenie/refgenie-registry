@@ -15,8 +15,14 @@ parses (``refgenie.managers.sources.manager.IndexFile``); recipe entries carry
 the ``<name>/recipe.yaml`` subpath, which the client resolves to
 ``<base>/recipes/<name>/recipe.yaml`` on fetch.
 
-Only the channel artifact (``index.yaml``, ``asset_classes/``, ``recipes/``) is
-written to the output dir -- nothing else from the repo is exposed.
+A self-contained ``index.html`` landing page is also generated so the channel's
+base URL (https://refgenie.github.io/refgenie-registry/) is browsable: it lists
+the published asset classes and recipes and links to ``index.yaml`` and each
+file. Machine clients ignore it and fetch ``index.yaml`` directly.
+
+Only the channel artifact (``index.yaml``, ``index.html``, ``asset_classes/``,
+``recipes/``) is written to the output dir -- nothing else from the repo is
+exposed.
 
 Usage:
     python tools/build_channel.py                 # -> ./channel/
@@ -67,6 +73,122 @@ def collect_recipes(registry_root: Path) -> list[str]:
     return entries
 
 
+CHANNEL_URL = "https://refgenie.github.io/refgenie-registry/index.yaml"
+
+PAGE_CSS = """
+:root {
+  color-scheme: light dark;
+  --bg: #ffffff; --fg: #1a1a2e; --muted: #5a5a72; --card: #f6f7fb;
+  --border: #e2e4ee; --accent: #4a4ae0; --code-bg: #eceef6;
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #14141c; --fg: #e8e8f0; --muted: #9a9ab0; --card: #1e1e2a;
+    --border: #2c2c3c; --accent: #8f8fff; --code-bg: #24242f;
+  }
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0; background: var(--bg); color: var(--fg);
+  font: 16px/1.6 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+}
+.wrap { max-width: 860px; margin: 0 auto; padding: 2.5rem 1.25rem 4rem; }
+h1 { font-size: 1.9rem; margin: 0 0 .25rem; letter-spacing: -0.02em; }
+.tag { color: var(--muted); margin: 0 0 2rem; font-size: 1.05rem; }
+h2 { font-size: 1.15rem; margin: 2.25rem 0 .75rem; }
+a { color: var(--accent); text-decoration: none; }
+a:hover { text-decoration: underline; }
+.card {
+  background: var(--card); border: 1px solid var(--border);
+  border-radius: 10px; padding: 1rem 1.25rem; margin: 1rem 0;
+}
+code, pre {
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: .9em;
+}
+pre {
+  background: var(--code-bg); border: 1px solid var(--border);
+  border-radius: 8px; padding: .85rem 1rem; overflow-x: auto; margin: .5rem 0 0;
+}
+.counts { display: flex; gap: 1.5rem; flex-wrap: wrap; margin: 0; padding: 0; list-style: none; }
+.counts li { color: var(--muted); }
+.counts b { color: var(--fg); font-size: 1.5rem; display: block; }
+.grid {
+  display: grid; grid-template-columns: repeat(auto-fill, minmax(190px, 1fr));
+  gap: .35rem .9rem; margin: .5rem 0 0; padding: 0; list-style: none;
+}
+.grid li { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.grid a { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: .88rem; }
+footer { margin-top: 3rem; color: var(--muted); font-size: .85rem; }
+"""
+
+
+def _name_list_html(entries: list[tuple[str, str]]) -> str:
+    """Render (display_name, href) pairs as a <ul class=grid> of links."""
+    items = "".join(
+        f'<li><a href="{href}">{name}</a></li>' for name, href in entries
+    )
+    return f'<ul class="grid">{items}</ul>'
+
+
+def render_landing_page(asset_files: list[str], recipe_files: list[str]) -> str:
+    """Build a self-contained index.html listing the published channel contents."""
+    asset_entries = [
+        (f.removesuffix(".yaml"), f"{ASSET_CLASSES_DIR}/{f}") for f in asset_files
+    ]
+    recipe_entries = [
+        (r.split("/")[0], f"{RECIPES_DIR}/{r}") for r in recipe_files
+    ]
+    return f"""<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>refgenie data channel</title>
+<style>{PAGE_CSS}</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>refgenie data channel</h1>
+  <p class="tag">The canonical <a href="https://refgenie.org">refgenie</a> data
+  channel, published from
+  <a href="https://github.com/refgenie/refgenie-registry">refgenie-registry</a>.
+  Recipes and asset classes a refgenie client syncs to build reference genome
+  assets locally.</p>
+
+  <div class="card">
+    <ul class="counts">
+      <li><b>{len(asset_entries)}</b> asset classes</li>
+      <li><b>{len(recipe_entries)}</b> recipes</li>
+    </ul>
+  </div>
+
+  <h2>Use it</h2>
+  <div class="card">
+    <p style="margin:0 0 .25rem">Point a refgenie client at this channel:</p>
+    <pre>refgenie data-channel add -s {CHANNEL_URL}
+refgenie data-channel sync</pre>
+    <p style="margin:.75rem 0 0">Machine-readable index:
+    <a href="index.yaml"><code>index.yaml</code></a></p>
+  </div>
+
+  <h2>Asset classes</h2>
+  {_name_list_html(asset_entries)}
+
+  <h2>Recipes</h2>
+  {_name_list_html(recipe_entries)}
+
+  <footer>
+    Generated from the registry's native layout by
+    <code>tools/build_channel.py</code>. To request a new recipe or asset class,
+    open a PR or issue on
+    <a href="https://github.com/refgenie/refgenie-registry">refgenie-registry</a>.
+  </footer>
+</div>
+</body>
+</html>
+"""
+
+
 def build_channel(registry_root: Path, out_dir: Path) -> dict:
     asset_files = collect_asset_classes(registry_root)
     recipe_files = collect_recipes(registry_root)
@@ -84,6 +206,9 @@ def build_channel(registry_root: Path, out_dir: Path) -> dict:
     }
     with open(out_dir / "index.yaml", "w") as f:
         yaml.dump(index, f, default_flow_style=False, sort_keys=False)
+
+    with open(out_dir / "index.html", "w") as f:
+        f.write(render_landing_page(asset_files, recipe_files))
     return index
 
 
