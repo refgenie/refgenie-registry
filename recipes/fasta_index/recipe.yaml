@@ -1,5 +1,5 @@
 name: fasta_index
-version: 1.0.0
+version: 1.1.0
 output_asset_class: fasta_index
 description:
   Creates a FASTA index (.fa.fai) and chromosome sizes file using samtools faidx.
@@ -13,11 +13,14 @@ input_assets:
     asset_class: fasta
     description: fasta asset for genome
     default: fasta
-    colocate:
-      - source_key: fasta
 docker_image: databio/refgenie
 command_templates:
-  - samtools faidx {{values.output_folder}}/{{values.genome_digest}}.fa
+  # Read the fasta from the genome folder and write the .fai explicitly into the
+  # output folder via --fai-idx. Do NOT colocate the fasta as a symlink and run
+  # `samtools faidx <symlink>`: samtools writes the index next to the resolved
+  # target, so the .fai would land in the fasta asset dir, not here. --fai-idx
+  # makes the output location explicit and symlink-proof.
+  - samtools faidx {{values.genome_folder}}/{{values.assets["fasta"].seek_keys_dict["fasta"]}} --fai-idx {{values.output_folder}}/{{values.genome_digest}}.fa.fai
   - cut -f1,2 {{values.output_folder}}/{{values.genome_digest}}.fa.fai > {{values.output_folder}}/{{values.genome_digest}}.chrom.sizes
 default_asset: "default"
 

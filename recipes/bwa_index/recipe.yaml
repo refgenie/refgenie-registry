@@ -1,5 +1,5 @@
 name: bwa_index
-version: 0.1.0
+version: 0.2.0
 output_asset_class: bwa_index
 description: |
   Genome index for Burrows-Wheeler Alignment Tool, produced with bwa index.
@@ -12,11 +12,15 @@ input_assets:
     asset_class: fasta
     description: fasta asset for genome
     default: fasta
-    colocate:
-      - source_key: fasta
 docker_image: databio/refgenie
 command_templates:
-  - bwa index {{values.output_folder}}/{{values.genome_digest}}.fa
+  # Read the fasta directly from the genome folder and write the index with an
+  # explicit output prefix (-p) into the output folder. Do NOT colocate the
+  # fasta as a symlink and let bwa "write next to the input": bwa realpath()s
+  # its reference, so with a symlinked input it drops the .amb/.ann/.bwt/.pac/.sa
+  # next to the symlink TARGET (polluting the fasta asset) and leaves this asset
+  # empty. -p makes the output location explicit and symlink-proof.
+  - bwa index -p {{values.output_folder}}/{{values.genome_digest}} {{values.genome_folder}}/{{values.assets["fasta"].seek_keys_dict["fasta"]}}
 custom_seek_keys:
   version: "bwa 2>&1 | grep Version | cut -d' ' -f2 | awk -F- '{print $1}'" # uses stderr; monitor https://github.com/lh3/bwa/issues/202
 default_asset: "{{values.custom_seek_keys.version}}"
@@ -38,11 +42,11 @@ outputs:
   description: BWA index - suffix array
 test:
   commands:
-  - test -f {output_dir}/{genome}.fa.bwt
-  - test -f {output_dir}/{genome}.fa.sa
-  - test -f {output_dir}/{genome}.fa.amb
-  - test -f {output_dir}/{genome}.fa.ann
-  - test -f {output_dir}/{genome}.fa.pac
+  - test -f {output_dir}/{genome}.bwt
+  - test -f {output_dir}/{genome}.sa
+  - test -f {output_dir}/{genome}.amb
+  - test -f {output_dir}/{genome}.ann
+  - test -f {output_dir}/{genome}.pac
 resources:
   memory: 8GB
   disk: 10GB
