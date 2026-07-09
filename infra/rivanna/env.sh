@@ -11,8 +11,40 @@ export REFGETSTORE_BASE=/project/shefflab/brickyard/datasets_downloaded/refgenom
 # so the absolute Rivanna location lives only here.
 export REFGETSTORE_FASTA=/project/shefflab/brickyard/datasets_downloaded/refgenomes_fasta/fasta
 
-# S3 sync target.
+# S3 sync target for the refget SEQUENCE store (content-addressable sequences).
+# This is the RefgetStore artifact, NOT built refgenie assets. Do not overload it.
 export REFGETSTORE_S3=s3://refgenie/refget-store
+
+# Built-asset publish target for `refgenie push` — DISTINCT from REFGETSTORE_S3.
+# This is where the nightly registry build uploads STAGED refgenie assets (the
+# <genome_digest>/<group>/<asset> tree), NOT the sequence store. It MUST equal
+# the asset Remote.prefix registered by tools/import_recipes.py and the
+# `--push-to <prefix>` token injected into the generated Snakefile, so
+# ArchiveManager.create resolves the remote at stage time and refgenie push
+# substitutes it for {prefix} in the push_command.
+export REFGENIE_ASSET_S3="${REFGENIE_ASSET_S3:-s3://refgenie/assets}"
+
+# AWS auth for `refgenie push`. Push runs ONCE on the mobot driver/dispatcher
+# host AFTER snakemake returns — it reads the shared build DB + the staged
+# assets on brickyard and runs `aws s3 sync`. It is NOT a per-SLURM-child step,
+# so credentials only need to exist on the driver host (this box), not on the
+# compute nodes.
+#
+# Profile: the ns5bc driver's ~/.aws/credentials [refgenie] profile is the
+# RefgenieDataBot IAM user (acct 721148182619) — the only profile with R/W on
+# the s3://refgenie bucket. The `default` profile (s3user, acct 235728444054) is
+# a DIFFERENT account and gets AccessDenied on this bucket, so pin the profile
+# explicitly (verified: put/ls/rm on s3://refgenie/assets/ succeed under it).
+export AWS_PROFILE=refgenie
+
+# aws CLI: ~/.local/bin/aws is BROKEN on this host (its shebang points at a
+# removed anaconda python -> "bad interpreter"), and it shadows everything else
+# on PATH. Prepend the Lmod awscli module's self-contained binary so a bare
+# `aws` (as invoked by the folder_sync push_command) resolves to a working CLI
+# WITHOUT relying on `module load` (non-interactive shells don't auto-load Lmod).
+# Verified working by absolute path: aws-cli/2.35.13. Bump the version here if
+# the module is upgraded/removed.
+export PATH="/apps/software/standard/core/awscli/2.35.13/bin:$PATH"
 
 # Absolute path to the host refgenie (refgenie1) entry point used by the build
 # rules. MUST be the real host binary, NOT a bulker shim: the mobot driver job

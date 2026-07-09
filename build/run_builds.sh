@@ -15,8 +15,12 @@
 #      Rivanna the entry point is `refgenie`). Override with $REFGENIE_BIN.
 #   3. Run snakemake against the Rivanna SLURM profile to fan out one SLURM job
 #      per (genome, asset) in pep/samples.csv. Each rule runs
-#      `refgenie build <genome>/<asset> --stage` inside the recipe's container.
-#   4. Refresh index/ from whatever assets are now present (build/update_index.py).
+#      `refgenie build <genome>/<asset> --stage --push-to <asset S3 prefix>`
+#      inside the recipe's container; staging records a RemoteAssetLink push
+#      intent (pushed=False) for each asset.
+#   4. Push staged assets to S3 with `refgenie push` (once, on the driver host):
+#      uploads every pushed=False link and marks it pushed. Idempotent.
+#   5. Refresh index/ from whatever assets are now present (build/update_index.py).
 #
 # Conservative by default: set DRY_RUN=1 to do everything EXCEPT actually
 # submit/run builds (snakemake -n). The nightly mobot job runs it for real.
@@ -25,6 +29,9 @@
 #   REFGENIE_INPUTS   required by the Snakefile/PEP (root of input FASTAs).
 #   REFGENIE_DB_CONFIG_PATH  refgenie1 DB config (persistent build DB).
 #   REFGENIE_BIN      build-command binary name (default: refgenie).
+#   REFGENIE_ASSET_S3 S3 prefix for built-asset push (e.g. s3://refgenie/assets).
+#                     When set, build rules get --push-to and a `refgenie push`
+#                     step runs after the fan-out. Unset => stage-only (no push).
 #   DRY_RUN=1         snakemake dry-run only (no jobs submitted).
 #   SNAKEMAKE_PROFILE override the profile dir (default: build/profiles/rivanna).
 
@@ -151,6 +158,19 @@ echo "$(date) | run_builds: pinned configfile/pepfile paths in Snakefile"
 #     Trailing space anchors the match so an already-plural `--params ` is untouched.
 sed -i "s/--param /--params /g" "$SNAKEFILE"
 echo "$(date) | run_builds: patched Snakefile build flag --param -> --params"
+# (d) Inject `--push-to <asset prefix>` into every staged build rule so staging
+#     records a RemoteAssetLink(pushed=False) push-intent for each asset. Every
+#     build_* rule's shell contains `--stage ` (trailing space); genome_init and
+#     `rule all` do not, so this anchors only on build rules. The token MUST
+#     equal the asset Remote.prefix registered by import_recipes.py. The single
+#     quotes are literal inside the Snakefile's double-quoted Python shell
+#     string, so snakemake hands the shell one clean `--push-to 's3://...'` arg.
+if [[ -n "${REFGENIE_ASSET_S3:-}" ]]; then
+    sed -i "s#--stage #--stage --push-to '$REFGENIE_ASSET_S3' #g" "$SNAKEFILE"
+    echo "$(date) | run_builds: injected --push-to '$REFGENIE_ASSET_S3' into build rules"
+else
+    echo "$(date) | run_builds: REFGENIE_ASSET_S3 unset; builds will stage without push intent"
+fi
 
 # --- 2b. reconcile genomes with the persistent catalog --------------------
 # The genome_init sentinels (under the persistent alias folder) can outlive the
@@ -190,6 +210,14 @@ SNAKEMAKE_ARGS=(
 if [[ "${DRY_RUN:-0}" == "1" ]]; then
     echo "$(date) | run_builds: DRY RUN (snakemake -n)"
     snakemake "${SNAKEMAKE_ARGS[@]}" -n
+    # Preview the push without uploading. With a fresh/empty DB (no builds
+    # executed) there may be nothing to preview; handle_push prints "Nothing to
+    # push" and returns cleanly.
+    if [[ -n "${REFGENIE_ASSET_S3:-}" ]]; then
+        echo "$(date) | run_builds: previewing push (dry-run)"
+        "$REFGENIE_BIN" push --strategy folder_sync --dry-run \
+            || echo "$(date) | run_builds: push --dry-run preview failed (non-fatal)"
+    fi
     echo "$(date) | run_builds: dry run complete; skipping index update"
     exit 0
 fi
@@ -197,7 +225,23 @@ fi
 echo "$(date) | run_builds: dispatching builds with profile $SNAKEMAKE_PROFILE"
 snakemake "${SNAKEMAKE_ARGS[@]}" --profile "$SNAKEMAKE_PROFILE"
 
-# --- 4. refresh the index ------------------------------------------------
+# --- 4. push staged assets to S3 -----------------------------------------
+# Push runs ONCE here on the driver host AFTER the snakemake fan-out returns. It
+# reads the shared build DB ($REFGENIE_DB_CONFIG_PATH) and the staged assets on
+# brickyard, uploads every RemoteAssetLink(pushed=False), and marks them pushed.
+# Idempotency is handled by refgenie1: only pushed=False links are uploaded,
+# failures leave pushed=False for the next run, and `aws s3 sync` re-uploads only
+# changed objects. Use the absolute $REFGENIE_BIN so push is PATH-immune on the
+# driver (same as the build rules). Non-fatal, consistent with the index step.
+if [[ -n "${REFGENIE_ASSET_S3:-}" ]]; then
+    echo "$(date) | run_builds: pushing staged assets -> $REFGENIE_ASSET_S3"
+    "$REFGENIE_BIN" push --strategy folder_sync \
+        || echo "$(date) | run_builds: push failed (non-fatal); links stay pushed=False for retry"
+else
+    echo "$(date) | run_builds: REFGENIE_ASSET_S3 unset; skipping push"
+fi
+
+# --- 5. refresh the index ------------------------------------------------
 echo "$(date) | run_builds: updating index/"
 python3 build/update_index.py || echo "$(date) | run_builds: index update skipped/failed (non-fatal)"
 

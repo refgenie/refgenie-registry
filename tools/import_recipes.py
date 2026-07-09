@@ -49,12 +49,19 @@ and dry runs). The loader is also importable as a library: call
 from __future__ import annotations
 
 import argparse
+import os
 import sys
 import tempfile
 from pathlib import Path
 from typing import Any
 
 import yaml
+
+# Default push_command for the asset remote. folder_sync strategy: one
+# `aws s3 sync` per remote, substituting {genome_stage_folder} and {prefix}.
+# It handles both archive (.tgz) and file-mode assets, skips unchanged objects,
+# and preserves the <genome_digest>/<group>/<asset> layout under the prefix.
+DEFAULT_ASSET_PUSH_COMMAND = "aws s3 sync {genome_stage_folder} {prefix}/ --follow-symlinks"
 
 # ---------------------------------------------------------------------------
 # Native vs. additive (non-runtime) recipe fields
@@ -188,6 +195,37 @@ def import_registry(
     return summary
 
 
+def register_asset_remote(
+    refgenie: Any,
+    prefix: str,
+    push_command: str,
+    name: str = "asset-s3",
+    verbose: bool = True,
+) -> None:
+    """Register (upsert) the S3 asset-push remote in the build DB.
+
+    The remote MUST exist before any SLURM build child stages an asset: at
+    stage time ``refgenie build ... --push-to <prefix>`` resolves ``<prefix>``
+    against ``Remote.prefix`` to write the ``RemoteAssetLink(pushed=False)``
+    push-intent record. ``prefix`` here MUST therefore equal the ``--push-to``
+    token injected into the generated Snakefile.
+
+    Idempotent: ``upsert_remote`` matches on the ``description`` (``name``)
+    field, so re-running against the persistent catalog updates in place rather
+    than creating a duplicate remote.
+    """
+    from refgenie.db.models import RemoteType
+
+    refgenie.configuration.upsert_remote(
+        name=name,
+        type=RemoteType.s3,
+        prefix=prefix,
+        push_command=push_command,
+    )
+    if verbose:
+        print(f"[remote] upserted '{name}' (s3) prefix={prefix} push_command={push_command!r}")
+
+
 def build_refgenie(db_config: str | None, genome_folder: Path | None = None) -> Any:
     """Construct a Refgenie instance.
 
@@ -249,10 +287,51 @@ def main(argv: list[str] | None = None) -> int:
             "the real refgenie build system)."
         ),
     )
+    parser.add_argument(
+        "--asset-remote-prefix",
+        default=os.environ.get("REFGENIE_ASSET_S3"),
+        help=(
+            "S3 prefix for the built-asset push remote (default: "
+            "$REFGENIE_ASSET_S3). MUST equal the --push-to token injected into "
+            "the Snakefile. If unset, no asset remote is registered (staging "
+            "records no push intent)."
+        ),
+    )
+    parser.add_argument(
+        "--asset-remote-push-command",
+        default=DEFAULT_ASSET_PUSH_COMMAND,
+        help=(
+            "push_command template for the asset remote (folder_sync). "
+            f"Default: {DEFAULT_ASSET_PUSH_COMMAND!r}"
+        ),
+    )
+    parser.add_argument(
+        "--asset-remote-name",
+        default="asset-s3",
+        help="Description/name used to upsert the asset remote (default: asset-s3).",
+    )
     args = parser.parse_args(argv)
 
     refgenie = build_refgenie(args.db_config, genome_folder=args.genome_folder)
     summary = import_registry(refgenie, args.registry_root)
+
+    # Register the S3 asset-push remote so build children can resolve --push-to
+    # at stage time. Idempotent across nightly runs via upsert-by-name. Skip
+    # (with a warning) when no prefix is configured so local/in-memory dry runs
+    # still work without an S3 target.
+    if args.asset_remote_prefix:
+        register_asset_remote(
+            refgenie,
+            prefix=args.asset_remote_prefix,
+            push_command=args.asset_remote_push_command,
+            name=args.asset_remote_name,
+        )
+    else:
+        print(
+            "[remote] WARNING: no asset remote prefix (REFGENIE_ASSET_S3 unset "
+            "and --asset-remote-prefix not given); staging will record no push "
+            "intent and `refgenie push` will have nothing to upload."
+        )
 
     print("\n=== Load summary ===")
     print(f"Asset classes loaded: {len(summary['asset_classes_imported'])}")
