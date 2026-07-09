@@ -4,6 +4,14 @@
 
 Community-curated genome definitions and build recipes for refgenie.
 
+> **This registry is the single source of truth for refgenie1 recipes, asset
+> classes, and genomes** — and the one place to contribute them. It **replaces
+> the legacy [`recipes`](https://github.com/refgenie/recipes) repository**, which
+> served the end-of-life refgenie (`refgenie` / `refgenconf` / `refgenieserver`)
+> and is not used by refgenie1. refgenie1 builds directly from this registry
+> (the nightly `import_recipes` loader syncs it into the build catalog), so new
+> recipes and build requests belong here, not in `recipes`.
+
 [**refgenie**](https://refgenie.org) manages the storage, access, and sharing of
 reference genome resources. It organizes genome data into versioned **assets**
 (reference FASTAs, aligner indexes, annotation files, …), each identified by a
