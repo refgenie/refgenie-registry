@@ -57,11 +57,21 @@ from typing import Any
 
 import yaml
 
-# Default push_command for the asset remote. folder_sync strategy: one
-# `aws s3 sync` per remote, substituting {genome_stage_folder} and {prefix}.
-# It handles both archive (.tgz) and file-mode assets, skips unchanged objects,
-# and preserves the <genome_digest>/<group>/<asset> layout under the prefix.
-DEFAULT_ASSET_PUSH_COMMAND = "aws s3 sync {genome_stage_folder} {prefix}/ --follow-symlinks"
+# Default push_command for the asset remote. per_asset strategy: refgenie
+# uploads ONE staged asset at a time, substituting {local_path} (the asset's
+# own staged path), {relative_path} (its path under genome_stage_folder), and
+# {prefix}. refgenie marks each RemoteAssetLink pushed=True only after its own
+# upload succeeds, so every asset is atomic and a failed/interrupted upload
+# leaves just that asset for the next run. The command covers both staging
+# modes: an archive asset is a single .tgz file (`aws s3 cp` -> one atomic S3
+# object), a file-mode asset is a symlinked directory of seek-key files
+# (`aws s3 sync --follow-symlinks` -> the individual files). Preserves the
+# <genome_digest>/<group>/<asset> layout under the prefix, matching folder_sync.
+DEFAULT_ASSET_PUSH_COMMAND = (
+    'if [ -d "{local_path}" ]; then '
+    'aws s3 sync "{local_path}/" "{prefix}/{relative_path}/" --follow-symlinks; '
+    'else aws s3 cp "{local_path}" "{prefix}/{relative_path}"; fi'
+)
 
 # ---------------------------------------------------------------------------
 # Native vs. additive (non-runtime) recipe fields
@@ -301,7 +311,8 @@ def main(argv: list[str] | None = None) -> int:
         "--asset-remote-push-command",
         default=DEFAULT_ASSET_PUSH_COMMAND,
         help=(
-            "push_command template for the asset remote (folder_sync). "
+            "push_command template for the asset remote (per_asset strategy; "
+            "substitutes {local_path}, {relative_path}, {prefix}). "
             f"Default: {DEFAULT_ASSET_PUSH_COMMAND!r}"
         ),
     )
