@@ -238,7 +238,7 @@ if [[ "${DRY_RUN:-0}" == "1" ]]; then
     # push" and returns cleanly.
     if [[ -n "${REFGENIE_ASSET_S3:-}" ]]; then
         echo "$(date) | run_builds: previewing push (dry-run)"
-        "$REFGENIE_BIN" push --strategy folder_sync --dry-run \
+        "$REFGENIE_BIN" push --strategy per_asset --dry-run \
             || echo "$(date) | run_builds: push --dry-run preview failed (non-fatal)"
     fi
     echo "$(date) | run_builds: dry run complete; skipping index update"
@@ -246,19 +246,35 @@ if [[ "${DRY_RUN:-0}" == "1" ]]; then
 fi
 
 echo "$(date) | run_builds: dispatching builds with profile $SNAKEMAKE_PROFILE"
-snakemake "${SNAKEMAKE_ARGS[@]}" --profile "$SNAKEMAKE_PROFILE"
+# Capture snakemake's exit status instead of letting `set -e` abort here. With
+# keep-going, snakemake builds every asset it can and returns non-zero if ANY
+# rule failed. We must still reach the push step below so the assets that DID
+# build get uploaded -- one failing recipe must not block publishing the
+# successful ones. The status is preserved and re-raised at the very end so the
+# nightly still reports failure to the monitor.
+snakemake_rc=0
+snakemake "${SNAKEMAKE_ARGS[@]}" --profile "$SNAKEMAKE_PROFILE" || snakemake_rc=$?
+if [[ "$snakemake_rc" -ne 0 ]]; then
+    echo "$(date) | run_builds: snakemake exited $snakemake_rc (one or more builds failed); continuing to push the assets that succeeded"
+fi
 
 # --- 4. push staged assets to S3 -----------------------------------------
-# Push runs ONCE here on the driver host AFTER the snakemake fan-out returns. It
-# reads the shared build DB ($REFGENIE_DB_CONFIG_PATH) and the staged assets on
-# brickyard, uploads every RemoteAssetLink(pushed=False), and marks them pushed.
-# Idempotency is handled by refgenie1: only pushed=False links are uploaded,
-# failures leave pushed=False for the next run, and `aws s3 sync` re-uploads only
-# changed objects. Use the absolute $REFGENIE_BIN so push is PATH-immune on the
+# Push runs ONCE here on the driver (coordinator) host AFTER the snakemake
+# fan-out returns -- deliberately NOT inside the per-asset build jobs, which
+# hold requested compute cores that would sit idle burning the allocation during
+# what is only network transfer. It reads the shared build DB
+# ($REFGENIE_DB_CONFIG_PATH) and uploads each RemoteAssetLink(pushed=False)
+# individually (per_asset strategy): one asset at a time, marking a link
+# pushed=True only after its own upload succeeds. This makes each asset atomic --
+# archive assets upload as a single .tgz object, and a failed or interrupted
+# upload leaves that one asset pushed=False for the next run without touching the
+# others. per_asset also uploads only assets the DB recorded as successfully
+# staged, unlike folder_sync which syncs whatever files happen to sit in the
+# stage folder. Use the absolute $REFGENIE_BIN so push is PATH-immune on the
 # driver (same as the build rules). Non-fatal, consistent with the index step.
 if [[ -n "${REFGENIE_ASSET_S3:-}" ]]; then
     echo "$(date) | run_builds: pushing staged assets -> $REFGENIE_ASSET_S3"
-    "$REFGENIE_BIN" push --strategy folder_sync \
+    "$REFGENIE_BIN" push --strategy per_asset \
         || echo "$(date) | run_builds: push failed (non-fatal); links stay pushed=False for retry"
 else
     echo "$(date) | run_builds: REFGENIE_ASSET_S3 unset; skipping push"
@@ -267,5 +283,12 @@ fi
 # --- 5. refresh the index ------------------------------------------------
 echo "$(date) | run_builds: updating index/"
 python3 build/update_index.py || echo "$(date) | run_builds: index update skipped/failed (non-fatal)"
+
+# Re-raise a build failure now that the successful assets have been pushed and
+# the index refreshed, so the nightly still surfaces as failed for monitoring.
+if [[ "$snakemake_rc" -ne 0 ]]; then
+    echo "$(date) | run_builds: exiting with snakemake status $snakemake_rc (some builds failed; successful assets were pushed)"
+    exit "$snakemake_rc"
+fi
 
 echo "$(date) | run_builds: complete"
