@@ -47,6 +47,16 @@ export AWS_PROFILE=refgenie
 # there where $PATH expands correctly and yoke never sees it.
 export REFGENIE_AWS_BINDIR=/apps/software/standard/core/awscli/2.35.13/bin
 
+# Neutral working directory for the snakemake build fan-out (snakemake's
+# --directory). It MUST NOT contain an entry named after any tool subcommand:
+# bulker's shimlink absolutizes a bare argument that matches a real path in the
+# process CWD (to bind-mount it), so `bwa index ...` run from the registry root
+# (which has an `index/` dir) turns `index` into `<cwd>/index` and bwa dies with
+# "unrecognized command". Running the build from this empty, dedicated dir keeps
+# the CWD collision-free. Literal path (no $VAR) so yoke's env_files parser does
+# not mangle it. run_builds.sh mkdir -p's it.
+export REFGENIE_BUILD_WORKDIR=/project/shefflab/brickyard/results_pipeline/refgenie/build_workdir
+
 # Absolute path to the host refgenie (refgenie1) entry point used by the build
 # rules. MUST be the real host binary, NOT a bulker shim: the mobot driver job
 # runs under `bulker activate databio/lab`, so a bare `command -v refgenie`

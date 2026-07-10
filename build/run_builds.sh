@@ -218,9 +218,17 @@ if [[ "${DRY_RUN:-0}" != "1" ]]; then
 fi
 
 # --- 3. dispatch builds via snakemake ------------------------------------
+# Run from a neutral working dir, NOT the registry root: the registry has an
+# `index/` dir, and bulker's shimlink absolutizes a bare `index` arg that matches
+# a CWD path, breaking `bwa index`. All snakemake inputs are absolute (snakefile,
+# profile, pinned config/pepfile, REFGENIE_INPUTS, genome outputs), so the
+# working dir is free to move. Falls back to the registry root if unset.
+BUILD_WORKDIR="${REFGENIE_BUILD_WORKDIR:-$REGISTRY_DIR}"
+mkdir -p "$BUILD_WORKDIR"
+echo "$(date) | run_builds: snakemake --directory=$BUILD_WORKDIR"
 SNAKEMAKE_ARGS=(
     --snakefile "$SNAKEFILE"
-    --directory "$REGISTRY_DIR"
+    --directory "$BUILD_WORKDIR"
 )
 if [[ "${DRY_RUN:-0}" == "1" ]]; then
     echo "$(date) | run_builds: DRY RUN (snakemake -n)"
