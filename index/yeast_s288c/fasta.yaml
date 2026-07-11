@@ -1,0 +1,14 @@
+genome: yeast_s288c
+genome_digest: ia9g4Myony-xxLsSc7eQOC_NdClGgPGu
+recipe: fasta
+recipe_version: 0.1.0
+asset_name: default
+build:
+  status: complete
+  timestamp: '2026-07-11T07:22:19Z'
+files:
+- build_timestamp
+- chrom_sizes
+- fai
+- fasta
+- refgenie_version

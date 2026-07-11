@@ -1,0 +1,14 @@
+genome: yeast_s288c
+genome_digest: ia9g4Myony-xxLsSc7eQOC_NdClGgPGu
+recipe: bwa_index
+recipe_version: 0.2.0
+asset_name: 0.7.17
+build:
+  status: complete
+  timestamp: '2026-07-11T07:22:19Z'
+files:
+- build_timestamp
+- bwa_index
+- inputs
+- refgenie_version
+- version

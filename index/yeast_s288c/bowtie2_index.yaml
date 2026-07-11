@@ -1,0 +1,14 @@
+genome: yeast_s288c
+genome_digest: ia9g4Myony-xxLsSc7eQOC_NdClGgPGu
+recipe: bowtie2_index
+recipe_version: 0.0.1
+asset_name: default
+build:
+  status: complete
+  timestamp: '2026-07-11T07:22:19Z'
+files:
+- bowtie2_index
+- build_timestamp
+- inputs
+- refgenie_version
+- version
