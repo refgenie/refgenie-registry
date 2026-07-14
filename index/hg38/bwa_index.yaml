@@ -5,7 +5,7 @@ recipe_version: 0.2.0
 asset_name: 0.7.17
 build:
   status: complete
-  timestamp: '2026-07-13T07:16:53Z'
+  timestamp: '2026-07-14T07:18:52Z'
 files:
 - build_timestamp
 - bwa_index
