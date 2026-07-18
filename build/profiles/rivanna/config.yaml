@@ -50,6 +50,13 @@ set-resources:
   build_salmon_index:
     mem_mb: 16000
     runtime: 180
+  # gt suffixerator on a full human genome under an 8 GB memlimit uses the slow
+  # external-memory path; the default 120 min runtime TIMEOUTs (yeast is fine).
+  # Give it the STAR-class window. (Raising the recipe's memlimit param would let
+  # it run in-memory and faster, but that's a separate recipe/catalog change.)
+  build_suffixerator_index:
+    mem_mb: 32000
+    runtime: 480
 
 set-threads:
   build_star_index: 8
