@@ -29,6 +29,8 @@
 #   REFGENIE_INPUTS   required by the Snakefile/PEP (root of input FASTAs).
 #   REFGENIE_DB_CONFIG_PATH  refgenie1 DB config (persistent build DB).
 #   REFGENIE_BIN      build-command binary name (default: refgenie).
+#   SNAKEMAKE_BIN     workflow-driver binary; pin to the HOST snakemake so the
+#                     driver isn't a bulker shim missing the slurm executor.
 #   REFGENIE_ASSET_S3 S3 prefix for built-asset push (e.g. s3://refgenie/assets).
 #                     When set, build rules get --push-to and a `refgenie push`
 #                     step runs after the fan-out. Unset => stage-only (no push).
@@ -93,6 +95,32 @@ if [[ "$REFGENIE_BIN" == /* ]]; then
     esac
     echo "$(date) | run_builds: PATH includes $_refgenie_bindir for SLURM children"
 fi
+# Resolve snakemake to an ABSOLUTE HOST path — same reasoning as REFGENIE_BIN,
+# but for a different failure. The mobot driver runs under a TWO-crate bulker
+# activation (databio/lab,databio/refgenie:1.0.0) so the build children can see
+# the index builders (bowtie2-build/hisat2-build, in databio/refgenie:1.0.0). But
+# under that union a bare `snakemake` resolves to a bulker SHIM that runs
+# snakemake inside the databio/refgenie:1.0.0 container, whose snakemake LACKS the
+# SLURM executor plugin (--executor {local,dryrun,touch}). The driver then dies
+# with "argument --executor/-e: invalid choice: 'slurm'" and ZERO builds run.
+# snakemake here is the workflow DRIVER (it submits SLURM jobs via sbatch); a
+# SLURM-submitting driver belongs on the host, not in a container. The host
+# snakemake (databio/lab's == ~/.local/bin/snakemake) HAS the slurm plugin. Pin
+# it so the driver is shim-immune regardless of what crates are activated; the
+# build RULES still containerize via bulker (each rule shells out to $REFGENIE_BIN
+# build, and the slurm executor sbatches children with --export=ALL so the crate
+# shims + BULKERCRATE propagate). Override with $SNAKEMAKE_BIN.
+SNAKEMAKE_BIN="${SNAKEMAKE_BIN:-snakemake}"
+if [[ "$SNAKEMAKE_BIN" != /* ]]; then
+    _snakemake_abs="$(command -v "$SNAKEMAKE_BIN" 2>/dev/null || true)"
+    if [[ -n "$_snakemake_abs" ]]; then
+        SNAKEMAKE_BIN="$_snakemake_abs"
+        echo "$(date) | run_builds: resolved SNAKEMAKE_BIN -> $SNAKEMAKE_BIN"
+    else
+        echo "$(date) | run_builds: WARNING could not resolve absolute path for '$SNAKEMAKE_BIN'; the driver may hit a bulker shim missing the slurm executor" >&2
+    fi
+fi
+
 SNAKEMAKE_PROFILE="${SNAKEMAKE_PROFILE:-$REGISTRY_DIR/build/profiles/rivanna}"
 
 BUILD_DIR="$REGISTRY_DIR/build"
@@ -123,7 +151,7 @@ echo "$(date) | run_builds: REGISTRY_DIR=$REGISTRY_DIR"
 echo "$(date) | run_builds: REFGENIE_INPUTS=$REFGENIE_INPUTS"
 echo "$(date) | run_builds: REFGENIE_DB_CONFIG_PATH=$REFGENIE_DB_CONFIG_PATH"
 echo "$(date) | run_builds: REFGENIE_BUILD_DB=$REFGENIE_BUILD_DB"
-echo "$(date) | run_builds: REFGENIE_BIN=$REFGENIE_BIN  DRY_RUN=${DRY_RUN:-0}"
+echo "$(date) | run_builds: REFGENIE_BIN=$REFGENIE_BIN  SNAKEMAKE_BIN=$SNAKEMAKE_BIN  DRY_RUN=${DRY_RUN:-0}"
 
 # (Re)write the small DB config each run (idempotent) and ensure the persistent
 # catalog's parent directory exists. The sqlite file itself is NOT removed — it
@@ -232,7 +260,7 @@ SNAKEMAKE_ARGS=(
 )
 if [[ "${DRY_RUN:-0}" == "1" ]]; then
     echo "$(date) | run_builds: DRY RUN (snakemake -n)"
-    snakemake "${SNAKEMAKE_ARGS[@]}" -n
+    "$SNAKEMAKE_BIN" "${SNAKEMAKE_ARGS[@]}" -n
     # Preview the push without uploading. With a fresh/empty DB (no builds
     # executed) there may be nothing to preview; handle_push prints "Nothing to
     # push" and returns cleanly.
@@ -253,7 +281,7 @@ echo "$(date) | run_builds: dispatching builds with profile $SNAKEMAKE_PROFILE"
 # successful ones. The status is preserved and re-raised at the very end so the
 # nightly still reports failure to the monitor.
 snakemake_rc=0
-snakemake "${SNAKEMAKE_ARGS[@]}" --profile "$SNAKEMAKE_PROFILE" || snakemake_rc=$?
+"$SNAKEMAKE_BIN" "${SNAKEMAKE_ARGS[@]}" --profile "$SNAKEMAKE_PROFILE" || snakemake_rc=$?
 if [[ "$snakemake_rc" -ne 0 ]]; then
     echo "$(date) | run_builds: snakemake exited $snakemake_rc (one or more builds failed); continuing to push the assets that succeeded"
 fi

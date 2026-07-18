@@ -66,6 +66,17 @@ export REFGENIE_BUILD_WORKDIR=/project/shefflab/brickyard/results_pipeline/refge
 # run_builds.sh substitutes a stable absolute path into the generated Snakefile.
 export REFGENIE_BIN="${REFGENIE_BIN:-/home/ns5bc/.local/bin/refgenie}"
 
+# Absolute path to the host snakemake — the workflow DRIVER that submits the
+# per-asset SLURM jobs. MUST be the host binary, NOT a bulker shim: the driver
+# runs under `bulker activate databio/lab,databio/refgenie:1.0.0` (two crates so
+# the children see the index builders), and under that union a bare `snakemake`
+# shims into the databio/refgenie:1.0.0 container, whose snakemake lacks the SLURM
+# executor plugin (--executor {local,dryrun,touch}) -> the driver dies with
+# "invalid choice: 'slurm'" and no builds run. The host snakemake (== databio/lab's)
+# HAS the plugin. A SLURM-submitting driver belongs on the host anyway; the build
+# rules still containerize via bulker inside `refgenie build`. Pin the host path.
+export SNAKEMAKE_BIN="${SNAKEMAKE_BIN:-/home/ns5bc/.local/bin/snakemake}"
+
 # Persistent refgenie1 build catalog (SQLite) + its DB config. This is
 # refgenie1's durable metadata store that drives the build->stage->push
 # lifecycle; it MUST persist across nightly runs, not be wiped. Co-locate it on
