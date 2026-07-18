@@ -243,7 +243,7 @@ def build_store(store_name: str, store_dir: Path, sync: bool = False, jobs: int 
             continue
         resolved_rows.append((row, label, path))
 
-    # --- Phase 2: parallel multi-FASTA ingest (concurrency happens in Rust) ---
+    # --- Phase 2: per-FASTA ingest (one collection per file) ---
     # Deduplicate paths preserving first-occurrence order so the returned
     # results align 1:1 with the unique inputs.
     unique_paths = list(dict.fromkeys(p for _, _, p in resolved_rows))
@@ -252,8 +252,10 @@ def build_store(store_name: str, store_dir: Path, sync: bool = False, jobs: int 
     skipped = 0
     collection_records = []  # list[{digest, n_sequences, label, was_new}]
     if unique_paths:
-        print(f"  Ingesting {len(unique_paths)} FASTAs with {jobs} parallel worker(s)...")
-        results = store.add_sequence_collections_from_fastas(unique_paths, jobs=jobs)
+        print(f"  Ingesting {len(unique_paths)} FASTAs (serial per-file ingest)...")
+        results = [
+            store.add_sequence_collection_from_fasta(path) for path in unique_paths
+        ]
         by_path = dict(zip(unique_paths, results))
 
         # --- Phase 3: register aliases per row from the resolved metadata ---
