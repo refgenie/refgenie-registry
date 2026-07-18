@@ -127,7 +127,7 @@ def _tool_versions() -> dict:
 
 def write_build_report(
     store_name: str,
-    store_path: Path,
+    reports_dir: Path,
     sources_path: Path,
     started_at: datetime,
     elapsed: float,
@@ -139,7 +139,14 @@ def write_build_report(
     stats: dict,
     collections: list[dict],
 ) -> Path | None:
-    """Write build_report.json into the store dir. Never crashes the build."""
+    """Write <store>_build_report.json into a LOCAL reports dir. Never crashes the build.
+
+    The report is operator provenance (hostname, absolute build paths, tool
+    versions, per-run counts) that nothing consumes. It must NOT live inside the
+    store directory, because that directory is `aws s3 sync`'d to the PUBLIC
+    bucket — build provenance has no reason to be world-readable. It lives in a
+    local reports dir next to where builds happen instead.
+    """
     ended_at = datetime.now(timezone.utc)
     report = {
         "store": store_name,
@@ -164,9 +171,9 @@ def write_build_report(
     else:
         report["collections_omitted"] = len(collections)
 
-    report_path = store_path / "build_report.json"
+    report_path = reports_dir / f"{store_name}_build_report.json"
     try:
-        store_path.mkdir(parents=True, exist_ok=True)
+        reports_dir.mkdir(parents=True, exist_ok=True)
         with open(report_path, "w") as fh:
             json.dump(report, fh, indent=2)
         return report_path
@@ -280,11 +287,19 @@ def build_store(store_name: str, store_dir: Path, sync: bool = False, jobs: int 
     stats = store.stats()
     print(f"  Done: {successes} loaded, {failures} failed, {stats}")
 
-    # --- Write a machine-readable build report into the store directory ---
+    # --- Write a machine-readable build report to a LOCAL reports dir ---
+    # NOT into the store dir: the store dir is aws s3 sync'd to the public bucket
+    # (see below), and the report is operator provenance nothing consumes. Home:
+    # $REFGENIE_BUILD_REPORTS_DIR, else a `_build_reports` sibling of the store
+    # dirs (outside the per-store sync path, so it never reaches S3).
     elapsed = time.monotonic() - start_time
+    reports_dir_env = os.environ.get("REFGENIE_BUILD_REPORTS_DIR")
+    reports_dir = (
+        Path(reports_dir_env) if reports_dir_env else store_path.parent / "_build_reports"
+    )
     report_path = write_build_report(
         store_name=store_name,
-        store_path=store_path,
+        reports_dir=reports_dir,
         sources_path=sources_path,
         started_at=started_at,
         elapsed=elapsed,

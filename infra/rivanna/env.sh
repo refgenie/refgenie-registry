@@ -57,6 +57,13 @@ export REFGENIE_AWS_BINDIR=/apps/software/standard/core/awscli/2.35.13/bin
 # not mangle it. run_builds.sh mkdir -p's it.
 export REFGENIE_BUILD_WORKDIR=/project/shefflab/brickyard/results_pipeline/refgenie/build_workdir
 
+# Local home for per-store build reports (stores/build.py). These are operator
+# provenance (hostname, absolute paths, tool versions, counts) that nothing
+# consumes; they MUST stay out of the store dir, which is aws s3 sync'd to the
+# public bucket. Kept alongside the other build artifacts here, never published.
+# Literal path (no $VAR) so yoke's env_files parser does not mangle it.
+export REFGENIE_BUILD_REPORTS_DIR=/project/shefflab/brickyard/results_pipeline/refgenie/build_reports
+
 # Absolute path to the host refgenie (refgenie1) entry point used by the build
 # rules. MUST be the real host binary, NOT a bulker shim: the mobot driver job
 # runs under `bulker activate databio/lab`, so a bare `command -v refgenie`

@@ -100,9 +100,11 @@ python build.py vgp -j 6        # Limit parallel ingest workers (default: $SLURM
 Stores are built to `$REFGETSTORE_BASE/<store_name>` and synced to `$REFGETSTORE_S3/<store_name>`.
 Ingest runs in parallel in Rust (`add_sequence_collections_from_fastas`); `-j`/`$SLURM_CPUS_PER_TASK`
 sets the worker count. Memory is bounded (streaming), but high-sequence-count transcriptomes are
-heavier per worker — drop `-j` if a build OOMs. Each build writes a **`build_report.json`** into the
-store dir (start/end/duration, loaded/skipped/failed counts, n_collections/n_sequences, gtars/refget
-versions, git rev, per-collection records).
+heavier per worker — drop `-j` if a build OOMs. Each build writes a **`<store>_build_report.json`**
+(start/end/duration, loaded/skipped/failed counts, n_collections/n_sequences, gtars/refget versions,
+git rev, per-collection records) to a **local reports dir** — `$REFGENIE_BUILD_REPORTS_DIR`, else a
+`_build_reports/` sibling of the store dirs. It is operator provenance nothing consumes, so it is kept
+out of the store dir (which is synced to the public bucket) and never published.
 
 On the HPC, submit via [`infra/rivanna/build_store.slurm`](../infra/rivanna/build_store.slurm) (8 CPU / 32 GB):
 `sbatch --job-name=build-<store> infra/rivanna/build_store.slurm <store>`.
