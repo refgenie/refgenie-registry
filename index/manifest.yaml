@@ -1,45 +1,45 @@
-updated: '2026-07-12T06:36:27Z'
+updated: '2026-07-19T06:32:43Z'
 assets:
   hg38:
     bwa_index:
       status: complete
       recipe_version: 0.2.0
-      built: '2026-07-11T07:22:19Z'
+      built: '2026-07-18T07:16:09Z'
       files: 5
     fasta:
       status: complete
       recipe_version: 0.1.0
-      built: '2026-07-11T07:22:19Z'
+      built: '2026-07-18T07:16:09Z'
       files: 5
     fasta_index:
       status: complete
       recipe_version: 1.1.0
-      built: '2026-07-11T07:22:19Z'
+      built: '2026-07-18T07:16:09Z'
       files: 5
   yeast_s288c:
     bowtie2_index:
       status: complete
       recipe_version: 0.0.1
-      built: '2026-07-11T07:22:19Z'
+      built: '2026-07-18T07:16:09Z'
       files: 5
     bwa_index:
       status: complete
       recipe_version: 0.2.0
-      built: '2026-07-11T07:22:19Z'
+      built: '2026-07-18T07:16:09Z'
       files: 5
     fasta:
       status: complete
       recipe_version: 0.1.0
-      built: '2026-07-11T07:22:19Z'
+      built: '2026-07-18T07:16:09Z'
       files: 5
     fasta_index:
       status: complete
       recipe_version: 1.1.0
-      built: '2026-07-11T07:22:19Z'
+      built: '2026-07-18T07:16:09Z'
       files: 4
     suffixerator_index:
       status: complete
       recipe_version: 0.0.1
-      built: '2026-07-11T07:22:19Z'
+      built: '2026-07-18T07:16:09Z'
       files: 5
 total_assets: 8
