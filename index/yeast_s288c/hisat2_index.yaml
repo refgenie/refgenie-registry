@@ -1,13 +1,14 @@
 genome: yeast_s288c
 genome_digest: ia9g4Myony-xxLsSc7eQOC_NdClGgPGu
-recipe: fasta_index
-recipe_version: 1.1.0
-asset_name: default
+recipe: hisat2_index
+recipe_version: 0.0.1
+asset_name: 7.5.0
 build:
   status: complete
   timestamp: '2026-07-19T07:16:33Z'
 files:
 - build_timestamp
-- chrom_sizes
-- fai
+- hisat2_index
+- inputs
 - refgenie_version
+- version
