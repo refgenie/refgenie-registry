@@ -19,7 +19,7 @@ docker_image: databio/refgenie
 command_templates:
   - gt suffixerator -dna -pl -tis -suf -lcp -v -showprogress -memlimit {{values.params["memlimit"]}}GB -db {{values.genome_folder}}/{{values.assets["fasta"].seek_keys_dict["fasta"]}} -indexname {{values.output_folder}}/{{values.genome_digest}}.sft
 custom_seek_keys:
-  version: "gt suffixerator --version | awk 'NR==1{print $4}'"
+  version: "gt suffixerator --version 2>/dev/null | awk 'NR==1{print $4}'"
 default_asset: "{{values.custom_seek_keys.version}}"
 tags:
 - index
