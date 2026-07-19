@@ -22,7 +22,7 @@ command_templates:
   - cp {{values.files["polyA"]}} {{values.output_folder}}/{{values.genome_digest}}_polyA.fa
   - cp {{values.files["polyC"]}} {{values.output_folder}}/{{values.genome_digest}}_polyC.fa
   - cp {{values.files["adapter_contam"]}} {{values.output_folder}}/{{values.genome_digest}}_adapter_contam.fa
-default_asset: "{{values.custom_seek_keys.version}}"
+default_asset: "default"
 
 tags:
 - contamination

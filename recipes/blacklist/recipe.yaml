@@ -13,7 +13,7 @@ input_assets: {}
 docker_image: databio/refgenie
 command_templates:
   - cp {{values.files["blacklist"]}} {{values.output_folder}}/{{values.genome_digest}}_blacklist.bed.gz
-default_asset: "{{values.custom_seek_keys.version}}"
+default_asset: "default"
 
 tags:
 - qc

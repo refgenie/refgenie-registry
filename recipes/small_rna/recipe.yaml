@@ -13,9 +13,7 @@ docker_image: databio/refgenie
 command_templates:
   - cp {{values.files["hairpin"]}} {{values.output_folder}}/{{values.genome_digest}}_hairpin.fa
   - cp {{values.files["mature"]}} {{values.output_folder}}/{{values.genome_digest}}_mature.fa
-custom_seek_keys:
-  version: ""
-default_asset: "{{values.custom_seek_keys.version}}"
+default_asset: "default"
 tags:
 - small-rna
 - mirna
