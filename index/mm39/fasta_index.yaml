@@ -1,14 +1,14 @@
-genome: hg38
-genome_digest: NTeQ1GQMt2ocCFkS8Z3_qkvetZjabWSt
-recipe: bowtie2_index
-recipe_version: 0.0.1
+genome: mm39
+genome_digest: 2Ls1P5eUdKbvtOhjJx3s2R5r0_I-IB5Z
+recipe: fasta_index
+recipe_version: 1.1.0
 asset_name: default
 build:
   status: complete
   timestamp: '2026-07-20T09:42:15Z'
 files:
-- bowtie2_index
 - build_timestamp
+- chrom_sizes
+- fai
 - inputs
 - refgenie_version
-- version

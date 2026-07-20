@@ -1,5 +1,5 @@
-genome: yeast_s288c
-genome_digest: ia9g4Myony-xxLsSc7eQOC_NdClGgPGu
+genome: mm39
+genome_digest: 2Ls1P5eUdKbvtOhjJx3s2R5r0_I-IB5Z
 recipe: fasta
 recipe_version: 0.1.0
 asset_name: default
