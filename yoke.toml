@@ -1,16 +1,34 @@
-# Lives at the repo root because yoke/mutagen sync the directory containing this
-# file (Alpha) to riva:~/code/refgenie-registry (Beta). The Rivanna build env and
-# SLURM jobs are isolated under infra/rivanna/.
+# yoke session config for refgenie-registry. Provides the `riva` connection and
+# the build environment; the Rivanna build env and SLURM jobs live under
+# infra/rivanna/.
 name = "refgenie-registry"
 remote = "riva"
 env_files = ["infra/rivanna/env.sh"]
 
-# Mutagen sync: working files in this repo <-> riva:~/code/refgenie-registry.
-# Start with `yoke sync start` from this directory. `.git` is ignored so version
-# control stays git-managed (this repo is GitHub-backed and CI commits to it);
-# mutagen only keeps the working files in sync for live iteration on Rivanna.
-[[syncs]]
-name   = "refgenie-registry"
-local  = "~/Dropbox/workspaces/refgenie/repos/refgenie-registry"
-remote = "riva:~/code/refgenie-registry"
-ignore = [".git", "__pycache__", "*.log", "*.bak-*", ".staging_map.tsv", "target", ".pytest_cache", ".venv"]
+# NO mutagen sync. Removed 2026-07-20 -- deliberately, not by oversight.
+#
+# There used to be a [[syncs]] block replicating this repo to
+# riva:~/code/refgenie-registry, with `.git` ignored so that "version control
+# stays git-managed." That reasoning was wrong. Ignoring .git while syncing
+# tracked working files does not leave git in charge -- it means the working
+# tree is continuously rewritten by a second, history-less channel that git
+# cannot see. Two replication channels, one directory, no shared state model.
+#
+# That produced four failure modes:
+#   1. A file committed locally arrived on Rivanna UNTRACKED, so the incoming
+#      commit that added the same path made `git pull` abort. This broke the
+#      2026-07-20 nightly: the pull aborted at 03:15 and the index push was
+#      rejected non-fast-forward 2.5 hours later, with a misleading error.
+#   2. The nightly's own index commits flowed backwards into the laptop, which
+#      is why the local checkout always showed committed content as modified.
+#   3. Worst and quietest: the nightly built from whatever mutagen last wrote,
+#      INCLUDING uncommitted laptop edits, so no run was reproducible.
+#   4. Two-Way-Safe halts on conflict, and both sides were active nightly.
+#
+# The nightly now uses its own git-only clone that nothing else writes to
+# (see $CHECKOUTS in lab.databio.org/mobot/mobot.json), so it no longer reads
+# this path at all and the sync had no remaining consumer.
+#
+# If you want live iteration on Rivanna again, do NOT restore a two-way sync
+# over a git checkout. Use a one-way (alpha -> beta) sync into a clearly-named
+# scratch directory that no automated job reads, e.g. riva:~/scratch/<name>.
