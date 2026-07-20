@@ -11,3 +11,9 @@ hg38,hg38,bwa_index,hg38_fa
 hg38,hg38,bowtie2_index,hg38_fa
 hg38,hg38,hisat2_index,hg38_fa
 hg38,hg38,suffixerator_index,hg38_fa
+mm39,mm39,fasta,mm39_fa
+mm39,mm39,fasta_index,mm39_fa
+mm39,mm39,bwa_index,mm39_fa
+mm39,mm39,bowtie2_index,mm39_fa
+mm39,mm39,hisat2_index,mm39_fa
+mm39,mm39,suffixerator_index,mm39_fa

@@ -38,3 +38,6 @@ sample_modifiers:
       # Staged Rivanna FASTAs (gzipped is fine; `refgenie genome init` ingests it):
       yeast_s288c_fa: "${REFGETSTORE_FASTA}/plantref/saccharomyces_cerevisiae_strain_s288c/ensembl/ENSEMBL_release_81.fa.gz"
       hg38_fa: "${REFGETSTORE_FASTA}/pangenome_reference/hg38.fa.gz"
+      # Primary assembly (no scaffolds/haplotypes), unmasked -- the same flavor of
+      # reference as hg38 above, so index sizes and build times are comparable.
+      mm39_fa: "${REFGETSTORE_FASTA}/jungle/mus_musculus/ensembl/mm39/fasta/Mus_musculus.GRCm39.dna.primary_assembly.fa.gz"
