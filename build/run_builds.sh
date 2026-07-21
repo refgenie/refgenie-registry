@@ -300,23 +300,61 @@ fi
 # staged, unlike folder_sync which syncs whatever files happen to sit in the
 # stage folder. Use the absolute $REFGENIE_BIN so push is PATH-immune on the
 # driver (same as the build rules). Non-fatal, consistent with the index step.
+push_rc=0
 if [[ -n "${REFGENIE_ASSET_S3:-}" ]]; then
     echo "$(date) | run_builds: pushing staged assets -> $REFGENIE_ASSET_S3"
-    "$REFGENIE_BIN" push --strategy per_asset \
-        || echo "$(date) | run_builds: push failed (non-fatal); links stay pushed=False for retry"
+    "$REFGENIE_BIN" push --strategy per_asset || push_rc=$?
+    if [[ "$push_rc" -ne 0 ]]; then
+        echo "$(date) | run_builds: push exited $push_rc; links stay pushed=False for retry"
+    fi
 else
     echo "$(date) | run_builds: REFGENIE_ASSET_S3 unset; skipping push"
 fi
 
 # --- 5. refresh the index ------------------------------------------------
-echo "$(date) | run_builds: updating index/"
-python3 build/update_index.py || echo "$(date) | run_builds: index update skipped/failed (non-fatal)"
+# GATED ON PUSH. update_index.py writes `build: {status: complete}` for every
+# asset in the build DB with no push awareness whatsoever, and the mobot job
+# then git-commits and pushes index/ to refgenie-registry master. So a failed
+# upload used to publish an index entry advertising an asset that is not in
+# s3://refgenie/assets -- a client resolving it gets a 404. That happened on
+# 2026-07-21 (job 17162885): "Push complete: 0 succeeded, 6 failed", and
+# 769ccbd committed 18 entries anyway.
+#
+# Refusing to refresh the index leaves index/ byte-identical to the commit it
+# was reset to, so the mobot git_commit step finds nothing staged and pushes
+# nothing. Stale-but-true beats fresh-but-dangling: every entry already in
+# index/ describes an asset that was successfully pushed at the time.
+#
+# This gate is deliberately COARSE -- one failed asset holds back the whole
+# index refresh. Per-asset gating is the right end state (RemoteAssetLink
+# carries a per-asset `pushed` flag, queryable via
+# ConfigurationManager.get_unpushed_links), but write_index() iterates
+# rg.asset.list_all(), which does not expose the asset_digest needed to join
+# against those links. Wiring that mapping through is a separate change.
+if [[ "$push_rc" -ne 0 ]]; then
+    echo "$(date) | run_builds: SKIPPING index update -- push failed (rc=$push_rc)." >&2
+    echo "  Refreshing index/ now would publish entries for assets that are not" >&2
+    echo "  in $REFGENIE_ASSET_S3. Fix the push, then re-run; the index will" >&2
+    echo "  catch up on the next clean run." >&2
+else
+    echo "$(date) | run_builds: updating index/"
+    python3 build/update_index.py || echo "$(date) | run_builds: index update skipped/failed (non-fatal)"
+fi
 
 # Re-raise a build failure now that the successful assets have been pushed and
 # the index refreshed, so the nightly still surfaces as failed for monitoring.
 if [[ "$snakemake_rc" -ne 0 ]]; then
     echo "$(date) | run_builds: exiting with snakemake status $snakemake_rc (some builds failed; successful assets were pushed)"
     exit "$snakemake_rc"
+fi
+
+# A failed push must also surface. Until 2026-07-21 push was fully non-fatal, so
+# job 17162885 reported COMPLETED to SLURM while uploading nothing ("0 succeeded,
+# 6 failed") -- the nightly looked healthy for as long as nobody read the log.
+# The publishing step failing is a failed run.
+if [[ "$push_rc" -ne 0 ]]; then
+    echo "$(date) | run_builds: exiting with push status $push_rc (assets built but not published; index left unchanged)"
+    exit "$push_rc"
 fi
 
 echo "$(date) | run_builds: complete"
