@@ -12,6 +12,11 @@ Usage:
     python build.py jungle          # Build one store
     python build.py all             # Build all stores
     python build.py jungle --sync   # Build and sync to S3
+    python build.py jungle --sync --delete   # ...propagating local removals
+
+Note that this script is ADDITIVE ONLY -- it never removes a collection, so
+deleting a row from sources.csv does not drop it from a built store. Use
+remove_collections.py for that, then sync with --delete.
 
 Requirements:
     pip install refget gtars peppy
@@ -182,7 +187,13 @@ def write_build_report(
         return None
 
 
-def build_store(store_name: str, store_dir: Path, sync: bool = False, jobs: int = 8):
+def build_store(
+    store_name: str,
+    store_dir: Path,
+    sync: bool = False,
+    jobs: int = 8,
+    delete: bool = False,
+):
     start_time = time.monotonic()
     started_at = datetime.now(timezone.utc)
     config_path = store_dir / PEP_CONFIG
@@ -316,8 +327,16 @@ def build_store(store_name: str, store_dir: Path, sync: bool = False, jobs: int 
         print(f"  Build report -> {report_path} (duration {mins}m{secs}s)")
 
     if sync and s3_path:
-        print(f"  Syncing to {s3_path}...")
-        subprocess.run(["aws", "s3", "sync", str(store_path), s3_path], check=True)
+        # --delete is opt-in: a plain sync is additive, so anything removed from
+        # the local store (see remove_collections.py) would linger in the public
+        # bucket forever. Pass --delete when the local store has SHRUNK, and only
+        # after verifying it locally — until the sync runs, S3 still holds the
+        # last good copy and is the rollback.
+        cmd = ["aws", "s3", "sync", str(store_path), s3_path]
+        if delete:
+            cmd.append("--delete")
+        print(f"  Syncing to {s3_path}{' (--delete)' if delete else ''}...")
+        subprocess.run(cmd, check=True)
         print("  S3 sync complete.")
     elif sync and not s3_path:
         print(f"  REFGETSTORE_S3 not set, skipping sync.", file=sys.stderr)
@@ -339,11 +358,21 @@ def main():
     parser.add_argument("store", help="Store name or 'all'")
     parser.add_argument("--sync", action="store_true", help="Sync to S3 after building")
     parser.add_argument(
+        "--delete", action="store_true",
+        help="Pass --delete to the S3 sync, so objects removed from the local store "
+             "(see remove_collections.py) are also removed from the bucket. Requires "
+             "--sync. Only use after verifying the local store: until this runs, S3 "
+             "holds the last good copy.",
+    )
+    parser.add_argument(
         "--jobs", "-j", type=int,
         default=int(os.environ.get("SLURM_CPUS_PER_TASK") or 8),
         help="Parallel FASTA-ingest workers (default: $SLURM_CPUS_PER_TASK or 8; 1=serial, 0=auto)",
     )
     args = parser.parse_args()
+
+    if args.delete and not args.sync:
+        parser.error("--delete has no effect without --sync")
 
     if args.store == "all":
         store_dirs = get_store_dirs()
@@ -352,14 +381,20 @@ def main():
             sys.exit(1)
         print(f"Building {len(store_dirs)} stores...\n")
         for store_dir in store_dirs:
-            build_store(store_dir.name, store_dir, sync=args.sync, jobs=args.jobs)
+            build_store(
+                store_dir.name, store_dir,
+                sync=args.sync, jobs=args.jobs, delete=args.delete,
+            )
             print()
     else:
         store_dir = SCRIPT_DIR / args.store
         if not store_dir.exists():
             print(f"Store not found: {store_dir}", file=sys.stderr)
             sys.exit(1)
-        build_store(args.store, store_dir, sync=args.sync, jobs=args.jobs)
+        build_store(
+            args.store, store_dir,
+            sync=args.sync, jobs=args.jobs, delete=args.delete,
+        )
 
 
 if __name__ == "__main__":
