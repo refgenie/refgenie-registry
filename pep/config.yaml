@@ -12,10 +12,21 @@
 # becomes the LIST of assets to build for that genome — exactly what the
 # generated Snakefile's `get_all_asset_targets()` iterates over.
 #
-# SCOPE (intentionally SMALL — nightly self-resubmitting mobot build):
-#   Only two genomes are queued so nightly runs stay bounded:
-#     - yeast_s288c : tiny canary (~12 MB) so a full asset set finishes in minutes
-#     - hg38        : human reference (real multi-hour churn for bwa/hisat2/etc.)
+# SCOPE (deliberately bounded — nightly self-resubmitting mobot build):
+#   Two large references provide the real churn:
+#     - hg38        : human reference (multi-hour bwa/hisat2/suffixerator builds)
+#     - mm39        : mouse primary assembly, same flavor as hg38
+#   The rest are small model-organism demos. They cost almost no extra wall clock
+#   (every one is under 45 MB gzipped, and the queue fans out across remote nodes
+#   in parallel), but they widen coverage well beyond "one tiny genome and one
+#   huge one" — so a recipe that breaks on, say, many short scaffolds or an
+#   unusual header alphabet gets caught by a five-minute build instead of by hg38
+#   three hours in:
+#     - yeast_s288c    : budding yeast, the original canary (~4 MB)
+#     - spombe         : fission yeast (~4 MB)
+#     - celegans       : worm (~30 MB)
+#     - athaliana      : plant, TAIR10 (~36 MB)
+#     - dmelanogaster  : fly (~43 MB)
 #   Only fasta-DERIVABLE assets are queued (those whose sole input is the `fasta`
 #   asset): fasta, fasta_index, bwa_index, bowtie2_index, hisat2_index,
 #   suffixerator_index. Recipes needing external inputs (gtf/dbsnp/blacklist/etc.)
@@ -41,3 +52,9 @@ sample_modifiers:
       # Primary assembly (no scaffolds/haplotypes), unmasked -- the same flavor of
       # reference as hg38 above, so index sizes and build times are comparable.
       mm39_fa: "${REFGETSTORE_FASTA}/jungle/mus_musculus/ensembl/mm39/fasta/Mus_musculus.GRCm39.dna.primary_assembly.fa.gz"
+      # Small model-organism demos. All four confirmed staged and readable, with
+      # single-token FASTA headers (no pipes or spaces for the ingest to trip on).
+      spombe_fa: "${REFGETSTORE_FASTA}/plantref/schizosaccharomyces_pombe/ensembl/ENSEMBL_fungi_release_28.fa.gz"
+      celegans_fa: "${REFGETSTORE_FASTA}/plantref/caenorhabditis_elegans/ensembl/ENSEMBL_release_81.fa.gz"
+      athaliana_fa: "${REFGETSTORE_FASTA}/plantref/arabidopsis_thaliana/plantref/COL-0_TAIR10.fa.gz"
+      dmelanogaster_fa: "${REFGETSTORE_FASTA}/plantref/drosophila_melanogaster/ensembl/ENSEMBL_release_81.fa.gz"
