@@ -5,7 +5,7 @@ recipe_version: 0.0.1
 asset_name: 7.5.0
 build:
   status: complete
-  timestamp: '2026-07-21T07:22:05Z'
+  timestamp: '2026-07-22T09:52:43Z'
 files:
 - build_timestamp
 - hisat2_index
