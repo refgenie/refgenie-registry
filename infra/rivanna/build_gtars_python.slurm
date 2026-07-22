@@ -50,7 +50,14 @@ if grep -qE 'retain\(\|_, v\| v != (orphan_)?key\)' "$SRC/gtars-refget/src/store
   echo "OLD QUADRATIC retain still present -- refusing to build" >&2
   exit 1
 fi
-echo "  source check OK: single-pass orphan cleanup present, quadratic form absent"
+# Second fix: the shard-dir rmdir must be hoisted out of the unlink loop. Without
+# it the delete phase issues one failing rmdir per orphan (~10.25M for spruce) on
+# top of the unlinks, in a loop that is already filesystem-metadata bound.
+if ! grep -q "parent_dirs" "$SRC/gtars-refget/src/store/readonly.rs"; then
+  echo "RMDIR HOIST NOT PRESENT -- is the sync current? Expected branch fix/orphan-rmdir-hoist" >&2
+  exit 1
+fi
+echo "  source check OK: single-pass orphan cleanup + hoisted rmdir present, quadratic form absent"
 
 source "$VENV/bin/activate" || exit 1
 echo "  venv: $VIRTUAL_ENV"
