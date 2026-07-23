@@ -1,11 +1,11 @@
 genome: celegans
 genome_digest: iT3SWdnGndTXiDZrQoirIsBOdOgTMZzd
 recipe: hisat2_index
-recipe_version: 0.0.1
-asset_name: 7.5.0
+recipe_version: 0.0.2
+asset_name: 2.2.2
 build:
   status: complete
-  timestamp: '2026-07-23T07:28:32Z'
+  timestamp: '2026-07-23T23:49:01Z'
 files:
 - build_timestamp
 - hisat2_index
