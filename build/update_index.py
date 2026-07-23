@@ -72,14 +72,64 @@ def write_index(rg, index_dir: Path) -> int:
     for genome_digest, asset_strings in asset_data.items():
         genome_key = _alias_for(rg, genome_digest)
         # Collapse "group.seekkey:name" strings into per-recipe seek-key lists.
+        #
+        # A group can hold SEVERAL asset names at once -- rebuilding an asset under
+        # a corrected name (e.g. hisat2_index 7.5.0 -> 2.2.2) adds a new,
+        # separately digested asset and leaves the old one in place. list_all()
+        # returns both, in no defined order, so picking the first-seen name (the
+        # old `setdefault` behaviour) published whichever row the query happened to
+        # yield first -- in practice the OLDEST, i.e. exactly the name the rebuild
+        # was meant to retire. It also unioned the seek keys of every asset in the
+        # group into one `files` list, describing an asset that does not exist.
+        #
+        # That is a silent, client-visible fault: index/ is what clients resolve,
+        # so a stale asset_name republishes the superseded object, and it strands
+        # the newly built one. It also blocks garbage collection -- the superseded
+        # S3 object cannot be deleted while the published index still points at it.
+        #
+        # The data model already answers "which name does this group publish":
+        # AssetName.is_default, one per group (enforced by a partial unique index)
+        # and settable through asset.set_default(). Honour it, and take the seek
+        # keys of THAT asset only. If a group somehow has no default, skip it
+        # rather than guess -- publishing an arbitrary name is what caused this.
+        try:
+            group_names = {
+                s.partition(":")[0].partition(".")[0] for s in asset_strings
+            }
+            defaults = {}
+            for group in group_names:
+                try:
+                    defaults[group] = rg.asset.get_default(
+                        asset_group_name=group, genome_digest=genome_digest
+                    )
+                except Exception as e:
+                    print(f"  index: SKIP {genome_key}/{group}: no default asset ({e})")
+        except Exception as e:  # pragma: no cover - defensive
+            print(f"  index: cannot resolve defaults for {genome_key}: {e}")
+            defaults = {}
+
         by_recipe: dict[str, dict[str, set]] = {}
         for s in asset_strings:
             # form: "<group>.<seek>:<name>"  (include_seek_keys=True)
             group_seek, _, asset_name = s.partition(":")
             group, _, seek = group_seek.partition(".")
+            if group not in defaults or asset_name != defaults[group]:
+                continue
             entry = by_recipe.setdefault(group, {"name": asset_name, "files": set()})
             if seek:
                 entry["files"].add(seek)
+
+        # get_default() returns the literal string "default" when a group has no
+        # is_default row, rather than raising. For fasta/fasta_index that IS the
+        # real asset name and matches; for a versioned group it matches nothing and
+        # the group would vanish from the index without a word. Dropping an entry
+        # is the safe direction (a missing pointer beats a wrong one), but it must
+        # not be silent -- say so, so a gap is diagnosable from the build log.
+        for group in sorted(group_names - set(by_recipe)):
+            print(
+                f"  index: WARNING no asset in {genome_key}/{group} matches its "
+                f"default name {defaults.get(group)!r}; leaving its index entry unchanged"
+            )
 
         gdir = index_dir / genome_key
         gdir.mkdir(parents=True, exist_ok=True)
