@@ -22,6 +22,12 @@
 # Usage: sbatch infra/rivanna/verify_plantref.slurm
 
 set -uo pipefail
+# Same toolchain the removal jobs use. env.sh only exports store paths -- it does
+# NOT put a python on PATH, so these four lines are load-bearing.
+source /etc/profile.d/00-modulepath.sh
+source /etc/profile.d/modules.sh
+module load gcc/11.4.0 openmpi/4.1.4 python/3.11.4
+source ~/envs/refgetstore-analysis/bin/activate
 source ~/code/refgenie-registry/infra/rivanna/env.sh
 cd ~/code/refgenie-registry/stores || exit 1
 

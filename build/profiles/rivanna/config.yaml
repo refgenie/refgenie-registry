@@ -11,6 +11,22 @@
 
 executor: slurm
 jobs: 20                       # max concurrent SLURM jobs
+
+# Global resource pool. genome_init declares refget_store_writer=1 (see the
+# generated Snakefile), so this caps the workflow at ONE concurrent genome_init.
+#
+# Required for correctness, not for throughput. RefgetStore takes no file lock
+# and rewrites collections.rgci and aliases/collections/refgenie.tsv wholesale
+# from the state it loaded at open time, so concurrent inits are last-writer-wins.
+# On 2026-07-23 four genome_inits were dispatched at the same second and
+# athaliana lost the race: its collection file was written but dropped from both
+# indexes, its alias stopped resolving, and the nightly failed at build_fasta
+# with "Genome 'athaliana' not found". Neither init reported an error.
+#
+# Snakemake treats a custom resource with no declared budget as UNLIMITED, so
+# removing this line silently restores the race.
+resources:
+  refget_store_writer: 1
 latency-wait: 60               # tolerate shared-FS latency on output files
 rerun-incomplete: true
 keep-going: true               # one failed asset must not abort the batch
