@@ -1,0 +1,47 @@
+name: Lint Crate Coverage
+
+# Fails if a recipe references a command the bulker crate the nightly activates
+# does not define.
+#
+# The nightly Rivanna build activates ONE crate, databio/refgenie. A recipe that
+# invokes a command that crate lacks does not fail loudly -- the shell falls
+# through to whatever the Rivanna host happens to have, and since every recipe's
+# version expression pipes through `grep -aoP` and `awk`, a host/container
+# mismatch can change the *answer* rather than error, which silently renames the
+# published asset. This check makes adding a recipe with a new tool fail here,
+# on the PR, instead of at 3am.
+
+on:
+  pull_request:
+    paths:
+      - "recipes/**"
+      - "tools/check_crate_coverage.py"
+      - ".github/workflows/lint-crate-coverage.yaml"
+  push:
+    branches: [master]
+    paths:
+      - "recipes/**"
+      - "tools/check_crate_coverage.py"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  crate-coverage:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install dependencies
+        run: pip install pyyaml
+
+      - name: Show the derived requirement set
+        run: python tools/check_crate_coverage.py --list
+
+      - name: Check the crate covers it
+        run: python tools/check_crate_coverage.py
