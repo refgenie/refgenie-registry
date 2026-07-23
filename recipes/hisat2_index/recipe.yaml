@@ -1,5 +1,5 @@
 name: hisat2_index
-version: 0.0.1
+version: 0.0.2
 output_asset_class: hisat2_index
 description: Genome index for HISAT2, produced with hisat2-build
 input_files: {}
