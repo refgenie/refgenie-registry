@@ -341,6 +341,25 @@ else
     python3 build/update_index.py || echo "$(date) | run_builds: index update skipped/failed (non-fatal)"
 fi
 
+# --- coverage report -------------------------------------------------------
+# Name what is MISSING, not just that something failed.
+#
+# `--keep-going` is deliberate (one broken recipe must not abort the batch), but
+# its consequence is that a badly incomplete run still pushes assets, refreshes
+# index/, commits, and reads like a normal night in the log. On 2026-07-23 six of
+# 42 requested assets -- all of athaliana -- did not exist when the run finished,
+# and the only signal was a bare exit code that says THAT something failed while
+# never saying WHAT is absent. Diagnosing it took reading four separate logs.
+#
+# Derived from pep/samples.csv rather than a hardcoded expectation, so it widens
+# automatically as genomes and recipes are added to the registry.
+#
+# Reported, not enforced: the real build/push exit codes are re-raised below and
+# must stay the thing that fails the run. Pass --strict to make gaps fatal.
+echo "$(date) | run_builds: checking asset coverage against the PEP..."
+python3 build/check_coverage.py --db-config "$REFGENIE_DB_CONFIG_PATH" \
+    || echo "$(date) | run_builds: coverage check failed to run (non-fatal)"
+
 # Re-raise a build failure now that the successful assets have been pushed and
 # the index refreshed, so the nightly still surfaces as failed for monitoring.
 if [[ "$snakemake_rc" -ne 0 ]]; then
