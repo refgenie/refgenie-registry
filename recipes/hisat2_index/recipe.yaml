@@ -13,7 +13,7 @@ docker_image: databio/refgenie
 command_templates:
   - hisat2-build {{values.genome_folder}}/{{values.assets["fasta"].seek_keys_dict["fasta"]}} {{values.output_folder}}/{{values.genome_digest}}
 custom_seek_keys:
-  version: "hisat2-build --version 2>/dev/null | awk 'NR==5{print $4}'"
+  version: hisat2-build --version 2>/dev/null | grep -aoP '^hisat2-build version \K[0-9][^ ]*' | head -1
 default_asset: "{{values.custom_seek_keys.version}}"
 
 # --- Additive non-runtime metadata (ignored by the builder) ---
