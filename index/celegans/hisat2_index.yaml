@@ -1,14 +1,14 @@
-genome: hg38
-genome_digest: NTeQ1GQMt2ocCFkS8Z3_qkvetZjabWSt
-recipe: bowtie2_index
+genome: celegans
+genome_digest: iT3SWdnGndTXiDZrQoirIsBOdOgTMZzd
+recipe: hisat2_index
 recipe_version: 0.0.1
-asset_name: 2.4.1
+asset_name: 7.5.0
 build:
   status: complete
   timestamp: '2026-07-23T07:28:32Z'
 files:
-- bowtie2_index
 - build_timestamp
+- hisat2_index
 - inputs
 - refgenie_version
 - version

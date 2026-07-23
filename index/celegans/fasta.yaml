@@ -1,5 +1,5 @@
-genome: yeast_s288c
-genome_digest: ia9g4Myony-xxLsSc7eQOC_NdClGgPGu
+genome: celegans
+genome_digest: iT3SWdnGndTXiDZrQoirIsBOdOgTMZzd
 recipe: fasta
 recipe_version: 0.1.0
 asset_name: default

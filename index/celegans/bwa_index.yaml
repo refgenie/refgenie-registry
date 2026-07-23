@@ -1,5 +1,5 @@
-genome: hg38
-genome_digest: NTeQ1GQMt2ocCFkS8Z3_qkvetZjabWSt
+genome: celegans
+genome_digest: iT3SWdnGndTXiDZrQoirIsBOdOgTMZzd
 recipe: bwa_index
 recipe_version: 0.2.0
 asset_name: 0.7.19

@@ -1,5 +1,5 @@
-genome: hg38
-genome_digest: NTeQ1GQMt2ocCFkS8Z3_qkvetZjabWSt
+genome: spombe
+genome_digest: vEsFJ8XMkzwm1TzsHjzwRx7zCxc_HZC_
 recipe: bowtie2_index
 recipe_version: 0.0.1
 asset_name: 2.4.1

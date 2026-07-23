@@ -1,7 +1,7 @@
-genome: yeast_s288c
-genome_digest: ia9g4Myony-xxLsSc7eQOC_NdClGgPGu
-recipe: fasta
-recipe_version: 0.1.0
+genome: celegans
+genome_digest: iT3SWdnGndTXiDZrQoirIsBOdOgTMZzd
+recipe: fasta_index
+recipe_version: 1.1.0
 asset_name: default
 build:
   status: complete
@@ -10,5 +10,5 @@ files:
 - build_timestamp
 - chrom_sizes
 - fai
-- fasta
+- inputs
 - refgenie_version

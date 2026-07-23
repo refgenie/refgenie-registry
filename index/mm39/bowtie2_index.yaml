@@ -5,7 +5,7 @@ recipe_version: 0.0.1
 asset_name: 2.4.1
 build:
   status: complete
-  timestamp: '2026-07-22T09:52:43Z'
+  timestamp: '2026-07-23T07:28:32Z'
 files:
 - bowtie2_index
 - build_timestamp
