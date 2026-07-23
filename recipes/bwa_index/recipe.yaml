@@ -22,7 +22,7 @@ command_templates:
   # empty. -p makes the output location explicit and symlink-proof.
   - bwa index -p {{values.output_folder}}/{{values.genome_digest}} {{values.genome_folder}}/{{values.assets["fasta"].seek_keys_dict["fasta"]}}
 custom_seek_keys:
-  version: "bwa 2>&1 | grep Version | cut -d' ' -f2 | awk -F- '{print $1}'" # uses stderr; monitor https://github.com/lh3/bwa/issues/202
+  version: bwa 2>&1 | grep -aoP '^Version:\s*\K[0-9]+\.[0-9]+\.[0-9]+' | head -1 # uses stderr; monitor https://github.com/lh3/bwa/issues/202
 default_asset: "{{values.custom_seek_keys.version}}"
 
 tags:

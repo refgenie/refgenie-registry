@@ -26,7 +26,7 @@ command_templates:
   - rm `find {{values.output_folder}} -type f -not -path '{{values.output_folder}}/_refgenie_build*'
     -not -path '{{values.output_folder}}/{{values.genome_digest}}_dbNSFP.txt.*'`
 custom_seek_keys:
-  version: tabix --version | awk '{print $3}' | head -1
+  version: tabix --version 2>/dev/null | grep -aoP '^tabix \(htslib\) \K[0-9][^ ]*' | head -1
 default_asset: "{{values.custom_seek_keys.version}}"
 
 tags:

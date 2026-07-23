@@ -19,7 +19,7 @@ docker_image: databio/refgenie
 command_templates:
   - bowtie2-build --threads {{values.params["threads"]}} {{values.genome_folder}}/{{values.assets["fasta"].seek_keys_dict["fasta"]}} {{values.output_folder}}/{{values.genome_digest}}
 custom_seek_keys:
-  version: bowtie2-build --version 2>/dev/null | grep -aoP 'bowtie2-\K[0-9]+\.[0-9]+(\.[0-9]+)?' | head -1
+  version: bowtie2-build --version 2>/dev/null | grep -aoP '(?:bowtie2-build-[sl] version |bowtie2-)\K[0-9]+\.[0-9]+(\.[0-9]+)?' | head -1
 default_asset: "{{values.custom_seek_keys.version}}"
 
 tags:
