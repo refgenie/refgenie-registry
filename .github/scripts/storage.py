@@ -1,6 +1,12 @@
 #!/usr/bin/env python3
 """Storage backend abstraction for uploading build artifacts.
 
+DEPRECATED: This module is no longer used by the main build workflow.
+The reusable-build.yaml workflow now uses refgenie1's native push mechanism
+which uploads content-addressed archives ({genome_digest}/{group}/{asset_digest}.tgz)
+to S3. This module is retained for backwards compatibility but should not be
+used for new code.
+
 Provides a factory function to get the appropriate storage backend
 based on provider name (s3, r2).
 """

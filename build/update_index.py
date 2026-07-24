@@ -139,12 +139,24 @@ def write_index(rg, index_dir: Path) -> int:
                 recipe_version = rg.recipe.get(recipe_name).version or ""
             except Exception:
                 pass
+            # Get the asset's content digest for content-addressed resolution
+            asset_digest = None
+            try:
+                asset = rg.asset.get(
+                    asset_group_name=recipe_name,
+                    asset_name=info["name"],
+                    genome_digest=genome_digest,
+                )
+                asset_digest = asset.digest
+            except Exception:
+                pass
             entry = {
                 "genome": genome_key,
                 "genome_digest": genome_digest,
                 "recipe": recipe_name,
                 "recipe_version": recipe_version,
                 "asset_name": info["name"],
+                "asset_digest": asset_digest,
                 "build": {"status": "complete", "timestamp": now},
                 "files": sorted(info["files"]),
             }

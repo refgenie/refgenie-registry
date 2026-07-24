@@ -184,10 +184,16 @@ for m in d.get('fasta', {}).get('mirrors', []):
 }
 
 # ---------------------------------------------------------------------------
-# Subcommand: upload
+# Subcommand: upload (DEPRECATED)
 # ---------------------------------------------------------------------------
 
 cmd_upload() {
+    # DEPRECATED: This upload command uses name-based S3 paths ({genome}/{recipe}/).
+    # The reusable-build.yaml workflow now uses refgenie1's native push mechanism
+    # which uploads content-addressed archives ({genome_digest}/{group}/{asset_digest}.tgz).
+    # This command is retained for backwards compatibility but should not be used.
+    log "WARNING: run-build.sh upload is DEPRECATED. Use 'refgenie1 push' instead."
+
     local workdir="" genome_name="" recipe="" provider="" bucket="" endpoint=""
     while [[ $# -gt 0 ]]; do
         case "$1" in

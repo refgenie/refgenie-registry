@@ -119,31 +119,31 @@ jobs:
         # docker_image and derives the asset tag from custom_seek_keys +
         # default_asset. No conda tool install -- the build runs in the recipe's
         # own container.
+        #
+        # --push-to configures a Remote in the refgenie DB so that:
+        #   1. The build stages the asset (content-addressed: {genome_digest}/{group}/{asset_digest}.tgz)
+        #   2. A RemoteAssetLink is created with pushed=False
+        # The separate push step then uploads and marks pushed=True.
+        env:
+          S3_PUSH_PREFIX: ${{ secrets.STORAGE_ENDPOINT && format('{0}/{1}', secrets.STORAGE_ENDPOINT, secrets.STORAGE_BUCKET) || format('s3://{0}', secrets.STORAGE_BUCKET) }}
         run: |
           refgenie1 build \
             "${{ steps.parse.outputs.genome_name }}/${{ inputs.recipe_name }}" \
-            --stage
+            --stage \
+            --push-to "${S3_PUSH_PREFIX}"
 
       - name: Upload to storage
+        # Uses refgenie's native push mechanism which uploads content-addressed
+        # archives ({genome_digest}/{group}/{asset_digest}.tgz) to S3.
+        # This aligns with the nightly build pipeline.
         run: |
-          .github/scripts/run-build.sh upload \
-            --workdir "${{ steps.download.outputs.workdir }}" \
-            --genome-name "${{ inputs.genome_name }}" \
-            --recipe "${{ inputs.recipe_name }}" \
-            --provider "${{ inputs.storage_provider }}" \
-            --bucket "${{ secrets.STORAGE_BUCKET }}" \
-            --endpoint "${{ secrets.STORAGE_ENDPOINT }}"
+          refgenie1 push --strategy per_asset
 
       - name: Generate index entry
+        # Uses the nightly's update_index.py which includes asset_digest in the
+        # index entry (needed for content-addressed resolution).
         run: |
-          python3 .github/scripts/generate-index-entry.py \
-            --genome "${{ inputs.genome_name }}" \
-            --recipe "${{ inputs.recipe_name }}" \
-            --recipe-path "${{ inputs.recipe_path }}" \
-            --workdir "${{ steps.download.outputs.workdir }}" \
-            --storage-provider "${{ inputs.storage_provider }}" \
-            --storage-bucket "${{ secrets.STORAGE_BUCKET }}" \
-            --storage-endpoint "${{ secrets.STORAGE_ENDPOINT }}"
+          python3 build/update_index.py
 
       - name: Commit index entry
         run: |

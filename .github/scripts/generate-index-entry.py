@@ -65,20 +65,17 @@ def get_file_list(output_dir):
 
 
 def build_access_urls(genome, recipe, bucket, endpoint, provider):
-    """Generate access URLs for the built asset."""
-    s3_path = f"s3://{bucket}/{genome}/{recipe}/"
-    urls = {"s3": s3_path}
+    """Generate access URLs for the built asset.
 
-    if provider == "r2" and endpoint:
-        # Cloudflare R2 public URL
-        # Typically: https://<account>.r2.cloudflarestorage.com/<bucket>/<path>
-        http_url = f"{endpoint.rstrip('/')}/{bucket}/{genome}/{recipe}/"
-        urls["http"] = http_url
-    elif provider == "s3":
-        http_url = f"https://{bucket}.s3.amazonaws.com/{genome}/{recipe}/"
-        urls["http"] = http_url
-
-    return urls
+    NOTE: These URLs are DEPRECATED. The refgenie1 server resolves assets via
+    content-addressed S3 keys ({genome_digest}/{group}/{asset_digest}.tgz),
+    not name-based paths. Clients should use the server's /v4/archives/{asset_digest}/download
+    endpoint rather than these URLs. This function is retained for backwards
+    compatibility but new code should not rely on these URLs.
+    """
+    # Emit empty URLs to signal that direct S3 resolution is deprecated.
+    # The through-server path is the canonical resolution mechanism.
+    return {}
 
 
 def update_manifest(index_dir, genome, recipe, entry):
