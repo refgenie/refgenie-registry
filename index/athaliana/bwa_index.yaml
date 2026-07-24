@@ -1,0 +1,14 @@
+genome: athaliana
+genome_digest: AHyVecap0miRdrz6ZffizkZQUOJJBO2c
+recipe: bwa_index
+recipe_version: 0.2.0
+asset_name: 0.7.19
+build:
+  status: complete
+  timestamp: '2026-07-23T23:49:01Z'
+files:
+- build_timestamp
+- bwa_index
+- inputs
+- refgenie_version
+- version

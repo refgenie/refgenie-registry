@@ -1,0 +1,14 @@
+genome: athaliana
+genome_digest: AHyVecap0miRdrz6ZffizkZQUOJJBO2c
+recipe: hisat2_index
+recipe_version: 0.0.2
+asset_name: 2.2.2
+build:
+  status: complete
+  timestamp: '2026-07-23T23:49:01Z'
+files:
+- build_timestamp
+- hisat2_index
+- inputs
+- refgenie_version
+- version

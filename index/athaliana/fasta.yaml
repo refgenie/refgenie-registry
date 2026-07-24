@@ -1,0 +1,14 @@
+genome: athaliana
+genome_digest: AHyVecap0miRdrz6ZffizkZQUOJJBO2c
+recipe: fasta
+recipe_version: 0.1.0
+asset_name: default
+build:
+  status: complete
+  timestamp: '2026-07-23T23:49:01Z'
+files:
+- build_timestamp
+- chrom_sizes
+- fai
+- fasta
+- refgenie_version

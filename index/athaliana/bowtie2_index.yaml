@@ -1,0 +1,14 @@
+genome: athaliana
+genome_digest: AHyVecap0miRdrz6ZffizkZQUOJJBO2c
+recipe: bowtie2_index
+recipe_version: 0.0.1
+asset_name: 2.4.1
+build:
+  status: complete
+  timestamp: '2026-07-23T23:49:01Z'
+files:
+- bowtie2_index
+- build_timestamp
+- inputs
+- refgenie_version
+- version
