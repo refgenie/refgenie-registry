@@ -96,16 +96,16 @@ if [[ "$REFGENIE_BIN" == /* ]]; then
     echo "$(date) | run_builds: PATH includes $_refgenie_bindir for SLURM children"
 fi
 # Resolve snakemake to an ABSOLUTE HOST path — same reasoning as REFGENIE_BIN,
-# but for a different failure. The mobot driver runs under a TWO-crate bulker
-# activation (databio/lab,databio/refgenie:1.0.0) so the build children can see
-# the index builders (bowtie2-build/hisat2-build, in databio/refgenie:1.0.0). But
-# under that union a bare `snakemake` resolves to a bulker SHIM that runs
-# snakemake inside the databio/refgenie:1.0.0 container, whose snakemake LACKS the
-# SLURM executor plugin (--executor {local,dryrun,touch}). The driver then dies
-# with "argument --executor/-e: invalid choice: 'slurm'" and ZERO builds run.
+# but for a different failure. The mobot driver runs under a bulker activation
+# (databio/refgenie:1.1.0) so the build children can see the index builders
+# (bowtie2-build/hisat2-build). But under it a bare `snakemake` resolves to a
+# bulker SHIM that runs snakemake inside a crate container, whose snakemake
+# LACKS the SLURM executor plugin (--executor {local,dryrun,touch}). The driver
+# then dies with "argument --executor/-e: invalid choice: 'slurm'" and ZERO
+# builds run.
 # snakemake here is the workflow DRIVER (it submits SLURM jobs via sbatch); a
 # SLURM-submitting driver belongs on the host, not in a container. The host
-# snakemake (databio/lab's == ~/.local/bin/snakemake) HAS the slurm plugin. Pin
+# snakemake (~/.local/bin/snakemake) HAS the slurm plugin. Pin
 # it so the driver is shim-immune regardless of what crates are activated; the
 # build RULES still containerize via bulker (each rule shells out to $REFGENIE_BIN
 # build, and the slurm executor sbatches children with --export=ALL so the crate

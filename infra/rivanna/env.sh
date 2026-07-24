@@ -66,7 +66,7 @@ export REFGENIE_BUILD_REPORTS_DIR=/project/shefflab/brickyard/results_pipeline/r
 
 # Absolute path to the host refgenie (refgenie1) entry point used by the build
 # rules. MUST be the real host binary, NOT a bulker shim: the mobot driver job
-# runs under `bulker activate databio/lab`, so a bare `command -v refgenie`
+# runs under a bulker activation, so a bare `command -v refgenie`
 # resolves to an EPHEMERAL bulker shim under /scratch/.../bulker_XXXX/ that does
 # not exist in the snakemake-submitted SLURM build children (genome_init then
 # fails with "command exited with non-zero exit code"). Pin the host wrapper so
@@ -75,13 +75,18 @@ export REFGENIE_BIN="${REFGENIE_BIN:-/home/ns5bc/.local/bin/refgenie}"
 
 # Absolute path to the host snakemake — the workflow DRIVER that submits the
 # per-asset SLURM jobs. MUST be the host binary, NOT a bulker shim: the driver
-# runs under `bulker activate databio/lab,databio/refgenie:1.0.0` (two crates so
-# the children see the index builders), and under that union a bare `snakemake`
-# shims into the databio/refgenie:1.0.0 container, whose snakemake lacks the SLURM
+# runs under `bulker activate databio/refgenie:1.1.0`, and under that a bare
+# `snakemake` shims into a crate container whose snakemake lacks the SLURM
 # executor plugin (--executor {local,dryrun,touch}) -> the driver dies with
-# "invalid choice: 'slurm'" and no builds run. The host snakemake (== databio/lab's)
-# HAS the plugin. A SLURM-submitting driver belongs on the host anyway; the build
-# rules still containerize via bulker inside `refgenie build`. Pin the host path.
+# "invalid choice: 'slurm'" and no builds run. The host snakemake HAS the plugin.
+# A SLURM-submitting driver belongs on the host anyway; the build rules still
+# containerize via bulker inside `refgenie build`. Pin the host path.
+#
+# (Until 2026-07-23 the activation was the two-crate union
+# `databio/lab,databio/refgenie:1.0.0`; the same shim hazard applied. It is now
+# refgenie-only -- databio/refgenie:1.1.0 imports bulker/coreutils, so nothing
+# needs databio/lab. Pinning the host path is what makes this line
+# crate-agnostic, so it did not need to change with the switch.)
 export SNAKEMAKE_BIN="${SNAKEMAKE_BIN:-/home/ns5bc/.local/bin/snakemake}"
 
 # Persistent refgenie1 build catalog (SQLite) + its DB config. This is

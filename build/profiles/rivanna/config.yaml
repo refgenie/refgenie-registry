@@ -2,8 +2,10 @@
 #
 # Used by build/run_builds.sh:  snakemake --profile build/profiles/rivanna/
 # Requires snakemake >= 8 with the SLURM executor plugin
-# (snakemake-executor-plugin-slurm), both present in the databio/lab bulker crate
-# that the mobot job activates.
+# (snakemake-executor-plugin-slurm). Both come from the HOST snakemake pinned by
+# $SNAKEMAKE_BIN, not from a crate: the driver must not run inside a container
+# (see run_builds.sh). The crate the mobot job activates (databio/refgenie)
+# supplies the build tools the RULES invoke, not the driver.
 #
 # Each rule becomes one SLURM job on the shefflab allocation. mobot dispatches
 # this from a lightweight job; the heavy builds run as the SLURM jobs created
