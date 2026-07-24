@@ -1,5 +1,5 @@
 name: bismark_bt2_index
-version: 0.0.1
+version: 0.0.2
 output_asset_class: bismark_bt2_index
 description: |
   Genome index for Bisulfite-Seq applications, produced by
@@ -19,9 +19,25 @@ input_assets:
       - source_key: fasta
 docker_image: databio/refgenie
 command_templates:
+  # `--bowtie2` became the DEFAULT in bismark 3.x, but the flag is still
+  # accepted and still means bowtie2. Kept explicit on purpose: this recipe
+  # publishes a bowtie2 asset, so the aligner must be stated, not inherited
+  # from whatever the current default happens to be. Verified 2026-07-23 in
+  # bismark:3.1.0--hfa8f182_0 -- `--bowtie2 <folder> --parallel 2` parses and
+  # produces Bisulfite_Genome/{CT,GA}_conversion/BS_*.bt2, same layout as 0.x.
   - bismark_genome_preparation --bowtie2 {{values.output_folder}} --parallel {{values.params["parallel"]}}
 custom_seek_keys:
-  version: "bismark_genome_preparation --version | awk 'NR==4{print $5}' | cut -c2-"
+  # Content-anchored on the version token, never on a line/field number.
+  # bismark 3.x is a Rust rewrite whose banner collapsed to ONE line, so the
+  # old `awk 'NR==4{print $5}'` returned empty (-> asset named ""). Both banner
+  # shapes are matched so the expression describes "bismark's version" rather
+  # than one release's formatting:
+  #   3.x    bismark_genome_preparation (Bismark Rust suite) v3.1.0 (... built ...)
+  #   0.x    Bismark Genome Preparation Version: v0.22.1
+  # Anchoring after the literal `v` keeps the 3.x trailing build timestamp out.
+  # YAML-quoted because the 0.x anchor contains ": ", which would otherwise end
+  # the plain scalar; inner single quotes are doubled per YAML.
+  version: 'bismark_genome_preparation --version 2>/dev/null | grep -aoP ''(?:\(Bismark Rust suite\) v|Bismark Genome Preparation Version: v)\K[0-9]+\.[0-9]+(\.[0-9]+)?'' | head -1'
 default_asset: "{{values.custom_seek_keys.version}}"
 
 tags:

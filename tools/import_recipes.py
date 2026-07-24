@@ -29,6 +29,21 @@ exists_overwrite=True)`` would call ``remove()``, which raises ``ConfigError``
 when an existing recipe references the asset class, aborting the whole import.
 The overwrite path is never exercised.
 
+DELETION IS NOT PROPAGATED. This loader only adds; it never removes. Deleting a
+recipe or asset class from the registry therefore leaves its row in the
+persistent catalog forever, and ``populate_snakefile_template`` emits one rule
+per recipe NAME in the *catalog*, not per recipe in the repo -- so a deleted
+recipe keeps a live Snakefile rule. That rule is inert while nothing requests
+its asset group (the nightly builds only what ``pep/samples.csv`` queues), but
+it is not harmless in general: the rule still carries the deleted recipe's
+command templates, so a later ``samples.csv`` entry would build from a recipe
+that no longer exists in git. Retiring a recipe therefore needs a deliberate
+catalog cleanup (delete the ``recipeassetclassesinputs`` rows, then the
+``recipe`` row, then the ``assetclassseekkey`` rows and the ``assetclass`` row);
+do it only after confirming no ``asset``/``assetgroup`` references the class.
+Done for ``bismark_bt1_index`` on 2026-07-23 (backup:
+``<catalog>/refgenie_build.sqlite.bak-20260723-bismark_bt1``).
+
 The ONLY transformation performed is dropping the additive non-runtime keys
 ``tags``, ``outputs``, ``test``, ``resources``, and ``metadata`` (provenance /
 CI / UX metadata that the builder ignores). No runtime field is renamed or

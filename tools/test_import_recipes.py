@@ -70,8 +70,8 @@ def test_registry_has_content():
     """Sanity: the registry actually contains asset classes and recipes."""
     asset_classes = ir.discover_asset_classes(REGISTRY_ROOT)
     recipes = ir.discover_recipes(REGISTRY_ROOT)
-    assert len(asset_classes) >= 28
-    assert len(recipes) >= 30
+    assert len(asset_classes) >= 27
+    assert len(recipes) >= 29
 
 
 def test_strip_only_non_native_keys():
@@ -155,10 +155,16 @@ def test_recipe_output_and_inputs_resolve(imported):
 
 
 def test_counts(imported):
-    """The headline numbers from the plan: 28 asset classes + 30 recipes."""
+    """The headline numbers: 27 asset classes + 29 recipes.
+
+    Was 28 + 30 until 2026-07-23, when bismark_bt1_index was retired: bismark
+    3.x dropped bowtie1 entirely, and the recipe relied on "no --bowtie2 flag
+    means bowtie1", so under 3.x it would have built a bowtie2 index and
+    published it as a bowtie1 asset.
+    """
     _, summary = imported
-    assert len(summary["asset_classes_imported"]) == 28
-    assert len(summary["recipes_imported"]) == 30
+    assert len(summary["asset_classes_imported"]) == 27
+    assert len(summary["recipes_imported"]) == 29
 
 
 # ---------------------------------------------------------------------------

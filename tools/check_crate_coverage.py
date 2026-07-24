@@ -41,8 +41,8 @@ Derived mechanically, never hand-maintained:
 Usage
 -----
     python tools/check_crate_coverage.py                       # fetch from hub
-    python tools/check_crate_coverage.py --crate databio/refgenie:1.1.0
-    python tools/check_crate_coverage.py --manifest /path/to/refgenie_1.1.0.yaml
+    python tools/check_crate_coverage.py --crate databio/refgenie:1.1.1
+    python tools/check_crate_coverage.py --manifest /path/to/refgenie_1.1.1.yaml
     python tools/check_crate_coverage.py --list                # just print the set
 """
 
@@ -61,7 +61,7 @@ import yaml
 REPO_ROOT = Path(__file__).resolve().parent.parent
 RECIPES_DIR = REPO_ROOT / "recipes"
 REGISTRY_URL = "https://hub.bulker.io"
-DEFAULT_CRATE = "databio/refgenie:1.1.0"
+DEFAULT_CRATE = "databio/refgenie:1.1.1"
 
 # Shell syntax that shows up as a leading token but is not a command.
 SHELL_BUILTINS = {
