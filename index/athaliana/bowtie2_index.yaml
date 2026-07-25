@@ -2,10 +2,11 @@ genome: athaliana
 genome_digest: AHyVecap0miRdrz6ZffizkZQUOJJBO2c
 recipe: bowtie2_index
 recipe_version: 0.0.1
-asset_name: 2.4.1
+asset_name: 2.5.5
+asset_digest: 234c842e6bd7ce43b454d40d4c7f18125d9412b003d690a014112f8eb88c799b
 build:
   status: complete
-  timestamp: '2026-07-24T08:14:07Z'
+  timestamp: '2026-07-25T07:23:08Z'
 files:
 - bowtie2_index
 - build_timestamp

@@ -3,9 +3,10 @@ genome_digest: ia9g4Myony-xxLsSc7eQOC_NdClGgPGu
 recipe: bwa_index
 recipe_version: 0.2.0
 asset_name: 0.7.19
+asset_digest: 6c9ac25f6f8b090095120ffca644c4ac8e607e3d10ecc7425780ddc547d1a497
 build:
   status: complete
-  timestamp: '2026-07-24T08:14:07Z'
+  timestamp: '2026-07-25T07:23:08Z'
 files:
 - build_timestamp
 - bwa_index

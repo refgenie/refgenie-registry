@@ -3,9 +3,10 @@ genome_digest: NTeQ1GQMt2ocCFkS8Z3_qkvetZjabWSt
 recipe: bowtie2_index
 recipe_version: 0.0.1
 asset_name: 2.4.1
+asset_digest: 1459dea0b8e349bcce850a4fa243f071066ef17c978e8997bfd2d6d979f1c876
 build:
   status: complete
-  timestamp: '2026-07-24T08:14:07Z'
+  timestamp: '2026-07-25T07:23:08Z'
 files:
 - bowtie2_index
 - build_timestamp

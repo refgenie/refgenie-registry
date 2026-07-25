@@ -2,10 +2,11 @@ genome: yeast_s288c
 genome_digest: ia9g4Myony-xxLsSc7eQOC_NdClGgPGu
 recipe: bowtie2_index
 recipe_version: 0.0.1
-asset_name: 2.4.1
+asset_name: 2.5.5
+asset_digest: ec46f0ffe89a371fa71bf7612e159832e19a6b860c791f0725e309a3447197c1
 build:
   status: complete
-  timestamp: '2026-07-24T08:14:07Z'
+  timestamp: '2026-07-25T07:23:08Z'
 files:
 - bowtie2_index
 - build_timestamp

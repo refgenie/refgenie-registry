@@ -2,10 +2,11 @@ genome: spombe
 genome_digest: vEsFJ8XMkzwm1TzsHjzwRx7zCxc_HZC_
 recipe: bowtie2_index
 recipe_version: 0.0.1
-asset_name: 2.4.1
+asset_name: 2.5.5
+asset_digest: bab84cf08762c84d476432cb86bf08dab66a548e7b06cc87dee67a0bf5a64f66
 build:
   status: complete
-  timestamp: '2026-07-24T08:14:07Z'
+  timestamp: '2026-07-25T07:23:08Z'
 files:
 - bowtie2_index
 - build_timestamp
