@@ -2,11 +2,11 @@ genome: mm39
 genome_digest: 2Ls1P5eUdKbvtOhjJx3s2R5r0_I-IB5Z
 recipe: bowtie2_index
 recipe_version: 0.0.1
-asset_name: 2.4.1
-asset_digest: 292c00a47bb67c0bba0f14a3c083ba0ceb874b9e7ab87413a7fcf02288a59e23
+asset_name: 2.5.5
+asset_digest: 46852b8a10b890c57a0bfaa30fd1f15689898cf97f9fa848bbae0ff4020260e2
 build:
   status: complete
-  timestamp: '2026-07-25T07:23:08Z'
+  timestamp: '2026-07-26T10:02:41Z'
 files:
 - bowtie2_index
 - build_timestamp

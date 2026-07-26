@@ -6,7 +6,7 @@ asset_name: 2.5.5
 asset_digest: bab84cf08762c84d476432cb86bf08dab66a548e7b06cc87dee67a0bf5a64f66
 build:
   status: complete
-  timestamp: '2026-07-25T07:23:08Z'
+  timestamp: '2026-07-26T10:02:41Z'
 files:
 - bowtie2_index
 - build_timestamp

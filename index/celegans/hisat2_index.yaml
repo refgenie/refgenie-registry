@@ -6,7 +6,7 @@ asset_name: 2.2.2
 asset_digest: 4497053eece369bd6b8efc53c5adab1099e257b6290b7f080b1d5b97ad2bcec1
 build:
   status: complete
-  timestamp: '2026-07-25T07:23:08Z'
+  timestamp: '2026-07-26T10:02:41Z'
 files:
 - build_timestamp
 - hisat2_index

@@ -6,7 +6,7 @@ asset_name: default
 asset_digest: 6a4b7da1e178aa6dc9298a9cd0fbcc05afe49b42534eb2f7b72500fd874a68fd
 build:
   status: complete
-  timestamp: '2026-07-25T07:23:08Z'
+  timestamp: '2026-07-26T10:02:41Z'
 files:
 - build_timestamp
 - chrom_sizes
