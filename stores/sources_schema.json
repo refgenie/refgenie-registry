@@ -1,0 +1,49 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://refgenie.org/refgetstore/sources_schema",
+  "title": "RefgetStore Sources",
+  "description": "Schema for a refgetstore sources.csv file. Each row defines one sequence collection (typically a FASTA file) to load into a refgetstore. Modeled after the PEP sample table: one required identifier column, standardized optional metadata columns, and open-ended additional columns for store-specific needs.",
+  "type": "array",
+  "items": {
+    "type": "object",
+    "required": ["fasta"],
+    "properties": {
+      "fasta": {
+        "type": "string",
+        "description": "Absolute path or URL to the FASTA file to load. This is the primary input to the store build process. Multiple space-separated URLs indicate files that should be downloaded and concatenated before loading (e.g., Ensembl cdna + ncrna FASTAs)."
+      },
+      "name": {
+        "type": "string",
+        "description": "A short, human-readable identifier for this sequence collection. Used for display and cross-referencing but does not affect the content-derived seqcol digest. Examples: 'hg38', 'GRCh38 primary assembly', 'GENCODE v49 human transcriptome'."
+      },
+      "organism": {
+        "type": "string",
+        "description": "Binomial species name of the organism this sequence collection represents. Use standard taxonomic nomenclature. Examples: 'Homo sapiens', 'Mus musculus', 'Drosophila melanogaster'."
+      },
+      "source": {
+        "type": "string",
+        "description": "The authority or provider that produced this sequence collection. Indicates where the FASTA was originally obtained and which naming/versioning conventions apply. Examples: 'GENCODE', 'Ensembl', 'NCBI', 'UCSC', 'VGP', 'HPRC'."
+      },
+      "version": {
+        "type": "string",
+        "description": "The release or version identifier assigned by the source provider. Format varies by source: GENCODE uses numeric versions ('49', 'M38'), Ensembl uses release numbers ('115'), RefSeq uses patch versions ('GRCh38.p13'). This identifies a specific snapshot of the sequence data from that provider."
+      },
+      "genome_assembly": {
+        "type": "string",
+        "description": "The genome assembly this sequence collection is based on. Identifies the coordinate system and underlying reference build. For genome FASTAs, this is the assembly itself. For transcriptomes, this is the genome assembly the transcripts were derived from. Examples: 'GRCh38', 'GRCm39', 'BDGP6', 'T2T-CHM13v2.0'."
+      },
+      "accession": {
+        "type": "string",
+        "description": "The INSDC/RefSeq accession identifier for this assembly, following the GCA (GenBank) or GCF (RefSeq) format. Provides an unambiguous, globally unique link to the assembly record at NCBI. Examples: 'GCF_000001405.40', 'GCA_009914755.4'."
+      },
+      "group": {
+        "type": "string",
+        "description": "A categorical label for organizing collections within the store. Used to partition large stores or to tag collections by dataset or project. Examples: 'vertebrates', 'reference', 'pangenome', 'clinical'."
+      }
+    },
+    "additionalProperties": {
+      "type": "string",
+      "description": "Store-specific metadata columns. Any additional columns are preserved as metadata but do not affect store building. Examples: 'gtf' (annotation file URL), 'sha256' (legacy Salmon index hash), 'pep_sample_name' (PEP cross-reference)."
+    }
+  }
+}
