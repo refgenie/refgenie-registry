@@ -6,6 +6,8 @@
 #SBATCH --time=01:00:00
 #SBATCH --cpus-per-task=1
 #SBATCH --mem=16G
+
+REGISTRY="${REGISTRY_DIR:-$HOME/mobot/checkouts/refgenie-registry}"
 #
 # Gate for the plantref prune: assert the collections that were supposed to
 # SURVIVE the removal are still byte-exact, and that Pabies02 landed intact.
@@ -28,8 +30,8 @@ source /etc/profile.d/00-modulepath.sh
 source /etc/profile.d/modules.sh
 module load gcc/11.4.0 openmpi/4.1.4 python/3.11.4
 source ~/envs/refgetstore-analysis/bin/activate
-source ~/code/refgenie-registry/infra/rivanna/env.sh
-cd ~/code/refgenie-registry/stores || exit 1
+source "$REGISTRY"/infra/rivanna/env.sh
+cd "$REGISTRY"/stores || exit 1
 
 # Survivors of the wheat and barley removals. These three share sequences with
 # the collections that were deleted, so they are the ones that would show damage.

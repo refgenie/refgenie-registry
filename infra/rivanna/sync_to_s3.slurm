@@ -7,13 +7,15 @@
 #SBATCH --time=24:00:00
 #SBATCH --output=s3_sync_%j.log
 
+REGISTRY="${REGISTRY_DIR:-$HOME/mobot/checkouts/refgenie-registry}"
+
 # Push built RefgetStores to S3, replacing what's there (--delete = true mirror).
 # Uses the Rivanna 'refgenie' AWS profile (RefgenieDataBot); the default s3user is denied.
 # Small -> large so quick stores land first; vgp (~378G) is last.
 
 module load gcc/11.4.0 openmpi/4.1.4 python/3.11.4
 source ~/envs/refgetstore-analysis/bin/activate
-source ~/code/refgenie-registry/infra/rivanna/env.sh
+source "$REGISTRY"/infra/rivanna/env.sh
 
 # RefgetStores are millions of tiny per-sequence files (salmon ~1.5M, vrs ~780k).
 # aws s3 sync defaults to 10 concurrent requests -> latency-bound, days slow.

@@ -7,11 +7,13 @@
 #SBATCH --time=24:00:00
 #SBATCH --output=dl_salmon_txomes_%j.log
 
+REGISTRY="${REGISTRY_DIR:-$HOME/mobot/checkouts/refgenie-registry}"
+
 module load gcc/11.4.0 openmpi/4.1.4 python/3.11.4
 source ~/envs/refgetstore-analysis/bin/activate
 
-cd ~/code/refgenie-registry/stores
-source ~/code/refgenie-registry/infra/rivanna/env.sh
+cd "$REGISTRY"/stores
+source "$REGISTRY"/infra/rivanna/env.sh
 
 export DOWNLOAD_DIR=$REFGETSTORE_BASE/.downloads_salmon_txomes
 mkdir -p $DOWNLOAD_DIR
@@ -19,7 +21,7 @@ mkdir -p $DOWNLOAD_DIR
 echo "Downloading salmon_txomes FASTAs to $DOWNLOAD_DIR"
 echo "Started at $(date)"
 
-python3 ~/code/refgenie-registry/download_fastas.py salmon_txomes/sources.csv $DOWNLOAD_DIR
+python3 "$REGISTRY"/download_fastas.py salmon_txomes/sources.csv $DOWNLOAD_DIR
 
 echo "Finished at $(date)"
 echo "Files in download dir:"

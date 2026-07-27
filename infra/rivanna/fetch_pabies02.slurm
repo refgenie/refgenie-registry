@@ -7,6 +7,8 @@
 #SBATCH --time=12:00:00
 #SBATCH --output=/project/shefflab/brickyard/results_pipeline/refgenie/build_reports/fetch_pabies02_%j.log
 
+REGISTRY="${REGISTRY_DIR:-$HOME/mobot/checkouts/refgenie-registry}"
+
 # One-off: stage the Picea abies Pabies02 assembly for the plantref store.
 #
 # Replaces picea_abies_ConGenIE_v1_0 (10.25M contigs, 12.3 Gbp, median 317 bp),
@@ -23,7 +25,7 @@
 
 set -uo pipefail
 
-source ~/code/refgenie-registry/infra/rivanna/env.sh
+source "$REGISTRY"/infra/rivanna/env.sh
 
 DEST="$REFGETSTORE_FASTA/plantref/picea_abies/upsc"
 # 'upsc' (the data producer), not 'ena' (the portal): the plantref README's rule

@@ -7,6 +7,8 @@
 #SBATCH --time=48:00:00
 #SBATCH --output=/project/shefflab/brickyard/results_pipeline/refgenie/build_reports/s3_sync_plantref_%j.log
 
+REGISTRY="${REGISTRY_DIR:-$HOME/mobot/checkouts/refgenie-registry}"
+
 # One-off: finish the plantref RefgetStore upload.
 #
 # plantref is the largest store by object COUNT: 15,207,554 sequences
@@ -20,7 +22,7 @@
 
 module load gcc/11.4.0 openmpi/4.1.4 python/3.11.4
 source ~/envs/refgetstore-analysis/bin/activate
-source ~/code/refgenie-registry/infra/rivanna/env.sh
+source "$REGISTRY"/infra/rivanna/env.sh
 
 # Millions of tiny per-sequence files -> latency-bound. Default 10 concurrent
 # requests would take days; crank it on the profile actually used.
