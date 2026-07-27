@@ -99,3 +99,25 @@ export SNAKEMAKE_BIN="${SNAKEMAKE_BIN:-/home/ns5bc/.local/bin/snakemake}"
 # idempotently and genomes are reconciled so the catalog self-heals.
 export REFGENIE_BUILD_DB="${REFGENIE_BUILD_DB:-/project/shefflab/brickyard/results_pipeline/refgenie/catalog/refgenie_build.sqlite}"
 export REFGENIE_DB_CONFIG_PATH="${REFGENIE_DB_CONFIG_PATH:-/project/shefflab/brickyard/results_pipeline/refgenie/catalog/refgenie_build_db_config.yaml}"
+
+# Genome + stage folders for the persistent build catalog.
+#
+# refgenie resolves BOTH of these from the DB `configuration` row at runtime
+# (the Refgenie.genome_folder / .genome_stage_folder properties), and
+# init_backend SKIPS its insert when a Configuration row already exists -- so
+# these env vars do NOT steer where assets actually stage. What they do steer is
+# refgenie.init(), which mkdir -p's whatever the env-derived config says before
+# handing off to init_backend. Left unset that default is
+# $HOME/.refgenie/{genomes,archives}, so every nightly logged "Genome stage
+# folder ready: /home/ns5bc/.refgenie/archives" while actually staging to
+# brickyard, and re-created two phantom empty dirs in $HOME each run. Setting
+# them makes the log honest and keeps $HOME out of the build path entirely.
+#
+# The stage folder moved off $HOME on 2026-07-27. The 07-26 from-scratch rebuild
+# staged 120 GB of tarballs there -- nothing prunes the stage dir after a
+# successful push -- which filled the 200 GB home quota, and the 07-27 nightly
+# then died 18 seconds in on `sed: write error` while patching the generated
+# Snakefile. Note `archives` (plural, live push staging) is NOT the sibling
+# `legacy_archive/` (673 dirs, ~1.8 TB, unreferenced pre-2026 payloads).
+export REFGENIE_GENOME_FOLDER="${REFGENIE_GENOME_FOLDER:-/project/shefflab/brickyard/results_pipeline/refgenie/genomes}"
+export REFGENIE_GENOME_STAGE_FOLDER="${REFGENIE_GENOME_STAGE_FOLDER:-/project/shefflab/brickyard/results_pipeline/refgenie/archives}"
