@@ -1,0 +1,12 @@
+pep_version: "2.1.0"
+sample_table: sources.csv
+sample_table_index: fasta
+
+# Root for relative fasta paths in sources.csv ($REFGETSTORE_FASTA set by env.sh).
+fasta_root: $REFGETSTORE_FASTA/decoys
+
+# No `aliasing:` block on purpose. build_aliases.py's assembly_report strategy
+# resolves an NCBI assembly report from a GCA/GCF accession, and these
+# collections deliberately carry no accession (see README) -- they are not the
+# assemblies they derive from. Collection-level aliases from the name column are
+# all that applies here.

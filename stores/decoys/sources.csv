@@ -1,0 +1,3 @@
+fasta,name,organism,source,genome_assembly,group
+fasta/rCRSd.fa.gz,rCRSd,Homo sapiens,PEPATAC,rCRS,decoy
+fasta/chrM2x.fa.gz,chrM2x,Mus musculus,PEPATAC,mm10,decoy
