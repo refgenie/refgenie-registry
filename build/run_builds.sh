@@ -25,9 +25,23 @@
 # Conservative by default: set DRY_RUN=1 to do everything EXCEPT actually
 # submit/run builds (snakemake -n). The nightly mobot job runs it for real.
 #
+# DRY_RUN=1 MUST NOT DESTROY ANYTHING. It is the command an operator reaches for
+# while diagnosing a sick pipeline, so it has to be safe to run at the worst
+# possible moment. Concretely: the reconcile step is passed --no-prune (it
+# reports what it WOULD unlink and unlinks nothing) and the DB config is not
+# rewritten. Known remaining side effects, deliberate because the dry run cannot
+# render a Snakefile without them: tools/import_recipes.py syncs recipes and
+# asset classes into the catalog (idempotent inserts, additive only), and the
+# generated build/Snakefile is written and sed-patched in place. Neither touches
+# genome/alias rows or the .genome_init_complete sentinels. If you add a step
+# here, keep it above the DRY_RUN branch ONLY if it is read-only.
+#
 # Env (see infra/rivanna/env.sh + the snakemake profile):
 #   REFGENIE_INPUTS   required by the Snakefile/PEP (root of input FASTAs).
-#   REFGENIE_DB_CONFIG_PATH  refgenie1 DB config (persistent build DB).
+#   REFGENIE_DB_CONFIG_PATH  refgenie1 DB config for the persistent build
+#                     catalog. REQUIRED, absolute, and must already exist —
+#                     there is NO fallback (see the validation block below).
+#   REFGENIE_BUILD_DB the persistent catalog SQLite file. Same rules.
 #   REFGENIE_BIN      build-command binary name (default: refgenie).
 #   SNAKEMAKE_BIN     workflow-driver binary; pin to the HOST snakemake so the
 #                     driver isn't a bulker shim missing the slurm executor.
@@ -161,10 +175,85 @@ SNAKEFILE="$BUILD_DIR/Snakefile"
 #     always ends up with its genome + alias rows before any build stages.
 # The default paths (see infra/rivanna/env.sh) live on brickyard, OUTSIDE the
 # git checkout, so a nightly git pull/clean on the mobot host cannot destroy the
-# catalog. Operators can point REFGENIE_DB_CONFIG_PATH/REFGENIE_BUILD_DB
-# elsewhere (e.g. a laptop) via the ${VAR:-default} fallbacks below.
-export REFGENIE_DB_CONFIG_PATH="${REFGENIE_DB_CONFIG_PATH:-$BUILD_DIR/.refgenie_build_db_config.yaml}"
-REFGENIE_BUILD_DB="${REFGENIE_BUILD_DB:-$BUILD_DIR/.refgenie_build.sqlite}"
+# catalog. Operators point REFGENIE_DB_CONFIG_PATH/REFGENIE_BUILD_DB elsewhere
+# (e.g. a laptop) by EXPORTING them; there is deliberately no in-repo fallback.
+#
+# NO SILENT FALLBACK (2026-07-08). These two used to be `${VAR:-$BUILD_DIR/...}`.
+# That fallback is a loaded gun: if the variable arrived unset or garbage, the
+# run did not fail -- it quietly created a brand-new EMPTY catalog inside the git
+# checkout and built against it. An empty catalog has no `genome` rows, so
+# reconcile_genomes.py correctly concluded that every PEP genome was
+# unregistered and pruned every sentinel. That is how one bad env var deletes
+# the whole sentinel tree, and it is what happened on 2026-07-08 (the orphaned
+# .refgenie_build.sqlite it created is still sitting in the old checkout).
+#
+# "Garbage" is not hypothetical either. yoke's env_files parser mangles the
+# `${VAR:-default}` form in infra/rivanna/env.sh into a literal string that
+# STARTS WITH ':-' (and can carry a trailing '}'). Such a value is non-empty, so
+# `${VAR:-default}` happily accepts it and refgenie then opens a catalog at a
+# nonsense relative path. Hence the explicit ':-' / '}' checks below: emptiness
+# is not the only way this variable goes wrong.
+#
+# The file must ALREADY EXIST. Creating the catalog is a deliberate, one-time
+# bootstrap, never a side effect of a build; set ALLOW_CATALOG_BOOTSTRAP=1 to
+# opt into it explicitly.
+_validate_catalog_var() {
+    local name="$1" value="$2"
+    if [[ -z "$value" ]]; then
+        echo "$(date) | run_builds: FATAL $name is unset or empty." >&2
+        return 1
+    fi
+    if [[ "$value" == :-* || "$value" == *"}"* ]]; then
+        echo "$(date) | run_builds: FATAL $name looks mangled: '$value'" >&2
+        echo "  A leading ':-' or a '}' means a \${VAR:-default} expansion was passed" >&2
+        echo "  through literally -- yoke's env_files parser does this to env.sh." >&2
+        echo "  Export a plain absolute path instead." >&2
+        return 1
+    fi
+    if [[ "$value" != /* ]]; then
+        echo "$(date) | run_builds: FATAL $name must be an ABSOLUTE path, got: '$value'" >&2
+        return 1
+    fi
+    return 0
+}
+
+_CATALOG_DEFAULT_CONFIG=/project/shefflab/brickyard/results_pipeline/refgenie/catalog/refgenie_build_db_config.yaml
+_CATALOG_DEFAULT_DB=/project/shefflab/brickyard/results_pipeline/refgenie/catalog/refgenie_build.sqlite
+
+if ! _validate_catalog_var REFGENIE_DB_CONFIG_PATH "${REFGENIE_DB_CONFIG_PATH:-}" \
+    || ! _validate_catalog_var REFGENIE_BUILD_DB "${REFGENIE_BUILD_DB:-}"; then
+    echo "  The persistent refgenie1 build catalog must be named explicitly. Expected:" >&2
+    echo "    REFGENIE_DB_CONFIG_PATH=$_CATALOG_DEFAULT_CONFIG" >&2
+    echo "    REFGENIE_BUILD_DB=$_CATALOG_DEFAULT_DB" >&2
+    echo "  Both are exported by infra/rivanna/env.sh, which this script sources." >&2
+    echo "  If you saw this, that source failed or something overrode it." >&2
+    exit 1
+fi
+export REFGENIE_DB_CONFIG_PATH
+export REFGENIE_BUILD_DB
+
+# Existence gate. An absent catalog is the empty-catalog failure mode in its
+# most dangerous form: refgenie CREATES it on first touch, so nothing errors --
+# the build just proceeds against zero genomes and prunes every sentinel.
+if [[ ! -f "$REFGENIE_BUILD_DB" || ! -f "$REFGENIE_DB_CONFIG_PATH" ]]; then
+    if [[ "${ALLOW_CATALOG_BOOTSTRAP:-0}" == "1" ]]; then
+        echo "$(date) | run_builds: ALLOW_CATALOG_BOOTSTRAP=1 — creating a NEW EMPTY catalog." >&2
+        echo "  Every PEP genome will look unregistered; every sentinel will be pruned" >&2
+        echo "  and every genome re-initialized. This is correct ONLY for a first run." >&2
+    else
+        echo "$(date) | run_builds: FATAL persistent build catalog is missing." >&2
+        [[ -f "$REFGENIE_BUILD_DB" ]]        || echo "  missing SQLite:    $REFGENIE_BUILD_DB" >&2
+        [[ -f "$REFGENIE_DB_CONFIG_PATH" ]]  || echo "  missing DB config: $REFGENIE_DB_CONFIG_PATH" >&2
+        echo "  Refusing to build: refgenie would CREATE an empty catalog here, in which" >&2
+        echo "  no PEP genome is registered, and the reconcile step would then delete every" >&2
+        echo "  .genome_init_complete sentinel under the alias tree (see 2026-07-08)." >&2
+        echo "  If this really is a first-time bootstrap, re-run with:" >&2
+        echo "    ALLOW_CATALOG_BOOTSTRAP=1 bash build/run_builds.sh" >&2
+        echo "  Otherwise fix the path / restore the catalog from a sibling .bak in" >&2
+        echo "  $(dirname "$_CATALOG_DEFAULT_DB")" >&2
+        exit 1
+    fi
+fi
 
 echo "$(date) | run_builds: REGISTRY_DIR=$REGISTRY_DIR"
 echo "$(date) | run_builds: REFGENIE_INPUTS=$REFGENIE_INPUTS"
@@ -172,15 +261,26 @@ echo "$(date) | run_builds: REFGENIE_DB_CONFIG_PATH=$REFGENIE_DB_CONFIG_PATH"
 echo "$(date) | run_builds: REFGENIE_BUILD_DB=$REFGENIE_BUILD_DB"
 echo "$(date) | run_builds: REFGENIE_BIN=$REFGENIE_BIN  SNAKEMAKE_BIN=$SNAKEMAKE_BIN  DRY_RUN=${DRY_RUN:-0}"
 
-# (Re)write the small DB config each run (idempotent) and ensure the persistent
-# catalog's parent directory exists. The sqlite file itself is NOT removed — it
-# persists across runs and is updated in place.
+# Keep the small DB config in sync with $REFGENIE_BUILD_DB. The sqlite file
+# itself is NOT removed — it persists across runs and is updated in place.
+#
+# Written only when the content actually differs, and never under DRY_RUN: a dry
+# run must not touch the filesystem, and a config whose `path:` disagrees with
+# $REFGENIE_BUILD_DB is exactly the sort of drift an operator runs a dry run to
+# discover. Reporting it beats silently repairing it mid-diagnosis.
 mkdir -p "$(dirname "$REFGENIE_BUILD_DB")"
 mkdir -p "$(dirname "$REFGENIE_DB_CONFIG_PATH")"
-cat > "$REFGENIE_DB_CONFIG_PATH" <<EOF
-path: $REFGENIE_BUILD_DB
-type: sqlite
-EOF
+_desired_db_config="path: $REFGENIE_BUILD_DB
+type: sqlite"
+if [[ -f "$REFGENIE_DB_CONFIG_PATH" ]] && [[ "$(cat "$REFGENIE_DB_CONFIG_PATH")" == "$_desired_db_config" ]]; then
+    echo "$(date) | run_builds: DB config already points at $REFGENIE_BUILD_DB"
+elif [[ "${DRY_RUN:-0}" == "1" ]]; then
+    echo "$(date) | run_builds: DRY RUN — WOULD rewrite $REFGENIE_DB_CONFIG_PATH to point at $REFGENIE_BUILD_DB" >&2
+    echo "  (current content left untouched; a dry run does not repair drift)" >&2
+else
+    printf '%s\n' "$_desired_db_config" > "$REFGENIE_DB_CONFIG_PATH"
+    echo "$(date) | run_builds: wrote DB config -> $REFGENIE_BUILD_DB"
+fi
 echo "$(date) | run_builds: using persistent build DB at $REFGENIE_BUILD_DB"
 
 # --- 1. import recipes + render Snakefile (single refgenie1 instance) -----
@@ -242,8 +342,26 @@ fi
 # reconcile_genomes.py prunes stale sentinels for any PEP genome NOT registered
 # in the persistent catalog, forcing genome_init to re-run and repopulate the
 # genome + alias rows before any build stages. It also prints catalog counts.
+#
+# DRY_RUN passes --no-prune. This call sits ~35 lines above the DRY_RUN
+# early-exit, and until 2026-07-19 it ran unconditionally — so a dry run reached
+# the unlink() long before it reached the branch meant to make it harmless, and
+# one such invocation (issued while investigating MISSING sentinels) destroyed
+# hg38's and yeast_s288c's. Nothing recreates a sentinel; the next nightly
+# re-ran genome_init and marked every downstream asset stale.
+#
+# The flag is used rather than moving this call below the exit, because the
+# ordering here is load-bearing: reconcile must run BEFORE the dispatch-safety
+# check and before snakemake evaluates the genome_init sentinels. Moving it
+# would drag the guard with it and change what a real run checks; --no-prune
+# changes only the dry run, and only by making it read-only.
+RECONCILE_ARGS=(--db-config "$REFGENIE_DB_CONFIG_PATH")
+if [[ "${DRY_RUN:-0}" == "1" ]]; then
+    RECONCILE_ARGS+=(--no-prune)
+    echo "$(date) | run_builds: DRY RUN — reconcile is read-only (--no-prune); reporting what it WOULD prune"
+fi
 echo "$(date) | run_builds: reconciling genomes with persistent catalog..."
-python3 build/reconcile_genomes.py --db-config "$REFGENIE_DB_CONFIG_PATH"
+python3 build/reconcile_genomes.py "${RECONCILE_ARGS[@]}"
 
 # Guard: for a real run, refuse to dispatch a build that is doomed to
 # MissingGenomeError. After reconcile, a PEP genome is safe to build iff it is
