@@ -14,21 +14,31 @@
 executor: slurm
 jobs: 20                       # max concurrent SLURM jobs
 
-# Global resource pool. genome_init declares refget_store_writer=1 (see the
-# generated Snakefile), so this caps the workflow at ONE concurrent genome_init.
+# NO GLOBAL refget_store_writer BUDGET (deliberate).
 #
-# Required for correctness, not for throughput. RefgetStore takes no file lock
-# and rewrites collections.rgci and aliases/collections/refgenie.tsv wholesale
-# from the state it loaded at open time, so concurrent inits are last-writer-wins.
-# On 2026-07-23 four genome_inits were dispatched at the same second and
-# athaliana lost the race: its collection file was written but dropped from both
-# indexes, its alias stopped resolving, and the nightly failed at build_fasta
-# with "Genome 'athaliana' not found". Neither init reported an error.
+# This used to be `resources: {refget_store_writer: 1}`, capping the workflow at
+# ONE concurrent genome_init. It was the stopgap for the 2026-07-23 incident:
+# four genome_inits were dispatched at the same second and athaliana lost the
+# race. RefgetStore took no file lock and rewrote collections.rgci and
+# aliases/collections/refgenie.tsv wholesale from the state it loaded at open
+# time, so concurrent inits were last-writer-wins. athaliana's collection file
+# was written but dropped from both indexes, its alias stopped resolving, and the
+# nightly failed at build_fasta with "Genome 'athaliana' not found". Neither init
+# reported an error.
 #
-# Snakemake treats a custom resource with no declared budget as UNLIMITED, so
-# removing this line silently restores the race.
-resources:
-  refget_store_writer: 1
+# The cap is gone because the fix moved to where it belongs. gtars now takes an
+# exclusive lock on <store>/.rgstore.lock and MERGES with the current on-disk rows
+# instead of overwriting from its open-time snapshot. That covers every writer,
+# including the ones this Snakemake resource never constrained: the gtars CLI,
+# refgenie1's Python bindings, the SLURM scripts under infra/rivanna/, and manual
+# runs. Concurrent genome_inits are now safe, and they parallelize properly --
+# the lock is held for the commit (seconds), not for the whole init.
+#
+# Snakemake treats a custom resource with no declared budget as UNLIMITED, so the
+# absence of this key means "unbounded", which is now the intended setting. Do NOT
+# re-add a budget as a correctness measure; if you need to throttle inits for
+# throughput reasons, say so in the comment. `gtars refget lock-status <store>`
+# shows commit-lock contention.
 latency-wait: 60               # tolerate shared-FS latency on output files
 rerun-incomplete: true
 keep-going: true               # one failed asset must not abort the batch

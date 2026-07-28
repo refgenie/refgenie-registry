@@ -97,38 +97,32 @@ def enumerate_collections(store: RefgetStore) -> list:
     return out
 
 
-def load_all_collections(store: RefgetStore, metas: list) -> None:
-    """Force every collection into memory before removing anything.
+def preview_orphan_removal(store: RefgetStore, targets: list) -> int:
+    """Report how many sequences the orphan GC will reclaim, without removing.
 
-    THIS IS NOT OPTIONAL. On a freshly reopened on-disk store, collections are
-    stubs (`n_collections_loaded` == 0) and orphan-sequence GC SILENTLY DOES
-    NOTHING: `remove_collection(..., remove_orphan_sequences=True)` still returns
-    True and still drops the collection record and its aliases, but `n_sequences`
-    does not move and the orphaned `.seq` files stay on disk. Verified on
-    gtars 0.9.1 / refget 0.11.0 with a two-collection scratch store:
+    This used to be a `load_all_collections()` force-load, and the reason is
+    worth remembering. gtars <= 0.9.1 derived the "still referenced" set from
+    `name_lookup`, which a freshly reopened on-disk store does not populate --
+    collections come back as stubs. So orphan GC either silently no-opped or, on
+    a partially-loaded store, deleted sequences that surviving collections still
+    needed. The force-load was a workaround: correctness by convention, enforced
+    from the caller, in a script that is not the only writer.
 
-        reopened, no load : n_sequences 3 -> 3, .seq files 3 -> 3   (GC no-op)
-        after force-load  : n_sequences 3 -> 2, .seq files 3 -> 2   (correct)
+    gtars now derives the live set from disk (reading each collections/<digest>
+    .rgsi under the store write lock) and fails closed if any of them is
+    unreadable, so no force-load is needed and none of this depends on which
+    loading path the caller happened to take.
 
-    In both cases the shared sequence was retained and the surviving collection
-    stayed readable, so the retention half of the content-addressing is fine —
-    it is only the reclaim half that needs the collections resident.
-
-    The GC has to know which sequences the REMAINING collections reference, and
-    it can only see that for collections it has actually loaded. This loads
-    metadata only (`n_sequences_loaded` stays 0), not sequence payloads.
-
-    Use `load_all_collections()`, NOT a `get_collection()` loop. Both populate
-    `name_lookup`, which is all the GC needs, but `get_collection()` also
-    materializes the whole collection to hand back: it clones the metadata for
-    every sequence, allocates a fresh String per name, builds a Vec of every
-    record, and marshals all of it into Python objects -- which a force-load then
-    throws away. On plantref that meant ~14.5M records built and discarded, and
-    the loop took 18-40 minutes. `load_all_collections()` only parses the index
-    into the store's internal maps.
+    `plan_orphan_removal` runs exactly the computation the real removal runs, so
+    if the store is in a state where GC is unsafe this raises HERE, before
+    anything has been removed.
     """
-    print(f"  loading {len(metas)} collections (required for orphan GC)...")
-    store.load_all_collections()
+    total = 0
+    for label, digest in targets:
+        doomed = store.plan_orphan_removal(digest)
+        total += len(doomed)
+        print(f"  {len(doomed):>10,} orphan sequences from {digest}  ({label})")
+    return total
 
 
 def resolve_targets(
@@ -241,28 +235,27 @@ def main():
         print("\nDRY RUN — nothing removed.")
         return
 
-    # Must happen before any removal: see load_all_collections' docstring.
+    predicted_orphans = 0
     if not args.keep_orphan_sequences:
-        print()
-        load_all_collections(store, list(before.values()))
-        mid_stats = store.stats()
-        loaded = as_int(mid_stats.get("n_collections_loaded"))
-        total = as_int(mid_stats.get("n_collections"))
-        print(f"  n_collections_loaded: {loaded}/{total}")
-        if loaded is None or total is None or loaded < total:
-            sys.exit(
-                "Not every collection loaded. Orphan sequence GC would silently "
-                "no-op and free nothing. Refusing to proceed."
-            )
+        print("\nOrphan GC preview:")
+        predicted_orphans = preview_orphan_removal(store, targets)
+        print(f"  {predicted_orphans:>10,} total")
 
-    print("\nRemoving:")
-    for label, digest in targets:
-        removed = store.remove_collection(
-            digest, remove_orphan_sequences=not args.keep_orphan_sequences
-        )
-        print(f"  {'removed' if removed else 'NOT FOUND'}  {digest}  ({label})")
-        if not removed:
-            sys.exit(f"remove_collection returned False for {digest} — stopping.")
+    # Hold the store write lock across every removal, so another writer cannot
+    # add a collection referencing these sequences between the plan above and
+    # the removals below.
+    store.lock_for_batch("remove_collections")
+    try:
+        print("\nRemoving:")
+        for label, digest in targets:
+            removed = store.remove_collection(
+                digest, remove_orphan_sequences=not args.keep_orphan_sequences
+            )
+            print(f"  {'removed' if removed else 'NOT FOUND'}  {digest}  ({label})")
+            if not removed:
+                sys.exit(f"remove_collection returned False for {digest} — stopping.")
+    finally:
+        store.release_batch_lock()
 
     after_stats = store.stats()
     after = {m.digest for m in enumerate_collections(store)}
@@ -285,27 +278,30 @@ def main():
             print(f"  - {d}", file=sys.stderr)
         sys.exit(1)
 
-    # Surface the case where collections went away but nothing was reclaimed.
-    # Two readings, and this cannot tell them apart from the counts alone:
-    #   1. Legitimate — every sequence in the removed collections was shared with
-    #      a survivor, so content-addressing correctly retained all of them. Seen
-    #      on the `demo` store, where all collections share the same 3 sequences.
-    #   2. Broken — orphan GC no-opped (see load_all_collections). The load guard
-    #      above should have caught this, so treat it as a signal something else
-    #      is wrong.
-    # Not fatal: the store is internally consistent either way. But if you ran
-    # this to reclaim space, this means you did not.
+    # Cross-check the outcome against the dry run. `plan_orphan_removal` runs the
+    # same computation the removal runs, so a divergence means the store changed
+    # underneath us or the GC did not do what it said it would.
+    #
+    # A predicted count of zero is legitimate and common: every sequence in the
+    # removed collections was shared with a survivor, so content-addressing
+    # correctly retained all of them. That is the `demo` store, where all
+    # collections share the same 3 sequences.
     if not args.keep_orphan_sequences:
         b, a = as_int(before_stats.get("n_sequences")), as_int(after_stats.get("n_sequences"))
-        if b is not None and a is not None and a == b:
-            print(
-                f"\nWARNING: n_sequences did not move ({b:,}). Either every removed "
-                "sequence was shared with a surviving collection (legitimate), or "
-                "orphan GC did not run (broken). If you removed these to reclaim "
-                "space, verify on disk before syncing to S3 — a --delete sync makes "
-                "this permanent.",
-                file=sys.stderr,
-            )
+        if b is not None and a is not None:
+            actual = b - a
+            if actual != predicted_orphans:
+                print(
+                    f"\nWARNING: orphan GC reclaimed {actual:,} sequences but the dry run "
+                    f"predicted {predicted_orphans:,}. Verify the store on disk before "
+                    "syncing to S3 — a --delete sync makes this permanent.",
+                    file=sys.stderr,
+                )
+            elif predicted_orphans == 0:
+                print(
+                    f"\nn_sequences unchanged ({b:,}), as predicted: every removed "
+                    "sequence is shared with a surviving collection."
+                )
 
     print("\nAll targets confirmed absent. Verify the store before syncing to S3.")
 

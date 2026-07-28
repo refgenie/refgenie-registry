@@ -364,7 +364,27 @@ def _aliases_from_report(store, coll_digest, report_path, seq_aliases,
 
 
 def _load(store, seq_aliases, coll_aliases):
+    """Register every namespace under ONE store write lock.
+
+    Each load_*_aliases() call is already a locked commit on its own, so this is
+    not needed for safety. It is here for two reasons:
+
+      * Atomicity. The alias step should land as a unit -- a reader that catches
+        the store between namespaces would see refseq aliases resolving and insdc
+        aliases not yet existing.
+      * Cost. Every commit re-reads the store manifest and rehashes the alias
+        files; taking the lock once amortizes the acquire/release across all
+        namespaces instead of paying it per namespace.
+    """
     print("\nRegistering aliases...")
+    store.lock_for_batch("build_aliases")
+    try:
+        _load_locked(store, seq_aliases, coll_aliases)
+    finally:
+        store.release_batch_lock()
+
+
+def _load_locked(store, seq_aliases, coll_aliases):
     with tempfile.TemporaryDirectory() as tmp:
         for ns, pairs in seq_aliases.items():
             if not pairs:

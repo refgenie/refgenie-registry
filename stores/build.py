@@ -143,6 +143,7 @@ def write_build_report(
     failed: int,
     stats: dict,
     collections: list[dict],
+    import_counters: dict | None = None,
 ) -> Path | None:
     """Write <store>_build_report.json into a LOCAL reports dir. Never crashes the build.
 
@@ -168,6 +169,11 @@ def write_build_report(
             "failed": failed,
             "n_collections": stats.get("n_collections") if isinstance(stats, dict) else None,
             "n_sequences": stats.get("n_sequences") if isinstance(stats, dict) else None,
+            # Per-run ingest counters from the ImportReport. Distinct from the
+            # store-wide totals above: these say what THIS run actually wrote,
+            # which is the question the old `*_loaded` residency gauges were
+            # mistaken for and could never answer.
+            **(import_counters or {}),
         },
         "tool_versions": _tool_versions(),
     }
@@ -269,10 +275,20 @@ def build_store(
     loaded = 0
     skipped = 0
     collection_records = []  # list[{digest, n_sequences, label, was_new}]
+    import_counters: dict = {}  # populated only when there is something to ingest
     if unique_paths:
         print(f"  Ingesting {len(unique_paths)} FASTAs with {jobs} parallel worker(s)...")
-        results = store.add_sequence_collections_from_fastas(unique_paths, jobs=jobs)
-        by_path = dict(zip(unique_paths, results))
+        import_report = store.add_sequence_collections_from_fastas(unique_paths, jobs=jobs)
+        # Returns an ImportReport, not a list. `.collections` is the per-file
+        # (metadata, was_new) sequence, aligned 1:1 with unique_paths; the
+        # report also carries the real per-run ingest counters, which the
+        # store-wide stats dict has never been able to express.
+        by_path = dict(zip(unique_paths, import_report.collections))
+        import_counters = {
+            "n_collections_new": import_report.n_collections_new,
+            "n_sequences_written": import_report.n_sequences_written,
+            "n_sequences_deduped": import_report.n_sequences_deduped,
+        }
 
         # --- Phase 3: register aliases per row from the resolved metadata ---
         for row, label, path in resolved_rows:
@@ -321,6 +337,7 @@ def build_store(
         failed=failures,
         stats=stats if isinstance(stats, dict) else {},
         collections=collection_records,
+        import_counters=import_counters,
     )
     if report_path:
         mins, secs = divmod(int(elapsed), 60)
