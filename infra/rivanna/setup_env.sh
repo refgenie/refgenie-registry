@@ -115,17 +115,26 @@ check() {  # check <label> <python expr> <expected substring>
     fi
 }
 
-# Every import must resolve INSIDE the venv. If any of these report a path under
-# ~/.local, isolation is broken and we are back to the shared environment.
-for m in refgenie refget gtars snakemake peppy; do
+# Every NON-EDITABLE import must resolve INSIDE the venv. If any of these
+# reports a path under ~/.local, isolation is broken and we are back to the
+# shared environment. refgenie and refget are deliberately excluded here: they
+# are editable installs and resolve to their source trees by design, which the
+# two dedicated checks below assert instead.
+for m in gtars snakemake peppy; do
     check "$m resolves in venv" \
         "import $m; print($m.__file__)" "$VENV"
 done
-
-# refgenie and refget are editable installs, so they legitimately resolve to
-# their source trees rather than site-packages. Check those explicitly.
 check "refgenie is the deploy tree" "import refgenie; print(refgenie.__file__)" "$REFGENIE_SRC"
 check "refget is the deploy tree"   "import refget; print(refget.__file__)"   "$REFGET_SRC"
+
+# ...and that the editable install is registered in THIS venv, not inherited
+# from ~/.local. The source path alone cannot tell those apart: ~/.local also
+# had editable installs pointing at the same deploy trees, which is exactly the
+# ambiguity that let the shared environment masquerade as a working one.
+for m in refgenie refget; do
+    check "$m dist metadata is in venv" \
+        "from importlib.metadata import distribution; print(distribution('$m')._path)" "$VENV"
+done
 
 # The whole point: the store write lock must be present in the gtars we install.
 check "gtars has the store lock" \
