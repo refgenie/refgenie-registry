@@ -48,6 +48,25 @@ if [[ -f infra/rivanna/env.sh ]]; then
     source infra/rivanna/env.sh
 fi
 
+# Put the build venv's bin FIRST, so a bare `python` in this script or anything
+# it calls is the build system's interpreter and not the cluster miniforge one
+# (whose packages come from the account-wide ~/.local user site). REFGENIE_BIN
+# and SNAKEMAKE_BIN are already absolute paths into this venv; this covers
+# everything else. Same reasoning as the aws prepend below: the bin dir comes
+# from env.sh, but the PATH line lives here in plain bash because yoke's
+# env_files parser mangles a self-referential PATH inside env.sh.
+if [[ -n "${REFGENIE_VENV:-}" && -x "$REFGENIE_VENV/bin/python" ]]; then
+    case ":$PATH:" in
+        *":$REFGENIE_VENV/bin:"*) ;;
+        *) export PATH="$REFGENIE_VENV/bin:$PATH" ;;
+    esac
+    echo "$(date) | run_builds: using build venv $REFGENIE_VENV"
+else
+    echo "$(date) | run_builds: FATAL build venv missing or incomplete (REFGENIE_VENV=${REFGENIE_VENV:-unset})." >&2
+    echo "$(date) | run_builds:   create it with: bash infra/rivanna/setup_env.sh" >&2
+    exit 1
+fi
+
 # Put a working `aws` ahead of the broken host ~/.local/bin/aws (dead-anaconda
 # shebang) so the folder_sync push_command resolves a real CLI. The bin dir
 # comes from env.sh ($REFGENIE_AWS_BINDIR) but the PATH prepend lives HERE, in

@@ -71,7 +71,7 @@ export REFGENIE_BUILD_REPORTS_DIR=/project/shefflab/brickyard/results_pipeline/r
 # not exist in the snakemake-submitted SLURM build children (genome_init then
 # fails with "command exited with non-zero exit code"). Pin the host wrapper so
 # run_builds.sh substitutes a stable absolute path into the generated Snakefile.
-export REFGENIE_BIN="${REFGENIE_BIN:-/home/ns5bc/.local/bin/refgenie}"
+export REFGENIE_BIN="${REFGENIE_BIN:-/home/ns5bc/envs/refgenie-build/bin/refgenie}"
 
 # Absolute path to the host snakemake — the workflow DRIVER that submits the
 # per-asset SLURM jobs. MUST be the host binary, NOT a bulker shim: the driver
@@ -87,7 +87,26 @@ export REFGENIE_BIN="${REFGENIE_BIN:-/home/ns5bc/.local/bin/refgenie}"
 # refgenie-only -- databio/refgenie:1.1.0 imports bulker/coreutils, so nothing
 # needs databio/lab. Pinning the host path is what makes this line
 # crate-agnostic, so it did not need to change with the switch.)
-export SNAKEMAKE_BIN="${SNAKEMAKE_BIN:-/home/ns5bc/.local/bin/snakemake}"
+export SNAKEMAKE_BIN="${SNAKEMAKE_BIN:-/home/ns5bc/envs/refgenie-build/bin/snakemake}"
+
+# The build system's own virtualenv. Created and verified by
+# infra/rivanna/setup_env.sh; see that script's header for why it exists.
+#
+# Both binaries above are entry points inside it, so pinning them is what makes
+# the environment automatic: the nightly, a hand-run of build/run_builds.sh, and
+# a one-off `stores/build.py` all get the same interpreter without anyone
+# activating anything. Before this, they were `~/.local/bin` scripts on the
+# cluster miniforge python, which meant every package came from the
+# account-wide user site -- shared with every other python3.11 process on this
+# account. That is how a 2026-07-18 gtars was still what the nightly imported
+# on 2026-07-28, with no store write lock in it.
+#
+# Literal path, no $VAR expansion: yoke's env_files parser mangles
+# self-referential and nested expansions in this file (see the PATH note above).
+# Scripts that need the venv's `python` (not just the two pinned entry points)
+# should prepend "$REFGENIE_VENV/bin" to PATH in plain bash, the same way
+# run_builds.sh handles REFGENIE_AWS_BINDIR.
+export REFGENIE_VENV=/home/ns5bc/envs/refgenie-build
 
 # Persistent refgenie1 build catalog (SQLite) + its DB config. This is
 # refgenie1's durable metadata store that drives the build->stage->push

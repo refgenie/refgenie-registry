@@ -34,7 +34,14 @@ module load gcc/11.4.0 openmpi/4.1.4 python/3.11.4
 export PATH="$HOME/.cargo/bin:$PATH"
 
 SRC="$HOME/code/gtars"
-VENV="$HOME/envs/refgetstore-analysis"
+# The build system's own venv (infra/rivanna/setup_env.sh), NOT
+# ~/envs/refgetstore-analysis. That was the target until 2026-07-28, and it was
+# the wrong one twice over: nothing in the build path uses it, so a rebuild here
+# never reached the nightly; and its base interpreter (an `applications/202512`
+# python) has since been superseded on the cluster, so it now fails on
+# `libffi.so.8` for any import of ctypes. Installing into the environment the
+# jobs actually run in is the whole point.
+VENV="${REFGENIE_VENV:-$HOME/envs/refgenie-build}"
 
 echo "===== build gtars-python  $(date) ====="
 command -v cargo || { echo "cargo not found on PATH" >&2; exit 1; }
