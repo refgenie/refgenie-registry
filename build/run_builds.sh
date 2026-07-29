@@ -493,8 +493,18 @@ fi
 #
 # Reported, not enforced: the real build/push exit codes are re-raised below and
 # must stay the thing that fails the run. Pass --strict to make gaps fatal.
+#
+# --build-status carries snakemake's exit code INTO the report. Coverage is a
+# question about the catalog, not about this run: an assetgroup row means the
+# asset is registered by some run, so a failed REBUILD of an asset that already
+# existed is invisible to it. On 2026-07-29 five builds failed and this check
+# still printed "42/42" and "no gaps" -- both true, and both read as an all-clear
+# sitting directly above the failures. With the status passed in, the summary line
+# says outright that full coverage is not a clean run. It does not change any exit
+# code; $snakemake_rc is still what gets re-raised below.
 echo "$(date) | run_builds: checking asset coverage against the PEP..."
 python3 build/check_coverage.py --db-config "$REFGENIE_DB_CONFIG_PATH" \
+    --build-status "$snakemake_rc" \
     || echo "$(date) | run_builds: coverage check failed to run (non-fatal)"
 
 # Re-raise a build failure now that the successful assets have been pushed and

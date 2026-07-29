@@ -27,6 +27,24 @@ Genome names are resolved through the alias manager, so a genome whose alias doe
 not resolve is reported as entirely missing rather than crashing the check -- that
 is exactly the athaliana state, and the report should describe it, not die on it.
 
+What it CANNOT see
+------------------
+This is a question about STATE, not about this run. An ``assetgroup`` row means
+the asset is registered *by some run*, not that tonight's attempt succeeded. So a
+failed REBUILD of an asset that already exists is invisible here: the row from the
+previous night still satisfies the check.
+
+That is not hypothetical. On 2026-07-29 five builds failed (a wedged compute node
+ate every job it was handed) and this check still printed ``42/42`` and ``no gaps``
+-- correctly, because all 42 assets were registered on 07-26 and none of them
+disappeared. The line was true and read as an all-clear directly above the failure.
+
+Do not "fix" that by filtering on build timestamps. Snakemake is incremental, so on
+a normal night nothing rebuilds at all; a freshness test would fire constantly on
+healthy runs. The gap is a reporting one, and it is closed by ``--build-status``:
+pass the builder's exit code and the summary line says plainly that a green
+coverage report does not mean a green run.
+
 Usage
 -----
     python build/check_coverage.py --db-config PATH            # report, exit 0
@@ -85,6 +103,18 @@ def main(argv: list[str] | None = None) -> int:
         action="store_true",
         help="Exit 1 if any requested asset is missing (default: report and exit 0).",
     )
+    parser.add_argument(
+        "--build-status",
+        type=int,
+        default=0,
+        metavar="RC",
+        help=(
+            "Exit code of the build step that just ran. Nonzero qualifies the summary "
+            "line so a full-coverage report cannot be misread as a successful run. "
+            "Does NOT affect this script's own exit code -- the caller re-raises the "
+            "real build status."
+        ),
+    )
     args = parser.parse_args(argv)
 
     root = registry_root()
@@ -133,8 +163,30 @@ def main(argv: list[str] | None = None) -> int:
         print(f"coverage: {len(missing)} requested asset(s) MISSING:")
         for genome in sorted(by_genome):
             print(f"  {genome}: {', '.join(sorted(by_genome[genome]))}")
+    elif args.build_status != 0:
+        # Full coverage AND a failed build is the confusing case: every requested
+        # asset is registered, but at least one of tonight's builds failed, so some
+        # of those rows are older than this run. Say so, or the reader takes the
+        # coverage line as an all-clear -- which is exactly what happened on
+        # 2026-07-29.
+        print(
+            f"coverage: no gaps in the CATALOG, but the build step exited "
+            f"{args.build_status} — this is NOT a clean run."
+        )
+        print("  Coverage counts assets registered by ANY run. An asset that already")
+        print("  existed still counts even if tonight's rebuild of it failed, so the")
+        print("  failures above are real and are NOT contradicted by this line.")
+        print("  Read the build log for which rules failed.")
     else:
         print("coverage: no gaps — every asset the PEP requests is registered.")
+
+    if missing and args.build_status != 0:
+        # Gaps plus a failed build: name the likely relationship so the reader does
+        # not go hunting for a second, independent cause.
+        print(
+            f"  NOTE: the build step also exited {args.build_status}; the missing "
+            "assets above are most likely those failures."
+        )
 
     if missing and args.strict:
         print(
