@@ -71,7 +71,23 @@ export REFGENIE_BUILD_REPORTS_DIR=/project/shefflab/brickyard/results_pipeline/r
 # not exist in the snakemake-submitted SLURM build children (genome_init then
 # fails with "command exited with non-zero exit code"). Pin the host wrapper so
 # run_builds.sh substitutes a stable absolute path into the generated Snakefile.
-export REFGENIE_BIN="${REFGENIE_BIN:-/home/ns5bc/envs/refgenie-build/bin/refgenie}"
+#
+# ASSIGNED UNCONDITIONALLY, not `${REFGENIE_BIN:-...}`. The fallback form was
+# actively harmful here: yoke's env_files parser pre-exports a value it cached
+# from an EARLIER version of this file, and `${VAR:-default}` then keeps that
+# stale value instead of the one written below. Observed 2026-07-28, hours after
+# this line was repointed at the venv -- a yoke shell that sourced this file
+# still came out with REFGENIE_BIN=/home/ns5bc/.local/bin/refgenie, i.e. the
+# shared ~/.local environment we had just finished escaping. The nightly was
+# unaffected (mobot's env has the variable unset, so the default won), but a
+# hand-run through yoke silently used the wrong interpreter, which is exactly
+# the failure the venv exists to prevent.
+#
+# Nothing in this repo overrides these two, and both are hardcoded /home/ns5bc
+# paths in a Rivanna-specific file, so the override the fallback bought was
+# theoretical. Every other path in this file is already assigned unconditionally
+# for the same reason. To point elsewhere, edit this file.
+export REFGENIE_BIN=/home/ns5bc/envs/refgenie-build/bin/refgenie
 
 # Absolute path to the host snakemake — the workflow DRIVER that submits the
 # per-asset SLURM jobs. MUST be the host binary, NOT a bulker shim: the driver
@@ -87,7 +103,9 @@ export REFGENIE_BIN="${REFGENIE_BIN:-/home/ns5bc/envs/refgenie-build/bin/refgeni
 # refgenie-only -- databio/refgenie:1.1.0 imports bulker/coreutils, so nothing
 # needs databio/lab. Pinning the host path is what makes this line
 # crate-agnostic, so it did not need to change with the switch.)
-export SNAKEMAKE_BIN="${SNAKEMAKE_BIN:-/home/ns5bc/envs/refgenie-build/bin/snakemake}"
+#
+# Unconditional for the same reason as REFGENIE_BIN above -- see that comment.
+export SNAKEMAKE_BIN=/home/ns5bc/envs/refgenie-build/bin/snakemake
 
 # The build system's own virtualenv. Created and verified by
 # infra/rivanna/setup_env.sh; see that script's header for why it exists.
