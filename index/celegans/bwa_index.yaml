@@ -6,7 +6,7 @@ asset_name: 0.7.19
 asset_digest: 776c7c5699d82c344fa8c6873b69fce2b94dcaf0c3b3b5aa8da58f42230cd74b
 build:
   status: complete
-  timestamp: '2026-07-28T07:18:30Z'
+  timestamp: '2026-07-29T10:22:57Z'
 files:
 - build_timestamp
 - bwa_index
