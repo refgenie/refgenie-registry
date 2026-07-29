@@ -14,31 +14,47 @@
 executor: slurm
 jobs: 20                       # max concurrent SLURM jobs
 
-# NO GLOBAL refget_store_writer BUDGET (deliberate).
+# refget_store_writer: a STAGED-ROLLOUT cap, no longer a correctness measure.
 #
-# This used to be `resources: {refget_store_writer: 1}`, capping the workflow at
-# ONE concurrent genome_init. It was the stopgap for the 2026-07-23 incident:
-# four genome_inits were dispatched at the same second and athaliana lost the
-# race. RefgetStore took no file lock and rewrote collections.rgci and
+# genome_init declares `refget_store_writer = 1` in refgenie1's Snakefile template
+# (refgenie/snakefile/template/template.smk), so whatever budget appears here IS
+# the number of concurrent genome_inits. Snakemake treats an undeclared custom
+# resource as UNLIMITED, so omitting this key means unbounded -- verify the
+# template still declares it before assuming this key does anything.
+#
+# History. This was 1 from 2026-07-23, as the stopgap for that morning's
+# incident: four genome_inits were dispatched in the same second and athaliana
+# lost the race. RefgetStore took no file lock and rewrote collections.rgci and
 # aliases/collections/refgenie.tsv wholesale from the state it loaded at open
 # time, so concurrent inits were last-writer-wins. athaliana's collection file
 # was written but dropped from both indexes, its alias stopped resolving, and the
 # nightly failed at build_fasta with "Genome 'athaliana' not found". Neither init
 # reported an error.
 #
-# The cap is gone because the fix moved to where it belongs. gtars now takes an
-# exclusive lock on <store>/.rgstore.lock and MERGES with the current on-disk rows
-# instead of overwriting from its open-time snapshot. That covers every writer,
-# including the ones this Snakemake resource never constrained: the gtars CLI,
-# refgenie1's Python bindings, the SLURM scripts under infra/rivanna/, and manual
-# runs. Concurrent genome_inits are now safe, and they parallelize properly --
-# the lock is held for the commit (seconds), not for the whole init.
+# That is now fixed at the right layer. gtars takes an exclusive lock on
+# <store>/.rgstore.lock, and a commit applies only the changes the writing handle
+# actually made to the index it re-reads from disk under that lock (gtars
+# 6a84792b) instead of overwriting from an open-time snapshot. That protects every
+# writer, including the ones this Snakemake budget never touched: the gtars CLI,
+# refgenie1's Python bindings, the SLURM scripts under infra/rivanna/, and
+# anything run by hand. The lock is held for the commit (seconds), not for the
+# whole init, so inits genuinely parallelize.
 #
-# Snakemake treats a custom resource with no declared budget as UNLIMITED, so the
-# absence of this key means "unbounded", which is now the intended setting. Do NOT
-# re-add a budget as a correctness measure; if you need to throttle inits for
-# throughput reasons, say so in the comment. `gtars refget lock-status <store>`
-# shows commit-lock contention.
+# So why cap it at all? Because the lock has not yet carried a real nightly. It is
+# well covered by tests -- including multi-process ones that reproduce the 07-23
+# incident, and a read-only cross-check against all 147 plantref collections --
+# but "passes tests" and "has survived production" are different claims, and the
+# failure being guarded against is silent data loss noticed hours later. 4 is
+# deliberately unambitious: enough to exercise real contention on the new lock,
+# few enough that a regression is bounded.
+#
+# REMOVE THIS KEY (restoring unlimited) once a few nightlies have run clean with
+# contention actually observed -- `gtars refget lock-status <store>` shows it.
+# That is the intended end state; this cap is scaffolding, not architecture. Do
+# not re-lower it to 1 as a correctness measure: if 4 breaks something, the bug is
+# in the lock and belongs in gtars, not here.
+resources:
+  refget_store_writer: 4
 latency-wait: 60               # tolerate shared-FS latency on output files
 rerun-incomplete: true
 keep-going: true               # one failed asset must not abort the batch
