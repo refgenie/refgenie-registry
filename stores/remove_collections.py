@@ -113,9 +113,17 @@ def preview_orphan_removal(store: RefgetStore, targets: list) -> int:
     unreadable, so no force-load is needed and none of this depends on which
     loading path the caller happened to take.
 
-    `plan_orphan_removal` runs exactly the computation the real removal runs, so
-    if the store is in a state where GC is unsafe this raises HERE, before
-    anything has been removed.
+    `plan_orphan_removal` runs the same computation the real removal runs, so if
+    the store is in a state where GC is unsafe this raises HERE, before anything
+    has been removed.
+
+    ADVISORY, though. It takes no lock -- deliberately, since blocking every
+    concurrent build for the length of a full-store scan (about a minute on
+    plantref) to answer a question the operator may decline would be absurd. The
+    authoritative scan runs again inside remove_collection() under the lock, so
+    if another writer commits a collection in between, a sequence counted here is
+    live by then and the real removal correctly spares it. Expect the counts to
+    match; a shortfall is ordinary concurrency, not corruption.
     """
     total = 0
     for label, digest in targets:
@@ -241,9 +249,13 @@ def main():
         predicted_orphans = preview_orphan_removal(store, targets)
         print(f"  {predicted_orphans:>10,} total")
 
-    # Hold the store write lock across every removal, so another writer cannot
-    # add a collection referencing these sequences between the plan above and
-    # the removals below.
+    # Hold the store write lock across ALL the removals, so a multi-target prune
+    # is atomic with respect to other writers: no concurrent build can land
+    # between target 1 and target 2 and see a half-pruned store.
+    #
+    # Each remove_collection() also takes (or re-enters) this lock and re-derives
+    # its own live set under it, so the safety of the orphan GC does not depend
+    # on this batch lock -- it only makes the batch as a whole atomic.
     store.lock_for_batch("remove_collections")
     try:
         print("\nRemoving:")
@@ -278,9 +290,16 @@ def main():
             print(f"  - {d}", file=sys.stderr)
         sys.exit(1)
 
-    # Cross-check the outcome against the dry run. `plan_orphan_removal` runs the
-    # same computation the removal runs, so a divergence means the store changed
-    # underneath us or the GC did not do what it said it would.
+    # Cross-check the outcome against the dry run. The two are computed the same
+    # way but at different times, and the preview holds no lock, so they are not
+    # required to agree:
+    #
+    #   reclaimed < predicted  -- a concurrent build committed a collection that
+    #     references one of the planned orphans. The removal re-derived the live
+    #     set under the lock and correctly spared it. Expected, not alarming.
+    #   reclaimed > predicted  -- nothing legitimate produces this. Something was
+    #     deleted that the plan did not account for; check the store before
+    #     syncing.
     #
     # A predicted count of zero is legitimate and common: every sequence in the
     # removed collections was shared with a survivor, so content-addressing
@@ -290,12 +309,20 @@ def main():
         b, a = as_int(before_stats.get("n_sequences")), as_int(after_stats.get("n_sequences"))
         if b is not None and a is not None:
             actual = b - a
-            if actual != predicted_orphans:
+            if actual > predicted_orphans:
                 print(
                     f"\nWARNING: orphan GC reclaimed {actual:,} sequences but the dry run "
-                    f"predicted {predicted_orphans:,}. Verify the store on disk before "
-                    "syncing to S3 — a --delete sync makes this permanent.",
+                    f"predicted only {predicted_orphans:,}. Nothing normal reclaims MORE "
+                    "than planned. Verify the store on disk before syncing to S3 — a "
+                    "--delete sync makes this permanent.",
                     file=sys.stderr,
+                )
+            elif actual < predicted_orphans:
+                print(
+                    f"\nNote: reclaimed {actual:,} of the {predicted_orphans:,} predicted "
+                    "orphans. A collection committed by another writer between the preview "
+                    "and the removal keeps its sequences live; the removal re-checked under "
+                    "the lock and spared them."
                 )
             elif predicted_orphans == 0:
                 print(

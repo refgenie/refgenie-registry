@@ -64,7 +64,20 @@ if ! grep -q "parent_dirs" "$SRC/gtars-refget/src/store/readonly.rs"; then
   echo "RMDIR HOIST NOT PRESENT -- is the sync current? Expected branch fix/orphan-rmdir-hoist" >&2
   exit 1
 fi
-echo "  source check OK: single-pass orphan cleanup + hoisted rmdir present, quadratic form absent"
+# Third fix: commits must be a DELTA against the index on disk, not a write-back
+# of everything the handle has in memory. Without this, a writer that opened
+# before a removal re-adds the removed collection and its sequence rows on its
+# next commit -- after the .seq files are gone. build.py holds one handle across
+# a multi-hour ingest, so that window is the normal case, not a rare race.
+if ! grep -q "PendingChanges" "$SRC/gtars-refget/src/store/readonly.rs"; then
+  echo "DELTA COMMIT NOT PRESENT -- is the sync current? Removals will be resurrected." >&2
+  exit 1
+fi
+if grep -q "struct Tombstones" "$SRC/gtars-refget/src/store/readonly.rs"; then
+  echo "OLD MERGE-AT-COMMIT tombstones still present -- refusing to build" >&2
+  exit 1
+fi
+echo "  source check OK: single-pass orphan cleanup + hoisted rmdir + delta commit present"
 
 source "$VENV/bin/activate" || exit 1
 echo "  venv: $VIRTUAL_ENV"
@@ -89,6 +102,7 @@ cd "$WORK" || exit 1
 mkdir -p f
 printf '>s1\nACGTACGTAA\n>s2\nTTTTGGGGCC\n' > f/A.fa
 printf '>s2\nTTTTGGGGCC\n>s3\nCCCCAAAATT\n' > f/B.fa
+printf '>s4\nGGGGCCCCAA\n' > f/C.fa
 python - <<'PYEOF'
 from refget.store import RefgetStore
 s = RefgetStore.on_disk("store")
@@ -97,19 +111,39 @@ mB, _ = s.add_sequence_collection_from_fasta("f/B.fa")
 digA, digB = mA.digest, mB.digest
 del s
 
-# Reopen: collections are stubs, so force-load before removing (the SECOND bug,
-# not fixed upstream -- orphan GC silently no-ops without this).
+# Check 1: orphan GC. No force-load needed -- the live set is derived from disk,
+# so a store of stubs is fine. (It was NOT before 2026-07-28: the old
+# name_lookup-derived live set was empty on a fresh open and would have unlinked
+# the shared sequence.)
 s = RefgetStore.on_disk("store")
-for m in s.list_collections(page=0, page_size=500)["results"]:
-    s.get_collection(m.digest)
 before = int(s.stats()["n_sequences"])
+doomed = s.plan_orphan_removal(digA)
 assert s.remove_collection(digA, remove_orphan_sequences=True) is True
 after = int(s.stats()["n_sequences"])
-print(f"    n_sequences {before} -> {after} (expect 3 -> 2)")
+print(f"    n_sequences {before} -> {after} (expect 3 -> 2), planned {len(doomed)} (expect 1)")
 assert before == 3 and after == 2, f"orphan GC wrong: {before} -> {after}"
+assert len(doomed) == 1, f"dry-run disagreed: {doomed}"
 kept = s.get_collection(digB)
 print(f"    survivor readable with {len(kept.sequences)} sequences (expect 2)")
 assert len(kept.sequences) == 2
+del s
+
+# Check 2: a stale handle must not resurrect another writer's removal. Holding a
+# handle across a removal by someone else is what build.py does for hours at a
+# time -- open once, ingest, commit at the end -- so this is the normal case.
+stale = RefgetStore.on_disk("store")
+mC, _ = stale.add_sequence_collection_from_fasta("f/C.fa")
+remover = RefgetStore.on_disk("store")   # opened while C is still in the index
+assert remover.remove_collection(mC.digest, remove_orphan_sequences=True) is True
+del remover                              # removal fully committed before...
+stale.write()                            # ...the stale handle commits
+del stale
+
+check = RefgetStore.on_disk("store")
+digests = {m.digest for m in check.list_collections(page=0, page_size=500)["results"]}
+print(f"    after stale commit: {len(digests)} collection(s) (expect 1)")
+assert mC.digest not in digests, "REMOVAL RESURRECTED by a stale handle's commit"
+assert digB in digests, "the surviving collection was dropped"
 print("    FUNCTIONAL CHECK PASSED")
 PYEOF
 rc=$?
