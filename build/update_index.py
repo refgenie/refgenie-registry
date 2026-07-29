@@ -8,7 +8,7 @@ entries match the schema consumed by .github/scripts/regenerate-manifest.py:
 
     build:
       status: complete
-      timestamp: <ISO8601>
+      timestamp: <ISO8601 -- when the asset was BUILT, not when this ran>
     recipe_version: <recipe version>
     files: [<seek key names>]
 
@@ -32,7 +32,7 @@ from __future__ import annotations
 import argparse
 import os
 import sys
-from datetime import datetime, timezone
+from datetime import timezone
 from pathlib import Path
 
 import yaml
@@ -63,10 +63,21 @@ def _alias_for(rg, digest: str) -> str:
     return digest
 
 
+def _iso8601(dt) -> str | None:
+    """Format a DB datetime as ISO8601 Z. Naive values are UTC (refgenie1 stores UTC)."""
+    if dt is None:
+        return None
+    try:
+        if dt.tzinfo is None:
+            dt = dt.replace(tzinfo=timezone.utc)
+        return dt.astimezone(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
+    except AttributeError:
+        return None
+
+
 def write_index(rg, index_dir: Path) -> int:
     """Write index entries for every built asset. Returns the count written."""
     asset_data, _aliases = rg.asset.list_all(include_seek_keys=True)
-    now = datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
     written = 0
 
     for genome_digest, asset_strings in asset_data.items():
@@ -141,6 +152,7 @@ def write_index(rg, index_dir: Path) -> int:
                 pass
             # Get the asset's content digest for content-addressed resolution
             asset_digest = None
+            built_at = None
             try:
                 asset = rg.asset.get(
                     asset_group_name=recipe_name,
@@ -148,8 +160,34 @@ def write_index(rg, index_dir: Path) -> int:
                     genome_digest=genome_digest,
                 )
                 asset_digest = asset.digest
+                built_at = _iso8601(getattr(asset, "created_at", None))
             except Exception:
                 pass
+            # When the asset was BUILT, not when the index was last regenerated.
+            #
+            # This used to stamp `datetime.now()` on every entry, so the nightly
+            # produced a 42-file commit whose only content was a clock reading --
+            # even on the common night where nothing rebuilt and the push step
+            # reported "Nothing to push. All remote-asset links are up to date".
+            # That made the index commit useless as a change signal: you could not
+            # tell a real rebuild from a no-op without diffing asset_digest by hand.
+            # regenerate-manifest.py already avoids exactly this for manifest.yaml.
+            #
+            # asset.created_at is the row's birth time, and a rebuild that
+            # reproduces identical content reuses the row rather than creating a
+            # new one -- so this timestamp moves only when the published asset
+            # actually changes, which is the property the field should have had.
+            #
+            # There is deliberately NO fallback. The clock is what made the field
+            # wrong in the first place, and a stale published value is no better:
+            # both answer "when was this built?" with something that is not the
+            # build time. If the DB has no created_at, omit the key and let the
+            # entry say nothing -- both consumers read it as
+            # .get("timestamp", ""), so absence degrades to empty rather than to a
+            # confident lie.
+            build = {"status": "complete"}
+            if built_at:
+                build["timestamp"] = built_at
             entry = {
                 "genome": genome_key,
                 "genome_digest": genome_digest,
@@ -157,7 +195,7 @@ def write_index(rg, index_dir: Path) -> int:
                 "recipe_version": recipe_version,
                 "asset_name": info["name"],
                 "asset_digest": asset_digest,
-                "build": {"status": "complete", "timestamp": now},
+                "build": build,
                 "files": sorted(info["files"]),
             }
             out = gdir / f"{recipe_name}.yaml"
