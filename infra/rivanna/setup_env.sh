@@ -84,10 +84,10 @@ python -m pip install --quiet --upgrade pip wheel
 #
 # refgenie1's pyproject declares `gtars>=0.9.2` and `refget>=0.11.0` as ordinary
 # PyPI dependencies, so installing it pulls published wheels of both. We want
-# the LOCAL builds instead: refget must be the seqcol-store-app-factory branch
-# (refgenie.server.main needs create_seqcol_app / prepare_store, which are not
-# in 0.11.0), and gtars must be built from source so the store write lock is
-# present. So: refgenie1 first, then overwrite both with local installs.
+# the LOCAL checkouts instead: refget from its local source (currently the dev
+# branch) so the build tracks unreleased changes, and gtars built from source so
+# the store write lock is present. So: refgenie1 first, then overwrite both with
+# local installs.
 echo "  [1/4] refgenie1 (editable, with snakemake extra) ..."
 python -m pip install --quiet -e "${REFGENIE_SRC}[snakemake]"
 
