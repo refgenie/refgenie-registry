@@ -1,0 +1,71 @@
+# tiers.yaml - SOURCE OF TRUTH for the nightly build queue.
+#
+# pep/samples.csv is GENERATED from this file by build/generate_samples.py.
+# Never hand-edit samples.csv; edit this file and regenerate. Committing
+# samples.csv IS launching the builds, so the samples.csv diff is the go/no-go
+# gate (see pep/README.md).
+#
+# ---------------------------------------------------------------------------
+# NO-OP LANDING (2026-08-06)
+# ---------------------------------------------------------------------------
+# This first commit lands the tier machinery WITHOUT changing what gets built.
+# The generated samples.csv is byte-identical to the previously hand-maintained
+# queue: every genome builds exactly the six fasta-derivable assets
+#   fasta, fasta_index, bwa_index, bowtie2_index, hisat2_index, suffixerator_index
+#
+# That set does NOT match the plain `full`/`standard` tiers below: those tiers
+# add `star_index` (both) and `tallymer_index` (full only), which are new,
+# expensive builds. Widening the queue to the real tiers means launching those
+# builds on the nightly, so it is a DELIBERATE FOLLOW-UP COMMIT (the go/no-go
+# gate), not part of landing the machinery.
+#
+# To reproduce today's queue exactly while keeping the intended tier
+# definitions, each genome carries a temporary `add:`/`drop:` override that
+# cancels the not-yet-approved assets:
+#   - hg38, mm39  : tier `full`, drop [star_index, tallymer_index]
+#   - the 5 models: tier `standard`, drop [star_index], add [suffixerator_index]
+# The follow-up widening simply removes these overrides.
+# ---------------------------------------------------------------------------
+
+tiers:
+  full:          [fasta, fasta_index, bwa_index, bowtie2_index, hisat2_index,
+                  star_index, suffixerator_index, tallymer_index]
+  standard:      [fasta, fasta_index, bwa_index, bowtie2_index, hisat2_index,
+                  star_index]
+  sequence_only: [fasta, fasta_index]
+
+# Genome value is EITHER a bare tier name OR a mapping with `tier:` plus optional
+# `add:` / `drop:` lists. Order here is the row order in samples.csv.
+genomes:
+  yeast_s288c:                    # budding yeast, the original canary (~4 MB)
+    tier: standard
+    add: [suffixerator_index]     # TEMPORARY no-op override; see header
+    drop: [star_index]
+
+  hg38:                           # human reference
+    tier: full
+    drop: [star_index, tallymer_index]   # TEMPORARY no-op override; see header
+
+  mm39:                           # mouse primary assembly
+    tier: full
+    drop: [star_index, tallymer_index]   # TEMPORARY no-op override; see header
+
+  spombe:                         # fission yeast (~4 MB)
+    tier: standard
+    add: [suffixerator_index]     # TEMPORARY no-op override; see header
+    drop: [star_index]
+
+  celegans:                       # worm (~30 MB)
+    tier: standard
+    add: [suffixerator_index]     # TEMPORARY no-op override; see header
+    drop: [star_index]
+
+  athaliana:                      # plant, TAIR10 (~36 MB)
+    tier: standard
+    add: [suffixerator_index]     # TEMPORARY no-op override; see header
+    drop: [star_index]
+
+  dmelanogaster:                  # fly (~43 MB)
+    tier: standard
+    add: [suffixerator_index]     # TEMPORARY no-op override; see header
+    drop: [star_index]

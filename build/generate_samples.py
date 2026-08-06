@@ -1,0 +1,260 @@
+#!/usr/bin/env python3
+"""Generate pep/samples.csv from pep/tiers.yaml.
+
+tiers.yaml is the SOURCE OF TRUTH for the nightly build queue; samples.csv is a
+generated artifact (one row per (genome, asset)). Editing samples.csv by hand is
+forbidden -- the build/run_builds.sh guard regenerates it and fails the nightly
+on any diff.
+
+Per-genome asset set:
+  1. start from tiers[tier] (in tier order),
+  2. apply `add:` as a union (append anything not already present, in add order),
+  3. apply `drop:` as a difference.
+The result order is deterministic (tier order, then add order) so the CSV diff
+is stable.
+
+Two validations run before anything is written; either fails generation:
+  * Source validation  -- a Class-2/3 asset (one whose recipe declares external
+    input_files) requires a per-genome source key `<genome>_<asset>` in
+    pep/config.yaml `derive.sources`.
+  * Dependency closure  -- every asset dependency declared by a recipe's
+    `input_assets` must itself be in the genome's resolved set (e.g.
+    tallymer_index needs suffixerator_index; salmon_* needs fasta_txome).
+
+Usage:
+    python build/generate_samples.py            # write pep/samples.csv
+    python build/generate_samples.py --check     # verify only, non-zero on drift
+"""
+
+from __future__ import annotations
+
+import argparse
+import io
+import os
+import sys
+
+import yaml
+
+HERE = os.path.dirname(os.path.abspath(__file__))
+REPO = os.path.dirname(HERE)
+TIERS_YAML = os.path.join(REPO, "pep", "tiers.yaml")
+CONFIG_YAML = os.path.join(REPO, "pep", "config.yaml")
+RECIPES_DIR = os.path.join(REPO, "recipes")
+SAMPLES_CSV = os.path.join(REPO, "pep", "samples.csv")
+
+# NOTE: samples.csv deliberately carries NO leading `# GENERATED` comment line.
+# peppy reads it with a bare pandas.read_csv (no comment char), so a `#` first
+# line is parsed as the header and corrupts the queue. Provenance lives in
+# pep/tiers.yaml and pep/README.md instead; the run_builds.sh guard is what
+# actually enforces "generated only".
+CSV_HEADER = "sample_name,genome_name,asset_group_name,fasta_file_path\n"
+
+# fasta is always supplied via the fasta_file_path column / genome init, never a
+# per-asset external source, so it is never subject to source validation.
+FASTA_ASSET = "fasta"
+
+
+class GenerationError(Exception):
+    """Raised when tiers.yaml cannot produce a valid queue."""
+
+
+def load_recipes(recipes_dir: str = RECIPES_DIR) -> dict:
+    """Return {asset_name: recipe_dict} keyed by recipe name.
+
+    Each value carries the parsed `input_files` and `input_assets` so the
+    validations can classify assets and walk the dependency graph.
+    """
+    recipes = {}
+    for name in sorted(os.listdir(recipes_dir)):
+        path = os.path.join(recipes_dir, name, "recipe.yaml")
+        if not os.path.isfile(path):
+            continue
+        with open(path) as fh:
+            recipes[name] = yaml.safe_load(fh)
+    return recipes
+
+
+def is_source_gated(recipe: dict) -> bool:
+    """True if the recipe needs an external per-genome input file (Class 2/3).
+
+    Detected from a non-empty `input_files` mapping. Class-1 (pure
+    fasta-derivable) recipes have `input_files` null or empty.
+    """
+    input_files = recipe.get("input_files")
+    return bool(input_files)
+
+
+def asset_dependencies(recipe: dict) -> list:
+    """Concrete asset names this recipe depends on (from input_assets defaults)."""
+    input_assets = recipe.get("input_assets") or {}
+    deps = []
+    for _key, spec in input_assets.items():
+        if isinstance(spec, dict):
+            dep = spec.get("default") or spec.get("asset_class")
+            if dep:
+                deps.append(dep)
+    return deps
+
+
+def resolve_genome(genome: str, value, tiers: dict) -> list:
+    """Resolve a genome's tiers.yaml value to an ordered asset list."""
+    if isinstance(value, str):
+        tier, add, drop = value, [], []
+    elif isinstance(value, dict):
+        tier = value.get("tier")
+        add = value.get("add") or []
+        drop = value.get("drop") or []
+    else:
+        raise GenerationError(
+            f"genome '{genome}': value must be a tier name or a mapping, "
+            f"got {type(value).__name__}"
+        )
+    if tier is None:
+        raise GenerationError(f"genome '{genome}': no tier specified")
+    if tier not in tiers:
+        raise GenerationError(
+            f"genome '{genome}': unknown tier '{tier}' "
+            f"(known: {', '.join(sorted(tiers))})"
+        )
+    # 1. tier order
+    assets = list(tiers[tier])
+    # 2. add (union, preserve add order)
+    for a in add:
+        if a not in assets:
+            assets.append(a)
+    # 3. drop (difference)
+    drop_set = set(drop)
+    assets = [a for a in assets if a not in drop_set]
+    return assets
+
+
+def validate_sources(genome: str, assets: list, recipes: dict, sources: dict):
+    """Every Class-2/3 asset needs a `<genome>_<asset>` key in derive.sources."""
+    for asset in assets:
+        if asset == FASTA_ASSET:
+            continue
+        recipe = recipes.get(asset)
+        if recipe is None:
+            raise GenerationError(
+                f"genome '{genome}': asset '{asset}' has no recipe in recipes/"
+            )
+        if is_source_gated(recipe):
+            key = f"{genome}_{asset}"
+            if key not in sources:
+                raise GenerationError(
+                    f"genome '{genome}': asset '{asset}' needs an external source "
+                    f"but derive.sources has no key '{key}' in pep/config.yaml"
+                )
+
+
+def validate_dependencies(genome: str, assets: list, recipes: dict):
+    """Every asset dependency must be present in the genome's resolved set."""
+    asset_set = set(assets)
+    known = set(recipes)
+    for asset in assets:
+        recipe = recipes.get(asset)
+        if recipe is None:
+            raise GenerationError(
+                f"genome '{genome}': asset '{asset}' has no recipe in recipes/"
+            )
+        for dep in asset_dependencies(recipe):
+            # Only enforce deps that are themselves buildable assets (recipes).
+            if dep in known and dep not in asset_set:
+                raise GenerationError(
+                    f"genome '{genome}': asset '{asset}' depends on '{dep}', "
+                    f"which is not in the genome's build set. Add '{dep}' to the "
+                    f"tier or the genome's `add:` list."
+                )
+
+
+def build_rows(tiers_doc: dict, recipes: dict, sources: dict) -> list:
+    """Resolve and validate every genome, returning ordered CSV rows."""
+    tiers = tiers_doc.get("tiers") or {}
+    genomes = tiers_doc.get("genomes") or {}
+    rows = []
+    for genome, value in genomes.items():
+        assets = resolve_genome(genome, value, tiers)
+        validate_sources(genome, assets, recipes, sources)
+        validate_dependencies(genome, assets, recipes)
+        fasta_key = f"{genome}_fa"
+        for asset in assets:
+            rows.append((genome, genome, asset, fasta_key))
+    return rows
+
+
+def render_csv(rows: list) -> str:
+    out = io.StringIO()
+    out.write(CSV_HEADER)
+    for sample_name, genome_name, asset, fasta_key in rows:
+        out.write(f"{sample_name},{genome_name},{asset},{fasta_key}\n")
+    return out.getvalue()
+
+
+def generate(
+    tiers_yaml: str = TIERS_YAML,
+    config_yaml: str = CONFIG_YAML,
+    recipes_dir: str = RECIPES_DIR,
+) -> str:
+    with open(tiers_yaml) as fh:
+        tiers_doc = yaml.safe_load(fh)
+    with open(config_yaml) as fh:
+        config = yaml.safe_load(fh)
+    sources = (
+        (config.get("sample_modifiers") or {}).get("derive") or {}
+    ).get("sources") or {}
+    recipes = load_recipes(recipes_dir)
+    rows = build_rows(tiers_doc, recipes, sources)
+    return render_csv(rows)
+
+
+def main(argv=None) -> int:
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument(
+        "--check",
+        action="store_true",
+        help="verify pep/samples.csv is up to date; exit non-zero on drift "
+        "without writing.",
+    )
+    parser.add_argument(
+        "-o",
+        "--output",
+        default=SAMPLES_CSV,
+        help="output CSV path (default: pep/samples.csv).",
+    )
+    args = parser.parse_args(argv)
+
+    try:
+        content = generate()
+    except GenerationError as exc:
+        print(f"generate_samples: ERROR: {exc}", file=sys.stderr)
+        return 2
+
+    if args.check:
+        try:
+            with open(args.output) as fh:
+                current = fh.read()
+        except FileNotFoundError:
+            print(
+                f"generate_samples: {args.output} does not exist; run without "
+                "--check to create it.",
+                file=sys.stderr,
+            )
+            return 1
+        if current != content:
+            print(
+                f"generate_samples: {args.output} is STALE; regenerate with "
+                "`python build/generate_samples.py`.",
+                file=sys.stderr,
+            )
+            return 1
+        print(f"generate_samples: {args.output} is up to date.")
+        return 0
+
+    with open(args.output, "w") as fh:
+        fh.write(content)
+    print(f"generate_samples: wrote {args.output}")
+    return 0
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())
