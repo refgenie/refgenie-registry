@@ -1,8 +1,14 @@
+# DISABLED (2026-08-06): All asset builds now run on Rivanna via the nightly
+# pep/tiers.yaml -> samples.csv queue. This on-demand GHA build path is retired.
+# Auto-triggering is removed (workflow_dispatch only) and the validate job is
+# guarded with `if: false`, so it cannot build. See ADR: "All asset builds run
+# on Rivanna; GHA validates and routes."
+# TODO (follow-up): repurpose this to WRITE approved requests into pep/tiers.yaml
+# instead of building, so community requests flow into the Rivanna nightly queue.
 name: Build Request
 
 on:
-  issues:
-    types: [labeled]
+  workflow_dispatch: {}
 
 permissions:
   contents: write
@@ -10,7 +16,7 @@ permissions:
 
 jobs:
   validate:
-    if: github.event.label.name == 'build-request'
+    if: ${{ false }}  # DISABLED: builds run on Rivanna, not GHA. See ADR.
     runs-on: ubuntu-latest
     outputs:
       valid: ${{ steps.final.outputs.valid }}

@@ -1,11 +1,14 @@
+# DISABLED (2026-08-06): All asset builds now run on Rivanna via the nightly
+# pep/tiers.yaml -> samples.csv queue. This merge-time GHA build path is retired.
+# Auto-triggering on push is removed (workflow_dispatch only) and the enumerate
+# job is guarded with `if: false`, so a genome/recipe merge no longer builds on
+# GHA. See ADR: "All asset builds run on Rivanna; GHA validates and routes."
+# TODO (follow-up): repurpose this to translate merged genomes/recipes into
+# pep/tiers.yaml entries for the Rivanna nightly, rather than building on GHA.
 name: Build on Merge
 
 on:
-  push:
-    branches: [main]
-    paths:
-      - "genomes/**"
-      - "recipes/**"
+  workflow_dispatch: {}
 
 permissions:
   contents: write
@@ -13,6 +16,7 @@ permissions:
 
 jobs:
   enumerate:
+    if: ${{ false }}  # DISABLED: builds run on Rivanna, not GHA. See ADR.
     runs-on: ubuntu-latest
     outputs:
       matrix: ${{ steps.enumerate.outputs.matrix }}

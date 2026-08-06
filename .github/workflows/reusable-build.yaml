@@ -1,3 +1,8 @@
+# DISABLED (2026-08-06): All asset builds now run on Rivanna via the nightly
+# pep/tiers.yaml -> samples.csv queue. This GHA build executor is retired.
+# See ADR: "All asset builds run on Rivanna; GHA validates and routes."
+# Kept for reference; the build job is guarded with `if: false` so it never runs
+# even if a caller invokes it.
 name: Reusable Build
 
 # refgenie IS the build system. This workflow loads the refgenie-native
@@ -53,6 +58,7 @@ permissions:
 
 jobs:
   build:
+    if: ${{ false }}  # DISABLED: builds run on Rivanna, not GHA. See ADR.
     runs-on: ubuntu-latest
     timeout-minutes: 360
     env:
