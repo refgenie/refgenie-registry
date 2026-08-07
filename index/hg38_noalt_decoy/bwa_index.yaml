@@ -1,0 +1,15 @@
+genome: hg38_noalt_decoy
+genome_digest: 7hP7E8o-q6H8qcqMHBEIYdbAK49PoEUZ
+recipe: bwa_index
+recipe_version: 0.2.0
+asset_name: 0.7.19
+asset_digest: 54dfe2f8574efa26e3123cec3dd36020e123ba0cb3944f62fa138ad5ce206333
+build:
+  status: complete
+  timestamp: '2026-08-07T14:19:37Z'
+files:
+- build_timestamp
+- bwa_index
+- inputs
+- refgenie_version
+- version

@@ -1,12 +1,12 @@
 genome: hg38
-genome_digest: NTeQ1GQMt2ocCFkS8Z3_qkvetZjabWSt
+genome_digest: EiFob05aCWgVU_B_Ae0cypnQut3cxUP1
 recipe: bwa_index
 recipe_version: 0.2.0
 asset_name: 0.7.19
-asset_digest: 1fe5e35927fdd57c0988d043c8af497acc0a6c66f14e2927a988a8d93ecbc532
+asset_digest: 094e86409b8508ab4cd0c88e45deb08a4755485a0bbd35d7f9706e41f551bac5
 build:
   status: complete
-  timestamp: '2026-07-26T08:28:11Z'
+  timestamp: '2026-08-07T13:59:46Z'
 files:
 - build_timestamp
 - bwa_index

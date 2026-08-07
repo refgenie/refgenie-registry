@@ -1,0 +1,16 @@
+genome: t7
+genome_digest: kN9XHLKLS_u7ei2GH87H-qpQrkz8moPB
+recipe: fasta
+recipe_version: 0.1.0
+asset_name: default
+asset_digest: 949c705a1c1668f0ea3d7da883d1a65e902b945b67de576407349ff72a8b1bf1
+build:
+  status: complete
+  timestamp: '2026-08-07T13:01:15Z'
+files:
+- build_timestamp
+- chrom_sizes
+- fai
+- fasta
+- inputs
+- refgenie_version

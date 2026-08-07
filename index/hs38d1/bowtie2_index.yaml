@@ -1,0 +1,15 @@
+genome: hs38d1
+genome_digest: zEaiCVTg-NXkKpeU17O5uFcudmA7SEYr
+recipe: bowtie2_index
+recipe_version: 0.0.1
+asset_name: 2.5.5
+asset_digest: 26d6f52dee2579083879767efcc2b1067ba263f1a95578f384d36c13147b76a6
+build:
+  status: complete
+  timestamp: '2026-08-07T13:03:00Z'
+files:
+- bowtie2_index
+- build_timestamp
+- inputs
+- refgenie_version
+- version

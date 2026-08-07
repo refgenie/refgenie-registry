@@ -1,0 +1,16 @@
+genome: hs38d1
+genome_digest: zEaiCVTg-NXkKpeU17O5uFcudmA7SEYr
+recipe: fasta
+recipe_version: 0.1.0
+asset_name: default
+asset_digest: afc4d6ca7e3f00b52d10eadb95fe574f3f3bd8177a80211614f412e7cfbce3e7
+build:
+  status: complete
+  timestamp: '2026-08-07T13:01:23Z'
+files:
+- build_timestamp
+- chrom_sizes
+- fai
+- fasta
+- inputs
+- refgenie_version

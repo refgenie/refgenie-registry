@@ -1,12 +1,12 @@
 genome: hg38
-genome_digest: NTeQ1GQMt2ocCFkS8Z3_qkvetZjabWSt
+genome_digest: EiFob05aCWgVU_B_Ae0cypnQut3cxUP1
 recipe: bowtie2_index
 recipe_version: 0.0.1
 asset_name: 2.5.5
-asset_digest: 753601d3c34295b347b2deed74d1ad68b2baa9e42ed5929b3137eb25824e626a
+asset_digest: dc3ebb8b3869c3a6af93143f361e743de3f106ac3c4165dcbd5ba31a36f9d4b1
 build:
   status: complete
-  timestamp: '2026-07-26T08:55:41Z'
+  timestamp: '2026-08-07T14:52:59Z'
 files:
 - bowtie2_index
 - build_timestamp

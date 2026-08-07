@@ -1,0 +1,15 @@
+genome: hg38_initial
+genome_digest: NTeQ1GQMt2ocCFkS8Z3_qkvetZjabWSt
+recipe: bowtie2_index
+recipe_version: 0.0.1
+asset_name: 2.5.5
+asset_digest: 753601d3c34295b347b2deed74d1ad68b2baa9e42ed5929b3137eb25824e626a
+build:
+  status: complete
+  timestamp: '2026-07-26T08:55:41Z'
+files:
+- bowtie2_index
+- build_timestamp
+- inputs
+- refgenie_version
+- version

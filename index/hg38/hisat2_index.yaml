@@ -1,12 +1,12 @@
 genome: hg38
-genome_digest: NTeQ1GQMt2ocCFkS8Z3_qkvetZjabWSt
+genome_digest: EiFob05aCWgVU_B_Ae0cypnQut3cxUP1
 recipe: hisat2_index
 recipe_version: 0.0.2
 asset_name: 2.2.2
-asset_digest: 8a1784cfa1a78d21bcc2de7f299bffb32e4e824f46b9ab5d82cf7ededd1e5143
+asset_digest: be62e625a0184235944983d41d8ddef708f4314627c139601bdd978b0192f131
 build:
   status: complete
-  timestamp: '2026-07-26T08:20:03Z'
+  timestamp: '2026-08-07T14:12:45Z'
 files:
 - build_timestamp
 - hisat2_index

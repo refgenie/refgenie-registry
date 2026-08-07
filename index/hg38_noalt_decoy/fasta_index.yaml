@@ -1,0 +1,15 @@
+genome: hg38_noalt_decoy
+genome_digest: 7hP7E8o-q6H8qcqMHBEIYdbAK49PoEUZ
+recipe: fasta_index
+recipe_version: 1.1.0
+asset_name: default
+asset_digest: bc58c493c8f6acab75a228463079c681c5cbe24f61ad05a6d4c42799396bd455
+build:
+  status: complete
+  timestamp: '2026-08-07T13:06:47Z'
+files:
+- build_timestamp
+- chrom_sizes
+- fai
+- inputs
+- refgenie_version

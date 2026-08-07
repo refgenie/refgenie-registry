@@ -1,15 +1,16 @@
 genome: hg38
-genome_digest: NTeQ1GQMt2ocCFkS8Z3_qkvetZjabWSt
+genome_digest: EiFob05aCWgVU_B_Ae0cypnQut3cxUP1
 recipe: fasta
 recipe_version: 0.1.0
 asset_name: default
-asset_digest: 12e61d7617f06e52515876c40801c66dc59fd7acb81d6bde83419b3ea2f7d157
+asset_digest: f8dec40426dda8f7c0008717afe1a05b2d767e9e5bf8ef2a91dd2010c5d72d1d
 build:
   status: complete
-  timestamp: '2026-07-26T07:27:14Z'
+  timestamp: '2026-08-07T13:01:50Z'
 files:
 - build_timestamp
 - chrom_sizes
 - fai
 - fasta
+- inputs
 - refgenie_version

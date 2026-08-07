@@ -1,0 +1,15 @@
+genome: hs38d1
+genome_digest: zEaiCVTg-NXkKpeU17O5uFcudmA7SEYr
+recipe: suffixerator_index
+recipe_version: 0.0.1
+asset_name: 1.6.6
+asset_digest: 225a97b1425bf41ba09b74c7c9e622336c73d81eb8bcd49ddf5bf294640212d6
+build:
+  status: complete
+  timestamp: '2026-08-07T13:02:59Z'
+files:
+- build_timestamp
+- esa
+- inputs
+- refgenie_version
+- version

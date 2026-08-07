@@ -1,0 +1,15 @@
+genome: hs38d1
+genome_digest: zEaiCVTg-NXkKpeU17O5uFcudmA7SEYr
+recipe: bwa_index
+recipe_version: 0.2.0
+asset_name: 0.7.19
+asset_digest: d8f65112075b75cfff2520b441cb3c4665ab9fa66cfcb7e01bb001f84bcb0e44
+build:
+  status: complete
+  timestamp: '2026-08-07T13:02:56Z'
+files:
+- build_timestamp
+- bwa_index
+- inputs
+- refgenie_version
+- version
