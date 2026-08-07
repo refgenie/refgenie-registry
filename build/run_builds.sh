@@ -504,6 +504,25 @@ else
     python3 build/update_index.py || echo "$(date) | run_builds: index update skipped/failed (non-fatal)"
 fi
 
+# --- publish the sequence store -------------------------------------------
+# Keep the public copy of the registry's RefgetStore current. The catalog's
+# sequence store ($REFGENIE_GENOME_FOLDER/.refget_store) is what genome_init
+# ingests into; api.refgenie.org serves sequences from its S3 mirror at
+# $REFGETSTORE_S3/refgenie-main (see refgenie1 deployment/task_defs/
+# primary.json). First published 2026-08-07. `aws s3 sync` uploads only
+# changed files, so a night with no new genomes is a fast no-op. No --delete:
+# a content-addressed store only grows, and never deleting from the public
+# mirror while a server reads it is the safe default. The lock file and any
+# operator scratch files stay local.
+if [[ -n "${REFGETSTORE_S3:-}" ]]; then
+    echo "$(date) | run_builds: syncing sequence store -> $REFGETSTORE_S3/refgenie-main"
+    aws s3 sync "$REFGENIE_GENOME_FOLDER/.refget_store/" "$REFGETSTORE_S3/refgenie-main/" \
+        --exclude ".rgstore.lock" --exclude "*.preracetest*" --no-progress \
+        || echo "$(date) | run_builds: store sync failed (non-fatal); mirror catches up next run" >&2
+else
+    echo "$(date) | run_builds: REFGETSTORE_S3 unset; skipping sequence-store sync"
+fi
+
 # --- coverage report -------------------------------------------------------
 # Name what is MISSING, not just that something failed.
 #
