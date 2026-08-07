@@ -48,7 +48,11 @@ sample_modifiers:
       default_input: "${REFGENIE_INPUTS}/{genome_name}/{genome_name}.fa"
       # Staged Rivanna FASTAs (gzipped is fine; `refgenie genome init` ingests it):
       yeast_s288c_fa: "${REFGETSTORE_FASTA}/plantref/saccharomyces_cerevisiae_strain_s288c/ensembl/ENSEMBL_release_81.fa.gz"
-      hg38_fa: "${REFGETSTORE_FASTA}/pangenome_reference/hg38.fa.gz"
+      # hg38 = GRCh38 no-alt analysis set (seqcol EiFob05aCWgVU_B_Ae0cypnQut3cxUP1),
+      # matching genomes/human/hg38.yaml. Was pangenome_reference/hg38.fa.gz (full+alts,
+      # NTeQ1GQMt2ocCFkS8Z3_qkvetZjabWSt) -- the WRONG genome under this name. The
+      # already-built NTeQ assets become ucsc_hg38 (see 2026-08-06 handoff).
+      hg38_fa: "${REFGETSTORE_FASTA}/legacy/hg38.fa.gz"
       # Primary assembly (no scaffolds/haplotypes), unmasked -- the same flavor of
       # reference as hg38 above, so index sizes and build times are comparable.
       mm39_fa: "${REFGETSTORE_FASTA}/jungle/mus_musculus/ensembl/mm39/fasta/Mus_musculus.GRCm39.dna.primary_assembly.fa.gz"
@@ -58,3 +62,25 @@ sample_modifiers:
       celegans_fa: "${REFGETSTORE_FASTA}/plantref/caenorhabditis_elegans/ensembl/ENSEMBL_release_81.fa.gz"
       athaliana_fa: "${REFGETSTORE_FASTA}/plantref/arabidopsis_thaliana/plantref/COL-0_TAIR10.fa.gz"
       dmelanogaster_fa: "${REFGETSTORE_FASTA}/plantref/drosophila_melanogaster/ensembl/ENSEMBL_release_81.fa.gz"
+      # --- Historical genomes from the legacy refgenomes.databio.org server ------
+      # Staged as clean-extension .gz symlinks under $REFGETSTORE_FASTA/legacy/
+      # (targets: /project/shefflab/www/refgenie_refgenomes.databio.org/<g>-fasta-fasta,
+      # verified gzip 2026-08-06). Added for the historical-genome matrix fill-in.
+      dm6_fa: "${REFGETSTORE_FASTA}/legacy/dm6.fa.gz"
+      hg18_fa: "${REFGETSTORE_FASTA}/legacy/hg18.fa.gz"
+      hg19_fa: "${REFGETSTORE_FASTA}/legacy/hg19.fa.gz"
+      hg38_chr22_fa: "${REFGETSTORE_FASTA}/legacy/hg38_chr22.fa.gz"
+      hg38_mm10_fa: "${REFGETSTORE_FASTA}/legacy/hg38_mm10.fa.gz"
+      hg38_noalt_decoy_fa: "${REFGETSTORE_FASTA}/legacy/hg38_noalt_decoy.fa.gz"
+      hg38_primary_fa: "${REFGETSTORE_FASTA}/legacy/hg38_primary.fa.gz"
+      hs38d1_fa: "${REFGETSTORE_FASTA}/legacy/hs38d1.fa.gz"
+      human_alphasat_fa: "${REFGETSTORE_FASTA}/legacy/human_alphasat.fa.gz"
+      human_alu_fa: "${REFGETSTORE_FASTA}/legacy/human_alu.fa.gz"
+      human_rDNA_fa: "${REFGETSTORE_FASTA}/legacy/human_rDNA.fa.gz"
+      human_repeats_fa: "${REFGETSTORE_FASTA}/legacy/human_repeats.fa.gz"
+      mm10_fa: "${REFGETSTORE_FASTA}/legacy/mm10.fa.gz"
+      mm10_primary_fa: "${REFGETSTORE_FASTA}/legacy/mm10_primary.fa.gz"
+      mouse_chrM2x_fa: "${REFGETSTORE_FASTA}/legacy/mouse_chrM2x.fa.gz"
+      rCRSd_fa: "${REFGETSTORE_FASTA}/legacy/rCRSd.fa.gz"
+      rn6_fa: "${REFGETSTORE_FASTA}/legacy/rn6.fa.gz"
+      t7_fa: "${REFGETSTORE_FASTA}/legacy/t7.fa.gz"

@@ -6,25 +6,26 @@
 # gate (see pep/README.md).
 #
 # ---------------------------------------------------------------------------
-# NO-OP LANDING (2026-08-06)
+# HISTORICAL-GENOME FILL-IN (2026-08-06)
 # ---------------------------------------------------------------------------
-# This first commit lands the tier machinery WITHOUT changing what gets built.
-# The generated samples.csv is byte-identical to the previously hand-maintained
-# queue: every genome builds exactly the six fasta-derivable assets
-#   fasta, fasta_index, bwa_index, bowtie2_index, hisat2_index, suffixerator_index
+# Widens the queue from the original 7 genomes to the historical set served by
+# the legacy refgenomes.databio.org (19 genomes; the 5 cDNA/txome genomes are
+# excluded -- they need the salmon/kallisto fasta_txome chain, not aligner
+# indexes). Source FASTAs are the legacy server's files, staged as clean-.gz
+# symlinks under $REFGETSTORE_FASTA/legacy/ (see pep/config.yaml).
 #
-# That set does NOT match the plain `full`/`standard` tiers below: those tiers
-# add `star_index` (both) and `tallymer_index` (full only), which are new,
-# expensive builds. Widening the queue to the real tiers means launching those
-# builds on the nightly, so it is a DELIBERATE FOLLOW-UP COMMIT (the go/no-go
-# gate), not part of landing the machinery.
+# PROVEN-6 CEILING. Only the six assets that build successfully today are
+# queued: fasta, fasta_index, bwa_index, bowtie2_index, hisat2_index,
+# suffixerator_index. The tier definitions below still include star_index (both)
+# and tallymer_index (full), but those recipes are UNPROVEN in this pipeline, so
+# every genome carries a temporary `drop:` that removes them (and the models
+# `add:` suffixerator). Activating star/tallymer/bismark is a deliberate
+# follow-up once those recipes are proven -- it just removes the drops.
 #
-# To reproduce today's queue exactly while keeping the intended tier
-# definitions, each genome carries a temporary `add:`/`drop:` override that
-# cancels the not-yet-approved assets:
-#   - hg38, mm39  : tier `full`, drop [star_index, tallymer_index]
-#   - the 5 models: tier `standard`, drop [star_index], add [suffixerator_index]
-# The follow-up widening simply removes these overrides.
+# hg38 SOURCE CORRECTED. hg38 now sources the GRCh38 no-alt analysis set
+# (EiFob..), matching genomes/human/hg38.yaml. It previously (wrongly) built the
+# full+alts pangenome file (NTeQ..); those already-built assets are left in S3
+# and will be renamed ucsc_hg38 (2026-08-06 handoff). hg38 rebuilds tonight.
 # ---------------------------------------------------------------------------
 
 tiers:
@@ -36,36 +37,104 @@ tiers:
 
 # Genome value is EITHER a bare tier name OR a mapping with `tier:` plus optional
 # `add:` / `drop:` lists. Order here is the row order in samples.csv.
+# NOTE: `drop: [star_index, tallymer_index]` (full) and `drop: [star_index]`
+# (standard) are the TEMPORARY proven-6 ceiling; remove when those recipes prove.
 genomes:
+
+  # --- Original 7 (unchanged; hg38 source corrected in config.yaml) ----------
   yeast_s288c:                    # budding yeast, the original canary (~4 MB)
     tier: standard
-    add: [suffixerator_index]     # TEMPORARY no-op override; see header
+    add: [suffixerator_index]
     drop: [star_index]
 
-  hg38:                           # human reference
+  hg38:                           # GRCh38 no-alt analysis set (rebuilds -> EiFob)
     tier: full
-    drop: [star_index, tallymer_index]   # TEMPORARY no-op override; see header
+    drop: [star_index, tallymer_index]
 
   mm39:                           # mouse primary assembly
     tier: full
-    drop: [star_index, tallymer_index]   # TEMPORARY no-op override; see header
+    drop: [star_index, tallymer_index]
 
   spombe:                         # fission yeast (~4 MB)
     tier: standard
-    add: [suffixerator_index]     # TEMPORARY no-op override; see header
+    add: [suffixerator_index]
     drop: [star_index]
 
   celegans:                       # worm (~30 MB)
     tier: standard
-    add: [suffixerator_index]     # TEMPORARY no-op override; see header
+    add: [suffixerator_index]
     drop: [star_index]
 
   athaliana:                      # plant, TAIR10 (~36 MB)
     tier: standard
-    add: [suffixerator_index]     # TEMPORARY no-op override; see header
+    add: [suffixerator_index]
     drop: [star_index]
 
   dmelanogaster:                  # fly (~43 MB)
     tier: standard
-    add: [suffixerator_index]     # TEMPORARY no-op override; see header
+    add: [suffixerator_index]
     drop: [star_index]
+
+  # --- Historical mammalian references (old server: had suffixerator) ---------
+  hg18:
+    tier: full
+    drop: [star_index, tallymer_index]
+  hg19:
+    tier: full
+    drop: [star_index, tallymer_index]
+  mm10:
+    tier: full
+    drop: [star_index, tallymer_index]
+  rn6:
+    tier: full
+    drop: [star_index, tallymer_index]
+
+  # --- Historical small / repeat / decoy genomes (old server: had suffixerator,
+  #     and they are tiny so it is cheap) ------------------------------------
+  hg38_chr22:
+    tier: full
+    drop: [star_index, tallymer_index]
+  hg38_noalt_decoy:
+    tier: full
+    drop: [star_index, tallymer_index]
+  hs38d1:
+    tier: full
+    drop: [star_index, tallymer_index]
+  human_alphasat:
+    tier: full
+    drop: [star_index, tallymer_index]
+  human_alu:
+    tier: full
+    drop: [star_index, tallymer_index]
+  human_rDNA:
+    tier: full
+    drop: [star_index, tallymer_index]
+  human_repeats:
+    tier: full
+    drop: [star_index, tallymer_index]
+  mouse_chrM2x:
+    tier: full
+    drop: [star_index, tallymer_index]
+
+  # --- Historical, no suffixerator on the old server -------------------------
+  rCRSd:                          # revised Cambridge mito + spike-ins
+    tier: standard
+    drop: [star_index]
+  dm6:                            # fly (old server: bowtie2 only; giving proven-5)
+    tier: standard
+    drop: [star_index]
+
+  # --- Historical, aligner-index-only on the old server (bwa + bowtie2) -------
+  #     Big reduced references: skip suffixerator, match old coverage.
+  hg38_mm10:                      # human+mouse hybrid (~3.4 GB)
+    tier: sequence_only
+    add: [bwa_index, bowtie2_index]
+  hg38_primary:
+    tier: sequence_only
+    add: [bwa_index, bowtie2_index]
+  mm10_primary:
+    tier: sequence_only
+    add: [bwa_index, bowtie2_index]
+  t7:                             # phage (old server: bowtie2 only)
+    tier: sequence_only
+    add: [bowtie2_index]
