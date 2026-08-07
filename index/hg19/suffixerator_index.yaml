@@ -1,0 +1,15 @@
+genome: hg19
+genome_digest: ThZcNYiLuWWL86NdJ8dvvJG15K9mW3Fo
+recipe: suffixerator_index
+recipe_version: 0.0.1
+asset_name: 1.6.6
+asset_digest: 7be56ee14cee7c498bba1b29014eedf7a8dda2d5c88abe5e2a2e1368ca2724b9
+build:
+  status: complete
+  timestamp: '2026-08-07T08:09:13Z'
+files:
+- build_timestamp
+- esa
+- inputs
+- refgenie_version
+- version

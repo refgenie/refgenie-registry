@@ -1,0 +1,15 @@
+genome: mouse_chrM2x
+genome_digest: k1DiUF4K3GOEyfBV6kMtnSFAGVrkMixo
+recipe: hisat2_index
+recipe_version: 0.0.2
+asset_name: 2.2.2
+asset_digest: 2063e4fd7c034cb29d06b913911bd2b6c2dc8dba696b28802b0f7fd8aa57a747
+build:
+  status: complete
+  timestamp: '2026-08-07T07:29:09Z'
+files:
+- build_timestamp
+- hisat2_index
+- inputs
+- refgenie_version
+- version

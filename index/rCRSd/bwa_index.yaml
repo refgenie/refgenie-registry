@@ -1,0 +1,15 @@
+genome: rCRSd
+genome_digest: jthDpfNIgzM5AGJlOkRtfnky4rXMBIUP
+recipe: bwa_index
+recipe_version: 0.2.0
+asset_name: 0.7.19
+asset_digest: 6dd7ce028a6e4075f295431304df57ae4973475bccb0d93b33bd1f44110322b4
+build:
+  status: complete
+  timestamp: '2026-08-07T07:30:39Z'
+files:
+- build_timestamp
+- bwa_index
+- inputs
+- refgenie_version
+- version

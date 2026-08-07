@@ -1,0 +1,15 @@
+genome: mm10_primary
+genome_digest: dMjpOU7EvpeZVb0gpPoZ7prNaxOu88Ta
+recipe: bwa_index
+recipe_version: 0.2.0
+asset_name: 0.7.19
+asset_digest: f298bb814b6371e1c3d13c3ce4e14fa7db45db362f43eb485093bfea8f2c6627
+build:
+  status: complete
+  timestamp: '2026-08-07T08:04:18Z'
+files:
+- build_timestamp
+- bwa_index
+- inputs
+- refgenie_version
+- version

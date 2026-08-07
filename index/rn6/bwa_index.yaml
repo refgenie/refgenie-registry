@@ -1,0 +1,15 @@
+genome: rn6
+genome_digest: yGaojvlgReD5Gd7T630C30BK5DVaHedb
+recipe: bwa_index
+recipe_version: 0.2.0
+asset_name: 0.7.19
+asset_digest: 5b236f6716cc81e0293f934cf783d9f051cafde8b239c4d1b57742e9728913f3
+build:
+  status: complete
+  timestamp: '2026-08-07T08:20:47Z'
+files:
+- build_timestamp
+- bwa_index
+- inputs
+- refgenie_version
+- version

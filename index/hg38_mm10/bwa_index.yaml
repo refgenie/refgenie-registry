@@ -1,0 +1,15 @@
+genome: hg38_mm10
+genome_digest: Cmv0aU0aNVBw1skKIJGyvR5i49b67t84
+recipe: bwa_index
+recipe_version: 0.2.0
+asset_name: 0.7.19
+asset_digest: 7f96a743ab7152d080140ebb3d5074c8d2dc5d5ff3c60502a67c0e71dff8cf0c
+build:
+  status: complete
+  timestamp: '2026-08-07T09:47:31Z'
+files:
+- build_timestamp
+- bwa_index
+- inputs
+- refgenie_version
+- version

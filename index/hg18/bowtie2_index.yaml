@@ -1,0 +1,15 @@
+genome: hg18
+genome_digest: YfZ0rklv8KY9DCtqG0iIX16zsgbuBgmM
+recipe: bowtie2_index
+recipe_version: 0.0.1
+asset_name: 2.5.5
+asset_digest: 13e1e927f426b3e59764544615202abb5ba62f73d4a3cb3d4137cc81ed88537c
+build:
+  status: complete
+  timestamp: '2026-08-07T09:46:08Z'
+files:
+- bowtie2_index
+- build_timestamp
+- inputs
+- refgenie_version
+- version

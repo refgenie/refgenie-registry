@@ -1,0 +1,15 @@
+genome: human_alphasat
+genome_digest: P_oMW_QVpJuKvLZ3377J3MXXAsud9G8B
+recipe: suffixerator_index
+recipe_version: 0.0.1
+asset_name: 1.6.6
+asset_digest: e4e82cacb4df863382a394ade69429b394ecd10bd696263a4fea811388831282
+build:
+  status: complete
+  timestamp: '2026-08-07T07:22:33Z'
+files:
+- build_timestamp
+- esa
+- inputs
+- refgenie_version
+- version

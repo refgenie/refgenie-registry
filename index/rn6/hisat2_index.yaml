@@ -1,0 +1,15 @@
+genome: rn6
+genome_digest: yGaojvlgReD5Gd7T630C30BK5DVaHedb
+recipe: hisat2_index
+recipe_version: 0.0.2
+asset_name: 2.2.2
+asset_digest: e42c36c7fe525b38aa67e3a59b2b37075753ffdf6fbb4bed98233ecc2360c08f
+build:
+  status: complete
+  timestamp: '2026-08-07T08:34:25Z'
+files:
+- build_timestamp
+- hisat2_index
+- inputs
+- refgenie_version
+- version

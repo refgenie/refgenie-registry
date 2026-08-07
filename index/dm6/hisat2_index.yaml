@@ -1,0 +1,15 @@
+genome: dm6
+genome_digest: hFwVeJXKpWP3X-g4wmJGT-eZTa1r3Y1l
+recipe: hisat2_index
+recipe_version: 0.0.2
+asset_name: 2.2.2
+asset_digest: 524ce9629d538e6f2d97a0d0885b8336f2bfcc257eb7bafffade47af701ea86c
+build:
+  status: complete
+  timestamp: '2026-08-07T07:26:18Z'
+files:
+- build_timestamp
+- hisat2_index
+- inputs
+- refgenie_version
+- version

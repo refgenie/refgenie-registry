@@ -1,0 +1,15 @@
+genome: hg38_chr22
+genome_digest: n9fmCgylRgE0es4yn5-e7bmBx7ps9h1K
+recipe: bwa_index
+recipe_version: 0.2.0
+asset_name: 0.7.19
+asset_digest: b12f2c100673cf19f87f79fdd0a6c6b2844d87478b102777a2bee109f204f334
+build:
+  status: complete
+  timestamp: '2026-08-07T08:15:32Z'
+files:
+- build_timestamp
+- bwa_index
+- inputs
+- refgenie_version
+- version

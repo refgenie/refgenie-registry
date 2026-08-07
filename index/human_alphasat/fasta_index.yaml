@@ -1,0 +1,15 @@
+genome: human_alphasat
+genome_digest: P_oMW_QVpJuKvLZ3377J3MXXAsud9G8B
+recipe: fasta_index
+recipe_version: 1.1.0
+asset_name: default
+asset_digest: d9fcecf7b8631fc46f85eb2d651a68570b523aa692eee3181b1578f258e8a2ba
+build:
+  status: complete
+  timestamp: '2026-08-07T07:22:34Z'
+files:
+- build_timestamp
+- chrom_sizes
+- fai
+- inputs
+- refgenie_version

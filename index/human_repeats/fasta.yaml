@@ -1,0 +1,15 @@
+genome: human_repeats
+genome_digest: fuCzP-ywaGoywO5-loqNpuC18a8SEZ4X
+recipe: fasta
+recipe_version: 0.1.0
+asset_name: default
+asset_digest: 862708592625fb6b58fd8ee6d8b81f66603517ce70c9c34c645f35b8451cf272
+build:
+  status: complete
+  timestamp: '2026-08-07T07:18:40Z'
+files:
+- build_timestamp
+- chrom_sizes
+- fai
+- fasta
+- refgenie_version

@@ -1,0 +1,15 @@
+genome: human_rDNA
+genome_digest: RoX-a81Nez0a0MG4h08lu61x5umcxrrH
+recipe: fasta_index
+recipe_version: 1.1.0
+asset_name: default
+asset_digest: f2b8cf026b528d2a4143f16370fd78929d552b0f5cc79676b706adabef39f858
+build:
+  status: complete
+  timestamp: '2026-08-07T08:19:15Z'
+files:
+- build_timestamp
+- chrom_sizes
+- fai
+- inputs
+- refgenie_version

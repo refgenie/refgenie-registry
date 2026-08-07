@@ -1,0 +1,15 @@
+genome: hg38_chr22
+genome_digest: n9fmCgylRgE0es4yn5-e7bmBx7ps9h1K
+recipe: hisat2_index
+recipe_version: 0.0.2
+asset_name: 2.2.2
+asset_digest: bca8e5daaeed8b27e9af3895f9863c9880d31468850543e5256c596bdf3852ad
+build:
+  status: complete
+  timestamp: '2026-08-07T08:13:55Z'
+files:
+- build_timestamp
+- hisat2_index
+- inputs
+- refgenie_version
+- version

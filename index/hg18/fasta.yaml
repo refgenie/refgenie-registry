@@ -1,0 +1,15 @@
+genome: hg18
+genome_digest: YfZ0rklv8KY9DCtqG0iIX16zsgbuBgmM
+recipe: fasta
+recipe_version: 0.1.0
+asset_name: default
+asset_digest: 2ad74f0801f7c029317dff8a7fd6229a4565b84c6216646ccddfa19f8fd0843b
+build:
+  status: complete
+  timestamp: '2026-08-07T07:23:27Z'
+files:
+- build_timestamp
+- chrom_sizes
+- fai
+- fasta
+- refgenie_version

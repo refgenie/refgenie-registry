@@ -1,0 +1,15 @@
+genome: hg38_primary
+genome_digest: Ba88PY52_qeifhJrgUXyin6UITdXNsg3
+recipe: bwa_index
+recipe_version: 0.2.0
+asset_name: 0.7.19
+asset_digest: 621ed529f9953361e3506e2db3935fbcc6fd36d861c1f2178216e7149dcfaee8
+build:
+  status: complete
+  timestamp: '2026-08-07T08:46:42Z'
+files:
+- build_timestamp
+- bwa_index
+- inputs
+- refgenie_version
+- version

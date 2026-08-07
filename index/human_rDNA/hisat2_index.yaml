@@ -1,0 +1,15 @@
+genome: human_rDNA
+genome_digest: RoX-a81Nez0a0MG4h08lu61x5umcxrrH
+recipe: hisat2_index
+recipe_version: 0.0.2
+asset_name: 2.2.2
+asset_digest: 281ca183f0b424f027aa68b6803d072f87acb5e567e1f70facaefb57d5950d2f
+build:
+  status: complete
+  timestamp: '2026-08-07T07:29:09Z'
+files:
+- build_timestamp
+- hisat2_index
+- inputs
+- refgenie_version
+- version

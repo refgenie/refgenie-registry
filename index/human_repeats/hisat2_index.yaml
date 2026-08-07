@@ -1,0 +1,15 @@
+genome: human_repeats
+genome_digest: fuCzP-ywaGoywO5-loqNpuC18a8SEZ4X
+recipe: hisat2_index
+recipe_version: 0.0.2
+asset_name: 2.2.2
+asset_digest: 18b2878e1d446306ff3218fc7733561e05dffd30d0faa3fd97c4d430cd443aa8
+build:
+  status: complete
+  timestamp: '2026-08-07T07:21:02Z'
+files:
+- build_timestamp
+- hisat2_index
+- inputs
+- refgenie_version
+- version

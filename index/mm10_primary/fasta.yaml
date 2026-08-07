@@ -1,0 +1,15 @@
+genome: mm10_primary
+genome_digest: dMjpOU7EvpeZVb0gpPoZ7prNaxOu88Ta
+recipe: fasta
+recipe_version: 0.1.0
+asset_name: default
+asset_digest: 094c67cebfa14f19b1b1bf1810f6d43e3948e792496207772e5ea525b3fc3cda
+build:
+  status: complete
+  timestamp: '2026-08-07T07:19:15Z'
+files:
+- build_timestamp
+- chrom_sizes
+- fai
+- fasta
+- refgenie_version

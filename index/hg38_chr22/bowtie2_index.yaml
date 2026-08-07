@@ -1,0 +1,15 @@
+genome: hg38_chr22
+genome_digest: n9fmCgylRgE0es4yn5-e7bmBx7ps9h1K
+recipe: bowtie2_index
+recipe_version: 0.0.1
+asset_name: 2.5.5
+asset_digest: 790701701bf7b1f9f39b0be31802e1fbafba5bf44c52d1dfb58b0b6e1499a5d8
+build:
+  status: complete
+  timestamp: '2026-08-07T08:16:07Z'
+files:
+- bowtie2_index
+- build_timestamp
+- inputs
+- refgenie_version
+- version

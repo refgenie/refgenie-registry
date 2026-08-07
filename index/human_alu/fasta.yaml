@@ -1,0 +1,15 @@
+genome: human_alu
+genome_digest: 4r7J6aCMjoUTsnEHxHQMTFrNl6h1ZqgP
+recipe: fasta
+recipe_version: 0.1.0
+asset_name: default
+asset_digest: 742d7a6fdff17cf7eaba86a3545f61542c7d9f0a6475e66f13bfcf3aeca3fe62
+build:
+  status: complete
+  timestamp: '2026-08-07T07:21:08Z'
+files:
+- build_timestamp
+- chrom_sizes
+- fai
+- fasta
+- refgenie_version

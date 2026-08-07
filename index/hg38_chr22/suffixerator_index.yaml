@@ -1,0 +1,15 @@
+genome: hg38_chr22
+genome_digest: n9fmCgylRgE0es4yn5-e7bmBx7ps9h1K
+recipe: suffixerator_index
+recipe_version: 0.0.1
+asset_name: 1.6.6
+asset_digest: b7b582b1733bee130fe57e3b8bd13bd2586a2ba05718767f35d683c3650bbc91
+build:
+  status: complete
+  timestamp: '2026-08-07T08:17:22Z'
+files:
+- build_timestamp
+- esa
+- inputs
+- refgenie_version
+- version

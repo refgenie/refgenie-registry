@@ -1,0 +1,15 @@
+genome: human_alphasat
+genome_digest: P_oMW_QVpJuKvLZ3377J3MXXAsud9G8B
+recipe: hisat2_index
+recipe_version: 0.0.2
+asset_name: 2.2.2
+asset_digest: efa234d1c9691ee31e0365067699aee7f73819e72d980a6838739e6832ebb2ae
+build:
+  status: complete
+  timestamp: '2026-08-07T07:22:33Z'
+files:
+- build_timestamp
+- hisat2_index
+- inputs
+- refgenie_version
+- version

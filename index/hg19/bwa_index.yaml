@@ -1,0 +1,15 @@
+genome: hg19
+genome_digest: ThZcNYiLuWWL86NdJ8dvvJG15K9mW3Fo
+recipe: bwa_index
+recipe_version: 0.2.0
+asset_name: 0.7.19
+asset_digest: b0a53f0eedc96adf3761f84b74ab93ced16e051806ecab067af7d0fb4a594277
+build:
+  status: complete
+  timestamp: '2026-08-07T08:33:23Z'
+files:
+- build_timestamp
+- bwa_index
+- inputs
+- refgenie_version
+- version

@@ -1,0 +1,15 @@
+genome: human_rDNA
+genome_digest: RoX-a81Nez0a0MG4h08lu61x5umcxrrH
+recipe: bwa_index
+recipe_version: 0.2.0
+asset_name: 0.7.19
+asset_digest: 41bf1c7e93b5a006a71fb0ed2d84ba82c17999475814e3448c7f9d83a655a136
+build:
+  status: complete
+  timestamp: '2026-08-07T07:29:14Z'
+files:
+- build_timestamp
+- bwa_index
+- inputs
+- refgenie_version
+- version

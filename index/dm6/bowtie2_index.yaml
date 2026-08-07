@@ -1,0 +1,15 @@
+genome: dm6
+genome_digest: hFwVeJXKpWP3X-g4wmJGT-eZTa1r3Y1l
+recipe: bowtie2_index
+recipe_version: 0.0.1
+asset_name: 2.5.5
+asset_digest: 67f5080aba720330818c1d18561b60631f3e95d6af82c328edd93f42f95206e4
+build:
+  status: complete
+  timestamp: '2026-08-07T07:28:36Z'
+files:
+- bowtie2_index
+- build_timestamp
+- inputs
+- refgenie_version
+- version

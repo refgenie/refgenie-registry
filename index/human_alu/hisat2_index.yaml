@@ -1,0 +1,15 @@
+genome: human_alu
+genome_digest: 4r7J6aCMjoUTsnEHxHQMTFrNl6h1ZqgP
+recipe: hisat2_index
+recipe_version: 0.0.2
+asset_name: 2.2.2
+asset_digest: 66d6efd4c7e1fc90e47aa79f27d44f36cf06d1e8e05099deaefca117d82fee39
+build:
+  status: complete
+  timestamp: '2026-08-07T07:24:26Z'
+files:
+- build_timestamp
+- hisat2_index
+- inputs
+- refgenie_version
+- version

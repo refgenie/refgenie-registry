@@ -1,0 +1,15 @@
+genome: human_repeats
+genome_digest: fuCzP-ywaGoywO5-loqNpuC18a8SEZ4X
+recipe: bwa_index
+recipe_version: 0.2.0
+asset_name: 0.7.19
+asset_digest: c102d0012bbc8d6573d8f259cd404930f8378b1fd3f85619a3cef61703f1cc58
+build:
+  status: complete
+  timestamp: '2026-08-07T07:21:01Z'
+files:
+- build_timestamp
+- bwa_index
+- inputs
+- refgenie_version
+- version

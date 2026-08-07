@@ -1,0 +1,15 @@
+genome: mm10
+genome_digest: wsDErYxgCXiPnb2FWZ4sXtx3B0YyruRu
+recipe: suffixerator_index
+recipe_version: 0.0.1
+asset_name: 1.6.6
+asset_digest: 8729471417f82f8923f648c78d3ab2f70a212f0475f2229382afeac12c7136aa
+build:
+  status: complete
+  timestamp: '2026-08-07T08:54:31Z'
+files:
+- build_timestamp
+- esa
+- inputs
+- refgenie_version
+- version

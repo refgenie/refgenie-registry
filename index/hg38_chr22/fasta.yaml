@@ -1,0 +1,15 @@
+genome: hg38_chr22
+genome_digest: n9fmCgylRgE0es4yn5-e7bmBx7ps9h1K
+recipe: fasta
+recipe_version: 0.1.0
+asset_name: default
+asset_digest: 713f4201ff5be4f92b3b2c9e17c249aae81f5a0b3574b0fd0a110b50ff19a381
+build:
+  status: complete
+  timestamp: '2026-08-07T07:24:32Z'
+files:
+- build_timestamp
+- chrom_sizes
+- fai
+- fasta
+- refgenie_version

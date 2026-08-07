@@ -1,0 +1,15 @@
+genome: rCRSd
+genome_digest: jthDpfNIgzM5AGJlOkRtfnky4rXMBIUP
+recipe: fasta_index
+recipe_version: 1.1.0
+asset_name: default
+asset_digest: 69b0ac1479cd4e592f69b5996cc5f87d4155bcf86e2ee400f5c89e44c0b9d173
+build:
+  status: complete
+  timestamp: '2026-08-07T08:09:46Z'
+files:
+- build_timestamp
+- chrom_sizes
+- fai
+- inputs
+- refgenie_version

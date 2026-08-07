@@ -1,0 +1,15 @@
+genome: hg19
+genome_digest: ThZcNYiLuWWL86NdJ8dvvJG15K9mW3Fo
+recipe: fasta_index
+recipe_version: 1.1.0
+asset_name: default
+asset_digest: 76dfb07fcd4b873c3f74bf90fee8bad1564608a93ce5323b3970362d649f6cfc
+build:
+  status: complete
+  timestamp: '2026-08-07T07:25:53Z'
+files:
+- build_timestamp
+- chrom_sizes
+- fai
+- inputs
+- refgenie_version

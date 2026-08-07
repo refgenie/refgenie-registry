@@ -1,0 +1,15 @@
+genome: rn6
+genome_digest: yGaojvlgReD5Gd7T630C30BK5DVaHedb
+recipe: fasta
+recipe_version: 0.1.0
+asset_name: default
+asset_digest: 52f145d3b96727b37e05e3cba1e5a70d694211b7ca761af70644cbe9abab6850
+build:
+  status: complete
+  timestamp: '2026-08-07T07:22:10Z'
+files:
+- build_timestamp
+- chrom_sizes
+- fai
+- fasta
+- refgenie_version

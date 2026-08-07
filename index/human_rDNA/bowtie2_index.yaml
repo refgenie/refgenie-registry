@@ -1,0 +1,15 @@
+genome: human_rDNA
+genome_digest: RoX-a81Nez0a0MG4h08lu61x5umcxrrH
+recipe: bowtie2_index
+recipe_version: 0.0.1
+asset_name: 2.5.5
+asset_digest: 72e0f172363c2ca481be8c10f226442adbb81fa60ea21b6b098e59221a7e9f94
+build:
+  status: complete
+  timestamp: '2026-08-07T07:32:09Z'
+files:
+- bowtie2_index
+- build_timestamp
+- inputs
+- refgenie_version
+- version

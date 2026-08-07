@@ -1,0 +1,15 @@
+genome: hg38_mm10
+genome_digest: Cmv0aU0aNVBw1skKIJGyvR5i49b67t84
+recipe: fasta
+recipe_version: 0.1.0
+asset_name: default
+asset_digest: 67a68a4911a51ada2ae4abf1f3c8c88ae7362be92bbc0279caa5723b9c19d946
+build:
+  status: complete
+  timestamp: '2026-08-07T07:22:33Z'
+files:
+- build_timestamp
+- chrom_sizes
+- fai
+- fasta
+- refgenie_version

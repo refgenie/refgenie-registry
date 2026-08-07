@@ -1,0 +1,15 @@
+genome: mouse_chrM2x
+genome_digest: k1DiUF4K3GOEyfBV6kMtnSFAGVrkMixo
+recipe: fasta_index
+recipe_version: 1.1.0
+asset_name: default
+asset_digest: e04706c9131c7db824f90254c4a22743cfaf64bbdee3f070ad04767e2a392cd5
+build:
+  status: complete
+  timestamp: '2026-08-07T08:10:51Z'
+files:
+- build_timestamp
+- chrom_sizes
+- fai
+- inputs
+- refgenie_version

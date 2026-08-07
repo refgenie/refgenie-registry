@@ -1,0 +1,15 @@
+genome: mouse_chrM2x
+genome_digest: k1DiUF4K3GOEyfBV6kMtnSFAGVrkMixo
+recipe: bwa_index
+recipe_version: 0.2.0
+asset_name: 0.7.19
+asset_digest: fa2a3a73ab92fc5848aa55ec852c3d8b067891a4d3213b20201fcdff07d4610e
+build:
+  status: complete
+  timestamp: '2026-08-07T07:30:35Z'
+files:
+- build_timestamp
+- bwa_index
+- inputs
+- refgenie_version
+- version

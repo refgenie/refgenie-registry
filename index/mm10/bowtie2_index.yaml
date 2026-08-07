@@ -1,0 +1,15 @@
+genome: mm10
+genome_digest: wsDErYxgCXiPnb2FWZ4sXtx3B0YyruRu
+recipe: bowtie2_index
+recipe_version: 0.0.1
+asset_name: 2.5.5
+asset_digest: 9ce43aefee906bc78bdd4463bea94375acb2d915b992ff0bf60c8072f53545bb
+build:
+  status: complete
+  timestamp: '2026-08-07T08:39:21Z'
+files:
+- bowtie2_index
+- build_timestamp
+- inputs
+- refgenie_version
+- version

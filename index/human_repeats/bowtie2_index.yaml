@@ -1,0 +1,15 @@
+genome: human_repeats
+genome_digest: fuCzP-ywaGoywO5-loqNpuC18a8SEZ4X
+recipe: bowtie2_index
+recipe_version: 0.0.1
+asset_name: 2.5.5
+asset_digest: 5c8c12f41f5841c17837992a43f23a4dc223e9138850a64cfc2ce54334150536
+build:
+  status: complete
+  timestamp: '2026-08-07T07:21:04Z'
+files:
+- bowtie2_index
+- build_timestamp
+- inputs
+- refgenie_version
+- version

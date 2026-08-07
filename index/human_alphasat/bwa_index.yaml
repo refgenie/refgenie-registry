@@ -1,0 +1,15 @@
+genome: human_alphasat
+genome_digest: P_oMW_QVpJuKvLZ3377J3MXXAsud9G8B
+recipe: bwa_index
+recipe_version: 0.2.0
+asset_name: 0.7.19
+asset_digest: 7d9225242cc92871c8cb4e972e550c7a26836ce196a974693ea123203c251574
+build:
+  status: complete
+  timestamp: '2026-08-07T07:22:33Z'
+files:
+- build_timestamp
+- bwa_index
+- inputs
+- refgenie_version
+- version

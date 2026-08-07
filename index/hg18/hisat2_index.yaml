@@ -1,0 +1,15 @@
+genome: hg18
+genome_digest: YfZ0rklv8KY9DCtqG0iIX16zsgbuBgmM
+recipe: hisat2_index
+recipe_version: 0.0.2
+asset_name: 2.2.2
+asset_digest: 8f3d89d2dc0ff15af2ef0e70bbaf8fab138815898a2b357425ab0a38f48b0c2b
+build:
+  status: complete
+  timestamp: '2026-08-07T08:22:52Z'
+files:
+- build_timestamp
+- hisat2_index
+- inputs
+- refgenie_version
+- version

@@ -1,0 +1,15 @@
+genome: dm6
+genome_digest: hFwVeJXKpWP3X-g4wmJGT-eZTa1r3Y1l
+recipe: fasta
+recipe_version: 0.1.0
+asset_name: default
+asset_digest: 3c8ec91cd8b343cba65619cfa00a7023eff42afcb1a274a3022d6b2b23fa47b6
+build:
+  status: complete
+  timestamp: '2026-08-07T07:21:20Z'
+files:
+- build_timestamp
+- chrom_sizes
+- fai
+- fasta
+- refgenie_version
