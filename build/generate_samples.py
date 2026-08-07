@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
-"""Generate pep/samples.csv from pep/tiers.yaml.
+"""Generate pep/samples.csv from pep/build_matrix.yaml.
 
-tiers.yaml is the SOURCE OF TRUTH for the nightly build queue; samples.csv is a
+build_matrix.yaml is the SOURCE OF TRUTH for the nightly build queue; samples.csv is a
 generated artifact (one row per (genome, asset)). Editing samples.csv by hand is
 forbidden -- the build/run_builds.sh guard regenerates it and fails the nightly
 on any diff.
@@ -37,7 +37,7 @@ import yaml
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 REPO = os.path.dirname(HERE)
-TIERS_YAML = os.path.join(REPO, "pep", "tiers.yaml")
+BUILD_MATRIX_YAML = os.path.join(REPO, "pep", "build_matrix.yaml")
 CONFIG_YAML = os.path.join(REPO, "pep", "config.yaml")
 RECIPES_DIR = os.path.join(REPO, "recipes")
 SAMPLES_CSV = os.path.join(REPO, "pep", "samples.csv")
@@ -45,7 +45,7 @@ SAMPLES_CSV = os.path.join(REPO, "pep", "samples.csv")
 # NOTE: samples.csv deliberately carries NO leading `# GENERATED` comment line.
 # peppy reads it with a bare pandas.read_csv (no comment char), so a `#` first
 # line is parsed as the header and corrupts the queue. Provenance lives in
-# pep/tiers.yaml and pep/README.md instead; the run_builds.sh guard is what
+# pep/build_matrix.yaml and pep/README.md instead; the run_builds.sh guard is what
 # actually enforces "generated only".
 CSV_HEADER = "sample_name,genome_name,asset_group_name,fasta_file_path\n"
 
@@ -55,7 +55,7 @@ FASTA_ASSET = "fasta"
 
 
 class GenerationError(Exception):
-    """Raised when tiers.yaml cannot produce a valid queue."""
+    """Raised when build_matrix.yaml cannot produce a valid queue."""
 
 
 def load_recipes(recipes_dir: str = RECIPES_DIR) -> dict:
@@ -97,7 +97,7 @@ def asset_dependencies(recipe: dict) -> list:
 
 
 def resolve_genome(genome: str, value, tiers: dict) -> list:
-    """Resolve a genome's tiers.yaml value to an ordered asset list."""
+    """Resolve a genome's build_matrix.yaml value to an ordered asset list."""
     if isinstance(value, str):
         tier, add, drop = value, [], []
     elif isinstance(value, dict):
@@ -191,7 +191,7 @@ def render_csv(rows: list) -> str:
 
 
 def generate(
-    tiers_yaml: str = TIERS_YAML,
+    tiers_yaml: str = BUILD_MATRIX_YAML,
     config_yaml: str = CONFIG_YAML,
     recipes_dir: str = RECIPES_DIR,
 ) -> str:

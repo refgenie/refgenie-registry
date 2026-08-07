@@ -81,31 +81,31 @@ else
     exit 1
 fi
 
-# --- guard: pep/samples.csv must be generated from pep/tiers.yaml ---------
+# --- guard: pep/samples.csv must be generated from pep/build_matrix.yaml ---------
 # samples.csv is a GENERATED artifact: build/generate_samples.py reads
-# pep/tiers.yaml (the single source of truth for the per-genome asset queue) and
+# pep/build_matrix.yaml (the single source of truth for the per-genome asset queue) and
 # emits samples.csv. Committing samples.csv IS launching the builds, so a
-# hand-edit of the CSV -- or a tiers.yaml change whose samples.csv was never
+# hand-edit of the CSV -- or a build_matrix.yaml change whose samples.csv was never
 # regenerated -- must never reach dispatch. Regenerate here and fail the nightly
 # loudly on ANY diff. This runs in DRY_RUN too: a stale/hand-edited queue is
 # exactly what a dry run should surface, and regenerating an already-correct file
 # is a byte no-op (nothing to destroy). generate_samples.py also runs the source
-# and dependency-closure validations, so an invalid tiers.yaml aborts here.
-echo "$(date) | run_builds: regenerating pep/samples.csv from pep/tiers.yaml"
+# and dependency-closure validations, so an invalid build_matrix.yaml aborts here.
+echo "$(date) | run_builds: regenerating pep/samples.csv from pep/build_matrix.yaml"
 if ! python3 build/generate_samples.py; then
-    echo "$(date) | run_builds: FATAL generate_samples.py failed -- pep/tiers.yaml is invalid." >&2
-    echo "  Fix tiers.yaml (see the error above); refusing to build." >&2
+    echo "$(date) | run_builds: FATAL generate_samples.py failed -- pep/build_matrix.yaml is invalid." >&2
+    echo "  Fix build_matrix.yaml (see the error above); refusing to build." >&2
     exit 1
 fi
 if ! git diff --exit-code pep/samples.csv; then
-    echo "$(date) | run_builds: FATAL pep/samples.csv is out of sync with pep/tiers.yaml." >&2
+    echo "$(date) | run_builds: FATAL pep/samples.csv is out of sync with pep/build_matrix.yaml." >&2
     echo "  samples.csv is GENERATED -- never hand-edit it. Either the CSV was edited" >&2
-    echo "  directly, or tiers.yaml changed without regenerating. Run" >&2
+    echo "  directly, or build_matrix.yaml changed without regenerating. Run" >&2
     echo "    python build/generate_samples.py" >&2
     echo "  review the samples.csv diff (it IS the go/no-go build gate), and commit both." >&2
     exit 1
 fi
-echo "$(date) | run_builds: pep/samples.csv is in sync with pep/tiers.yaml"
+echo "$(date) | run_builds: pep/samples.csv is in sync with pep/build_matrix.yaml"
 
 # Put a working `aws` ahead of the broken host ~/.local/bin/aws (dead-anaconda
 # shebang) so the folder_sync push_command resolves a real CLI. The bin dir

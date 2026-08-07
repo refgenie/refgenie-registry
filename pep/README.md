@@ -5,18 +5,18 @@ Rivanna asset builds.
 
 | File | Role |
 |------|------|
-| `tiers.yaml` | **Source of truth.** Per-genome asset assignments, expressed as tiers plus optional `add:`/`drop:` overrides. |
+| `build_matrix.yaml` | **Source of truth.** Per-genome asset assignments, expressed as tiers plus optional `add:`/`drop:` overrides. |
 | `samples.csv` | **Generated artifact.** One row per `(genome, asset)`. Never hand-edit. |
 | `config.yaml` | PEP config: sample modifiers and `derive.sources` (per-genome FASTA/source paths). |
 
-`samples.csv` is generated from `tiers.yaml` by `build/generate_samples.py`.
+`samples.csv` is generated from `build_matrix.yaml` by `build/generate_samples.py`.
 The Snakefile (`build/Snakefile`) reads the collated PEP so that
 `pep.get_sample(genome).asset_group_name` is the list of recipes to build for
 that genome.
 
 ## Tiers
 
-`tiers.yaml` defines named asset sets and assigns each genome one:
+`build_matrix.yaml` defines named asset sets and assigns each genome one:
 
 ```yaml
 tiers:
@@ -44,11 +44,11 @@ availability is about whether a per-genome source file exists, not about cost.
 
 ## Editing the queue
 
-1. Edit `pep/tiers.yaml`.
+1. Edit `pep/build_matrix.yaml`.
 2. Regenerate: `python build/generate_samples.py`.
 3. **Review the `pep/samples.csv` diff.** This diff IS the go/no-go gate:
    committing `samples.csv` launches those builds on the next nightly.
-4. Commit both `tiers.yaml` and `samples.csv` together.
+4. Commit both `build_matrix.yaml` and `samples.csv` together.
 
 `build/generate_samples.py --check` verifies `samples.csv` is up to date without
 writing (exits non-zero on drift). The nightly driver (`build/run_builds.sh`)
@@ -71,4 +71,4 @@ hand-edited or stale CSV fails the build loudly.
 `samples.csv` deliberately carries no leading comment line. peppy reads it with a
 bare `pandas.read_csv` (no comment character), so a `#` first line would be
 parsed as the header and corrupt the queue. Provenance lives here and in
-`tiers.yaml`; the `run_builds.sh` guard is what enforces "generated only".
+`build_matrix.yaml`; the `run_builds.sh` guard is what enforces "generated only".

@@ -1,4 +1,4 @@
-# tiers.yaml - SOURCE OF TRUTH for the nightly build queue.
+# build_matrix.yaml - SOURCE OF TRUTH for the nightly build queue.
 #
 # pep/samples.csv is GENERATED from this file by build/generate_samples.py.
 # Never hand-edit samples.csv; edit this file and regenerate. Committing
