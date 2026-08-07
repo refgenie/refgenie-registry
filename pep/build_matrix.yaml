@@ -24,8 +24,10 @@
 #
 # hg38 SOURCE CORRECTED. hg38 now sources the GRCh38 no-alt analysis set
 # (EiFob..), matching genomes/human/hg38.yaml. It previously (wrongly) built the
-# full+alts pangenome file (NTeQ..); those already-built assets are left in S3
-# and will be renamed ucsc_hg38 (2026-08-06 handoff). hg38 rebuilds tonight.
+# full+alts pangenome file (NTeQ..); those already-built assets were re-homed
+# under hg38_initial (the existing def for that digest -- UCSC's initial 2013
+# hg38 release, 455 seqs incl. 261 alts), queued below. hg38 itself rebuilds
+# from the corrected source.
 # ---------------------------------------------------------------------------
 
 tiers:
@@ -50,6 +52,10 @@ genomes:
   hg38:                           # GRCh38 no-alt analysis set (rebuilds -> EiFob)
     tier: full
     drop: [star_index, tallymer_index]
+
+  hg38_initial:                   # UCSC initial 2013 hg38, full+alts (NTeQ..);
+    tier: full                    # assets already built (as the old mis-sourced
+    drop: [star_index, tallymer_index]  # "hg38"), re-homed under this name
 
   mm39:                           # mouse primary assembly
     tier: full

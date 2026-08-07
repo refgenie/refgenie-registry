@@ -51,8 +51,13 @@ sample_modifiers:
       # hg38 = GRCh38 no-alt analysis set (seqcol EiFob05aCWgVU_B_Ae0cypnQut3cxUP1),
       # matching genomes/human/hg38.yaml. Was pangenome_reference/hg38.fa.gz (full+alts,
       # NTeQ1GQMt2ocCFkS8Z3_qkvetZjabWSt) -- the WRONG genome under this name. The
-      # already-built NTeQ assets become ucsc_hg38 (see 2026-08-06 handoff).
+      # already-built NTeQ assets were re-homed under hg38_initial (below).
       hg38_fa: "${REFGETSTORE_FASTA}/legacy/hg38.fa.gz"
+      # hg38_initial = UCSC's initial 2013 hg38 release, full assembly with 261 alt
+      # loci (455 seqs, seqcol NTeQ1GQMt2ocCFkS8Z3_qkvetZjabWSt), matching
+      # genomes/human/hg38_initial.yaml. This is the file the pre-2026-08-06 "hg38"
+      # was wrongly built from; its assets are already built and re-homed here.
+      hg38_initial_fa: "${REFGETSTORE_FASTA}/pangenome_reference/hg38.fa.gz"
       # Primary assembly (no scaffolds/haplotypes), unmasked -- the same flavor of
       # reference as hg38 above, so index sizes and build times are comparable.
       mm39_fa: "${REFGETSTORE_FASTA}/jungle/mus_musculus/ensembl/mm39/fasta/Mus_musculus.GRCm39.dna.primary_assembly.fa.gz"

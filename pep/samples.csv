@@ -11,6 +11,12 @@ hg38,hg38,bwa_index,hg38_fa
 hg38,hg38,bowtie2_index,hg38_fa
 hg38,hg38,hisat2_index,hg38_fa
 hg38,hg38,suffixerator_index,hg38_fa
+hg38_initial,hg38_initial,fasta,hg38_initial_fa
+hg38_initial,hg38_initial,fasta_index,hg38_initial_fa
+hg38_initial,hg38_initial,bwa_index,hg38_initial_fa
+hg38_initial,hg38_initial,bowtie2_index,hg38_initial_fa
+hg38_initial,hg38_initial,hisat2_index,hg38_initial_fa
+hg38_initial,hg38_initial,suffixerator_index,hg38_initial_fa
 mm39,mm39,fasta,mm39_fa
 mm39,mm39,fasta_index,mm39_fa
 mm39,mm39,bwa_index,mm39_fa
