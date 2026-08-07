@@ -523,6 +523,32 @@ else
     echo "$(date) | run_builds: REFGETSTORE_S3 unset; skipping sequence-store sync"
 fi
 
+# --- publish the catalog metadata ------------------------------------------
+# api.refgenie.org's SQL catalog is populated from this artifact: `refgenie
+# catalog-export` writes a filtered SQLite (only pushed assets, aliases
+# materialized, download links minted from $REFGENIE_ASSET_HTTPS) and the
+# server imports it at startup and daily (REFGENIE_CATALOG_URL). GATED ON PUSH
+# like the index refresh, and for the same reason: metadata must never
+# advertise an asset whose upload failed. A skipped night just leaves the
+# previous artifact serving; the server catches up on the next clean run.
+if [[ -n "${REFGENIE_CATALOG_S3:-}" && -n "${REFGENIE_ASSET_HTTPS:-}" ]]; then
+    if [[ "$push_rc" -ne 0 ]]; then
+        echo "$(date) | run_builds: SKIPPING catalog publish -- push failed (rc=$push_rc)" >&2
+    else
+        echo "$(date) | run_builds: exporting publish catalog -> $REFGENIE_CATALOG_S3/publish_catalog.sqlite"
+        catalog_artifact="$(dirname "$REFGENIE_DB_CONFIG_PATH")/publish_catalog.sqlite"
+        if "$REFGENIE_BIN" catalog-export --dest "$catalog_artifact" \
+                --https-prefix "$REFGENIE_ASSET_HTTPS"; then
+            aws s3 cp "$catalog_artifact" "$REFGENIE_CATALOG_S3/publish_catalog.sqlite" --no-progress \
+                || echo "$(date) | run_builds: catalog upload failed (non-fatal); server keeps previous artifact" >&2
+        else
+            echo "$(date) | run_builds: catalog export failed (non-fatal); server keeps previous artifact" >&2
+        fi
+    fi
+else
+    echo "$(date) | run_builds: REFGENIE_CATALOG_S3/REFGENIE_ASSET_HTTPS unset; skipping catalog publish"
+fi
+
 # --- coverage report -------------------------------------------------------
 # Name what is MISSING, not just that something failed.
 #
