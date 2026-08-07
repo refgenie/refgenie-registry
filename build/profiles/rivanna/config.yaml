@@ -64,26 +64,24 @@ use-singularity: false         # recipes run in containers via refgenie/bulker, 
 # Default SLURM resources for every rule (shefflab standard partition).
 # Override per-rule below for memory-hungry indexers.
 #
-# MEMORY FLOOR SCALES WITH THE STORE, not the genome. Opening the RefgetStore
-# ("Loading collection metadata / Loading sequence ...") costs ~5 GB with the
-# 25-genome store (2026-08-07), and every rule that runs refgenie pays it --
-# the 08-07 nightly OOM-killed genome_init for t7 (a 40 kb phage!) at ~5 GB
-# under the old 8 GB cap. If inits start dying again as the store grows, raise
-# these before suspecting the genome.
+# History: on 2026-08-07 these were briefly raised to 16000/24000 after three
+# genome_inits OOM'd at ~5 GB -- refgenie-build-fasta was calling
+# load_all_sequences(), making memory scale with the whole store's sequence
+# payload (7.4 GB) instead of the one genome being exported. That was fixed in
+# refgenie1 (build_fasta.py loads only the target collection), so the caps came
+# back down: genome_init now needs roughly one genome's bytes (~3 GB for human).
 default-resources:
   slurm_account: "shefflab"
   slurm_partition: "standard"
-  mem_mb: 16000
+  mem_mb: 8000
   runtime: 120                 # minutes
   cpus_per_task: 4
 
 # Per-rule resource overrides for the heavy indexers. Rule names match the
 # generated Snakefile (build_<recipe>) and the genome_init sentinel rule.
 set-resources:
-  # genome_init runs refgenie-build-fasta, which opens the full store (see
-  # default-resources note); 3 of 18 inits died at 8000 on 2026-08-07.
   genome_init:
-    mem_mb: 24000
+    mem_mb: 8000
     runtime: 60
   build_star_index:
     mem_mb: 64000
