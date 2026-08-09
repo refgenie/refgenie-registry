@@ -1,4 +1,4 @@
-updated: '2026-08-02T06:35:49Z'
+updated: '2026-08-09T05:08:35Z'
 assets:
   athaliana:
     bowtie2_index:
@@ -62,6 +62,32 @@ assets:
       recipe_version: 0.0.1
       built: '2026-07-26T07:25:38Z'
       files: 5
+  dm6:
+    bowtie2_index:
+      status: complete
+      recipe_version: 0.0.1
+      built: '2026-08-07T07:28:36Z'
+      files: 5
+    bwa_index:
+      status: complete
+      recipe_version: 0.2.0
+      built: '2026-08-07T07:26:20Z'
+      files: 5
+    fasta:
+      status: complete
+      recipe_version: 0.1.0
+      built: '2026-08-07T07:21:20Z'
+      files: 5
+    fasta_index:
+      status: complete
+      recipe_version: 1.1.0
+      built: '2026-08-07T07:24:24Z'
+      files: 5
+    hisat2_index:
+      status: complete
+      recipe_version: 0.0.2
+      built: '2026-08-07T07:26:18Z'
+      files: 5
   dmelanogaster:
     bowtie2_index:
       status: complete
@@ -93,7 +119,131 @@ assets:
       recipe_version: 0.0.1
       built: '2026-07-26T07:27:01Z'
       files: 5
+  hg18:
+    bowtie2_index:
+      status: complete
+      recipe_version: 0.0.1
+      built: '2026-08-07T09:46:08Z'
+      files: 5
+    bwa_index:
+      status: complete
+      recipe_version: 0.2.0
+      built: '2026-08-07T08:38:52Z'
+      files: 5
+    fasta:
+      status: complete
+      recipe_version: 0.1.0
+      built: '2026-08-07T07:23:27Z'
+      files: 5
+    fasta_index:
+      status: complete
+      recipe_version: 1.1.0
+      built: '2026-08-07T08:13:04Z'
+      files: 5
+    hisat2_index:
+      status: complete
+      recipe_version: 0.0.2
+      built: '2026-08-07T08:22:52Z'
+      files: 5
+    suffixerator_index:
+      status: complete
+      recipe_version: 0.0.1
+      built: '2026-08-07T09:04:19Z'
+      files: 5
+  hg19:
+    bowtie2_index:
+      status: complete
+      recipe_version: 0.0.1
+      built: '2026-08-07T09:50:57Z'
+      files: 5
+    bwa_index:
+      status: complete
+      recipe_version: 0.2.0
+      built: '2026-08-07T08:33:23Z'
+      files: 5
+    fasta:
+      status: complete
+      recipe_version: 0.1.0
+      built: '2026-08-07T07:19:22Z'
+      files: 5
+    fasta_index:
+      status: complete
+      recipe_version: 1.1.0
+      built: '2026-08-07T07:25:53Z'
+      files: 5
+    hisat2_index:
+      status: complete
+      recipe_version: 0.0.2
+      built: '2026-08-07T08:05:59Z'
+      files: 5
+    suffixerator_index:
+      status: complete
+      recipe_version: 0.0.1
+      built: '2026-08-07T08:09:13Z'
+      files: 5
   hg38:
+    bowtie2_index:
+      status: complete
+      recipe_version: 0.0.1
+      built: '2026-08-07T14:52:59Z'
+      files: 5
+    bwa_index:
+      status: complete
+      recipe_version: 0.2.0
+      built: '2026-08-07T13:59:46Z'
+      files: 5
+    fasta:
+      status: complete
+      recipe_version: 0.1.0
+      built: '2026-08-07T13:01:50Z'
+      files: 6
+    fasta_index:
+      status: complete
+      recipe_version: 1.1.0
+      built: '2026-08-07T13:04:45Z'
+      files: 5
+    hisat2_index:
+      status: complete
+      recipe_version: 0.0.2
+      built: '2026-08-07T14:12:45Z'
+      files: 5
+    suffixerator_index:
+      status: complete
+      recipe_version: 0.0.1
+      built: '2026-08-07T13:50:11Z'
+      files: 5
+  hg38_chr22:
+    bowtie2_index:
+      status: complete
+      recipe_version: 0.0.1
+      built: '2026-08-07T08:16:07Z'
+      files: 5
+    bwa_index:
+      status: complete
+      recipe_version: 0.2.0
+      built: '2026-08-07T08:15:32Z'
+      files: 5
+    fasta:
+      status: complete
+      recipe_version: 0.1.0
+      built: '2026-08-07T07:24:32Z'
+      files: 5
+    fasta_index:
+      status: complete
+      recipe_version: 1.1.0
+      built: '2026-08-07T08:17:44Z'
+      files: 5
+    hisat2_index:
+      status: complete
+      recipe_version: 0.0.2
+      built: '2026-08-07T08:13:55Z'
+      files: 5
+    suffixerator_index:
+      status: complete
+      recipe_version: 0.0.1
+      built: '2026-08-07T08:17:22Z'
+      files: 5
+  hg38_initial:
     bowtie2_index:
       status: complete
       recipe_version: 0.0.1
@@ -123,6 +273,286 @@ assets:
       status: complete
       recipe_version: 0.0.1
       built: '2026-07-26T09:42:09Z'
+      files: 5
+  hg38_mm10:
+    bowtie2_index:
+      status: complete
+      recipe_version: 0.0.1
+      built: '2026-08-07T09:01:09Z'
+      files: 5
+    bwa_index:
+      status: complete
+      recipe_version: 0.2.0
+      built: '2026-08-07T09:47:31Z'
+      files: 5
+    fasta:
+      status: complete
+      recipe_version: 0.1.0
+      built: '2026-08-07T07:22:33Z'
+      files: 5
+    fasta_index:
+      status: complete
+      recipe_version: 1.1.0
+      built: '2026-08-07T08:11:37Z'
+      files: 5
+  hg38_noalt_decoy:
+    bowtie2_index:
+      status: complete
+      recipe_version: 0.0.1
+      built: '2026-08-07T14:11:42Z'
+      files: 5
+    bwa_index:
+      status: complete
+      recipe_version: 0.2.0
+      built: '2026-08-07T14:19:37Z'
+      files: 5
+    fasta:
+      status: complete
+      recipe_version: 0.1.0
+      built: '2026-08-07T13:03:22Z'
+      files: 6
+    fasta_index:
+      status: complete
+      recipe_version: 1.1.0
+      built: '2026-08-07T13:06:47Z'
+      files: 5
+    hisat2_index:
+      status: complete
+      recipe_version: 0.0.2
+      built: '2026-08-07T14:33:49Z'
+      files: 5
+    suffixerator_index:
+      status: complete
+      recipe_version: 0.0.1
+      built: '2026-08-07T13:52:48Z'
+      files: 5
+  hg38_primary:
+    bowtie2_index:
+      status: complete
+      recipe_version: 0.0.1
+      built: '2026-08-07T09:33:07Z'
+      files: 5
+    bwa_index:
+      status: complete
+      recipe_version: 0.2.0
+      built: '2026-08-07T08:46:42Z'
+      files: 5
+    fasta:
+      status: complete
+      recipe_version: 0.1.0
+      built: '2026-08-07T07:19:28Z'
+      files: 5
+    fasta_index:
+      status: complete
+      recipe_version: 1.1.0
+      built: '2026-08-07T07:25:53Z'
+      files: 5
+  hs38d1:
+    bowtie2_index:
+      status: complete
+      recipe_version: 0.0.1
+      built: '2026-08-07T13:03:00Z'
+      files: 5
+    bwa_index:
+      status: complete
+      recipe_version: 0.2.0
+      built: '2026-08-07T13:02:56Z'
+      files: 5
+    fasta:
+      status: complete
+      recipe_version: 0.1.0
+      built: '2026-08-07T13:01:23Z'
+      files: 6
+    fasta_index:
+      status: complete
+      recipe_version: 1.1.0
+      built: '2026-08-07T13:02:55Z'
+      files: 5
+    hisat2_index:
+      status: complete
+      recipe_version: 0.0.2
+      built: '2026-08-07T13:03:01Z'
+      files: 5
+    suffixerator_index:
+      status: complete
+      recipe_version: 0.0.1
+      built: '2026-08-07T13:02:59Z'
+      files: 5
+  human_alphasat:
+    bowtie2_index:
+      status: complete
+      recipe_version: 0.0.1
+      built: '2026-08-07T07:22:35Z'
+      files: 5
+    bwa_index:
+      status: complete
+      recipe_version: 0.2.0
+      built: '2026-08-07T07:22:33Z'
+      files: 5
+    fasta:
+      status: complete
+      recipe_version: 0.1.0
+      built: '2026-08-07T07:19:50Z'
+      files: 5
+    fasta_index:
+      status: complete
+      recipe_version: 1.1.0
+      built: '2026-08-07T07:22:34Z'
+      files: 5
+    hisat2_index:
+      status: complete
+      recipe_version: 0.0.2
+      built: '2026-08-07T07:22:33Z'
+      files: 5
+    suffixerator_index:
+      status: complete
+      recipe_version: 0.0.1
+      built: '2026-08-07T07:22:33Z'
+      files: 5
+  human_alu:
+    bowtie2_index:
+      status: complete
+      recipe_version: 0.0.1
+      built: '2026-08-07T07:24:26Z'
+      files: 5
+    bwa_index:
+      status: complete
+      recipe_version: 0.2.0
+      built: '2026-08-07T07:24:25Z'
+      files: 5
+    fasta:
+      status: complete
+      recipe_version: 0.1.0
+      built: '2026-08-07T07:21:08Z'
+      files: 5
+    fasta_index:
+      status: complete
+      recipe_version: 1.1.0
+      built: '2026-08-07T07:24:25Z'
+      files: 5
+    hisat2_index:
+      status: complete
+      recipe_version: 0.0.2
+      built: '2026-08-07T07:24:26Z'
+      files: 5
+    suffixerator_index:
+      status: complete
+      recipe_version: 0.0.1
+      built: '2026-08-07T07:24:24Z'
+      files: 5
+  human_rDNA:
+    bowtie2_index:
+      status: complete
+      recipe_version: 0.0.1
+      built: '2026-08-07T07:32:09Z'
+      files: 5
+    bwa_index:
+      status: complete
+      recipe_version: 0.2.0
+      built: '2026-08-07T07:29:14Z'
+      files: 5
+    fasta:
+      status: complete
+      recipe_version: 0.1.0
+      built: '2026-08-07T07:24:47Z'
+      files: 5
+    fasta_index:
+      status: complete
+      recipe_version: 1.1.0
+      built: '2026-08-07T08:19:15Z'
+      files: 5
+    hisat2_index:
+      status: complete
+      recipe_version: 0.0.2
+      built: '2026-08-07T07:29:09Z'
+      files: 5
+    suffixerator_index:
+      status: complete
+      recipe_version: 0.0.1
+      built: '2026-08-07T08:19:20Z'
+      files: 5
+  human_repeats:
+    bowtie2_index:
+      status: complete
+      recipe_version: 0.0.1
+      built: '2026-08-07T07:21:04Z'
+      files: 5
+    bwa_index:
+      status: complete
+      recipe_version: 0.2.0
+      built: '2026-08-07T07:21:01Z'
+      files: 5
+    fasta:
+      status: complete
+      recipe_version: 0.1.0
+      built: '2026-08-07T07:18:40Z'
+      files: 5
+    fasta_index:
+      status: complete
+      recipe_version: 1.1.0
+      built: '2026-08-07T07:21:04Z'
+      files: 5
+    hisat2_index:
+      status: complete
+      recipe_version: 0.0.2
+      built: '2026-08-07T07:21:02Z'
+      files: 5
+    suffixerator_index:
+      status: complete
+      recipe_version: 0.0.1
+      built: '2026-08-07T07:21:01Z'
+      files: 5
+  mm10:
+    bowtie2_index:
+      status: complete
+      recipe_version: 0.0.1
+      built: '2026-08-07T08:39:21Z'
+      files: 5
+    bwa_index:
+      status: complete
+      recipe_version: 0.2.0
+      built: '2026-08-07T08:43:18Z'
+      files: 5
+    fasta:
+      status: complete
+      recipe_version: 0.1.0
+      built: '2026-08-07T07:23:25Z'
+      files: 5
+    fasta_index:
+      status: complete
+      recipe_version: 1.1.0
+      built: '2026-08-07T08:11:35Z'
+      files: 5
+    hisat2_index:
+      status: complete
+      recipe_version: 0.0.2
+      built: '2026-08-07T08:50:18Z'
+      files: 5
+    suffixerator_index:
+      status: complete
+      recipe_version: 0.0.1
+      built: '2026-08-07T08:54:31Z'
+      files: 5
+  mm10_primary:
+    bowtie2_index:
+      status: complete
+      recipe_version: 0.0.1
+      built: '2026-08-07T08:06:23Z'
+      files: 5
+    bwa_index:
+      status: complete
+      recipe_version: 0.2.0
+      built: '2026-08-07T08:04:18Z'
+      files: 5
+    fasta:
+      status: complete
+      recipe_version: 0.1.0
+      built: '2026-08-07T07:19:15Z'
+      files: 5
+    fasta_index:
+      status: complete
+      recipe_version: 1.1.0
+      built: '2026-08-07T07:24:30Z'
       files: 5
   mm39:
     bowtie2_index:
@@ -155,6 +585,94 @@ assets:
       recipe_version: 0.0.1
       built: '2026-07-26T08:06:39Z'
       files: 5
+  mouse_chrM2x:
+    bowtie2_index:
+      status: complete
+      recipe_version: 0.0.1
+      built: '2026-08-07T07:30:36Z'
+      files: 5
+    bwa_index:
+      status: complete
+      recipe_version: 0.2.0
+      built: '2026-08-07T07:30:35Z'
+      files: 5
+    fasta:
+      status: complete
+      recipe_version: 0.1.0
+      built: '2026-08-07T07:26:08Z'
+      files: 5
+    fasta_index:
+      status: complete
+      recipe_version: 1.1.0
+      built: '2026-08-07T08:10:51Z'
+      files: 5
+    hisat2_index:
+      status: complete
+      recipe_version: 0.0.2
+      built: '2026-08-07T07:29:09Z'
+      files: 5
+    suffixerator_index:
+      status: complete
+      recipe_version: 0.0.1
+      built: '2026-08-07T08:09:43Z'
+      files: 5
+  rCRSd:
+    bowtie2_index:
+      status: complete
+      recipe_version: 0.0.1
+      built: '2026-08-07T08:09:37Z'
+      files: 5
+    bwa_index:
+      status: complete
+      recipe_version: 0.2.0
+      built: '2026-08-07T07:30:39Z'
+      files: 5
+    fasta:
+      status: complete
+      recipe_version: 0.1.0
+      built: '2026-08-07T07:24:31Z'
+      files: 5
+    fasta_index:
+      status: complete
+      recipe_version: 1.1.0
+      built: '2026-08-07T08:09:46Z'
+      files: 5
+    hisat2_index:
+      status: complete
+      recipe_version: 0.0.2
+      built: '2026-08-07T07:29:05Z'
+      files: 5
+  rn6:
+    bowtie2_index:
+      status: complete
+      recipe_version: 0.0.1
+      built: '2026-08-07T08:53:00Z'
+      files: 5
+    bwa_index:
+      status: complete
+      recipe_version: 0.2.0
+      built: '2026-08-07T08:20:47Z'
+      files: 5
+    fasta:
+      status: complete
+      recipe_version: 0.1.0
+      built: '2026-08-07T07:22:10Z'
+      files: 5
+    fasta_index:
+      status: complete
+      recipe_version: 1.1.0
+      built: '2026-08-07T07:27:44Z'
+      files: 5
+    hisat2_index:
+      status: complete
+      recipe_version: 0.0.2
+      built: '2026-08-07T08:34:25Z'
+      files: 5
+    suffixerator_index:
+      status: complete
+      recipe_version: 0.0.1
+      built: '2026-08-07T07:53:56Z'
+      files: 5
   spombe:
     bowtie2_index:
       status: complete
@@ -185,6 +703,22 @@ assets:
       status: complete
       recipe_version: 0.0.1
       built: '2026-07-26T07:31:17Z'
+      files: 5
+  t7:
+    bowtie2_index:
+      status: complete
+      recipe_version: 0.0.1
+      built: '2026-08-07T13:02:55Z'
+      files: 5
+    fasta:
+      status: complete
+      recipe_version: 0.1.0
+      built: '2026-08-07T13:01:15Z'
+      files: 6
+    fasta_index:
+      status: complete
+      recipe_version: 1.1.0
+      built: '2026-08-07T13:02:52Z'
       files: 5
   yeast_s288c:
     bowtie2_index:
@@ -217,4 +751,4 @@ assets:
       recipe_version: 0.0.1
       built: '2026-07-26T07:30:31Z'
       files: 5
-total_assets: 42
+total_assets: 145
