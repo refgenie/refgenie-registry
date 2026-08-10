@@ -1,0 +1,21 @@
+{
+  "schema": "https://raw.githubusercontent.com/FAIR-bioHeaders/FHR-Specification/main/fhr.json",
+  "schemaVersion": 1.0,
+  "genome": "Mus musculus",
+  "taxon": {
+    "name": "Mus musculus",
+    "uri": "https://identifiers.org/taxonomy:10090"
+  },
+  "commonName": "mouse",
+  "version": "mm10",
+  "genomeSynonym": [
+    "GRCm38"
+  ],
+  "accessionID": {
+    "name": "GCA_000001635.5",
+    "url": "https://www.ncbi.nlm.nih.gov/datasets/genome/GCA_000001635.5/"
+  },
+  "assemblySource": "NCBI",
+  "assemblyLevel": "chromosome",
+  "documentation": "The GCA_000001635.5 seqs_for_alignment_pipelines from NCBI.\n"
+}

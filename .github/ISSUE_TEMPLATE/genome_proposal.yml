@@ -20,6 +20,14 @@ body:
     validations:
       required: true
   - type: input
+    id: taxon_id
+    attributes:
+      label: NCBI Taxon ID
+      description: "NCBI Taxonomy ID for the organism (e.g., 9606 for human)"
+      placeholder: "9606"
+    validations:
+      required: true
+  - type: input
     id: source_url
     attributes:
       label: FASTA source URL

@@ -107,6 +107,32 @@ if ! git diff --exit-code pep/samples.csv; then
 fi
 echo "$(date) | run_builds: pep/samples.csv is in sync with pep/build_matrix.yaml"
 
+# --- guard: pep/metadata/*.fhr.json must be generated from genomes/*.yaml ---------
+# The per-genome FHR sidecars are a GENERATED artifact -- the metadata companion to
+# samples.csv. build/generate_genome_metadata.py reads genomes/*/*.yaml and emits
+# pep/metadata/<genome>.fhr.json for every queued genome; these are what the
+# genome_init rule (--fhr) and the post-build apply step read. Regenerate here and
+# fail loudly on ANY drift, exactly like samples.csv. Runs in DRY_RUN too: a stale
+# metadata set is what a dry run should surface, and regenerating already-correct
+# files is a byte no-op. Metadata CONTENT is non-blocking (a missing description
+# only WARNs), but the committed files being IN SYNC is a hard gate. git status
+# (not git diff) is used so a brand-new genome's untracked sidecar is caught too.
+echo "$(date) | run_builds: regenerating pep/metadata/*.fhr.json from genomes/*.yaml"
+if ! python3 build/generate_genome_metadata.py; then
+    echo "$(date) | run_builds: FATAL generate_genome_metadata.py failed." >&2
+    exit 1
+fi
+if [[ -n "$(git status --porcelain -- pep/metadata/)" ]]; then
+    echo "$(date) | run_builds: FATAL pep/metadata/ is out of sync with genomes/*.yaml." >&2
+    echo "  These sidecars are GENERATED -- never hand-edit them. Either a file was" >&2
+    echo "  edited directly, or a genome YAML changed without regenerating. Run" >&2
+    echo "    python build/generate_genome_metadata.py" >&2
+    echo "  review the pep/metadata/ diff, and commit it alongside samples.csv." >&2
+    git status --porcelain -- pep/metadata/ >&2
+    exit 1
+fi
+echo "$(date) | run_builds: pep/metadata/ is in sync with genomes/*.yaml"
+
 # Put a working `aws` ahead of the broken host ~/.local/bin/aws (dead-anaconda
 # shebang) so the folder_sync push_command resolves a real CLI. The bin dir
 # comes from env.sh ($REFGENIE_AWS_BINDIR) but the PATH prepend lives HERE, in
@@ -126,6 +152,12 @@ fi
 # by the PEP sample modifier that derives fasta_file_path. Default it to the
 # registry's own genomes input root if the operator did not set one.
 export REFGENIE_INPUTS="${REFGENIE_INPUTS:-${REFGETSTORE_FASTA:-$REGISTRY_DIR/build/inputs}}"
+
+# REFGENIE_REGISTRY_DIR is consumed by the PEP: pep/config.yaml derives
+# fhr_file_path from ${REFGENIE_REGISTRY_DIR}/pep/metadata/<genome_name>.fhr.json,
+# so the Snakefile genome_init rule resolves each genome's FHR metadata sidecar the
+# same way it resolves its FASTA. Export it for the snakemake subprocess.
+export REFGENIE_REGISTRY_DIR="$REGISTRY_DIR"
 
 # Resolve refgenie to an ABSOLUTE path. snakemake submits each build rule as its
 # own `srun` SLURM child whose non-interactive, non-login shell does NOT inherit
@@ -503,6 +535,22 @@ else
     echo "$(date) | run_builds: updating index/"
     python3 build/update_index.py || echo "$(date) | run_builds: index update skipped/failed (non-fatal)"
 fi
+
+# --- apply per-genome FHR metadata to the catalog + store sidecars ----------
+# Sentinel-independent metadata update. For every queued genome it upserts the
+# description/species_name columns and the RefgetStore FHR sidecar from
+# pep/metadata/<g>.fhr.json, funneled through GenomeManager.apply_fhr (the same
+# helper `genome set-metadata`/`genome init --fhr` use). It runs AFTER the
+# snakemake fan-out (genome_init created the genome rows) and BEFORE the store S3
+# sync + catalog-export below, so the sidecars ride the sync and the columns ride
+# the export. Idempotent: a metadata-only YAML edit propagates here on the next
+# nightly with NO rebuild (the genome_init sentinel is untouched), which is why
+# this step -- not the init rule alone -- is the load-bearing metadata path. It
+# runs only in a REAL run (DRY_RUN exits above, before any genome row exists to
+# update). Non-fatal: metadata must never abort a build.
+echo "$(date) | run_builds: applying per-genome FHR metadata to the catalog..."
+python3 build/apply_metadata.py --db-config "$REFGENIE_DB_CONFIG_PATH" \
+    || echo "$(date) | run_builds: metadata apply reported problems (non-fatal); catches up next run" >&2
 
 # --- publish the sequence store -------------------------------------------
 # Keep the public copy of the registry's RefgetStore current. The catalog's

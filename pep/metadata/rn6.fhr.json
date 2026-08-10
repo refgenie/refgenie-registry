@@ -1,0 +1,21 @@
+{
+  "schema": "https://raw.githubusercontent.com/FAIR-bioHeaders/FHR-Specification/main/fhr.json",
+  "schemaVersion": 1.0,
+  "genome": "Rattus norvegicus",
+  "taxon": {
+    "name": "Rattus norvegicus",
+    "uri": "https://identifiers.org/taxonomy:10116"
+  },
+  "commonName": "rat",
+  "version": "rn6",
+  "genomeSynonym": [
+    "Rnor_6.0"
+  ],
+  "accessionID": {
+    "name": "GCA_000001895.4",
+    "url": "https://www.ncbi.nlm.nih.gov/datasets/genome/GCA_000001895.4/"
+  },
+  "assemblySource": "NCBI",
+  "assemblyLevel": "chromosome",
+  "documentation": "The GCA_000001895.4_Rnor_6.0_genomic from NCBI.\n"
+}

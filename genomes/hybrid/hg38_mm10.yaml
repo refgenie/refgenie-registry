@@ -1,10 +1,10 @@
 name: hg38_mm10
 
 description: |
-  Merged genome with primary chromosomes of hg38 and mm10 from UCSC.
+  Merged genome with primary chromosomes of hg38 and mm10 from UCSC. Dual-species hybrid; primary organism Homo sapiens (NCBI taxon 9606), also contains Mus musculus (NCBI taxon 10090).
 
 organism:
-  scientific_name: Homo sapiens / Mus musculus
+  scientific_name: Homo sapiens
   common_name: human-mouse hybrid
   taxon_id: 9606
 

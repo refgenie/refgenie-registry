@@ -86,8 +86,8 @@ Define a new genome assembly. Fork, branch, and create
 `genomes/<organism>/<assembly>.yaml`, then open a PR titled
 "Add genome: \<organism\> \<assembly\>".
 
-- **Required fields:** `name`, `organism.scientific_name`, `fasta.primary_url`, `fasta.checksum.sha256`
-- The checksum is the SHA-256 of the **uncompressed** FASTA; use NCBI, Ensembl, or UCSC as the source.
+- **Required fields:** `name`, `description`, `organism.scientific_name`, `organism.taxon_id`, `fasta` (a `sources[].url` or a `checksum`), `seqcol` (a `digest` or `compute: true`)
+- The checksum, when present, is the SHA-256 of the **uncompressed** FASTA (or the `compute_on_registration` sentinel); use NCBI, Ensembl, or UCSC as the source. The schema is [FHR](https://github.com/FAIR-bioHeaders/FHR-Specification)-aligned — see [`schema/README.md`](schema/README.md).
 - See [`genomes/human/hg38.yaml`](genomes/human/hg38.yaml) for a complete reference and [CONTRIBUTING.md § Adding a Genome](./CONTRIBUTING.md#adding-a-genome).
 
 ### Add a recipe

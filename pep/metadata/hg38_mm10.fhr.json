@@ -1,0 +1,13 @@
+{
+  "schema": "https://raw.githubusercontent.com/FAIR-bioHeaders/FHR-Specification/main/fhr.json",
+  "schemaVersion": 1.0,
+  "genome": "Homo sapiens",
+  "taxon": {
+    "name": "Homo sapiens",
+    "uri": "https://identifiers.org/taxonomy:9606"
+  },
+  "commonName": "human-mouse hybrid",
+  "version": "hg38_mm10",
+  "assemblySource": "UCSC",
+  "documentation": "Merged genome with primary chromosomes of hg38 and mm10 from UCSC. Dual-species hybrid; primary organism Homo sapiens (NCBI taxon 9606), also contains Mus musculus (NCBI taxon 10090).\n"
+}

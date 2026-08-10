@@ -14,44 +14,69 @@ Contributions are welcome via pull requests. You can:
 2. Create `genomes/<organism>/<assembly>.yaml` following the schema.
 3. Open a PR with title: "Add genome: \<organism\> \<assembly\>"
 
-**Required fields:** `name`, `organism.scientific_name`, `fasta.primary_url`, `fasta.checksum.sha256`
+**Required fields:** `name`, `description`, `organism.scientific_name`,
+`organism.taxon_id`, `fasta` (at least one `sources[].url` or a `checksum`),
+`seqcol` (a `digest`, or `compute: true`)
+
+The schema is aligned to the [FAIR Headers Reference genome (FHR)](https://github.com/FAIR-bioHeaders/FHR-Specification)
+vocabulary. The registry-native keys below are the source of truth for the FHR
+core; the optional `fhr:` block is an escape hatch for pure-FHR provenance
+fields that have no registry-native home. See [`schema/README.md`](schema/README.md)
+for the field-by-field YAML → `.fhr.json` mapping.
 
 **Example** (see `genomes/human/hg38.yaml` for a complete reference):
 
 ```yaml
-name: my_genome
+name: my_genome                 # required; must equal the filename stem
 aliases:
-  - alternative_name
+  - alternative_name            # optional
 
-description: |
+description: |                  # required
   Brief description of this genome assembly.
 
 organism:
-  scientific_name: Genus species
-  common_name: common name
-  taxon_id: 12345
+  scientific_name: Genus species  # required
+  common_name: common name        # optional
+  taxon_id: 12345                 # required NCBI Taxonomy ID (integer)
 
-assembly:
+assembly:                       # optional but recommended
   source: NCBI
   accession: GCF_...
   level: chromosome
 
-fasta:
-  primary_url: https://ftp.ncbi.nlm.nih.gov/...
+masking: not-masked             # optional: soft-masked | hard-masked | not-masked | unknown
+
+fasta:                          # required (need sources[].url OR a checksum)
+  sources:
+    - provider: NCBI
+      url: https://ftp.ncbi.nlm.nih.gov/...
   checksum:
-    sha256: <sha256 of uncompressed FASTA>
+    sha256: compute_on_registration   # sentinel, or the 64-hex sha256 of the uncompressed FASTA
+    md5: <optional 32-hex md5 of the compressed FASTA>
 
-seqcol:
-  compute: true
+seqcol:                         # required
+  compute: true                 # or: digest: <seqcol digest>
 
-metadata:
+fhr:                            # optional: pure-FHR provenance (all fields optional)
+  license: CC0-1.0
+  funding: NIH
+  scholarly_article: 10.1038/nature...
+  date_created: 2013-12-17
+  metadata_author:
+    - { name: Jane Doe, uri: https://orcid.org/0000-0002-1825-0097 }
+
+metadata:                       # optional registry bookkeeping (not exported to FHR)
   added: 2026-01-01
   added_by: your_github_username
 ```
 
 **Notes:**
-- The checksum must be the SHA-256 of the **uncompressed** FASTA file.
-- Use NCBI, Ensembl, or UCSC as the primary source.
+- Provide at least one download URL under `fasta.sources[]` (each with an
+  optional `provider`). Use NCBI, Ensembl, or UCSC as the source where possible.
+- The checksum, when present, must be the SHA-256 of the **uncompressed** FASTA
+  file (64 lowercase hex chars), or the sentinel `compute_on_registration`.
+- `organism.taxon_id` is required; the exporter derives the resolvable
+  `taxon.uri` (`https://identifiers.org/taxonomy:<id>`) from it.
 - The `name` field must match the filename (without `.yaml`).
 
 ## Adding a Recipe

@@ -1,0 +1,13 @@
+{
+  "schema": "https://raw.githubusercontent.com/FAIR-bioHeaders/FHR-Specification/main/fhr.json",
+  "schemaVersion": 1.0,
+  "genome": "Homo sapiens",
+  "taxon": {
+    "name": "Homo sapiens",
+    "uri": "https://identifiers.org/taxonomy:9606"
+  },
+  "commonName": "human",
+  "version": "human_rDNA",
+  "assemblySource": "GenBank",
+  "documentation": "Human rDNA sequences curated from GenBank.\n"
+}

@@ -1,0 +1,21 @@
+{
+  "schema": "https://raw.githubusercontent.com/FAIR-bioHeaders/FHR-Specification/main/fhr.json",
+  "schemaVersion": 1.0,
+  "genome": "Homo sapiens",
+  "taxon": {
+    "name": "Homo sapiens",
+    "uri": "https://identifiers.org/taxonomy:9606"
+  },
+  "commonName": "human",
+  "version": "hg38",
+  "genomeSynonym": [
+    "GRCh38"
+  ],
+  "accessionID": {
+    "name": "GCA_000001405.15",
+    "url": "https://www.ncbi.nlm.nih.gov/datasets/genome/GCA_000001405.15/"
+  },
+  "assemblySource": "NCBI",
+  "assemblyLevel": "chromosome",
+  "documentation": "The GCA_000001405.15 GRCh38_no_alt_analysis_set from NCBI.\n"
+}

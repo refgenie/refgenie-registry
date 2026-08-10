@@ -1,0 +1,17 @@
+{
+  "schema": "https://raw.githubusercontent.com/FAIR-bioHeaders/FHR-Specification/main/fhr.json",
+  "schemaVersion": 1.0,
+  "genome": "Homo sapiens",
+  "taxon": {
+    "name": "Homo sapiens",
+    "uri": "https://identifiers.org/taxonomy:9606"
+  },
+  "commonName": "human",
+  "version": "hg38_initial",
+  "genomeSynonym": [
+    "hg38-initial-ucsc",
+    "hg38-ddbj"
+  ],
+  "assemblySource": "UCSC",
+  "documentation": "hg38 from UCSC representing initial 2013 release\n"
+}

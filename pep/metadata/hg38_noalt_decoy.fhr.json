@@ -1,0 +1,13 @@
+{
+  "schema": "https://raw.githubusercontent.com/FAIR-bioHeaders/FHR-Specification/main/fhr.json",
+  "schemaVersion": 1.0,
+  "genome": "Homo sapiens",
+  "taxon": {
+    "name": "Homo sapiens",
+    "uri": "https://identifiers.org/taxonomy:9606"
+  },
+  "commonName": "human",
+  "version": "hg38_noalt_decoy",
+  "assemblySource": "NCBI",
+  "documentation": "The GRCh38 reference with decoy and without alternative haplotypes from NCBI.\n"
+}

@@ -1,0 +1,21 @@
+{
+  "schema": "https://raw.githubusercontent.com/FAIR-bioHeaders/FHR-Specification/main/fhr.json",
+  "schemaVersion": 1.0,
+  "genome": "Homo sapiens",
+  "taxon": {
+    "name": "Homo sapiens",
+    "uri": "https://identifiers.org/taxonomy:9606"
+  },
+  "commonName": "human",
+  "version": "hg18",
+  "genomeSynonym": [
+    "NCBI36"
+  ],
+  "accessionID": {
+    "name": "GCF_000001405.12",
+    "url": "https://www.ncbi.nlm.nih.gov/datasets/genome/GCF_000001405.12/"
+  },
+  "assemblySource": "NCBI",
+  "assemblyLevel": "chromosome",
+  "documentation": "The NCBI36 reference sequence from UCSC. The individual chromosome\nfiles were concatenated prior to the asset building.\n"
+}

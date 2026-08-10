@@ -1,0 +1,13 @@
+{
+  "schema": "https://raw.githubusercontent.com/FAIR-bioHeaders/FHR-Specification/main/fhr.json",
+  "schemaVersion": 1.0,
+  "genome": "Enterobacteria phage T7",
+  "taxon": {
+    "name": "Enterobacteria phage T7",
+    "uri": "https://identifiers.org/taxonomy:10760"
+  },
+  "commonName": "T7 phage",
+  "version": "t7",
+  "assemblySource": "GenBank",
+  "documentation": "Genome of T7 phage, V01146.1 from GenBank.\n"
+}

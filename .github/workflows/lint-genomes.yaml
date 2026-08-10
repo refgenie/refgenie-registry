@@ -5,6 +5,8 @@ on:
     paths:
       - "genomes/**"
       - "schema/genome.schema.yaml"
+      - "schema/fhr.schema.json"
+      - "tools/**"
 
 permissions:
   contents: read
@@ -27,19 +29,29 @@ jobs:
       - name: Install dependencies
         run: pip install -r tools/requirements.txt
 
-      - name: Identify changed genome files
+      - name: Identify genome files to validate
         id: changed
         run: |
-          # Get genome YAML files changed in this PR
-          FILES=$(git diff --name-only --diff-filter=ACMR origin/${{ github.base_ref }}...HEAD -- 'genomes/**/*.yaml')
+          BASE="origin/${{ github.base_ref }}...HEAD"
+          # Changes to the schema, the vendored FHR schema, or any tool re-lint
+          # the WHOLE corpus (a validator/schema change can affect every file).
+          META=$(git diff --name-only --diff-filter=ACMR "$BASE" -- \
+            'schema/genome.schema.yaml' 'schema/fhr.schema.json' 'tools/**')
+          if [ -n "$META" ]; then
+            echo "Schema/tooling changed; validating the full corpus."
+            FILES=$(git ls-files 'genomes/**/*.yaml')
+          else
+            # Otherwise only the genome YAML files changed in this PR.
+            FILES=$(git diff --name-only --diff-filter=ACMR "$BASE" -- 'genomes/**/*.yaml')
+          fi
           if [ -z "$FILES" ]; then
             echo "files=" >> "$GITHUB_OUTPUT"
-            echo "No genome files changed."
+            echo "No genome files to validate."
           else
             echo "files<<EOF" >> "$GITHUB_OUTPUT"
             echo "$FILES" >> "$GITHUB_OUTPUT"
             echo "EOF" >> "$GITHUB_OUTPUT"
-            echo "Changed genome files:"
+            echo "Genome files to validate:"
             echo "$FILES"
           fi
 
@@ -48,7 +60,7 @@ jobs:
         id: validate
         run: |
           set +e
-          OUTPUT=$(python tools/validate_genome.py ${{ steps.changed.outputs.files }} 2>&1)
+          OUTPUT=$(python tools/validate_genome.py --check-fhr ${{ steps.changed.outputs.files }} 2>&1)
           EXIT_CODE=$?
           echo "output<<EOF" >> "$GITHUB_OUTPUT"
           echo "$OUTPUT" >> "$GITHUB_OUTPUT"

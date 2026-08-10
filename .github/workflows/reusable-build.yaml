@@ -99,7 +99,7 @@ jobs:
               f.write(f"genome_name={genome['name']}\n")
               f.write(f"recipe_name={recipe['name']}\n")
               f.write(f"recipe_version={recipe.get('version', 'unknown')}\n")
-              f.write(f"fasta_url={genome['fasta']['primary_url']}\n")
+              f.write(f"fasta_url={genome['fasta']['sources'][0]['url']}\n")
           PYEOF
 
       - name: Load registry and generate build Snakefile
