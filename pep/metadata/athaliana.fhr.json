@@ -1,3 +1,18 @@
 {
-  "name": "athaliana"
+  "schema": "https://raw.githubusercontent.com/FAIR-bioHeaders/FHR-Specification/main/fhr.json",
+  "schemaVersion": 1.0,
+  "genome": "Arabidopsis thaliana",
+  "taxon": {
+    "name": "Arabidopsis thaliana",
+    "uri": "https://identifiers.org/taxonomy:3702"
+  },
+  "commonName": "thale cress",
+  "version": "athaliana",
+  "accessionID": {
+    "name": "GCA_000001735.1",
+    "url": "https://www.ncbi.nlm.nih.gov/datasets/genome/GCA_000001735.1/"
+  },
+  "assemblySource": "Ensembl",
+  "assemblyLevel": "chromosome",
+  "documentation": "Arabidopsis thaliana ecotype Col-0 reference assembly TAIR10, sourced from\nTAIR / Ensembl Plants.\n"
 }

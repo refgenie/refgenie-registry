@@ -1,3 +1,18 @@
 {
-  "name": "yeast_s288c"
+  "schema": "https://raw.githubusercontent.com/FAIR-bioHeaders/FHR-Specification/main/fhr.json",
+  "schemaVersion": 1.0,
+  "genome": "Saccharomyces cerevisiae",
+  "taxon": {
+    "name": "Saccharomyces cerevisiae",
+    "uri": "https://identifiers.org/taxonomy:4932"
+  },
+  "commonName": "budding yeast",
+  "version": "yeast_s288c",
+  "accessionID": {
+    "name": "GCA_000146045.2",
+    "url": "https://www.ncbi.nlm.nih.gov/datasets/genome/GCA_000146045.2/"
+  },
+  "assemblySource": "Ensembl",
+  "assemblyLevel": "chromosome",
+  "documentation": "Saccharomyces cerevisiae strain S288C reference assembly R64-1-1, sourced from\nEnsembl (release 81). The original refgenie canary genome.\n"
 }

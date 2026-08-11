@@ -1,0 +1,26 @@
+name: yeast_s288c
+
+description: |
+  Saccharomyces cerevisiae strain S288C reference assembly R64-1-1, sourced from
+  Ensembl (release 81). The original refgenie canary genome.
+
+organism:
+  scientific_name: Saccharomyces cerevisiae
+  common_name: budding yeast
+  taxon_id: 4932
+
+assembly:
+  source: Ensembl
+  accession: GCA_000146045.2
+  level: chromosome
+
+fasta:
+  checksum:
+    sha256: compute_on_registration
+
+seqcol:
+  compute: true
+
+metadata:
+  added: 2026-08-11
+  added_by: nsheff

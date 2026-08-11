@@ -1,0 +1,26 @@
+name: celegans
+
+description: |
+  Caenorhabditis elegans reference assembly WBcel235, sourced from Ensembl
+  (release 81).
+
+organism:
+  scientific_name: Caenorhabditis elegans
+  common_name: roundworm
+  taxon_id: 6239
+
+assembly:
+  source: Ensembl
+  accession: GCA_000002985.3
+  level: chromosome
+
+fasta:
+  checksum:
+    sha256: compute_on_registration
+
+seqcol:
+  compute: true
+
+metadata:
+  added: 2026-08-11
+  added_by: nsheff

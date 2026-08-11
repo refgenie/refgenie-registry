@@ -1,0 +1,26 @@
+name: dmelanogaster
+
+description: |
+  Drosophila melanogaster reference assembly BDGP6, sourced from Ensembl
+  (release 81).
+
+organism:
+  scientific_name: Drosophila melanogaster
+  common_name: fruit fly
+  taxon_id: 7227
+
+assembly:
+  source: Ensembl
+  accession: GCA_000001215.4
+  level: chromosome
+
+fasta:
+  checksum:
+    sha256: compute_on_registration
+
+seqcol:
+  compute: true
+
+metadata:
+  added: 2026-08-11
+  added_by: nsheff

@@ -1,3 +1,18 @@
 {
-  "name": "celegans"
+  "schema": "https://raw.githubusercontent.com/FAIR-bioHeaders/FHR-Specification/main/fhr.json",
+  "schemaVersion": 1.0,
+  "genome": "Caenorhabditis elegans",
+  "taxon": {
+    "name": "Caenorhabditis elegans",
+    "uri": "https://identifiers.org/taxonomy:6239"
+  },
+  "commonName": "roundworm",
+  "version": "celegans",
+  "accessionID": {
+    "name": "GCA_000002985.3",
+    "url": "https://www.ncbi.nlm.nih.gov/datasets/genome/GCA_000002985.3/"
+  },
+  "assemblySource": "Ensembl",
+  "assemblyLevel": "chromosome",
+  "documentation": "Caenorhabditis elegans reference assembly WBcel235, sourced from Ensembl\n(release 81).\n"
 }

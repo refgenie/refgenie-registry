@@ -1,3 +1,18 @@
 {
-  "name": "dmelanogaster"
+  "schema": "https://raw.githubusercontent.com/FAIR-bioHeaders/FHR-Specification/main/fhr.json",
+  "schemaVersion": 1.0,
+  "genome": "Drosophila melanogaster",
+  "taxon": {
+    "name": "Drosophila melanogaster",
+    "uri": "https://identifiers.org/taxonomy:7227"
+  },
+  "commonName": "fruit fly",
+  "version": "dmelanogaster",
+  "accessionID": {
+    "name": "GCA_000001215.4",
+    "url": "https://www.ncbi.nlm.nih.gov/datasets/genome/GCA_000001215.4/"
+  },
+  "assemblySource": "Ensembl",
+  "assemblyLevel": "chromosome",
+  "documentation": "Drosophila melanogaster reference assembly BDGP6, sourced from Ensembl\n(release 81).\n"
 }

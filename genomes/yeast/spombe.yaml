@@ -1,0 +1,26 @@
+name: spombe
+
+description: |
+  Schizosaccharomyces pombe reference assembly ASM294v2, sourced from Ensembl
+  Fungi (release 28).
+
+organism:
+  scientific_name: Schizosaccharomyces pombe
+  common_name: fission yeast
+  taxon_id: 4896
+
+assembly:
+  source: Ensembl
+  accession: GCA_000002945.2
+  level: chromosome
+
+fasta:
+  checksum:
+    sha256: compute_on_registration
+
+seqcol:
+  compute: true
+
+metadata:
+  added: 2026-08-11
+  added_by: nsheff
