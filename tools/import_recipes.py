@@ -239,7 +239,7 @@ def register_asset_remote(
     field, so re-running against the persistent catalog updates in place rather
     than creating a duplicate remote.
     """
-    from refgenie.db.models import RemoteType
+    from refgenie.db.tables import RemoteType
 
     refgenie.configuration.upsert_remote(
         name=name,
