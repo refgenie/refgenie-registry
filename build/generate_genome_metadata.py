@@ -119,14 +119,26 @@ def _existing_sidecars(metadata_dir: str) -> set[str]:
 
 
 def write(desired: dict[str, str], metadata_dir: str = METADATA_DIR) -> None:
-    """Write the desired sidecars and prune any stale ones, so the tree matches the queue."""
+    """Write the desired sidecars and prune any stale ones, so the tree matches the queue.
+
+    Writes are IDEMPOTENT: a sidecar whose on-disk content already matches is left
+    untouched, mtime and all. This matters because the nightly regenerates every
+    sidecar on every run -- rewriting unchanged files would bump 26 mtimes a night,
+    and the Rivanna profile drives snakemake from mtime alone (rerun-triggers:
+    mtime), so that churn would re-trigger every genome's build.
+    """
     os.makedirs(metadata_dir, exist_ok=True)
     wanted = {f"{g}{SIDECAR_SUFFIX}" for g in desired}
     for stale in _existing_sidecars(metadata_dir) - wanted:
         os.remove(os.path.join(metadata_dir, stale))
         print(f"generate_genome_metadata: removed stale {stale}")
     for genome, text in desired.items():
-        with open(os.path.join(metadata_dir, f"{genome}{SIDECAR_SUFFIX}"), "w") as fh:
+        path = os.path.join(metadata_dir, f"{genome}{SIDECAR_SUFFIX}")
+        if os.path.isfile(path):
+            with open(path) as fh:
+                if fh.read() == text:
+                    continue
+        with open(path, "w") as fh:
             fh.write(text)
 
 

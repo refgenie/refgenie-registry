@@ -111,7 +111,8 @@ echo "$(date) | run_builds: pep/samples.csv is in sync with pep/build_matrix.yam
 # The per-genome FHR sidecars are a GENERATED artifact -- the metadata companion to
 # samples.csv. build/generate_genome_metadata.py reads genomes/*/*.yaml and emits
 # pep/metadata/<genome>.fhr.json for every queued genome; these are what the
-# genome_init rule (--fhr) and the post-build apply step read. Regenerate here and
+# post-build apply step reads (genome_init deliberately does NOT -- metadata in a
+# rule's `input:` is a rebuild trigger). Regenerate here and
 # fail loudly on ANY drift, exactly like samples.csv. Runs in DRY_RUN too: a stale
 # metadata set is what a dry run should surface, and regenerating already-correct
 # files is a byte no-op. Metadata CONTENT is non-blocking (a missing description
@@ -154,9 +155,11 @@ fi
 export REFGENIE_INPUTS="${REFGENIE_INPUTS:-${REFGETSTORE_FASTA:-$REGISTRY_DIR/build/inputs}}"
 
 # REFGENIE_REGISTRY_DIR is consumed by the PEP: pep/config.yaml derives
-# fhr_file_path from ${REFGENIE_REGISTRY_DIR}/pep/metadata/<genome_name>.fhr.json,
-# so the Snakefile genome_init rule resolves each genome's FHR metadata sidecar the
-# same way it resolves its FASTA. Export it for the snakemake subprocess.
+# fhr_file_path from ${REFGENIE_REGISTRY_DIR}/pep/metadata/<genome_name>.fhr.json.
+# The derive stays even though genome_init no longer takes --fhr (metadata must not
+# be a build input -- it would make a description edit a rebuild trigger); the
+# sidecars are consumed post-build by apply_metadata.py. Export it for the
+# snakemake subprocess, which still resolves the PEP.
 export REFGENIE_REGISTRY_DIR="$REGISTRY_DIR"
 
 # Resolve refgenie to an ABSOLUTE path. snakemake submits each build rule as its

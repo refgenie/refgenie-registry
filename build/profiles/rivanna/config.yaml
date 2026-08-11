@@ -57,6 +57,25 @@ resources:
   refget_store_writer: 4
 latency-wait: 60               # tolerate shared-FS latency on output files
 rerun-incomplete: true
+
+# Rebuild scope is PER-GENOME, driven by file mtimes only.
+#
+# Snakemake's default trigger set is {mtime, params, input, software-env, code}.
+# All of those except mtime are per-RULE, not per-output: touch the genome_init
+# rule's definition -- add an input, tweak the shell line -- and snakemake
+# considers genome_init stale for EVERY genome, cascading a full rebuild of all
+# 26 (hg38 and mm39 included, multi-hour indexers and all). Adding five model
+# organisms should not re-init human.
+#
+# Restricting to mtime means a genome rebuilds only when its own input files are
+# newer than its own outputs. The deliberate tradeoff: editing a recipe, a param,
+# or the Snakefile template no longer auto-triggers rebuilds -- those must be
+# forced explicitly (delete the target sentinel, or `--forcerun <rule>`). That is
+# the intended behavior here. The go/no-go gate for this pipeline is the
+# samples.csv / queue diff, which is reviewed and committed; silent global
+# rebuilds triggered by an unrelated rule edit are not a gate, they are a
+# hazard.
+rerun-triggers: mtime
 keep-going: true               # one failed asset must not abort the batch
 printshellcmds: true
 use-singularity: false         # recipes run in containers via refgenie/bulker, not snakemake
