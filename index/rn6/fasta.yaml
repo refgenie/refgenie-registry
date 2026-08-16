@@ -8,8 +8,6 @@ build:
   status: complete
   timestamp: '2026-08-07T07:22:10Z'
 files:
-- build_timestamp
 - chrom_sizes
 - fai
 - fasta
-- refgenie_version
