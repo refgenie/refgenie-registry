@@ -44,6 +44,27 @@ A genome entry (`genomes/<organism>/<assembly>.yaml`) describes a reference
 assembly: its names/aliases, organism, assembly accession, and the source FASTA
 (URL + checksum). Genomes are the inputs that recipes build assets *for*.
 
+#### Refgenie is an overlay on a RefgetStore
+
+The served genome list is not defined by what the nightly builds — it is
+defined by a RefgetStore. The store's `collections.rgci` is the authoritative
+set of genomes; refgenie is an **overlay** on that set. Every collection in an
+overlay store appears as a genome, in one of two states:
+
+- **Browse overlay** — registered with the store's curated aliases (the `name`
+  alias namespace) and any FHR metadata, but with zero assets. Created by
+  `refgenie genome sync`, which the nightly runs against every store in
+  `$REFGENIE_OVERLAY_STORES` (see `build/run_builds.sh` and
+  `infra/rivanna/env.sh`).
+- **Assets attached** — additionally has assets built by the recipe fan-out
+  (queued in `pep/build_matrix.yaml`).
+
+Sync is idempotent and never repoints an alias that a built genome already
+owns. One asymmetry to know about: listing, browsing and serving genome
+metadata work from a *remote* store URL, but building a genome's `fasta` asset
+still requires a *local* store (`refgenie-build-fasta` opens the store with
+`open_local`) — fine on Rivanna, where the store lives on brickyard.
+
 ### 3.2 Assets
 
 An **asset** is a versioned bundle of files built for a genome by running a

@@ -32,6 +32,12 @@ export REFGENIE_ASSET_S3="${REFGENIE_ASSET_S3:-s3://refgenie/assets}"
 export REFGENIE_CATALOG_S3="${REFGENIE_CATALOG_S3:-s3://refgenie/catalog}"
 export REFGENIE_ASSET_HTTPS="${REFGENIE_ASSET_HTTPS:-https://refgenie.s3.us-east-1.amazonaws.com/assets}"
 
+# Stores whose collections the nightly overlays into the catalog as zero-asset
+# browse genomes (`refgenie genome sync` in run_builds.sh). Space-separated
+# store URLs; set empty to disable. Assigned UNCONDITIONALLY (no ${VAR:-...}
+# fallback -- yoke's env_files parser mangles that form; see REFGENIE_BIN below).
+export REFGENIE_OVERLAY_STORES=https://refgenie.s3.us-east-1.amazonaws.com/refget-store/jungle
+
 # AWS auth for `refgenie push`. Push runs ONCE on the mobot driver/dispatcher
 # host AFTER snakemake returns — it reads the shared build DB + the staged
 # assets on brickyard and runs `aws s3 sync`. It is NOT a per-SLURM-child step,

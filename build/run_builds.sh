@@ -555,6 +555,27 @@ echo "$(date) | run_builds: applying per-genome FHR metadata to the catalog..."
 python3 build/apply_metadata.py --db-config "$REFGENIE_DB_CONFIG_PATH" \
     || echo "$(date) | run_builds: metadata apply reported problems (non-fatal); catches up next run" >&2
 
+# --- overlay: register every store collection as a browse genome ------------
+# Refgenie is an OVERLAY on a RefgetStore: the store defines which genomes
+# exist, and a genome either has assets attached (built by the fan-out above)
+# or is a zero-asset browse overlay. `genome sync` registers every collection
+# in each REFGENIE_OVERLAY_STORES store (space-separated URLs; unset = off)
+# into the build catalog, carrying the store's curated `name` aliases and any
+# FHR sidecars. Idempotent, never repoints an alias owned by a built genome.
+# Ordering is load-bearing: AFTER apply_metadata (built genomes' metadata is
+# authoritative), BEFORE the store publish + catalog-export below so synced
+# aliases ride the store S3 sync and genome rows ride the export. Non-fatal:
+# an unreachable store must not abort publishing the built assets.
+if [[ -n "${REFGENIE_OVERLAY_STORES:-}" ]]; then
+    for _overlay_store in $REFGENIE_OVERLAY_STORES; do
+        echo "$(date) | run_builds: overlay sync from $_overlay_store"
+        "$REFGENIE_BIN" genome sync --server-url "$_overlay_store" \
+            || echo "$(date) | run_builds: overlay sync from $_overlay_store reported failures (non-fatal); catches up next run" >&2
+    done
+else
+    echo "$(date) | run_builds: REFGENIE_OVERLAY_STORES unset; skipping store overlay sync"
+fi
+
 # --- publish the sequence store -------------------------------------------
 # Keep the public copy of the registry's RefgetStore current. The catalog's
 # sequence store ($REFGENIE_GENOME_FOLDER/.refget_store) is what genome_init
