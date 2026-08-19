@@ -1,0 +1,12 @@
+genome: hg38-primary-refgenie
+genome_digest: Ba88PY52_qeifhJrgUXyin6UITdXNsg3
+recipe: fasta_index
+recipe_version: 1.1.0
+asset_name: default
+asset_digest: 50c7ce970aab61710f9727692222ae2ca2cffdf3b5f342551b07fddefc7e7510
+build:
+  status: complete
+  timestamp: '2026-08-07T07:25:53Z'
+files:
+- chrom_sizes
+- fai

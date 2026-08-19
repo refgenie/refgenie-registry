@@ -1,0 +1,13 @@
+genome: hg38-ddbj
+genome_digest: NTeQ1GQMt2ocCFkS8Z3_qkvetZjabWSt
+recipe: fasta
+recipe_version: 0.1.0
+asset_name: default
+asset_digest: 12e61d7617f06e52515876c40801c66dc59fd7acb81d6bde83419b3ea2f7d157
+build:
+  status: complete
+  timestamp: '2026-07-26T07:27:14Z'
+files:
+- chrom_sizes
+- fai
+- fasta

@@ -1,0 +1,12 @@
+genome: hg38-primary-refgenie
+genome_digest: Ba88PY52_qeifhJrgUXyin6UITdXNsg3
+recipe: bowtie2_index
+recipe_version: 0.0.1
+asset_name: 2.5.5
+asset_digest: 56a752ff7778967bc2725c0e9e04559f04cd57a79ddee1b18b4c7eb3db628a8d
+build:
+  status: complete
+  timestamp: '2026-08-07T09:33:07Z'
+files:
+- bowtie2_index
+- version

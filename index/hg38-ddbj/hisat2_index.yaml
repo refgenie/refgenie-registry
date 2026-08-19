@@ -1,0 +1,12 @@
+genome: hg38-ddbj
+genome_digest: NTeQ1GQMt2ocCFkS8Z3_qkvetZjabWSt
+recipe: hisat2_index
+recipe_version: 0.0.2
+asset_name: 2.2.2
+asset_digest: 8a1784cfa1a78d21bcc2de7f299bffb32e4e824f46b9ab5d82cf7ededd1e5143
+build:
+  status: complete
+  timestamp: '2026-07-26T08:20:03Z'
+files:
+- hisat2_index
+- version

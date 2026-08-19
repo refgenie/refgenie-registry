@@ -1,0 +1,12 @@
+genome: GRCm39-primary-113-ensembl
+genome_digest: 2Ls1P5eUdKbvtOhjJx3s2R5r0_I-IB5Z
+recipe: bowtie2_index
+recipe_version: 0.0.1
+asset_name: 2.5.5
+asset_digest: 46852b8a10b890c57a0bfaa30fd1f15689898cf97f9fa848bbae0ff4020260e2
+build:
+  status: complete
+  timestamp: '2026-07-26T09:04:22Z'
+files:
+- bowtie2_index
+- version

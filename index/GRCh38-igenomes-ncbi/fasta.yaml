@@ -1,0 +1,13 @@
+genome: GRCh38-igenomes-ncbi
+genome_digest: EiFob05aCWgVU_B_Ae0cypnQut3cxUP1
+recipe: fasta
+recipe_version: 0.1.0
+asset_name: default
+asset_digest: f8dec40426dda8f7c0008717afe1a05b2d767e9e5bf8ef2a91dd2010c5d72d1d
+build:
+  status: complete
+  timestamp: '2026-08-07T13:01:50Z'
+files:
+- chrom_sizes
+- fai
+- fasta

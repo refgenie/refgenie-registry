@@ -1,0 +1,12 @@
+genome: GRCm39-primary-113-ensembl
+genome_digest: 2Ls1P5eUdKbvtOhjJx3s2R5r0_I-IB5Z
+recipe: fasta_index
+recipe_version: 1.1.0
+asset_name: default
+asset_digest: 5112eb6048bae902a1812154f68f5637759b78e860b0f31637b879919c960487
+build:
+  status: complete
+  timestamp: '2026-07-26T07:30:18Z'
+files:
+- chrom_sizes
+- fai

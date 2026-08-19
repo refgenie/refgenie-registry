@@ -1,0 +1,13 @@
+genome: GRCh38.p14-fasta-no-alt-plus-hs38d1
+genome_digest: 7hP7E8o-q6H8qcqMHBEIYdbAK49PoEUZ
+recipe: fasta
+recipe_version: 0.1.0
+asset_name: default
+asset_digest: 6da3c4ed8d73112b7cc2e8c7932546bbc076645cb14eeae1147acb8b3bed0939
+build:
+  status: complete
+  timestamp: '2026-08-07T13:03:22Z'
+files:
+- chrom_sizes
+- fai
+- fasta

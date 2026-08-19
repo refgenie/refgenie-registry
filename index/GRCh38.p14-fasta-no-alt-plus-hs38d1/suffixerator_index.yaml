@@ -1,0 +1,12 @@
+genome: GRCh38.p14-fasta-no-alt-plus-hs38d1
+genome_digest: 7hP7E8o-q6H8qcqMHBEIYdbAK49PoEUZ
+recipe: suffixerator_index
+recipe_version: 0.0.1
+asset_name: 1.6.6
+asset_digest: 5f7d57bdbe3e168dbe6e80bdb629c716d33f759f0b33f9d609eb497d0446d284
+build:
+  status: complete
+  timestamp: '2026-08-07T13:52:48Z'
+files:
+- esa
+- version

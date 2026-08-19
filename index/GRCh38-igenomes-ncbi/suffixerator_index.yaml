@@ -1,0 +1,12 @@
+genome: GRCh38-igenomes-ncbi
+genome_digest: EiFob05aCWgVU_B_Ae0cypnQut3cxUP1
+recipe: suffixerator_index
+recipe_version: 0.0.1
+asset_name: 1.6.6
+asset_digest: 2c1198734691007d1d46e69b5989ef84b45cee818e395d286fbc7fbf487dd902
+build:
+  status: complete
+  timestamp: '2026-08-07T13:50:11Z'
+files:
+- esa
+- version

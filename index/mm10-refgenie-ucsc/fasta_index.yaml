@@ -1,0 +1,12 @@
+genome: mm10-refgenie-ucsc
+genome_digest: dMjpOU7EvpeZVb0gpPoZ7prNaxOu88Ta
+recipe: fasta_index
+recipe_version: 1.1.0
+asset_name: default
+asset_digest: 40c89ff2f18f5a7a9aeea60468d979df795fb8c35015e746cfd077e44024c65a
+build:
+  status: complete
+  timestamp: '2026-08-07T07:24:30Z'
+files:
+- chrom_sizes
+- fai

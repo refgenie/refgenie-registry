@@ -1,0 +1,12 @@
+genome: GRCh38.p14-fasta-no-alt-plus-hs38d1
+genome_digest: 7hP7E8o-q6H8qcqMHBEIYdbAK49PoEUZ
+recipe: hisat2_index
+recipe_version: 0.0.2
+asset_name: 2.2.2
+asset_digest: 78f23d531397efe20d40d4e10fa0c89e6be28cedc7a65de52d8057210b3d6249
+build:
+  status: complete
+  timestamp: '2026-08-07T14:33:49Z'
+files:
+- hisat2_index
+- version

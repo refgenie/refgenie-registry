@@ -1,0 +1,12 @@
+genome: GRCh38-igenomes-ncbi
+genome_digest: EiFob05aCWgVU_B_Ae0cypnQut3cxUP1
+recipe: hisat2_index
+recipe_version: 0.0.2
+asset_name: 2.2.2
+asset_digest: be62e625a0184235944983d41d8ddef708f4314627c139601bdd978b0192f131
+build:
+  status: complete
+  timestamp: '2026-08-07T14:12:45Z'
+files:
+- hisat2_index
+- version
