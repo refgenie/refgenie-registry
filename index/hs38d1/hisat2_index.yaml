@@ -8,8 +8,5 @@ build:
   status: complete
   timestamp: '2026-08-07T13:03:01Z'
 files:
-- build_timestamp
 - hisat2_index
-- inputs
-- refgenie_version
 - version

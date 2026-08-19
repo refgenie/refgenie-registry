@@ -8,8 +8,5 @@ build:
   status: complete
   timestamp: '2026-07-26T07:25:38Z'
 files:
-- build_timestamp
 - esa
-- inputs
-- refgenie_version
 - version

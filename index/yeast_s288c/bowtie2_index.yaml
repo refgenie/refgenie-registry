@@ -9,7 +9,4 @@ build:
   timestamp: '2026-07-26T07:30:25Z'
 files:
 - bowtie2_index
-- build_timestamp
-- inputs
-- refgenie_version
 - version
