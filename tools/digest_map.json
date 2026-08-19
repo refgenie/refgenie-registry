@@ -1,0 +1,125 @@
+{
+  "version": 1,
+  "description": "Maps legacy refgenie hex genome digests to refgenie1 GA4GH sha512t24u base64url digests",
+  "genomes": {
+    "94e0d21feb576e6af61cd2a798ad30682ef2428bb7eabbb4": {
+      "ga4gh_digest": "jthDpfNIgzM5AGJlOkRtfnky4rXMBIUP",
+      "aliases": [
+        "rCRSd"
+      ]
+    },
+    "2230c535660fb4774114bfa966a62f823fdb6d21acf138d4": {
+      "ga4gh_digest": "EiFob05aCWgVU_B_Ae0cypnQut3cxUP1",
+      "aliases": [
+        "hg38",
+        "GRCh38"
+      ]
+    },
+    "7319f9237651755047bc40d7f7a9770d42a537e840f4e105": {
+      "ga4gh_digest": "fuCzP-ywaGoywO5-loqNpuC18a8SEZ4X",
+      "aliases": [
+        "human_repeats"
+      ]
+    },
+    "43f14ba8beed34d52edb244e26f193df6edbb467bd55d37a": {
+      "ga4gh_digest": "k1DiUF4K3GOEyfBV6kMtnSFAGVrkMixo",
+      "aliases": [
+        "mouse_chrM2x"
+      ]
+    },
+    "45818b389d17308bb520512bb0d4f76764430c3eaaacc4a9": {
+      "ga4gh_digest": "zEaiCVTg-NXkKpeU17O5uFcudmA7SEYr",
+      "aliases": [
+        "hs38d1"
+      ]
+    },
+    "fec6bcce9821b57f98ffc5d46ebec4f2f756c2e9db800ab7": {
+      "ga4gh_digest": "n9fmCgylRgE0es4yn5-e7bmBx7ps9h1K",
+      "aliases": [
+        "hg38_chr22"
+      ]
+    },
+    "baa91c8f6e2780cfd8fd1040ff37f51c379947a2a4820d6c": {
+      "ga4gh_digest": "ThZcNYiLuWWL86NdJ8dvvJG15K9mW3Fo",
+      "aliases": [
+        "hg19",
+        "GRCh37"
+      ]
+    },
+    "9b7fd88cae1bd01bf53760fb426e2aeb299150cc64af2b01": {
+      "ga4gh_digest": "YfZ0rklv8KY9DCtqG0iIX16zsgbuBgmM",
+      "aliases": [
+        "hg18",
+        "NCBI36"
+      ]
+    },
+    "74a50bdcb018c11d17d94d44679da3cbb3cb420df0ab1e46": {
+      "ga4gh_digest": "4r7J6aCMjoUTsnEHxHQMTFrNl6h1ZqgP",
+      "aliases": [
+        "human_alu"
+      ]
+    },
+    "b769bcf2deaf9d061d94f2007a0e956249905c64653cb5c8": {
+      "ga4gh_digest": "RoX-a81Nez0a0MG4h08lu61x5umcxrrH",
+      "aliases": [
+        "human_rDNA"
+      ]
+    },
+    "3cd9f8c34e28a1e8823632449b6d8a6afe5a1032245e7475": {
+      "ga4gh_digest": "P_oMW_QVpJuKvLZ3377J3MXXAsud9G8B",
+      "aliases": [
+        "human_alphasat"
+      ]
+    },
+    "0f10d83b1050c08dd53189986f60970b92a315aa7a16a6f1": {
+      "ga4gh_digest": "wsDErYxgCXiPnb2FWZ4sXtx3B0YyruRu",
+      "aliases": [
+        "mm10",
+        "GRCm38"
+      ]
+    },
+    "79168fd950d561cf5ce454dd27593c0af429b32cddce5ce9": {
+      "ga4gh_digest": "yGaojvlgReD5Gd7T630C30BK5DVaHedb",
+      "aliases": [
+        "rn6",
+        "Rnor_6.0"
+      ]
+    },
+    "6c5f19c9c2850e62cc3f89b04047fa05eee911662bd77905": {
+      "ga4gh_digest": "kN9XHLKLS_u7ei2GH87H-qpQrkz8moPB",
+      "aliases": [
+        "t7"
+      ]
+    },
+    "8baf9d24ad8f5678f0fe1f5b21a812d410755d49e3123158": {
+      "ga4gh_digest": "hFwVeJXKpWP3X-g4wmJGT-eZTa1r3Y1l",
+      "aliases": [
+        "dm6"
+      ]
+    },
+    "a735e331b2a8ae5cd4e7519575c4c09426a276175c57bd79": {
+      "ga4gh_digest": "7hP7E8o-q6H8qcqMHBEIYdbAK49PoEUZ",
+      "aliases": [
+        "hg38_noalt_decoy"
+      ]
+    },
+    "bfdbdd006617e34e64b298f48785022d9376acad57260aaf": {
+      "ga4gh_digest": "dMjpOU7EvpeZVb0gpPoZ7prNaxOu88Ta",
+      "aliases": [
+        "mm10_primary"
+      ]
+    },
+    "047c6e1eda552b50c5add59ff0995a40bc4ce1732e3cc4ae": {
+      "ga4gh_digest": "Ba88PY52_qeifhJrgUXyin6UITdXNsg3",
+      "aliases": [
+        "hg38_primary"
+      ]
+    },
+    "644d2b9de4adaccb31c8bde387f23edddc5834772dd51d33": {
+      "ga4gh_digest": "Cmv0aU0aNVBw1skKIJGyvR5i49b67t84",
+      "aliases": [
+        "hg38_mm10"
+      ]
+    }
+  }
+}
