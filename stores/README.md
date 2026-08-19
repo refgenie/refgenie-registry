@@ -153,6 +153,44 @@ Notes:
 - `build_aliases.py` strips the VRS `SQ.` prefix from level-2 digests before registering (the bare
   `sha512t24u` is the alias-index key); the legacy `register_aliases.py`/`backfill_*` scripts do not.
 
+## FHR metadata (post-build)
+
+FHR (FAIR Headers Reference genome) sidecars — `fhr/<digest>.fhr.json` — carry per-collection
+organism/assembly metadata (`genome`, `commonName`, `taxon`, `documentation`,
+`assemblySource`, `accessionID`, `assemblyLevel`). These are what `refgenie genome sync`
+reads to populate the description and faceted metadata columns (species, common name,
+taxon id, assembly source/accession/level) for store-overlay genomes, so a store without
+them syncs as genomes with null metadata.
+
+`build_fhr.py` writes them from `sources.csv` columns (organism → scientific/common name +
+taxon URI; name/genome_assembly/source → a one-sentence `documentation`; source →
+assemblySource; accession → accessionID, plus assemblyLevel from the script's static
+per-accession `ASSEMBLY_LEVELS` map sourced from NCBI Datasets), resolving each row to its
+collection digest via the aliases `build.py` registered. It only knows human and mouse and
+**fails loudly** on any other organism (extend its `ORGANISMS` map deliberately — never
+guess); likewise an accession missing from `ASSEMBLY_LEVELS` just gets no assemblyLevel.
+Idempotent; re-runs overwrite. It also re-commits `rgstore.json` so the manifest's
+`fhr_digest` advertises the sidecars (required for remote `pull_fhr`).
+
+**Per-genome YAML overrides** — "use YAML if it exists, use CSV otherwise":
+`stores/<store>/genomes/<row_name>.yaml` is a flat camelCase FHR-field mapping merged
+over that row's CSV-derived fields, field by field (a YAML field wins wholesale; absent
+fields keep the CSV derivation). Use these for hand-curated metadata the CSV can't
+express — corrected `assemblySource`, richer `documentation`, `relatedLink` provenance
+URLs, an explicit `assemblyLevel` (which beats the static map). For rows that share a
+digest, the last row still wins; put the override on the digest-winning row (mirroring
+it on same-digest twins keeps it reorder-safe). jungle's `genomes/` dir carries
+overrides capturing true provenance for the Heng-Li-guide references
+(hs37d5, hs37-1kg, hs38/hg38-refgenie, hs38DH, b37-broad).
+
+```bash
+source ../infra/rivanna/env.sh
+python build_fhr.py jungle --dry-run   # preview
+python build_fhr.py jungle             # write sidecars + refresh manifest
+```
+
+After running, sync the store's `fhr/` dir **and** `rgstore.json` to S3 (see below).
+
 ## Deploying to S3
 
 Stores are served publicly from `s3://refgenie/refget-store/<store>/`

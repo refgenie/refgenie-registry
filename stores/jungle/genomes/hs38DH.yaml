@@ -1,0 +1,15 @@
+# FHR override for the hs38DH row (see stores/build_fhr.py). Digest-shared
+# with hg38-broad and the two ddbj twins; this row wins. Digest-equality
+# across the four rows confirms the Broad GATK-bundle Homo_sapiens_assembly38
+# is the same reference. No accessionID: composite reference (GRCh38 + decoy
+# + HLA), not equal to any single GCA/GCF record.
+assemblySource: 1000genomes
+documentation: >-
+  Homo sapiens GRCh38 full analysis set plus decoy and HLA sequences (hs38DH),
+  the 1000 Genomes Project GRCh38 alignment reference, identical to the Broad
+  GATK-bundle Homo_sapiens_assembly38; distributed by the 1000 Genomes FTP and
+  the Broad GATK resource bundle (bwa.kit name: hs38DH, per Heng Li).
+relatedLink:
+  - http://ftp.1000genomes.ebi.ac.uk/vol1/ftp/technical/reference/GRCh38_reference_genome/GRCh38_full_analysis_set_plus_decoy_hla.fa
+  - https://github.com/lh3/bwa/blob/master/bwakit/run-gen-ref
+  - https://storage.googleapis.com/gcp-public-data--broad-references/hg38/v0/Homo_sapiens_assembly38.fasta

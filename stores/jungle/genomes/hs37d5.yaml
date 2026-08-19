@@ -1,0 +1,12 @@
+# FHR override for the hs37d5 row (see stores/build_fhr.py). The CSV's
+# source/genome_assembly labels record where the file was staged; the true
+# provenance is the 1000 Genomes Project, per Heng Li's reference-genome guide.
+assemblySource: 1000genomes
+documentation: >-
+  Homo sapiens GRCh37 primary assembly plus rCRS mitochondrion, EBV, and decoy
+  sequences (hs37d5), the 1000 Genomes Project phase 2 alignment reference;
+  distributed by the 1000 Genomes FTP (mirrors: EBI, NCBI, DDBJ), recommended
+  by Heng Li's reference-genome guide.
+relatedLink:
+  - https://lh3.github.io/2017/11/13/which-human-reference-genome-to-use
+  - ftp://ftp-trace.ncbi.nih.gov/1000genomes/ftp/technical/reference/phase2_reference_assembly_sequence/hs37d5.fa.gz

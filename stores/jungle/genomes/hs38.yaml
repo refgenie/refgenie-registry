@@ -1,0 +1,12 @@
+# FHR override for the hs38 row (see stores/build_fhr.py). This collection's
+# digest is shared with hg38-refgenie (the last CSV row, which wins); keep
+# this file and hg38-refgenie.yaml identical so the record is reorder-safe.
+assemblySource: ncbi
+documentation: >-
+  Homo sapiens GRCh38 no-alt analysis set (GCA_000001405.15, UCSC-style
+  names), distributed by NCBI GenBank and redistributed identically by Broad,
+  iGenomes, and refgenie; the GRCh38 reference recommended by Heng Li's guide
+  (bwa.kit name: hs38).
+relatedLink:
+  - https://lh3.github.io/2017/11/13/which-human-reference-genome-to-use
+  - ftp://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/000/001/405/GCA_000001405.15_GRCh38/seqs_for_alignment_pipelines.ucsc_ids/GCA_000001405.15_GRCh38_no_alt_analysis_set.fna.gz

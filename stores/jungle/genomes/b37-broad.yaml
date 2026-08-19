@@ -1,0 +1,7 @@
+# FHR override for the b37-broad row (see stores/build_fhr.py).
+# source=broad is already correct; documentation/link upgrade only.
+documentation: >-
+  Homo sapiens GRCh37 Broad production reference (Homo_sapiens_assembly19,
+  b37 convention), distributed by the Broad Institute GATK resource bundle.
+relatedLink:
+  - https://gatk.broadinstitute.org/hc/en-us/articles/360035890951-Human-genome-reference-builds-GRCh38-or-hg38-b37-hg19

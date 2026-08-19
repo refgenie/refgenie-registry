@@ -32,10 +32,10 @@ homo_sapiens/igenomes/hg38/fasta/Homo_sapiens_NCBI_build36_3_genome.fa.gz,GRCh38
 homo_sapiens/igenomes/hg38/fasta/Homo_sapiens_NCBI_build37_1_genome.fa.gz,GRCh38-igenomes-build37-1-ncbi,Homo sapiens,igenomes,hg38,,homo_sapiens,GRCh38-igenomes-build37-1-ncbi
 homo_sapiens/igenomes/hg38/fasta/Homo_sapiens_NCBI_build37_2_genome.fa.gz,GRCh38-igenomes-build37-2-ncbi,Homo sapiens,igenomes,hg38,,homo_sapiens,GRCh38-igenomes-build37-2-ncbi
 homo_sapiens/igenomes/hg38/fasta/Homo_sapiens_UCSC_hg38_genome.fa.gz,hg38-igenomes-ucsc,Homo sapiens,igenomes,hg38,,homo_sapiens,hg38-igenomes-ucsc
-homo_sapiens/misc/hl_blog/hg19/hs37d5.fa.gz,hs37d5,Homo sapiens,misc,hl_blog,,homo_sapiens,hs37d5
-homo_sapiens/misc/hl_blog/hg19/human_g1k_v37.fasta.gz,hs37-1kg,Homo sapiens,misc,hl_blog,,homo_sapiens,hs37-1kg
-homo_sapiens/misc/hl_blog/hg38/GCA_000001405.15_GRCh38_no_alt_analysis_set.fna,hs38,Homo sapiens,misc,hl_blog,GCA_000001405.15,homo_sapiens,hs38
-homo_sapiens/misc/hl_blog/hg38/GRCh38_full_analysis_set_plus_decoy_hla.fa.gz,hs38DH,Homo sapiens,misc,hl_blog,,homo_sapiens,hs38DH
+homo_sapiens/misc/hl_blog/hg19/hs37d5.fa.gz,hs37d5,Homo sapiens,1000genomes,hg19,,homo_sapiens,hs37d5
+homo_sapiens/misc/hl_blog/hg19/human_g1k_v37.fasta.gz,hs37-1kg,Homo sapiens,1000genomes,hg19,,homo_sapiens,hs37-1kg
+homo_sapiens/misc/hl_blog/hg38/GCA_000001405.15_GRCh38_no_alt_analysis_set.fna,hs38,Homo sapiens,ncbi,hg38,GCA_000001405.15,homo_sapiens,hs38
+homo_sapiens/misc/hl_blog/hg38/GRCh38_full_analysis_set_plus_decoy_hla.fa.gz,hs38DH,Homo sapiens,1000genomes,hg38,,homo_sapiens,hs38DH
 homo_sapiens/ncbi/hg19/fasta/GCA_000001405.14_GRCh37.p13_full_analysis_set.fna.gz,GRCh37.p13-fasta-full-analysis,Homo sapiens,ncbi,hg19,GCA_000001405.14,homo_sapiens,GRCh37.p13-fasta-full-analysis
 homo_sapiens/ncbi/hg19/fasta/GCA_000001405.14_GRCh37.p13_no_alt_analysis_set.fna.gz,GRCh37.p13-fasta-no-alt-analysis,Homo sapiens,ncbi,hg19,GCA_000001405.14,homo_sapiens,GRCh37.p13-fasta-no-alt-analysis
 homo_sapiens/ncbi/hg19/fasta/GCF_000001405.25_GRCh37.p13_genomic.fna.gz,GRCh37.p13-fasta-genomic,Homo sapiens,ncbi,hg19,GCF_000001405.25,homo_sapiens,GRCh37.p13-fasta-genomic

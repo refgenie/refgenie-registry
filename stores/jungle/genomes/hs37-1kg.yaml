@@ -1,0 +1,10 @@
+# FHR override for the hs37-1kg row (see stores/build_fhr.py).
+assemblySource: 1000genomes
+documentation: >-
+  Homo sapiens GRCh37 primary assembly with rCRS mitochondrion (human_g1k_v37,
+  b37 convention), the 1000 Genomes Project phase 1 alignment reference;
+  distributed by the 1000 Genomes FTP, recommended by Heng Li's
+  reference-genome guide.
+relatedLink:
+  - https://lh3.github.io/2017/11/13/which-human-reference-genome-to-use
+  - ftp://ftp-trace.ncbi.nih.gov/1000genomes/ftp/technical/reference/human_g1k_v37.fasta.gz
