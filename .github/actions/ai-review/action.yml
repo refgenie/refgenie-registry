@@ -110,7 +110,9 @@ runs:
       id: claude
       if: steps.build-prompt.outputs.has_token == 'true'
       continue-on-error: true
-      uses: anthropics/claude-code-base-action@beta
+      # Pinned to main (2026-08-20): the @beta tag is stale and lacks the
+      # claude_args input (its bundled default model is retired -> API 404).
+      uses: anthropics/claude-code-base-action@9dcd4e90935c92d3889579ec0e59b853c56deb41
       with:
         prompt_file: /tmp/ai_prompt.txt
         # The prompt already contains everything needed; deny all tools that
