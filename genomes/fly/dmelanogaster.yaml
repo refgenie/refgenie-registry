@@ -1,8 +1,8 @@
 name: dmelanogaster
 
 description: |
-  Drosophila melanogaster reference assembly BDGP6, sourced from Ensembl
-  (release 81).
+  Drosophila melanogaster reference genome assembly BDGP6, sourced from
+  Ensembl (release 81).
 
 organism:
   scientific_name: Drosophila melanogaster
