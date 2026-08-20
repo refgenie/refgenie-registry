@@ -183,7 +183,7 @@ runs:
         PY
 
     - name: Post review comment and labels
-      uses: actions/github-script@60a0d83039c74a4aee543508d2ffcb1c3799cdea  # v7.0.1
+      uses: actions/github-script@373c709c69115d41ff229c7e5df9f8788daa9553  # v9.0.0
       env:
         PR_NUMBER: ${{ inputs.pr-number }}
         API_ERROR: ${{ steps.extract.outputs.api_error }}
