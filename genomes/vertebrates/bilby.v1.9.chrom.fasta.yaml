@@ -1,0 +1,25 @@
+name: bilby.v1.9.chrom.fasta
+description: |
+  bilby (mMagLag1 2024)
+organism:
+  scientific_name: Macrotis lagotis
+  taxon_id: 92651
+assembly:
+  source: GenBank
+  accession: GCA_037893015.1
+fasta:
+  sources:
+  - provider: UCSC
+    url: https://hgdownload.soe.ucsc.edu/hubs/GCA/037/893/015/GCA_037893015.1/GCA_037893015.1.fa.gz
+  checksum:
+    sha256: compute_on_registration
+seqcol:
+  compute: true
+fhr:
+  date_created: '2024-04-04'
+  identifier:
+  - bioproject:PRJNA1049866
+  - biosample:SAMN39300766
+metadata:
+  added: '2026-08-20'
+  added_by: khoroshevskyi

@@ -1,0 +1,25 @@
+name: bHirRus1.pri.v3
+description: |
+  barn swallow (v3 primary hap 2021 refseq)
+organism:
+  scientific_name: Hirundo rustica
+  taxon_id: 43150
+assembly:
+  source: RefSeq
+  accession: GCF_015227805.2
+fasta:
+  sources:
+  - provider: UCSC
+    url: https://hgdownload.soe.ucsc.edu/hubs/GCF/015/227/805/GCF_015227805.2/GCF_015227805.2.fa.gz
+  checksum:
+    sha256: compute_on_registration
+seqcol:
+  compute: true
+fhr:
+  date_created: '2021-11-30'
+  identifier:
+  - bioproject:PRJNA636192
+  - biosample:SAMN14675488
+metadata:
+  added: '2026-08-20'
+  added_by: khoroshevskyi

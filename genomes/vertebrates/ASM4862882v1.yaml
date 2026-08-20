@@ -1,0 +1,25 @@
+name: ASM4862882v1
+description: |
+  Atlantic silverside (fMenMen1 hap1 2025)
+organism:
+  scientific_name: Menidia menidia
+  taxon_id: 238744
+assembly:
+  source: GenBank
+  accession: GCA_048628825.1
+fasta:
+  sources:
+  - provider: UCSC
+    url: https://hgdownload.soe.ucsc.edu/hubs/GCA/048/628/825/GCA_048628825.1/GCA_048628825.1.fa.gz
+  checksum:
+    sha256: compute_on_registration
+seqcol:
+  compute: true
+fhr:
+  date_created: '2025-03-19'
+  identifier:
+  - bioproject:PRJNA1228957
+  - biosample:SAMN46987722
+metadata:
+  added: '2026-08-20'
+  added_by: khoroshevskyi

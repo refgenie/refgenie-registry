@@ -1,0 +1,25 @@
+name: ASM4374864v1
+description: |
+  Angolan free-tailed bat (Cote dIvoire 20210831_DDa 2024)
+organism:
+  scientific_name: Mops condylurus
+  taxon_id: 258863
+assembly:
+  source: GenBank
+  accession: GCA_043748645.1
+fasta:
+  sources:
+  - provider: UCSC
+    url: https://hgdownload.soe.ucsc.edu/hubs/GCA/043/748/645/GCA_043748645.1/GCA_043748645.1.fa.gz
+  checksum:
+    sha256: compute_on_registration
+seqcol:
+  compute: true
+fhr:
+  date_created: '2024-10-24'
+  identifier:
+  - bioproject:PRJNA940057
+  - biosample:SAMN33550911
+metadata:
+  added: '2026-08-20'
+  added_by: khoroshevskyi

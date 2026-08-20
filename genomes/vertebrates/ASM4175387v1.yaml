@@ -1,0 +1,25 @@
+name: ASM4175387v1
+description: |
+  black porgy (SG-2024 2024)
+organism:
+  scientific_name: Acanthopagrus schlegelii
+  taxon_id: 72011
+assembly:
+  source: GenBank
+  accession: GCA_041753875.1
+fasta:
+  sources:
+  - provider: UCSC
+    url: https://hgdownload.soe.ucsc.edu/hubs/GCA/041/753/875/GCA_041753875.1/GCA_041753875.1.fa.gz
+  checksum:
+    sha256: compute_on_registration
+seqcol:
+  compute: true
+fhr:
+  date_created: '2024-09-05'
+  identifier:
+  - bioproject:PRJNA1146169
+  - biosample:SAMN43087228
+metadata:
+  added: '2026-08-20'
+  added_by: khoroshevskyi

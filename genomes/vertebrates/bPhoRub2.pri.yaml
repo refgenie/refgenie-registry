@@ -1,0 +1,25 @@
+name: bPhoRub2.pri
+description: |
+  American flamingo (primary hap 2019)
+organism:
+  scientific_name: Phoenicopterus ruber ruber
+  taxon_id: 9218
+assembly:
+  source: GenBank
+  accession: GCA_009819775.1
+fasta:
+  sources:
+  - provider: UCSC
+    url: https://hgdownload.soe.ucsc.edu/hubs/GCA/009/819/775/GCA_009819775.1/GCA_009819775.1.fa.gz
+  checksum:
+    sha256: compute_on_registration
+seqcol:
+  compute: true
+fhr:
+  date_created: '2019-12-31'
+  identifier:
+  - bioproject:PRJNA561888
+  - biosample:SAMN12614931
+metadata:
+  added: '2026-08-20'
+  added_by: khoroshevskyi

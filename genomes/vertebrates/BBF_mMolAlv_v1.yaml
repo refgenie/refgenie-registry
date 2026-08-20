@@ -1,0 +1,25 @@
+name: BBF_mMolAlv_v1
+description: |
+  Alvarezs mastiff bat (A012 2023)
+organism:
+  scientific_name: Molossus alvarezi
+  taxon_id: 1552295
+assembly:
+  source: GenBank
+  accession: GCA_031001765.1
+fasta:
+  sources:
+  - provider: UCSC
+    url: https://hgdownload.soe.ucsc.edu/hubs/GCA/031/001/765/GCA_031001765.1/GCA_031001765.1.fa.gz
+  checksum:
+    sha256: compute_on_registration
+seqcol:
+  compute: true
+fhr:
+  date_created: '2023-08-30'
+  identifier:
+  - bioproject:PRJNA944206
+  - biosample:SAMN31836526
+metadata:
+  added: '2026-08-20'
+  added_by: khoroshevskyi
