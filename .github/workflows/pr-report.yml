@@ -170,7 +170,7 @@ jobs:
                 issue_number: prNumber, labels: ['programmatic-check-passed'],
               });
             } else {
-              for (const label of ['programmatic-check-passed', 'ready-for-human-review']) {
+              for (const label of ['programmatic-check-passed', 'ai-review-complete', 'ready-for-human-review']) {
                 try {
                   await github.rest.issues.removeLabel({
                     owner: context.repo.owner, repo: context.repo.repo,
