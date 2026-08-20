@@ -1,0 +1,25 @@
+name: ASM4853722v1
+description: |
+  Bermuda beardfish (OG660 hap1 2025)
+organism:
+  scientific_name: Polymixia cf. hollisterae
+  taxon_id: 3239838
+assembly:
+  source: GenBank
+  accession: GCA_048537225.1
+fasta:
+  sources:
+  - provider: UCSC
+    url: https://hgdownload.soe.ucsc.edu/hubs/GCA/048/537/225/GCA_048537225.1/GCA_048537225.1.fa.gz
+  checksum:
+    sha256: compute_on_registration
+seqcol:
+  compute: true
+fhr:
+  date_created: '2025-03-10'
+  identifier:
+  - bioproject:PRJNA1141496
+  - biosample:SAMN42899157
+metadata:
+  added: '2026-08-20'
+  added_by: khoroshevskyi

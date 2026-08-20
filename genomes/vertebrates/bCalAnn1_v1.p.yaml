@@ -1,0 +1,25 @@
+name: bCalAnn1_v1.p
+description: |
+  Annas hummingbird (BGI_N300 2019 refseq)
+organism:
+  scientific_name: Calypte anna
+  taxon_id: 9244
+assembly:
+  source: RefSeq
+  accession: GCF_003957555.1
+fasta:
+  sources:
+  - provider: UCSC
+    url: https://hgdownload.soe.ucsc.edu/hubs/GCF/003/957/555/GCF_003957555.1/GCF_003957555.1.fa.gz
+  checksum:
+    sha256: compute_on_registration
+seqcol:
+  compute: true
+fhr:
+  date_created: '2019-05-16'
+  identifier:
+  - bioproject:PRJNA489139
+  - biosample:SAMN02265252
+metadata:
+  added: '2026-08-20'
+  added_by: khoroshevskyi

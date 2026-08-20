@@ -1,0 +1,25 @@
+name: bPatFas1.hap2
+description: |
+  band-tailed pigeon (v1 hap2 2024 refseq)
+organism:
+  scientific_name: Patagioenas fasciata
+  taxon_id: 372321
+assembly:
+  source: RefSeq
+  accession: GCF_036971685.1
+fasta:
+  sources:
+  - provider: UCSC
+    url: https://hgdownload.soe.ucsc.edu/hubs/GCF/036/971/685/GCF_036971685.1/GCF_036971685.1.fa.gz
+  checksum:
+    sha256: compute_on_registration
+seqcol:
+  compute: true
+fhr:
+  date_created: '2024-03-06'
+  identifier:
+  - bioproject:PRJNA1078808
+  - biosample:SAMN40018840
+metadata:
+  added: '2026-08-20'
+  added_by: khoroshevskyi
