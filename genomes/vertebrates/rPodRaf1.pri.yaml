@@ -1,0 +1,25 @@
+name: rPodRaf1.pri
+description: |
+  Aeolian wall lizard (La Canna islet primary hap 2022 refseq)
+organism:
+  scientific_name: Podarcis raffonei
+  taxon_id: 65483
+assembly:
+  source: RefSeq
+  accession: GCF_027172205.1
+fasta:
+  sources:
+  - provider: UCSC
+    url: https://hgdownload.soe.ucsc.edu/hubs/GCF/027/172/205/GCF_027172205.1/GCF_027172205.1.fa.gz
+  checksum:
+    sha256: compute_on_registration
+seqcol:
+  compute: true
+fhr:
+  date_created: '2022-12-27'
+  identifier:
+  - bioproject:PRJNA839511
+  - biosample:SAMN28455423
+metadata:
+  added: '2026-08-20'
+  added_by: khoroshevskyi
