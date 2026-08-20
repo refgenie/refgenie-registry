@@ -1,0 +1,25 @@
+name: ASM4730162v1
+description: |
+  blackspot tuskfish (SL-2024 2025)
+organism:
+  scientific_name: Choerodon schoenleinii
+  taxon_id: 241275
+assembly:
+  source: GenBank
+  accession: GCA_047301625.1
+fasta:
+  sources:
+  - provider: UCSC
+    url: https://hgdownload.soe.ucsc.edu/hubs/GCA/047/301/625/GCA_047301625.1/GCA_047301625.1.fa.gz
+  checksum:
+    sha256: compute_on_registration
+seqcol:
+  compute: true
+fhr:
+  date_created: '2025-01-30'
+  identifier:
+  - bioproject:PRJNA1204159
+  - biosample:SAMN46014618
+metadata:
+  added: '2026-08-20'
+  added_by: khoroshevskyi

@@ -1,0 +1,25 @@
+name: NHGRI_mPonPyg2-v2.0_pri
+description: |
+  Bornean orangutan (v2 AG05252 primary hap 2024 refseq)
+organism:
+  scientific_name: Pongo pygmaeus
+  taxon_id: 9600
+assembly:
+  source: RefSeq
+  accession: GCF_028885625.2
+fasta:
+  sources:
+  - provider: UCSC
+    url: https://hgdownload.soe.ucsc.edu/hubs/GCF/028/885/625/GCF_028885625.2/GCF_028885625.2.fa.gz
+  checksum:
+    sha256: compute_on_registration
+seqcol:
+  compute: true
+fhr:
+  date_created: '2024-01-08'
+  identifier:
+  - bioproject:PRJNA916742
+  - biosample:SAMN10521809
+metadata:
+  added: '2026-08-20'
+  added_by: khoroshevskyi

@@ -1,0 +1,25 @@
+name: mUroPar1.hap1
+description: |
+  Arctic ground squirrel (hap1 2024)
+organism:
+  scientific_name: Urocitellus parryii
+  taxon_id: 9999
+assembly:
+  source: GenBank
+  accession: GCA_045843805.1
+fasta:
+  sources:
+  - provider: UCSC
+    url: https://hgdownload.soe.ucsc.edu/hubs/GCA/045/843/805/GCA_045843805.1/GCA_045843805.1.fa.gz
+  checksum:
+    sha256: compute_on_registration
+seqcol:
+  compute: true
+fhr:
+  date_created: '2024-12-13'
+  identifier:
+  - bioproject:PRJNA1178113
+  - biosample:SAMN44461866
+metadata:
+  added: '2026-08-20'
+  added_by: khoroshevskyi
