@@ -1,3 +1,13 @@
+# Maintainer-triggered AI re-review: comment "@RefgenieBot review" on a PR.
+#
+# issue_comment runs in the trusted base-repo context (secrets + write token),
+# so it can run the review directly via the shared ai-review action — no
+# label-event chaining (labels added with GITHUB_TOKEN never trigger other
+# workflows). The review input is the artifact from the latest pr-validate
+# run for the PR's current head commit.
+#
+# The collaborator gate (admin/write only) is what stops arbitrary fork users
+# from triggering paid API calls.
 name: AI Re-Review
 
 on:
@@ -8,6 +18,7 @@ permissions:
   contents: read
   pull-requests: write
   issues: write
+  actions: read
 
 jobs:
   re-review:
@@ -20,7 +31,6 @@ jobs:
         id: check-perms
         uses: actions/github-script@60a0d83039c74a4aee543508d2ffcb1c3799cdea  # v7.0.1
         with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
             const { data: permission } = await github.rest.repos.getCollaboratorPermissionLevel({
               owner: context.repo.owner,
@@ -34,7 +44,6 @@ jobs:
         if: steps.check-perms.outputs.allowed == 'true'
         uses: actions/github-script@60a0d83039c74a4aee543508d2ffcb1c3799cdea  # v7.0.1
         with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
             await github.rest.reactions.createForIssueComment({
               owner: context.repo.owner,
@@ -43,42 +52,54 @@ jobs:
               content: 'eyes'
             });
 
-      - name: Remove old ai-review-complete label
+      - name: Find latest pr-validate run for this PR
         if: steps.check-perms.outputs.allowed == 'true'
+        id: find-run
         uses: actions/github-script@60a0d83039c74a4aee543508d2ffcb1c3799cdea  # v7.0.1
         with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
-            try {
-              await github.rest.issues.removeLabel({
-                owner: context.repo.owner,
-                repo: context.repo.repo,
-                issue_number: context.payload.issue.number,
-                name: 'ai-review-complete'
-              });
-            } catch (e) {
-              // Label may not exist, that is fine
-            }
-
-      - name: Re-add programmatic-check-passed to trigger review
-        if: steps.check-perms.outputs.allowed == 'true'
-        uses: actions/github-script@60a0d83039c74a4aee543508d2ffcb1c3799cdea  # v7.0.1
-        with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-          script: |
-            // Remove and re-add to trigger the label event
-            try {
-              await github.rest.issues.removeLabel({
-                owner: context.repo.owner,
-                repo: context.repo.repo,
-                issue_number: context.payload.issue.number,
-                name: 'programmatic-check-passed'
-              });
-            } catch (e) {}
-
-            await github.rest.issues.addLabels({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              issue_number: context.payload.issue.number,
-              labels: ['programmatic-check-passed']
+            const prNumber = context.payload.issue.number;
+            const { data: pr } = await github.rest.pulls.get({
+              owner: context.repo.owner, repo: context.repo.repo, pull_number: prNumber,
             });
+            const headSha = pr.head.sha;
+
+            const { data: runs } = await github.rest.actions.listWorkflowRuns({
+              owner: context.repo.owner, repo: context.repo.repo,
+              workflow_id: 'pr-validate.yml', head_sha: headSha, per_page: 1,
+            });
+            const run = runs.workflow_runs[0];
+            if (!run) {
+              core.setOutput('run_id', '');
+              await github.rest.issues.createComment({
+                owner: context.repo.owner, repo: context.repo.repo,
+                issue_number: prNumber,
+                body: ':warning: No pr-validate run found for the current head commit — ' +
+                  'push a commit (or re-run pr-validate) first, then request the review again.',
+              });
+              return;
+            }
+            core.setOutput('run_id', String(run.id));
+            core.setOutput('pr_number', String(prNumber));
+
+      - name: Checkout base repo (trusted)
+        if: steps.find-run.outputs.run_id != ''
+        uses: actions/checkout@v4
+
+      - name: Download validation report
+        if: steps.find-run.outputs.run_id != ''
+        uses: actions/download-artifact@v4
+        with:
+          name: pr-report
+          path: pr-report-artifact
+          run-id: ${{ steps.find-run.outputs.run_id }}
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: AI review
+        if: steps.find-run.outputs.run_id != ''
+        uses: ./.github/actions/ai-review
+        with:
+          pr-number: ${{ steps.find-run.outputs.pr_number }}
+          artifact-dir: pr-report-artifact
+          claude-code-oauth-token: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
+          github-token: ${{ secrets.GITHUB_TOKEN }}

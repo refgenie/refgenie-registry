@@ -1,0 +1,190 @@
+# Posts the result of pr-validate back to the pull request, then runs the
+# AI review. Triggered by workflow_run so it executes in the BASE repo with a
+# write token AND secrets — this is what lets us comment/label/status PRs
+# opened from forks, where pr-validate's own token is read-only.
+#
+# SECURITY: this workflow must NEVER check out or execute fork code. It only
+# checks out the trusted base repo (for prompts + the ai-review action), reads
+# the fork-produced artifact as untrusted TEXT, and calls APIs. The write
+# target (SHA / PR number) always comes from the trusted event, never from the
+# artifact.
+name: pr-report
+
+on:
+  workflow_run:
+    workflows: [pr-validate]
+    types: [completed]
+
+permissions:
+  statuses: write
+  pull-requests: write
+  issues: write
+  actions: read
+
+jobs:
+  report:
+    if: github.event.workflow_run.event == 'pull_request'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout base repo (trusted)
+        uses: actions/checkout@v4
+
+      - name: Download validation report
+        continue-on-error: true
+        uses: actions/download-artifact@v4
+        with:
+          name: pr-report
+          path: pr-report-artifact
+          run-id: ${{ github.event.workflow_run.id }}
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Publish status and validation comment
+        id: publish
+        uses: actions/github-script@60a0d83039c74a4aee543508d2ffcb1c3799cdea  # v7.0.1
+        with:
+          script: |
+            const fs = require('fs');
+            const run = context.payload.workflow_run;
+            const buildOk = run.conclusion === 'success';
+
+            // report.json comes from the UNTRUSTED PR build (a fork can put
+            // anything in it). It is used ONLY as sanitized display text —
+            // never to choose which commit/PR to write to.
+            let report = {};
+            try { report = JSON.parse(fs.readFileSync('pr-report-artifact/report.json', 'utf8')); }
+            catch (e) { core.warning('No report.json artifact found: ' + e.message); }
+
+            const clean = (s, n = 300) =>
+              String(s == null ? '' : s).replace(/[\x00-\x1f\x7f]/g, ' ').slice(0, n);
+            // Neutralize inline injection from fork-controlled strings:
+            // backticks (code-span/fence breakout) and angle brackets (raw HTML).
+            const mdSafe = (s, n = 400) =>
+              clean(s, n).replace(/`/g, "'").replace(/</g, '&lt;').replace(/>/g, '&gt;');
+            // Multi-line check output rendered inside a code fence: keep
+            // newlines, strip other control chars, neutralize backticks so the
+            // text cannot close the fence.
+            const fenceSafe = (s, n = 3000) =>
+              String(s == null ? '' : s)
+                .replace(/[\x00-\x09\x0b-\x1f\x7f]/g, ' ')
+                .replace(/`/g, "'")
+                .slice(0, n);
+
+            // Trusted target: the head commit of the run, and the PR that owns it.
+            const sha = run.head_sha;
+            let prNumber = run.pull_requests && run.pull_requests[0] && run.pull_requests[0].number;
+            if (!prNumber && sha) {
+              try {
+                const { data: prs } = await github.rest.repos.listPullRequestsAssociatedWithCommit({
+                  owner: context.repo.owner, repo: context.repo.repo, commit_sha: sha,
+                });
+                const hit = prs.find(p => p.state === 'open') || prs[0];
+                if (hit) prNumber = hit.number;
+              } catch (e) { core.warning('PR lookup failed: ' + e.message); }
+            }
+
+            const checks = (Array.isArray(report.checks) ? report.checks : []).slice(0, 20);
+            const overallPass = buildOk && report.overall_pass === true;
+
+            // Commit status on the trusted head SHA.
+            if (sha) {
+              const failed = checks.filter(c => clean(c.status) === 'fail');
+              const description = overallPass
+                ? 'All checks passed'
+                : (failed.length ? clean(failed.map(c => c.name).join(', '), 100) + ' failed'
+                                 : 'Validation failed — see the pr-validate run');
+              await github.rest.repos.createCommitStatus({
+                owner: context.repo.owner, repo: context.repo.repo, sha,
+                state: overallPass ? 'success' : 'failure',
+                context: 'refgenie/checks',
+                description: description.slice(0, 140),
+                target_url: run.html_url,
+              });
+            }
+
+            core.setOutput('pr_number', prNumber ? String(prNumber) : '');
+            core.setOutput('overall_pass', overallPass ? 'true' : 'false');
+            if (!prNumber) { core.info('No PR number resolved; skipping comment.'); return; }
+
+            const icon = { pass: ':white_check_mark:', fail: ':x:', skipped: ':heavy_minus_sign:' };
+            const lines = [];
+            lines.push(overallPass
+              ? '## :white_check_mark: Refgenie CI passed'
+              : '## :x: Refgenie CI failed');
+            lines.push('');
+            for (const c of checks) {
+              const status = clean(c.status, 10);
+              lines.push(`- ${icon[status] || ':grey_question:'} **${mdSafe(c.name, 60)}** — ${mdSafe(c.summary)}`);
+            }
+            if (!checks.length) {
+              lines.push('- :grey_question: No report was produced. See the ' +
+                `[pr-validate run](${run.html_url}) for details.`);
+            }
+            const failedChecks = checks.filter(c => clean(c.status) === 'fail' && c.output);
+            for (const c of failedChecks.slice(0, 5)) {
+              lines.push('');
+              lines.push(`<details><summary>Output: ${mdSafe(c.name, 60)}</summary>`);
+              lines.push('');
+              lines.push('```text');
+              lines.push(fenceSafe(c.output));
+              lines.push('```');
+              lines.push('</details>');
+            }
+            if (!overallPass) {
+              lines.push('');
+              lines.push('Please fix the errors above and push again. Run validation locally with:');
+              lines.push('```bash');
+              lines.push('pip install -r tools/requirements.txt');
+              lines.push('python tools/validate_genome.py <your-genome-file.yaml>');
+              lines.push('python tools/validate_recipe.py <your-recipe.yaml>');
+              lines.push('```');
+            }
+            lines.push('');
+            lines.push(`[pr-validate run](${run.html_url})`);
+
+            const marker = '<!-- refgenie-ci -->';
+            const body = marker + '\n' + lines.join('\n');
+
+            // One marker comment, updated in place (no spam on every push).
+            const { data: comments } = await github.rest.issues.listComments({
+              owner: context.repo.owner, repo: context.repo.repo, issue_number: prNumber,
+            });
+            const existing = comments.find(c => c.body && c.body.includes(marker));
+            if (existing) {
+              await github.rest.issues.updateComment({
+                owner: context.repo.owner, repo: context.repo.repo,
+                comment_id: existing.id, body,
+              });
+            } else {
+              await github.rest.issues.createComment({
+                owner: context.repo.owner, repo: context.repo.repo,
+                issue_number: prNumber, body,
+              });
+            }
+
+            // Labels are set directly here (trusted context). Label-event
+            // chaining is dead by design: labels added with GITHUB_TOKEN do
+            // not trigger other workflows.
+            if (overallPass) {
+              await github.rest.issues.addLabels({
+                owner: context.repo.owner, repo: context.repo.repo,
+                issue_number: prNumber, labels: ['programmatic-check-passed'],
+              });
+            } else {
+              for (const label of ['programmatic-check-passed', 'ready-for-human-review']) {
+                try {
+                  await github.rest.issues.removeLabel({
+                    owner: context.repo.owner, repo: context.repo.repo,
+                    issue_number: prNumber, name: label,
+                  });
+                } catch (e) { /* label not present */ }
+              }
+            }
+
+      - name: AI review
+        if: steps.publish.outputs.overall_pass == 'true' && steps.publish.outputs.pr_number != ''
+        uses: ./.github/actions/ai-review
+        with:
+          pr-number: ${{ steps.publish.outputs.pr_number }}
+          artifact-dir: pr-report-artifact
+          claude-code-oauth-token: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
+          github-token: ${{ secrets.GITHUB_TOKEN }}

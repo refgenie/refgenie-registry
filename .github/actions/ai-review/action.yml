@@ -1,0 +1,240 @@
+name: AI Review
+description: >
+  Run the RefgenieBot AI review for a PR from a pr-validate artifact and post
+  the result as a marker comment plus labels. Must run in a TRUSTED base-repo
+  context (workflow_run or issue_comment) with the base repo checked out.
+  The artifact directory is fork-controlled DATA: it is only ever read as
+  text and embedded in the prompt — never executed. The review runs via the
+  Claude Code base action authenticated with the org's Claude Code OAuth
+  token, with all mutating/executing tools disallowed.
+
+inputs:
+  pr-number:
+    description: PR number to review (resolved from a trusted event, never from the artifact)
+    required: true
+  artifact-dir:
+    description: Directory containing report.json and ai_context/ from pr-validate
+    required: true
+  claude-code-oauth-token:
+    description: Claude Code OAuth token (org secret CLAUDE_CODE_OAUTH_TOKEN)
+    required: true
+  github-token:
+    description: Token with pull-requests/issues write
+    required: true
+
+outputs:
+  recommendation:
+    description: Parsed review recommendation (APPROVE, APPROVE_WITH_NOTES, REQUEST_CHANGES, REJECT)
+    value: ${{ steps.extract.outputs.recommendation }}
+
+runs:
+  using: composite
+  steps:
+    - name: Build AI review prompt
+      id: build-prompt
+      shell: bash
+      env:
+        GH_TOKEN: ${{ inputs.github-token }}
+        PR_NUMBER: ${{ inputs.pr-number }}
+        ARTIFACT_DIR: ${{ inputs.artifact-dir }}
+        HAS_TOKEN: ${{ inputs.claude-code-oauth-token != '' }}
+      run: |
+        echo "has_token=$HAS_TOKEN" >> "$GITHUB_OUTPUT"
+        if [ "$HAS_TOKEN" != "true" ]; then
+          echo "CLAUDE_CODE_OAUTH_TOKEN is not set; skipping AI review."
+          exit 0
+        fi
+        # PR metadata is fetched via the API and handled only inside Python —
+        # fork-controlled strings (title, body, file contents) are never
+        # interpolated into shell.
+        gh api "repos/${GITHUB_REPOSITORY}/pulls/${PR_NUMBER}" > /tmp/ai_pr.json
+        python3 - <<'PY'
+        import json, os
+        from pathlib import Path
+
+        art = Path(os.environ["ARTIFACT_DIR"])
+        ctx = art / "ai_context"
+        prompts = Path(".github/prompts")
+
+        def read(path, default=""):
+            try:
+                return Path(path).read_text(errors="replace")
+            except OSError:
+                return default
+
+        report = {}
+        try:
+            report = json.loads(read(art / "report.json") or "{}")
+        except json.JSONDecodeError:
+            pass
+        contrib_type = str(report.get("contribution_type", "unknown"))
+        if contrib_type not in ("genome", "recipe", "both", "unknown"):
+            contrib_type = "unknown"
+
+        pr = json.load(open("/tmp/ai_pr.json"))
+
+        parts = [read(prompts / "system.md")]
+        parts.append(f"""
+        CONTRIBUTION TYPE: {contrib_type}
+        SUBMITTER: {pr.get("user", {}).get("login", "unknown")}
+        PR TITLE: {pr.get("title") or ""}
+
+        PR DESCRIPTION:
+        {pr.get("body") or ""}
+
+        FILES CHANGED:
+        {chr(10).join(str(f) for f in report.get("changed_files", []))}
+
+        SUBMITTED FILE CONTENTS:
+        {read(ctx / "file_contents.txt")}
+
+        DIFF:
+        {read(ctx / "diff.txt")}
+
+        EXISTING GENOMES IN REGISTRY:
+        {read(ctx / "existing_genomes.txt")}
+
+        EXISTING RECIPES IN REGISTRY:
+        {read(ctx / "existing_recipes.txt")}
+        """)
+        if contrib_type in ("genome", "both"):
+            parts.append(read(prompts / "genome-criteria.md"))
+        if contrib_type in ("recipe", "both"):
+            parts.append(read(prompts / "recipe-criteria.md"))
+        parts.append(read(prompts / "output-format.md"))
+
+        Path("/tmp/ai_prompt.txt").write_text("\n".join(parts))
+        PY
+
+    - name: Run Claude review
+      id: claude
+      if: steps.build-prompt.outputs.has_token == 'true'
+      continue-on-error: true
+      uses: anthropics/claude-code-base-action@beta
+      with:
+        prompt_file: /tmp/ai_prompt.txt
+        # The prompt already contains everything needed; deny all tools that
+        # execute or mutate anything (fork text in the prompt could try to
+        # steer the agent). Read-only tools on the trusted checkout are fine.
+        claude_args: '--model sonnet --disallowedTools "Bash,Write,Edit,NotebookEdit,WebFetch,WebSearch"'
+        claude_code_oauth_token: ${{ inputs.claude-code-oauth-token }}
+
+    - name: Extract review
+      id: extract
+      shell: bash
+      env:
+        CONCLUSION: ${{ steps.claude.outputs.conclusion }}
+        EXECUTION_FILE: ${{ steps.claude.outputs.execution_file }}
+        HAS_TOKEN: ${{ steps.build-prompt.outputs.has_token }}
+      run: |
+        python3 - <<'PY'
+        import json, os, re
+
+        out = open(os.environ["GITHUB_OUTPUT"], "a")
+
+        def emit(api_error, rec=""):
+            out.write(f"api_error={'true' if api_error else 'false'}\n")
+            out.write(f"recommendation={rec}\n")
+
+        if os.environ.get("HAS_TOKEN") != "true":
+            emit(True)
+            raise SystemExit(0)
+
+        review = ""
+        path = os.environ.get("EXECUTION_FILE", "")
+        if os.environ.get("CONCLUSION") == "success" and path:
+            try:
+                log = json.load(open(path))
+            except (OSError, json.JSONDecodeError):
+                log = []
+            # Prefer the final result event; fall back to the last assistant text.
+            for entry in reversed(log):
+                if entry.get("type") == "result" and isinstance(entry.get("result"), str):
+                    review = entry["result"]
+                    break
+            if not review:
+                for entry in reversed(log):
+                    if entry.get("type") != "assistant":
+                        continue
+                    content = (entry.get("message") or {}).get("content")
+                    if isinstance(content, list):
+                        review = "\n".join(
+                            b["text"] for b in content
+                            if isinstance(b, dict) and b.get("type") == "text"
+                            and isinstance(b.get("text"), str)
+                        )
+                        if review:
+                            break
+
+        if not review.strip():
+            print("No review text produced (conclusion:", os.environ.get("CONCLUSION"), ")")
+            emit(True)
+            raise SystemExit(0)
+
+        with open("/tmp/ai_review.txt", "w") as f:
+            f.write(review)
+        m = re.search(r"\*\*Recommendation:\*\* (\S+)", review)
+        rec = m.group(1) if m else ""
+        if rec not in ("APPROVE", "APPROVE_WITH_NOTES", "REQUEST_CHANGES", "REJECT"):
+            rec = ""
+        emit(False, rec)
+        PY
+
+    - name: Post review comment and labels
+      uses: actions/github-script@60a0d83039c74a4aee543508d2ffcb1c3799cdea  # v7.0.1
+      env:
+        PR_NUMBER: ${{ inputs.pr-number }}
+        API_ERROR: ${{ steps.extract.outputs.api_error }}
+        RECOMMENDATION: ${{ steps.extract.outputs.recommendation }}
+      with:
+        github-token: ${{ inputs.github-token }}
+        script: |
+          const fs = require('fs');
+          const prNumber = parseInt(process.env.PR_NUMBER, 10);
+          const apiError = process.env.API_ERROR === 'true';
+          const recommendation = process.env.RECOMMENDATION;
+
+          const marker = '<!-- refgenie-ai-review -->';
+          let review;
+          if (apiError) {
+            review = '## RefgenieBot AI Review\n\n:warning: **AI review could not be completed.** ' +
+              'The automated review service encountered an error. A maintainer has been notified. ' +
+              'Human review will proceed without AI assistance.\n\n---\n*This is an automated message.*';
+          } else {
+            review = fs.readFileSync('/tmp/ai_review.txt', 'utf8');
+          }
+          const body = marker + '\n' + review;
+
+          // One marker comment, updated in place (no spam on re-review).
+          const { data: comments } = await github.rest.issues.listComments({
+            owner: context.repo.owner, repo: context.repo.repo, issue_number: prNumber,
+          });
+          const existing = comments.find(c => c.body && c.body.includes(marker));
+          if (existing) {
+            await github.rest.issues.updateComment({
+              owner: context.repo.owner, repo: context.repo.repo,
+              comment_id: existing.id, body,
+            });
+          } else {
+            await github.rest.issues.createComment({
+              owner: context.repo.owner, repo: context.repo.repo,
+              issue_number: prNumber, body,
+            });
+          }
+
+          if (apiError) return;
+
+          // Labels are set directly here (trusted context) — never via
+          // label-event chaining, which GITHUB_TOKEN-added labels don't fire.
+          const labels = ['ai-review-complete'];
+          if (recommendation === 'APPROVE' || recommendation === 'APPROVE_WITH_NOTES') {
+            labels.push('ready-for-human-review');
+          }
+          if ((recommendation === 'REQUEST_CHANGES' || recommendation === 'REJECT') &&
+              review.includes('### Security Findings')) {
+            labels.push('security-concern');
+          }
+          await github.rest.issues.addLabels({
+            owner: context.repo.owner, repo: context.repo.repo,
+            issue_number: prNumber, labels,
+          });

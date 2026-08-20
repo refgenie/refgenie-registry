@@ -1,0 +1,77 @@
+# Validate a contribution PR on a GitHub-hosted runner.
+#
+# Runs in the UNTRUSTED pull_request context: NO secrets, read-only token.
+# It runs the validators (which load fork-supplied recipes), writes
+# report.json + ai_context/ and uploads them as an artifact, and lets its
+# job status reflect pass/fail. It NEVER writes to the PR.
+#
+# The companion pr-report.yml (workflow_run, trusted base-repo context) posts
+# the commit status, the validation comment, the AI review, and labels — that
+# split is what makes fork PRs work, since the token here is read-only.
+name: pr-validate
+
+on:
+  pull_request:
+    paths:
+      - "genomes/**"
+      - "recipes/**"
+      - "asset_classes/**"
+      - "schema/**"
+      - "tools/**"
+
+permissions:
+  contents: read
+
+concurrency:
+  group: pr-validate-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    env:
+      PR_NUMBER: ${{ github.event.pull_request.number }}
+      BASE_SHA: ${{ github.event.pull_request.base.sha }}
+      HEAD_SHA: ${{ github.event.pull_request.head.sha }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install dependencies
+        run: |
+          pip install -r tools/requirements.txt
+          sudo apt-get update && sudo apt-get install -y shellcheck
+
+      - name: Install refgenie1 (build test)
+        run: |
+          # Only needed when the build-test check will run.
+          if git diff --name-only --diff-filter=ACMR "$BASE_SHA...$HEAD_SHA" -- \
+               'recipes/**' 'asset_classes/**' 'tools/import_recipes.py' | grep -q .; then
+            # refgenie1 (package name "refgenie", v1.x) IS the build system.
+            pip install "refgenie @ git+https://github.com/refgenie/refgenie1.git"
+          else
+            echo "No build-relevant changes; skipping refgenie1 install."
+          fi
+
+      - name: Run checks and build report
+        run: |
+          python .github/scripts/build_report.py \
+            --base-sha "$BASE_SHA" \
+            --head-sha "$HEAD_SHA" \
+            --pr-number "$PR_NUMBER" \
+            --output-dir pr-report-artifact
+
+      - name: Upload report artifact
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: pr-report
+          path: pr-report-artifact/
+          if-no-files-found: warn
