@@ -1,0 +1,25 @@
+name: rAnoSag1.mat
+description: |
+  Brown anole (maternal hap 2024 refseq)
+organism:
+  scientific_name: Anolis sagrei
+  taxon_id: 38937
+assembly:
+  source: RefSeq
+  accession: GCF_037176765.1
+fasta:
+  sources:
+  - provider: UCSC
+    url: https://hgdownload.soe.ucsc.edu/hubs/GCF/037/176/765/GCF_037176765.1/GCF_037176765.1.fa.gz
+  checksum:
+    sha256: compute_on_registration
+seqcol:
+  compute: true
+fhr:
+  date_created: '2024-03-15'
+  identifier:
+  - bioproject:PRJNA1080665
+  - biosample:SAMN40144551
+metadata:
+  added: '2026-08-20'
+  added_by: khoroshevskyi
