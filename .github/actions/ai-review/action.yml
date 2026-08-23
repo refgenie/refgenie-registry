@@ -102,6 +102,12 @@ runs:
         if contrib_type in ("recipe", "both"):
             parts.append(read(prompts / "recipe-criteria.md"))
         parts.append(read(prompts / "output-format.md"))
+        parts.append(
+            "\nIMPORTANT: Reply with the complete review in your first "
+            "response. Do not use any tools, do not spawn agents or "
+            "subagents, and do not create todo lists. All information you "
+            "need is included above."
+        )
 
         Path("/tmp/ai_prompt.txt").write_text("\n".join(parts))
         PY
@@ -115,10 +121,12 @@ runs:
       uses: anthropics/claude-code-base-action@9dcd4e90935c92d3889579ec0e59b853c56deb41
       with:
         prompt_file: /tmp/ai_prompt.txt
-        # The prompt already contains everything needed; deny all tools that
-        # execute or mutate anything (fork text in the prompt could try to
-        # steer the agent). Read-only tools on the trusted checkout are fine.
-        claude_args: '--model sonnet --disallowedTools "Bash,Write,Edit,NotebookEdit,WebFetch,WebSearch"'
+        # The prompt is self-contained; this is a single-shot review, not an
+        # agentic task. Deny ALL tools — including Task (subagents), which
+        # otherwise lets the model wander off and end its run mid-delegation —
+        # and cap turns as a backstop. Fork text in the prompt could try to
+        # steer the agent, so nothing may execute or mutate anything.
+        claude_args: '--model sonnet --max-turns 4 --disallowedTools "Task,Bash,Read,Write,Edit,NotebookEdit,Glob,Grep,WebFetch,WebSearch,TodoWrite"'
         claude_code_oauth_token: ${{ inputs.claude-code-oauth-token }}
 
     - name: Extract review

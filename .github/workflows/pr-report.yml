@@ -81,6 +81,20 @@ jobs:
                 if (hit) prNumber = hit.number;
               } catch (e) { core.warning('PR lookup failed: ' + e.message); }
             }
+            // Fork PRs: workflow_run.pull_requests is empty and the head
+            // commit exists only in the fork, so the commit-association
+            // lookup above finds nothing. Match open PRs by head SHA instead
+            // (trusted API data, never the artifact).
+            if (!prNumber && sha) {
+              try {
+                const prs = await github.paginate(github.rest.pulls.list, {
+                  owner: context.repo.owner, repo: context.repo.repo,
+                  state: 'open', per_page: 100,
+                });
+                const hit = prs.find(p => p.head.sha === sha);
+                if (hit) prNumber = hit.number;
+              } catch (e) { core.warning('Open-PR head lookup failed: ' + e.message); }
+            }
 
             const checks = (Array.isArray(report.checks) ? report.checks : []).slice(0, 20);
             const overallPass = buildOk && report.overall_pass === true;
