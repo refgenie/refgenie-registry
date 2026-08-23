@@ -1,0 +1,25 @@
+name: rVipBer3.hap1.1
+description: |
+  adder (hap1 2024)
+organism:
+  scientific_name: Vipera berus
+  taxon_id: 31155
+assembly:
+  source: GenBank
+  accession: GCA_964194415.1
+fasta:
+  sources:
+  - provider: UCSC
+    url: https://hgdownload.soe.ucsc.edu/hubs/GCA/964/194/415/GCA_964194415.1/GCA_964194415.1.fa.gz
+  checksum:
+    sha256: compute_on_registration
+seqcol:
+  compute: true
+fhr:
+  date_created: '2024-06-28'
+  identifier:
+  - bioproject:PRJEB76966
+  - biosample:SAMEA114293681
+metadata:
+  added: '2026-08-20'
+  added_by: khoroshevskyi

@@ -1,0 +1,25 @@
+name: mTriInu1_haplotype_2
+description: |
+  Amazon manatee (hap2 2025)
+organism:
+  scientific_name: Trichechus inunguis
+  taxon_id: 9777
+assembly:
+  source: GenBank
+  accession: GCA_046562895.1
+fasta:
+  sources:
+  - provider: UCSC
+    url: https://hgdownload.soe.ucsc.edu/hubs/GCA/046/562/895/GCA_046562895.1/GCA_046562895.1.fa.gz
+  checksum:
+    sha256: compute_on_registration
+seqcol:
+  compute: true
+fhr:
+  date_created: '2025-01-08'
+  identifier:
+  - bioproject:PRJNA1180610
+  - biosample:SAMN44524440
+metadata:
+  added: '2026-08-20'
+  added_by: khoroshevskyi

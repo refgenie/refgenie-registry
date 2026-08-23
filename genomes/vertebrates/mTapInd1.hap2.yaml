@@ -1,0 +1,25 @@
+name: mTapInd1.hap2
+description: |
+  Asiatic tapir (hap2 2023)
+organism:
+  scientific_name: Tapirus indicus
+  taxon_id: 9802
+assembly:
+  source: GenBank
+  accession: GCA_031878705.1
+fasta:
+  sources:
+  - provider: UCSC
+    url: https://hgdownload.soe.ucsc.edu/hubs/GCA/031/878/705/GCA_031878705.1/GCA_031878705.1.fa.gz
+  checksum:
+    sha256: compute_on_registration
+seqcol:
+  compute: true
+fhr:
+  date_created: '2023-09-25'
+  identifier:
+  - bioproject:PRJNA1010472
+  - biosample:SAMN37096863
+metadata:
+  added: '2026-08-20'
+  added_by: khoroshevskyi
