@@ -92,6 +92,26 @@ Define a new genome assembly. Fork, branch, and create
 - The checksum, when present, is the SHA-256 of the **uncompressed** FASTA (or the `compute_on_registration` sentinel); use NCBI, Ensembl, or UCSC as the source. The schema is [FHR](https://github.com/FAIR-bioHeaders/FHR-Specification)-aligned, see [`schema/README.md`](schema/README.md).
 - See [`genomes/human/hg38.yaml`](genomes/human/hg38.yaml) for a complete reference and [CONTRIBUTING.md § Adding a Genome](./CONTRIBUTING.md#adding-a-genome).
 
+#### Bulk-add genomes from a PEP
+
+To add many assemblies at once, convert a [PEP](https://pep.databio.org/) (one
+sample per assembly) into genome YAML files with
+[`tools/pep_to_genome_yaml.py`](tools/pep_to_genome_yaml.py). It accepts a local
+PEP config or a PEPHub path, validates the input against the eido schema, and
+writes one `genomes/<pep-name>/<sample>.yaml` per sample.
+
+```bash
+# Preview without writing (validates input PEP and each generated file)
+tools/pep_to_genome_yaml.py convert <local_cfg.yaml | namespace/name:tag> \
+    --added-by <github_user> --dry-run
+
+# Write the files, then open a PR
+tools/pep_to_genome_yaml.py convert <pep> --added-by <github_user>
+```
+
+Use `inspect <pep>` to preview a PEP's columns/rows, `--folder` to override the
+output subfolder, and `--only a,b` to restrict to specific samples.
+
 ### Add a recipe
 
 Define how to build an asset (e.g. an aligner index) in refgenie's native recipe
