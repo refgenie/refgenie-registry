@@ -6,7 +6,7 @@ This is a *post-build* step, sibling to ``build_aliases.py``: it runs after
 It does NOT re-ingest anything. Each ``sources.csv`` row is resolved to its
 already-built collection digest (via the collection aliases build.py wrote)
 and given an FHR (FAIR Headers Reference genome) sidecar --
-``fhr/<digest>.fhr.json`` -- built from the row's columns:
+``fhr/<digest>.fhr.json``, built from the row's columns:
 
     genome         <- organism            (scientific name)
     commonName     <- derived from organism (known organisms only; the script
@@ -20,9 +20,9 @@ and given an FHR (FAIR Headers Reference genome) sidecar --
 
 Curated registry records (the PRIMARY source)
 ---------------------------------------------
-A row whose collection has a ``genomes/**/*.yaml`` record in this repo -- matched
+A row whose collection has a ``genomes/**/*.yaml`` record in this repo, matched
 on the row's ``name`` or ``accession``, against genomes whose ``build.store`` is
-this store -- takes its FHR fields from that genome's CURATED sidecar,
+this store, takes its FHR fields from that genome's CURATED sidecar,
 ``pep/metadata/<genome>.fhr.json``, rather than from the CSV columns. That
 sidecar is generated from the genome YAML by ``build/generate_genome_metadata.py``
 through the one mapping module (``tools/genome_to_fhr.py``), so the store's
@@ -33,14 +33,14 @@ derivation below can only annotate organisms listed in ``ORGANISMS``, and the
 ``vgp`` store holds 605 vertebrate species. Rows WITHOUT a curated record still
 go through the CSV derivation and are still validated against ``ORGANISMS``.
 
-Per-genome YAML overrides -- "use YAML if it exists, use CSV otherwise":
+Per-genome YAML overrides, "use YAML if it exists, use CSV otherwise":
 ``stores/<store>/genomes/<row_name>.yaml`` (override with ``--overrides``) is a
 flat camelCase FHR-field mapping merged OVER the CSV-derived fields for that
 row, field by field: a field present in the YAML wins wholesale (including
 nested values like ``accessionID`` or list values like ``relatedLink``); fields
 absent from the YAML keep their CSV derivation. Multi-row semantics: an
 override applies to the row it is named for, and the merged fields then flow
-through the normal pipeline -- the last row sharing a digest still wins, the
+through the normal pipeline, the last row sharing a digest still wins, the
 accession carry-forward still applies, and the post-dedup assemblyLevel is
 only filled in when the winning record does not already carry one (so an
 override's explicit assemblyLevel beats the ASSEMBLY_LEVELS map). Overrides on
@@ -53,7 +53,7 @@ source/accession/level columns.
 
 Idempotent: re-running overwrites sidecars with identical content. After
 writing, the store manifest (rgstore.json) is re-committed so its
-``fhr_digest`` advertises the sidecars -- required for ``pull_fhr`` on remote
+``fhr_digest`` advertises the sidecars, required for ``pull_fhr`` on remote
 opens. Sync the ``fhr/`` dir and ``rgstore.json`` to S3 afterward.
 
 Usage:
@@ -94,7 +94,7 @@ ORGANISMS = {
 # the NCBI Datasets API (https://api.ncbi.nlm.nih.gov/datasets/v2/genome/
 # accession/<acc>/dataset_report?filters.assembly_version=all_assemblies,
 # field assembly_info.assembly_level). An accession absent here simply gets no
-# assemblyLevel -- never guess; extend the map when sources.csv gains one.
+# assemblyLevel, never guess; extend the map when sources.csv gains one.
 ASSEMBLY_LEVELS = {
     "GCA_000001405.14": "chromosome",  # GRCh37.p13
     "GCA_000001405.15": "chromosome",  # GRCh38
@@ -203,7 +203,7 @@ def load_registry_records(store, genomes_dir=GENOMES_DIR, metadata_dir=REGISTRY_
 
     Returns {key: fields} where key is a genome name, its slug, its assembly
     accession, or the staged FASTA path it is built from (both absolute and
-    relative to this store's ``fasta_root``) -- every string a sources.csv row
+    relative to this store's ``fasta_root``), every string a sources.csv row
     might be matched on. The staged path matters because a genome YAML records
     the UPSTREAM provider URL while a store row records the local file: for the
     model organisms in ``plantref`` those are different strings for the same
@@ -378,7 +378,7 @@ def build_fhr(store, rows, dry_run=False, overrides=None, records=None):
     # assemblyLevel is applied AFTER dedup, keyed on whichever accession each
     # record ended up with (including one carried forward from an earlier row).
     # A record that already carries assemblyLevel (only possible via an
-    # override) keeps it -- the override beats the static map.
+    # override) keeps it, the override beats the static map.
     unknown_levels = set()
     for _digest, (_label, fields) in planned.items():
         if "assemblyLevel" in fields:
@@ -415,7 +415,7 @@ def build_fhr(store, rows, dry_run=False, overrides=None, records=None):
 
     # One lock around all sidecar writes plus the manifest commit, mirroring
     # build_aliases._load: the FHR step should land as a unit, and
-    # set_fhr_metadata alone does NOT refresh rgstore.json -- store.write()
+    # set_fhr_metadata alone does NOT refresh rgstore.json, store.write()
     # recomputes fhr_digest and publishes the manifest last. lock_for_batch
     # is gtars > 0.9.2; without it each call still takes its own lock.
     print("\nWriting FHR sidecars...")

@@ -10,7 +10,7 @@ seqcol digest.
 
 Several of them (`hg18`, `hg19`, `hg38`, `hg38_noalt_decoy`) are also present in
 other stores under provider-specific names, and `rCRSd` is also in `decoys`. That
-is fine -- a sequence collection is content-addressed, so the same digest can be
+is fine, a sequence collection is content-addressed, so the same digest can be
 held by more than one store. What this store adds is the legacy *identity*: the
 name the old server published it under.
 

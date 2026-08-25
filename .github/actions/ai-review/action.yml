@@ -4,7 +4,7 @@ description: >
   the result as a marker comment plus labels. Must run in a TRUSTED base-repo
   context (workflow_run or issue_comment) with the base repo checked out.
   The artifact directory is fork-controlled DATA: it is only ever read as
-  text and embedded in the prompt — never executed. The review runs via the
+  text and embedded in the prompt, never executed. The review runs via the
   Claude Code base action authenticated with the org's Claude Code OAuth
   token, with all mutating/executing tools disallowed.
 
@@ -44,7 +44,7 @@ runs:
           echo "CLAUDE_CODE_OAUTH_TOKEN is not set; skipping AI review."
           exit 0
         fi
-        # PR metadata is fetched via the API and handled only inside Python —
+        # PR metadata is fetched via the API and handled only inside Python , 
         # fork-controlled strings (title, body, file contents) are never
         # interpolated into shell.
         gh api "repos/${GITHUB_REPOSITORY}/pulls/${PR_NUMBER}" > /tmp/ai_pr.json
@@ -116,14 +116,14 @@ runs:
       id: claude
       if: steps.build-prompt.outputs.has_token == 'true'
       continue-on-error: true
-      # Pinned to main (2026-08-20): the @beta tag is stale and lacks the
+      # Pinned to a main commit: the @beta tag is stale and lacks the
       # claude_args input (its bundled default model is retired -> API 404).
       uses: anthropics/claude-code-base-action@9dcd4e90935c92d3889579ec0e59b853c56deb41
       with:
         prompt_file: /tmp/ai_prompt.txt
         # The prompt is self-contained; this is a single-shot review, not an
-        # agentic task. Deny ALL tools — including Task (subagents), which
-        # otherwise lets the model wander off and end its run mid-delegation —
+        # agentic task. Deny ALL tools, including Task (subagents), which
+        # otherwise lets the model wander off and end its run mid-delegation , 
         # and cap turns as a backstop. Fork text in the prompt could try to
         # steer the agent, so nothing may execute or mutate anything.
         claude_args: '--model sonnet --max-turns 4 --disallowedTools "Task,Bash,Read,Write,Edit,NotebookEdit,Glob,Grep,WebFetch,WebSearch,TodoWrite"'
@@ -234,7 +234,7 @@ runs:
 
           if (apiError) return;
 
-          // Labels are set directly here (trusted context) — never via
+          // Labels are set directly here (trusted context), never via
           // label-event chaining, which GITHUB_TOKEN-added labels don't fire.
           const labels = ['ai-review-complete'];
           if (recommendation === 'APPROVE' || recommendation === 'APPROVE_WITH_NOTES') {

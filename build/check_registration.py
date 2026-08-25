@@ -1,26 +1,20 @@
 #!/usr/bin/env python3
 """Report which genomes in genomes/**/*.yaml are not registered in the catalog.
 
-Motivation
-----------
-Twenty-six vertebrate genomes were merged in PRs #6, #8 and #9 between 2026-08-18
-and 08-20. None of them existed anywhere afterwards -- not in a store, not in the
-catalog, not in ``index/``. The nightly never failed and never warned; it reported
-``coverage: 145/145 ... no gaps`` every morning after.
+Why this exists alongside check_coverage.py
+-------------------------------------------
+``check_coverage.py`` compares ``pep/samples.csv`` to the catalog, so it answers
+"did everything the build queue asked for get built?". A genome that was never
+*requested* cannot appear as a gap there, which means a genome can be added to
+the repo, be in no queue, exist nowhere, and every check still reports green.
 
-It could not have done otherwise. ``check_coverage.py`` compares
-``pep/samples.csv`` to the catalog, so a genome that was never *requested* cannot
-appear as a gap. Every check in the nightly was scoped to the build queue, and the
-build queue was exactly the thing those 26 genomes were not in.
-
-This is the check for the other question. It compares the GENOME LIST -- every
-``genomes/**/*.yaml``, whatever its tier -- to the catalog. A genome at
+This is the check for the other question. It compares the GENOME LIST, every
+``genomes/**/*.yaml``, whatever its tier, to the catalog. A genome at
 ``build.tier: store_only`` builds no assets and so has no coverage rows by design,
 but it must still RESOLVE: its sequence is in a store, and it is browsable. If it
 does not resolve, it exists only as a file in this repo.
 
-Run it beside ``coverage:`` in the nightly summary. This is the check that would
-have caught those 26 the morning after PR #6 merged.
+Run it beside ``coverage:`` in the nightly summary.
 
 What it CANNOT see
 ------------------
@@ -65,7 +59,14 @@ def read_genome_list(root: Path) -> list:
     return genomes
 
 
-def build_refgenie(db_config):
+def open_refgenie(db_config):
+    """Open the refgenie catalog and return the client.
+
+    ``db_config`` is a path to a refgenie database config; when given it is
+    exported as REFGENIE_DB_CONFIG_PATH, which is how Refgenie() locates the
+    catalog. Passing None falls back to whatever that variable already holds.
+    Imported lazily so --help works without refgenie installed.
+    """
     from refgenie import Refgenie
 
     if db_config:
@@ -85,7 +86,7 @@ def main(argv=None) -> int:
 
     root = registry_root()
     genomes = read_genome_list(root)
-    rg = build_refgenie(args.db_config)
+    rg = open_refgenie(args.db_config)
 
     missing = []
     for name, store, tier in genomes:
@@ -113,7 +114,7 @@ def main(argv=None) -> int:
         print("  was never loaded into the store named by build.store, or the store")
         print("  was never synced. Check build/sync_stores.py and the store build.")
     else:
-        print("registration: no gaps — every genome in genomes/ resolves.")
+        print("registration: no gaps, every genome in genomes/ resolves.")
 
     if missing and args.strict:
         print(

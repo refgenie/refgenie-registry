@@ -10,10 +10,10 @@ BASE="${2:-main}"
 
 case "$TYPE" in
   genomes)
-    git diff --name-only --diff-filter=ACMR "$BASE"...HEAD -- 'genomes/**/*.yaml'
+    git diff --name-only --diff-filter=ACMR "$BASE"...HEAD, 'genomes/**/*.yaml'
     ;;
   recipes)
-    git diff --name-only --diff-filter=ACMR "$BASE"...HEAD -- 'recipes/**/recipe.yaml'
+    git diff --name-only --diff-filter=ACMR "$BASE"...HEAD, 'recipes/**/recipe.yaml'
     ;;
   *)
     echo "Unknown type: $TYPE (expected 'genomes' or 'recipes')" >&2

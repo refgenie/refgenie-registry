@@ -14,7 +14,7 @@ Usage:
     python build.py jungle --sync   # Build and sync to S3
     python build.py jungle --sync --delete   # ...propagating local removals
 
-Note that this script is ADDITIVE ONLY -- it never removes a collection, so
+Note that this script is ADDITIVE ONLY, it never removes a collection, so
 deleting a row from sources.csv does not drop it from a built store. Use
 remove_collections.py for that, then sync with --delete.
 
@@ -151,7 +151,7 @@ def write_build_report(
     The report is operator provenance (hostname, absolute build paths, tool
     versions, per-run counts) that nothing consumes. It must NOT live inside the
     store directory, because that directory is `aws s3 sync`'d to the PUBLIC
-    bucket — build provenance has no reason to be world-readable. It lives in a
+    bucket, build provenance has no reason to be world-readable. It lives in a
     local reports dir next to where builds happen instead.
     """
     ended_at = datetime.now(timezone.utc)
@@ -348,7 +348,7 @@ def build_store(
         # --delete is opt-in: a plain sync is additive, so anything removed from
         # the local store (see remove_collections.py) would linger in the public
         # bucket forever. Pass --delete when the local store has SHRUNK, and only
-        # after verifying it locally — until the sync runs, S3 still holds the
+        # after verifying it locally, until the sync runs, S3 still holds the
         # last good copy and is the rollback.
         cmd = ["aws", "s3", "sync", str(store_path), s3_path]
         if delete:

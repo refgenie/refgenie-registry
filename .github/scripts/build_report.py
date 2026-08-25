@@ -83,11 +83,11 @@ def fasta_urls_at(rev, path):
 def split_by_url_change(genome_files, base_sha, head_sha):
     """Split genome files into (url_checked, skipped) by whether their URLs changed.
 
-    Checking URL liveness is the point of validating a genome submission -- a
+    Checking URL liveness is the point of validating a genome submission, a
     contributor's download link has to actually work. But it must not fire on a
     file the PR only touched incidentally: a repo-wide change (adding a field to
     every genome) would otherwise re-probe every upstream host and fail on links
-    nobody in this PR submitted, which is exactly what happened on PR #11.
+    nobody in that PR submitted.
 
     So a file is URL-checked when it is new, or when its fasta.sources URLs
     actually changed. Everything else is still fully validated, just with

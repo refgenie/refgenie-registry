@@ -215,7 +215,7 @@ properties:
   build:
     type: object
     description: >-
-      Registry pipeline instructions. NOT exported to FHR -- these describe what
+      Registry pipeline instructions. NOT exported to FHR, these describe what
       the registry does with the genome, not what the genome is. Nested (rather
       than top-level) to keep the FHR boundary obvious, the same way `metadata:`
       is fenced off.

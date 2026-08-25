@@ -4,7 +4,7 @@
 The nightly build catalog (SQLite) is now PERSISTENT (see build/run_builds.sh),
 but the ``genome_init`` sentinel files it must stay consistent with live on disk
 under the persistent alias folder and can outlive the ``genome`` rows they
-represent -- e.g. after the old nightly wipe, or on a fresh catalog created on a
+represent, e.g. after the old nightly wipe, or on a fresh catalog created on a
 new machine. When a sentinel exists but its genome row does NOT, snakemake skips
 the ``genome_init`` rule, yet ``refgenie build <g>/fasta:default --stage`` calls
 ``GenomeManager.get(digest)`` against the empty ``genome`` table and dies with
@@ -15,7 +15,7 @@ for every genome the PEP queues (``pep/samples.csv``, column ``genome_name``) it
 checks whether the persistent catalog actually holds that genome as a DB row. If
 NOT, it deletes the stale sentinel (computed from
 ``Refgenie.get_genome_init_target_template()``), forcing snakemake to re-run
-``refgenie genome init ... --force`` (idempotent -- it adds the missing genome +
+``refgenie genome init ... --force`` (idempotent, it adds the missing genome +
 alias rows) BEFORE any ``build_*`` rule stages. Registered genomes keep their
 sentinels so ``genome_init`` is skipped (no wasted work).
 
@@ -35,36 +35,34 @@ Usage::
 if any PEP genome is still unregistered AND still sentinel-gated (which would
 cause its build to fail with ``MissingGenomeError``); it exits 0 when every PEP
 genome is either registered or will be initialized by ``genome_init`` (sentinel
-absent). ``--no-prune`` runs the full reconcile REPORT -- naming every sentinel
-it WOULD have removed -- while unlinking nothing; it is what ``run_builds.sh``
+absent). ``--no-prune`` runs the full reconcile REPORT, naming every sentinel
+it WOULD have removed, while unlinking nothing; it is what ``run_builds.sh``
 passes under ``DRY_RUN=1``. All three modes build the Refgenie instance the same
 way ``update_index.py`` does so the ``alias_folder`` matches what the SLURM
 ``genome_init`` jobs write.
 
-WHY ``--no-prune`` EXISTS (2026-07-19)
---------------------------------------
-``run_builds.sh`` called this script unconditionally, ~35 lines ABOVE its
-``DRY_RUN`` early-exit. So ``DRY_RUN=1 bash build/run_builds.sh`` -- the command
-an operator reaches for precisely BECAUSE they believe it cannot change
-anything -- reached the ``sp.unlink()`` below before it ever reached the branch
-that was supposed to make the run harmless. On 2026-07-19 a dry run issued
-*while investigating why sentinels were missing* destroyed hg38's and
-yeast_s288c's ``.genome_init_complete``. Nothing recreates a sentinel, so the
-next nightly re-ran ``genome_init`` for both and marked every downstream asset
-stale. A dry run must be read-only end to end; the flag is how that is
-enforced at the only place that unlinks.
+WHY ``--no-prune`` EXISTS
+-------------------------
+``run_builds.sh`` calls this script well ABOVE its ``DRY_RUN`` early-exit. So
+without the flag, ``DRY_RUN=1 bash build/run_builds.sh``, the command an operator
+reaches for precisely BECAUSE they believe it cannot change anything, reaches the
+``sp.unlink()`` below before it reaches the branch meant to make the run harmless,
+and deletes real sentinels. Nothing recreates a sentinel, so the next nightly
+re-runs ``genome_init`` and marks every downstream asset stale. A dry run must be
+read-only end to end, and this flag is how that is enforced at the only place
+that unlinks.
 
 READ-ONLY IS BEST-EFFORT, NOT ABSOLUTE
 --------------------------------------
 ``--no-prune``/``--check-dispatch-safe``/``--count-genomes-only`` skip
 ``rg.init()`` (which mkdir -p's genome_folder + genome_stage_folder and can
 insert the ``Configuration`` row) and refuse to run at all unless the catalog
-SQLite file already exists -- see ``_assert_catalog_present``. That closes the
+SQLite file already exists, see ``_assert_catalog_present``. That closes the
 practical hole, but it is not a guarantee refgenie itself offers: the
 ``Refgenie(...)`` CONSTRUCTOR calls ``check_for_db_migrations()``, and when the
 database has no alembic revision that helper calls ``self.init()`` on its own
 and may run alembic migrations. On a truly EMPTY catalog, merely constructing
-the object is therefore a write -- it creates the schema and inserts the
+the object is therefore a write, it creates the schema and inserts the
 ``Configuration`` row that permanently fixes ``genome_folder``. The existence
 precondition below is what keeps a dry run from ever reaching that state; there
 is no read-only Refgenie mode to ask for instead.
@@ -89,7 +87,7 @@ def _catalog_sqlite_path(db_config: str | None) -> Path | None:
     The config is a two-key YAML (``path:`` / ``type:``) written by
     run_builds.sh. Parsed by hand so this precondition never depends on an
     import succeeding. Returns None when the path cannot be determined (unknown
-    backend, unreadable file) -- callers treat None as "cannot verify", not as
+    backend, unreadable file), callers treat None as "cannot verify", not as
     "missing".
     """
     if not db_config:
@@ -115,7 +113,7 @@ def _assert_catalog_present(db_config: str | None) -> None:
     revision). So a mode that promises to change nothing has to refuse BEFORE
     it builds the object rather than discover the problem afterwards.
 
-    Failing here is also the second half of the 2026-07-08 defense: an empty
+    Failing here is also the second half of the empty-catalog defense: an empty
     catalog makes every PEP genome look unregistered, which is exactly the
     input that turns a reconcile into a delete-every-sentinel run.
     """
@@ -133,12 +131,12 @@ def _assert_catalog_present(db_config: str | None) -> None:
             f"  (referenced by {db_config})\n"
             "  Refusing to continue: building a Refgenie against a missing catalog\n"
             "  CREATES it (schema + Configuration row fixing genome_folder), which a\n"
-            "  read-only mode must never do -- and an empty catalog makes every PEP\n"
-            "  genome look unregistered, the 2026-07-08 delete-every-sentinel input."
+            "  read-only mode must never do, and an empty catalog makes every PEP\n"
+            "  genome look unregistered, the delete-every-sentinel input."
         )
 
 
-def _build_refgenie(db_config: str | None, read_only: bool = False):
+def _open_refgenie(db_config: str | None, read_only: bool = False):
     """Construct a Refgenie instance the SAME way build/update_index.py does, so
     its alias_folder matches the folder the SLURM genome_init jobs write to.
 
@@ -162,7 +160,7 @@ def _build_refgenie(db_config: str | None, read_only: bool = False):
 
 def read_pep_genomes(registry_root: Path) -> list[str]:
     """Return the de-duplicated, order-preserving list of ``genome_name`` values
-    from the PEP sample table -- the same source the Snakefile fans out over."""
+    from the PEP sample table, the same source the Snakefile fans out over."""
     samples = registry_root / "pep" / "samples.csv"
     genomes: list[str] = []
     seen: set[str] = set()
@@ -284,7 +282,7 @@ def main(argv: list[str] | None = None) -> int:
         _assert_catalog_present(args.db_config)
 
     registry_root = _registry_root()
-    rg = _build_refgenie(args.db_config, read_only=read_only)
+    rg = _open_refgenie(args.db_config, read_only=read_only)
 
     if args.count_genomes_only:
         try:
@@ -306,7 +304,7 @@ def main(argv: list[str] | None = None) -> int:
                 doomed.append(name)
         if doomed:
             print(
-                "reconcile: DISPATCH UNSAFE — unregistered + sentinel-gated genomes: "
+                "reconcile: DISPATCH UNSAFE, unregistered + sentinel-gated genomes: "
                 + ", ".join(doomed)
             )
             return 1
@@ -315,12 +313,12 @@ def main(argv: list[str] | None = None) -> int:
 
     print(f"reconcile: PEP queues {len(genomes)} genome(s): {', '.join(genomes) or '(none)'}")
     if args.no_prune:
-        print("reconcile: --no-prune (read-only) — nothing will be unlinked")
+        print("reconcile: --no-prune (read-only), nothing will be unlinked")
     unregistered = reconcile(rg, genomes, prune=not args.no_prune)
 
     counts = _catalog_counts(rg)
     print(
-        "reconcile: catalog counts — "
+        "reconcile: catalog counts, "
         f"recipe={counts['recipe']}, asset_class={counts['asset_class']}, "
         f"genome={counts['genome']}, alias={counts['alias']}"
     )

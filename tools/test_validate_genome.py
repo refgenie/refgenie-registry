@@ -80,7 +80,7 @@ def test_build_block_does_not_reach_the_fhr_export():
     """The `build:` block is pipeline state and must never be published.
 
     genome_yaml_to_fhr() builds its output by explicit whitelist, so a new
-    top-level block is ignored by construction -- assert it, so a future exporter
+    top-level block is ignored by construction, assert it, so a future exporter
     that starts passing unknown keys through fails here.
     """
     data = genome()

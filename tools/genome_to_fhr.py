@@ -2,14 +2,14 @@
 """Deterministic mapping from a registry genome YAML to an FHR `.fhr.json` sidecar.
 
 This is the single source of truth for the registry-YAML -> FHR-JSON mapping
-(see schema/README.md for the table). Every consumer -- the validator's export
-self-check and the Plan 3 store loader -- must go through this module so they
+(see schema/README.md for the table). Every consumer, the validator's export
+self-check and the Plan 3 store loader, must go through this module so they
 agree on the mapping.
 
 The emitted JSON uses camelCase keys that match the gtars `FhrMetadata` serde
 representation exactly (gtars-refget/src/store/fhr_metadata.rs), so
 `serde_json::from_str::<FhrMetadata>` accepts it and the RefgetStore round-trips
-it unchanged. The seqcol digest is NEVER a JSON body field -- it is the sidecar
+it unchanged. The seqcol digest is NEVER a JSON body field, it is the sidecar
 *filename* (`<seqcol.digest>.fhr.json`), matching `SIDECAR_EXTENSION` in gtars.
 
 Usage:
@@ -132,7 +132,7 @@ def genome_yaml_to_fhr(data: dict) -> "OrderedDict[str, object]":
 
     # Promoted-to-column extension fields (gtars FhrMetadata carries these in its
     # `extra` catch-all; refgenie1's apply_fhr reads them into real `genome`
-    # columns). Not part of upstream FHR 1.0 -- see load_fhr_export_schema.
+    # columns). Not part of upstream FHR 1.0, see load_fhr_export_schema.
     common_name = organism.get("common_name")
     if common_name is not None:
         out["commonName"] = common_name
@@ -277,7 +277,7 @@ def write_fhr_sidecar(data: dict, out_dir: Path) -> Path:
     """Write `<seqcol.digest>.fhr.json` into out_dir. Returns the path.
 
     Raises ValueError if the genome has no resolved seqcol digest (still
-    `compute: true` or absent) -- the sidecar is digest-addressed and cannot be
+    `compute: true` or absent), the sidecar is digest-addressed and cannot be
     named without it.
     """
     seqcol = data.get("seqcol", {}) or {}

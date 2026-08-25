@@ -2,16 +2,15 @@ pep_version: 2.1.0
 sample_table: sources.csv
 sample_table_index: fasta
 
-# OFF for the nightly (2026-08-25, operator decision). This store has never been
-# built -- there is no $REFGETSTORE_BASE/salmon_txomes -- so without this flag
-# sync_stores.py --changed reports it every night and the nightly would attempt a
+# Excluded from the nightly. This store has never been built, so without this key
+# sync_stores.py --changed reports it every run and the nightly would attempt a
 # cold build of all 314 transcriptomes.
 #
-# Deliberately NOT solved by writing a .sources.sha256 stamp: a stamp asserts
-# "the built store matches this sources.csv", which is false here, and it would
-# go stale the moment sources.csv changed, silently pulling the store back into
-# the build loop. This says the true thing instead.
+# Deliberately not solved with a .sources.sha256 stamp: a stamp asserts "the built
+# store matches this sources.csv", which is untrue for a store that was never
+# built, and it would go stale as soon as sources.csv changed, silently pulling
+# the store back into the build loop.
 #
-# To turn it back on: delete this key and build the store once by hand
+# To turn it on: delete this key, build the store once by hand
 # (`python build.py salmon_txomes`), then `sync_stores.py --record salmon_txomes`.
 nightly: false

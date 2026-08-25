@@ -3,7 +3,7 @@
 
 Before this migration a genome's build instructions lived in a second file
 (pep/build_matrix.yaml) that listed 26 of the 128 genomes. The other 102 genome
-YAMLs were inert -- nothing read them. After it, `genomes/**/*.yaml` is the single
+YAMLs were inert, nothing read them. After it, `genomes/**/*.yaml` is the single
 list of genomes and each file says, in a `build:` block, which store holds its
 sequence and how far to take it.
 
@@ -20,7 +20,7 @@ works if the tier/add/drop values are copied verbatim.
 Resolving `build.tier`
 ----------------------
 * a genome named in pep/build_matrix.yaml keeps its tier, `add:` and `drop:`
-  VERBATIM -- that is what makes the samples.csv diff empty;
+  VERBATIM, that is what makes the samples.csv diff empty;
 * every other genome gets `tier: store_only` (load the sequence, build no
   assets), which is exactly what it gets today: nothing queued it.
 
@@ -37,7 +37,7 @@ guessing.
    the copy the builds use.
 2. FASTA URL. The genome's `fasta.sources[].url` (or its basename) appears in
    exactly one store's sources.csv. Unambiguous provenance; no judgment involved.
-3. CURATED (below). Genomes that rules 1-2 cannot reach -- almost all of them
+3. CURATED (below). Genomes that rules 1-2 cannot reach, almost all of them
    carry no `fasta.sources` at all, so there is no URL to match. Each entry
    records the store row that is the evidence for the assignment.
 """
@@ -108,7 +108,7 @@ CURATED_STORE = {
     "hg19_hs37d5":             "jungle",  # hs37d5
     "hg19_b37":                "jungle",  # b37-broad
     # t2t-chm13 is a human reference and belongs with the rest of them, but NO
-    # store holds it yet -- there is no CHM13 row in jungle. That is a real gap,
+    # store holds it yet, there is no CHM13 row in jungle. That is a real gap,
     # not a mis-assignment: build/check_registration.py reports it as unregistered
     # until the sequence is staged and loaded. Recording the intended store here
     # is what makes that report possible.

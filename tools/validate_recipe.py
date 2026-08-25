@@ -268,10 +268,10 @@ def validate_recipe(
     # 6. Security scan
     errors.extend(check_security_patterns(data))
 
-    # 7. Output asset class reference (output_asset_class) -- hard error
+    # 7. Output asset class reference (output_asset_class), hard error
     errors.extend(check_output_asset_class(data))
 
-    # 8. Input asset class references (input_assets[].asset_class) -- hard error
+    # 8. Input asset class references (input_assets[].asset_class), hard error
     errors.extend(check_input_asset_classes(data))
 
     # 9. Shellcheck

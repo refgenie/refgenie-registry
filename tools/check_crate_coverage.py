@@ -5,7 +5,7 @@ Why this exists
 ---------------
 The nightly Rivanna build (mobot job ``refgenie-registry-build``) activates ONE
 bulker crate, ``databio/refgenie``. If a recipe invokes a command that crate does
-not define, bulker does not fail -- the shell simply falls through to whatever
+not define, bulker does not fail, the shell simply falls through to whatever
 binary happens to exist on the Rivanna host, or to nothing at all. Both failure
 modes are quiet:
 
@@ -71,9 +71,9 @@ SHELL_BUILTINS = {
 }
 
 # Commands deliberately NOT in the crate, with the reason. These resolve from
-# the Rivanna host. Each entry is a decision, not an oversight -- anything not
+# the Rivanna host. Each entry is a decision, not an oversight, anything not
 # listed here and not in the crate is a hard failure.
-# (`cp`, `mkdir`, `cat`, `sort` and friends are NOT here -- bulker/coreutils
+# (`cp`, `mkdir`, `cat`, `sort` and friends are NOT here, bulker/coreutils
 # supplies them, and `rm` comes from that crate's `host_commands`.)
 HOST_PROVIDED = {
     # POSIX file plumbing not carried by bulker/coreutils.
@@ -147,7 +147,7 @@ def statements(template: str) -> list[str]:
         i += 1
     out.append("".join(buf))
 
-    # Command substitutions run commands too -- dbnsfp does `rm `find ...``.
+    # Command substitutions run commands too, dbnsfp does `rm `find ...``.
     for sub in re.findall(r"`([^`]*)`", text) + re.findall(r"\$\(([^)]*)\)", text):
         out.extend(statements(sub))
 
@@ -314,7 +314,7 @@ def main() -> int:
         print(
             "Fix by adding the command to hub.bulker.io/refgenie_crate_sources.yaml\n"
             "(with a `siblings` or `overrides` entry) and cutting a new crate\n"
-            "version, OR -- if it really is a host utility -- by adding it to\n"
+            "version, OR, if it really is a host utility, by adding it to\n"
             "HOST_PROVIDED in this file with a written reason."
         )
         return 1

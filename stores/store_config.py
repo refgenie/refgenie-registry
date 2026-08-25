@@ -18,7 +18,7 @@ STORES_DIR = Path(__file__).resolve().parent
 
 
 def get_store_dirs(stores_dir=STORES_DIR) -> list:
-    """Every store directory under stores/ -- i.e. every dir with a PEP config.
+    """Every store directory under stores/, i.e. every dir with a PEP config.
 
     THE definition of "a store exists". stores/build.py re-exports it, and
     tools/validate_genome.py checks `build.store` against it, so a genome YAML

@@ -111,7 +111,7 @@ def main():
         sys.exit(f"sources.csv not found: {cp}")
 
     print("=" * 78)
-    print(f"COMPARE built store vs. sources.csv  —  store '{store_name}'")
+    print(f"COMPARE built store vs. sources.csv ,  store '{store_name}'")
     print(f"  store path : {sp}")
     print(f"  sources    : {cp}")
     print("=" * 78)

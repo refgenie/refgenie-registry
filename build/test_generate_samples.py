@@ -58,7 +58,7 @@ def test_missing_tier_is_fatal():
 
 
 # --------------------------------------------------------------------------
-# validate_fasta_source -- the check that was missing
+# validate_fasta_source, the check that was missing
 # --------------------------------------------------------------------------
 
 def test_missing_fasta_source_names_the_genome_and_the_key():

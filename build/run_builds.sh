@@ -1,5 +1,5 @@
 #!/bin/bash
-# build/run_builds.sh — refgenie-native recipe/asset build dispatch.
+# build/run_builds.sh, refgenie-native recipe/asset build dispatch.
 #
 # This is the recipe-build layer of the nightly Rivanna pipeline (mobot job
 # `refgenie-registry-build`, see lab.databio.org/mobot/jobs.d/). It is the
@@ -8,7 +8,7 @@
 # Pipeline (per design.md §"refgenie is the build system"):
 #   1. Load all asset_classes/ + recipes/ into a refgenie1 DB AND render the
 #      Snakefile in one shot via tools/import_recipes.py (so the Snakefile is
-#      generated from the SAME instance the recipes were loaded into — no
+#      generated from the SAME instance the recipes were loaded into, no
 #      two-process DB mismatch).
 #   2. Patch the generated Snakefile so its shell rules call the installed
 #      `refgenie` binary (the refgenie1 template still emits `refgenie1`; on
@@ -39,7 +39,7 @@
 # Env (see infra/rivanna/env.sh + the snakemake profile):
 #   REFGENIE_INPUTS   required by the Snakefile/PEP (root of input FASTAs).
 #   REFGENIE_DB_CONFIG_PATH  refgenie1 DB config for the persistent build
-#                     catalog. REQUIRED, absolute, and must already exist —
+#                     catalog. REQUIRED, absolute, and must already exist , 
 #                     there is NO fallback (see the validation block below).
 #   REFGENIE_BUILD_DB the persistent catalog SQLite file. Same rules.
 #   REFGENIE_BIN      build-command binary name (default: refgenie).
@@ -85,8 +85,8 @@ fi
 # samples.csv is a GENERATED artifact: build/generate_samples.py reads every
 # genomes/**/*.yaml `build:` block (the single source of truth for the per-genome
 # asset queue) plus pep/tiers.yaml, and emits samples.csv. Committing samples.csv
-# IS launching the builds, so a hand-edit of the CSV -- or a genome YAML change
-# whose samples.csv was never regenerated -- must never reach dispatch.
+# IS launching the builds, so a hand-edit of the CSV, or a genome YAML change
+# whose samples.csv was never regenerated, must never reach dispatch.
 # Regenerate here and fail the nightly loudly on ANY diff. This runs in DRY_RUN
 # too: a stale/hand-edited queue is exactly what a dry run should surface, and
 # regenerating an already-correct file is a byte no-op (nothing to destroy).
@@ -95,13 +95,13 @@ fi
 # the genome.
 echo "$(date) | run_builds: regenerating pep/samples.csv from genomes/**/*.yaml"
 if ! python3 build/generate_samples.py; then
-    echo "$(date) | run_builds: FATAL generate_samples.py failed -- a genome's build: block is invalid." >&2
+    echo "$(date) | run_builds: FATAL generate_samples.py failed, a genome's build: block is invalid." >&2
     echo "  Fix the genome YAML named above; refusing to build." >&2
     exit 1
 fi
 if ! git diff --exit-code pep/samples.csv; then
     echo "$(date) | run_builds: FATAL pep/samples.csv is out of sync with genomes/**/*.yaml." >&2
-    echo "  samples.csv is GENERATED -- never hand-edit it. Either the CSV was edited" >&2
+    echo "  samples.csv is GENERATED, never hand-edit it. Either the CSV was edited" >&2
     echo "  directly, or a genome's build: block changed without regenerating. Run" >&2
     echo "    python build/generate_samples.py" >&2
     echo "  review the samples.csv diff (it IS the go/no-go build gate), and commit both." >&2
@@ -113,11 +113,11 @@ echo "$(date) | run_builds: pep/samples.csv is in sync with genomes/**/*.yaml"
 # The per-genome FHR sidecars are BUILD OUTPUT, not source. pep/metadata/ is a
 # staging folder (gitignored): generate_genome_metadata.py reads genomes/*/*.yaml
 # and writes pep/metadata/<genome>.fhr.json for EVERY genome (not only queued ones
-# -- a store_only genome has no PEP row, and its sidecar is exactly what gives it
+#, a store_only genome has no PEP row, and its sidecar is exactly what gives it
 # organism and taxonomy in its store). Downstream consumers are all below this
 # point: stores/build_fhr.py copies them into each store, apply_metadata.py applies
 # them to the catalog, and the PEP's fhr_file_path derives from them. (genome_init
-# deliberately does NOT read them -- metadata in a rule's `input:` is a rebuild
+# deliberately does NOT read them, metadata in a rule's `input:` is a rebuild
 # trigger.)
 #
 # There is no drift guard here, unlike samples.csv, and that asymmetry is
@@ -135,18 +135,17 @@ fi
 # --- guard: every genome must be loadable from the store it names ------------
 # A genome YAML's `build.store` claims a store holds its sequence. Reported, not
 # enforced: a genome whose store has no row for it is registered but unloadable,
-# and until 2026-08-25 nothing anywhere noticed. It is not fatal because the fix
-# is a data change in a store's sources.csv, and a pending one must not stop the
-# night's builds.
+# and nothing else reports that. It is not fatal because the fix is a data change
+# in a store's sources.csv, and a pending one must not stop the night's builds.
 echo "$(date) | run_builds: checking genome -> store coverage"
 python3 build/sync_stores.py \
     || echo "$(date) | run_builds: store coverage check reported gaps (non-fatal)" >&2
 
 # --- load the stores whose sources changed ----------------------------------
-# Store building was removed from the nightly on 2026-07-18 because re-syncing
-# plantref's ~476k objects every night is wasteful. That reasoning still holds --
-# so the fix is not to rebuild unconditionally, it is to rebuild ONLY the stores
-# whose sources.csv changed since they were last built. sync_stores.py --changed
+# Rebuilding every store nightly is wasteful; the largest hold hundreds of
+# thousands of objects. So the nightly does not rebuild unconditionally. It
+# rebuilds ONLY the stores whose sources.csv changed since they were last built.
+# sync_stores.py --changed
 # answers that from a .sources.sha256 stamp inside each built store, and a store
 # that has never been built always counts as changed.
 #
@@ -161,7 +160,7 @@ python3 build/sync_stores.py \
 # for genomes that are already loaded. The stamp is recorded only on success, so
 # a failed store is retried next run.
 if [[ "${DRY_RUN:-0}" == "1" ]]; then
-    echo "$(date) | run_builds: DRY RUN — WOULD load stores:"
+    echo "$(date) | run_builds: DRY RUN, WOULD load stores:"
     python3 build/sync_stores.py --changed | sed 's/^/  /' \
         || echo "  (could not determine changed stores)" >&2
 elif [[ "${REFGENIE_SKIP_STORE_BUILD:-0}" == "1" ]]; then
@@ -209,7 +208,7 @@ export REFGENIE_INPUTS="${REFGENIE_INPUTS:-${REFGETSTORE_FASTA:-$REGISTRY_DIR/bu
 # REFGENIE_REGISTRY_DIR is consumed by the PEP: pep/config.yaml derives
 # fhr_file_path from ${REFGENIE_REGISTRY_DIR}/pep/metadata/<genome_name>.fhr.json.
 # The derive stays even though genome_init no longer takes --fhr (metadata must not
-# be a build input -- it would make a description edit a rebuild trigger); the
+# be a build input, it would make a description edit a rebuild trigger); the
 # sidecars are consumed post-build by apply_metadata.py. Export it for the
 # snakemake subprocess, which still resolves the PEP.
 export REFGENIE_REGISTRY_DIR="$REGISTRY_DIR"
@@ -232,7 +231,7 @@ fi
 # Put the refgenie bin dir on PATH and EXPORT it. snakemake's SLURM executor
 # sbatch's children with --export=ALL, so the driver's PATH propagates to every
 # build job. This covers the recipe sub-commands too (e.g. `refgenie-build-fasta`,
-# which the fasta recipe runs on the host) — not just the top-level `refgenie`.
+# which the fasta recipe runs on the host), not just the top-level `refgenie`.
 if [[ "$REFGENIE_BIN" == /* ]]; then
     _refgenie_bindir="$(dirname "$REFGENIE_BIN")"
     case ":$PATH:" in
@@ -241,7 +240,7 @@ if [[ "$REFGENIE_BIN" == /* ]]; then
     esac
     echo "$(date) | run_builds: PATH includes $_refgenie_bindir for SLURM children"
 fi
-# Resolve snakemake to an ABSOLUTE HOST path — same reasoning as REFGENIE_BIN,
+# Resolve snakemake to an ABSOLUTE HOST path, same reasoning as REFGENIE_BIN,
 # but for a different failure. The mobot driver runs under a bulker activation
 # (databio/refgenie:1.1.0) so the build children can see the index builders
 # (bowtie2-build/hisat2-build). But under it a bare `snakemake` resolves to a
@@ -291,14 +290,13 @@ SNAKEFILE="$BUILD_DIR/Snakefile"
 # catalog. Operators point REFGENIE_DB_CONFIG_PATH/REFGENIE_BUILD_DB elsewhere
 # (e.g. a laptop) by EXPORTING them; there is deliberately no in-repo fallback.
 #
-# NO SILENT FALLBACK (2026-07-08). These two used to be `${VAR:-$BUILD_DIR/...}`.
-# That fallback is a loaded gun: if the variable arrived unset or garbage, the
-# run did not fail -- it quietly created a brand-new EMPTY catalog inside the git
-# checkout and built against it. An empty catalog has no `genome` rows, so
-# reconcile_genomes.py correctly concluded that every PEP genome was
-# unregistered and pruned every sentinel. That is how one bad env var deletes
-# the whole sentinel tree, and it is what happened on 2026-07-08 (the orphaned
-# .refgenie_build.sqlite it created is still sitting in the old checkout).
+# NO SILENT FALLBACK. These two must never be `${VAR:-$BUILD_DIR/...}`. That
+# fallback is a loaded gun: if the variable arrives unset or garbage, the run does
+# not fail. It quietly creates a brand-new EMPTY catalog inside the git checkout
+# and builds against it. An empty catalog has no `genome` rows, so
+# reconcile_genomes.py correctly concludes that every PEP genome is unregistered
+# and prunes every sentinel. That is how one bad env var deletes the whole
+# sentinel tree.
 #
 # "Garbage" is not hypothetical either. yoke's env_files parser mangles the
 # `${VAR:-default}` form in infra/rivanna/env.sh into a literal string that
@@ -319,7 +317,7 @@ _validate_catalog_var() {
     if [[ "$value" == :-* || "$value" == *"}"* ]]; then
         echo "$(date) | run_builds: FATAL $name looks mangled: '$value'" >&2
         echo "  A leading ':-' or a '}' means a \${VAR:-default} expansion was passed" >&2
-        echo "  through literally -- yoke's env_files parser does this to env.sh." >&2
+        echo "  through literally, yoke's env_files parser does this to env.sh." >&2
         echo "  Export a plain absolute path instead." >&2
         return 1
     fi
@@ -350,7 +348,7 @@ export REFGENIE_BUILD_DB
 # the build just proceeds against zero genomes and prunes every sentinel.
 if [[ ! -f "$REFGENIE_BUILD_DB" || ! -f "$REFGENIE_DB_CONFIG_PATH" ]]; then
     if [[ "${ALLOW_CATALOG_BOOTSTRAP:-0}" == "1" ]]; then
-        echo "$(date) | run_builds: ALLOW_CATALOG_BOOTSTRAP=1 — creating a NEW EMPTY catalog." >&2
+        echo "$(date) | run_builds: ALLOW_CATALOG_BOOTSTRAP=1, creating a NEW EMPTY catalog." >&2
         echo "  Every PEP genome will look unregistered; every sentinel will be pruned" >&2
         echo "  and every genome re-initialized. This is correct ONLY for a first run." >&2
     else
@@ -359,7 +357,7 @@ if [[ ! -f "$REFGENIE_BUILD_DB" || ! -f "$REFGENIE_DB_CONFIG_PATH" ]]; then
         [[ -f "$REFGENIE_DB_CONFIG_PATH" ]]  || echo "  missing DB config: $REFGENIE_DB_CONFIG_PATH" >&2
         echo "  Refusing to build: refgenie would CREATE an empty catalog here, in which" >&2
         echo "  no PEP genome is registered, and the reconcile step would then delete every" >&2
-        echo "  .genome_init_complete sentinel under the alias tree (see 2026-07-08)." >&2
+        echo "  .genome_init_complete sentinel under the alias tree." >&2
         echo "  If this really is a first-time bootstrap, re-run with:" >&2
         echo "    ALLOW_CATALOG_BOOTSTRAP=1 bash build/run_builds.sh" >&2
         echo "  Otherwise fix the path / restore the catalog from a sibling .bak in" >&2
@@ -375,7 +373,7 @@ echo "$(date) | run_builds: REFGENIE_BUILD_DB=$REFGENIE_BUILD_DB"
 echo "$(date) | run_builds: REFGENIE_BIN=$REFGENIE_BIN  SNAKEMAKE_BIN=$SNAKEMAKE_BIN  DRY_RUN=${DRY_RUN:-0}"
 
 # Keep the small DB config in sync with $REFGENIE_BUILD_DB. The sqlite file
-# itself is NOT removed — it persists across runs and is updated in place.
+# itself is NOT removed, it persists across runs and is updated in place.
 #
 # Written only when the content actually differs, and never under DRY_RUN: a dry
 # run must not touch the filesystem, and a config whose `path:` disagrees with
@@ -388,7 +386,7 @@ type: sqlite"
 if [[ -f "$REFGENIE_DB_CONFIG_PATH" ]] && [[ "$(cat "$REFGENIE_DB_CONFIG_PATH")" == "$_desired_db_config" ]]; then
     echo "$(date) | run_builds: DB config already points at $REFGENIE_BUILD_DB"
 elif [[ "${DRY_RUN:-0}" == "1" ]]; then
-    echo "$(date) | run_builds: DRY RUN — WOULD rewrite $REFGENIE_DB_CONFIG_PATH to point at $REFGENIE_BUILD_DB" >&2
+    echo "$(date) | run_builds: DRY RUN, WOULD rewrite $REFGENIE_DB_CONFIG_PATH to point at $REFGENIE_BUILD_DB" >&2
     echo "  (current content left untouched; a dry run does not repair drift)" >&2
 else
     printf '%s\n' "$_desired_db_config" > "$REFGENIE_DB_CONFIG_PATH"
@@ -456,12 +454,11 @@ fi
 # in the persistent catalog, forcing genome_init to re-run and repopulate the
 # genome + alias rows before any build stages. It also prints catalog counts.
 #
-# DRY_RUN passes --no-prune. This call sits ~35 lines above the DRY_RUN
-# early-exit, and until 2026-07-19 it ran unconditionally — so a dry run reached
-# the unlink() long before it reached the branch meant to make it harmless, and
-# one such invocation (issued while investigating MISSING sentinels) destroyed
-# hg38's and yeast_s288c's. Nothing recreates a sentinel; the next nightly
-# re-ran genome_init and marked every downstream asset stale.
+# DRY_RUN passes --no-prune, and it must. This call sits well above the DRY_RUN
+# early-exit, so without the flag a dry run reaches the unlink() long before it
+# reaches the branch meant to make it harmless, and deletes real sentinels.
+# Nothing recreates a sentinel: the next nightly re-runs genome_init and marks
+# every downstream asset stale.
 #
 # The flag is used rather than moving this call below the exit, because the
 # ordering here is load-bearing: reconcile must run BEFORE the dispatch-safety
@@ -471,7 +468,7 @@ fi
 RECONCILE_ARGS=(--db-config "$REFGENIE_DB_CONFIG_PATH")
 if [[ "${DRY_RUN:-0}" == "1" ]]; then
     RECONCILE_ARGS+=(--no-prune)
-    echo "$(date) | run_builds: DRY RUN — reconcile is read-only (--no-prune); reporting what it WOULD prune"
+    echo "$(date) | run_builds: DRY RUN, reconcile is read-only (--no-prune); reporting what it WOULD prune"
 fi
 echo "$(date) | run_builds: reconciling genomes with persistent catalog..."
 python3 build/reconcile_genomes.py "${RECONCILE_ARGS[@]}"
@@ -487,7 +484,7 @@ python3 build/reconcile_genomes.py "${RECONCILE_ARGS[@]}"
 # every genome is dispatch-safe and gets initialized during the snakemake run.)
 if [[ "${DRY_RUN:-0}" != "1" ]]; then
     if ! python3 build/reconcile_genomes.py --db-config "$REFGENIE_DB_CONFIG_PATH" --check-dispatch-safe; then
-        echo "$(date) | run_builds: FATAL — one or more PEP genomes are unregistered in the" >&2
+        echo "$(date) | run_builds: FATAL, one or more PEP genomes are unregistered in the" >&2
         echo "  persistent catalog AND still sentinel-gated, so genome_init would be skipped" >&2
         echo "  and their builds would fail with MissingGenomeError. Aborting before dispatch." >&2
         echo "  Check genome_init inputs/logs and the reconcile output above." >&2
@@ -527,7 +524,7 @@ echo "$(date) | run_builds: dispatching builds with profile $SNAKEMAKE_PROFILE"
 # Capture snakemake's exit status instead of letting `set -e` abort here. With
 # keep-going, snakemake builds every asset it can and returns non-zero if ANY
 # rule failed. We must still reach the push step below so the assets that DID
-# build get uploaded -- one failing recipe must not block publishing the
+# build get uploaded, one failing recipe must not block publishing the
 # successful ones. The status is preserved and re-raised at the very end so the
 # nightly still reports failure to the monitor.
 snakemake_rc=0
@@ -538,7 +535,7 @@ fi
 
 # --- 4. push staged assets to S3 -----------------------------------------
 # Push runs ONCE here on the driver (coordinator) host AFTER the snakemake
-# fan-out returns -- deliberately NOT inside the per-asset build jobs, which
+# fan-out returns, deliberately NOT inside the per-asset build jobs, which
 # hold requested compute cores that would sit idle burning the allocation during
 # what is only network transfer. It reads the shared build DB
 # ($REFGENIE_DB_CONFIG_PATH) and uploads each RemoteAssetLink(pushed=False)
@@ -564,25 +561,23 @@ fi
 # --- 5. refresh the index ------------------------------------------------
 # GATED ON PUSH. update_index.py writes `build: {status: complete}` for every
 # asset in the build DB with no push awareness whatsoever, and the mobot job
-# then git-commits and pushes index/ to refgenie-registry master. So a failed
-# upload used to publish an index entry advertising an asset that is not in
-# s3://refgenie/assets -- a client resolving it gets a 404. That happened on
-# 2026-07-21 (job 17162885): "Push complete: 0 succeeded, 6 failed", and
-# 769ccbd committed 18 entries anyway.
+# then git-commits and pushes index/ to refgenie-registry master. Without this
+# guard a failed upload publishes an index entry advertising an asset that is not
+# in s3://refgenie/assets, and a client resolving it gets a 404.
 #
 # Refusing to refresh the index leaves index/ byte-identical to the commit it
 # was reset to, so the mobot git_commit step finds nothing staged and pushes
 # nothing. Stale-but-true beats fresh-but-dangling: every entry already in
 # index/ describes an asset that was successfully pushed at the time.
 #
-# This gate is deliberately COARSE -- one failed asset holds back the whole
+# This gate is deliberately COARSE, one failed asset holds back the whole
 # index refresh. Per-asset gating is the right end state (RemoteAssetLink
 # carries a per-asset `pushed` flag, queryable via
 # ConfigurationManager.get_unpushed_links), but write_index() iterates
 # rg.asset.list_all(), which does not expose the asset_digest needed to join
 # against those links. Wiring that mapping through is a separate change.
 if [[ "$push_rc" -ne 0 ]]; then
-    echo "$(date) | run_builds: SKIPPING index update -- push failed (rc=$push_rc)." >&2
+    echo "$(date) | run_builds: SKIPPING index update, push failed (rc=$push_rc)." >&2
     echo "  Refreshing index/ now would publish entries for assets that are not" >&2
     echo "  in $REFGENIE_ASSET_S3. Fix the push, then re-run; the index will" >&2
     echo "  catch up on the next clean run." >&2
@@ -600,7 +595,7 @@ fi
 # sync + catalog-export below, so the sidecars ride the sync and the columns ride
 # the export. Idempotent: a metadata-only YAML edit propagates here on the next
 # nightly with NO rebuild (the genome_init sentinel is untouched), which is why
-# this step -- not the init rule alone -- is the load-bearing metadata path. It
+# this step, not the init rule alone, is the load-bearing metadata path. It
 # runs only in a REAL run (DRY_RUN exits above, before any genome row exists to
 # update). Non-fatal: metadata must never abort a build.
 echo "$(date) | run_builds: applying per-genome FHR metadata to the catalog..."
@@ -626,11 +621,10 @@ python3 build/apply_metadata.py --db-config "$REFGENIE_DB_CONFIG_PATH" \
 # aliases ride the store S3 sync and genome rows ride the export. Non-fatal: an
 # unreachable store must not abort publishing the built assets.
 #
-# REQUIRES a refgenie1 with the `store` command group (the federation registry,
-# landed 2026-08-25). The build venv was on 1.0.0a1, which does not have it, so
-# the capability is checked explicitly: a missing `store` command is a
-# provisioning gap that needs an upgrade, not a transient failure, and it must
-# not read like one in the log.
+# REQUIRES a refgenie1 with the `store` command group (the federation registry).
+# The capability is checked explicitly because a missing `store` command is a
+# provisioning gap that needs an upgrade, not a transient failure, and it must not
+# read like one in the log.
 if ! "$REFGENIE_BIN" store --help >/dev/null 2>&1; then
     echo "$(date) | run_builds: FATAL-ADJACENT this refgenie has no 'store' command group," >&2
     echo "  so NO store collections are being overlaid into the catalog tonight." >&2
@@ -652,7 +646,7 @@ fi
 # sequence store ($REFGENIE_GENOME_FOLDER/.refget_store) is what genome_init
 # ingests into; api.refgenie.org serves sequences from its S3 mirror at
 # $REFGETSTORE_S3/refgenie-main (see refgenie1 deployment/task_defs/
-# primary.json). First published 2026-08-07. `aws s3 sync` uploads only
+# primary.json). `aws s3 sync` uploads only
 # changed files, so a night with no new genomes is a fast no-op. No --delete:
 # a content-addressed store only grows, and never deleting from the public
 # mirror while a server reads it is the safe default. The lock file and any
@@ -676,7 +670,7 @@ fi
 # previous artifact serving; the server catches up on the next clean run.
 if [[ -n "${REFGENIE_CATALOG_S3:-}" && -n "${REFGENIE_ASSET_HTTPS:-}" ]]; then
     if [[ "$push_rc" -ne 0 ]]; then
-        echo "$(date) | run_builds: SKIPPING catalog publish -- push failed (rc=$push_rc)" >&2
+        echo "$(date) | run_builds: SKIPPING catalog publish, push failed (rc=$push_rc)" >&2
     else
         echo "$(date) | run_builds: exporting publish catalog -> $REFGENIE_CATALOG_S3/publish_catalog.sqlite"
         catalog_artifact="$(dirname "$REFGENIE_DB_CONFIG_PATH")/publish_catalog.sqlite"
@@ -697,10 +691,9 @@ fi
 #
 # `--keep-going` is deliberate (one broken recipe must not abort the batch), but
 # its consequence is that a badly incomplete run still pushes assets, refreshes
-# index/, commits, and reads like a normal night in the log. On 2026-07-23 six of
-# 42 requested assets -- all of athaliana -- did not exist when the run finished,
-# and the only signal was a bare exit code that says THAT something failed while
-# never saying WHAT is absent. Diagnosing it took reading four separate logs.
+# index/, commits, and reads like a normal night in the log. Without this check the
+# only signal is a bare exit code, which says THAT something failed while never
+# saying WHAT is absent.
 #
 # Derived from pep/samples.csv rather than a hardcoded expectation, so it widens
 # automatically as genomes and recipes are added to the registry.
@@ -711,11 +704,11 @@ fi
 # --build-status carries snakemake's exit code INTO the report. Coverage is a
 # question about the catalog, not about this run: an assetgroup row means the
 # asset is registered by some run, so a failed REBUILD of an asset that already
-# existed is invisible to it. On 2026-07-29 five builds failed and this check
-# still printed "42/42" and "no gaps" -- both true, and both read as an all-clear
-# sitting directly above the failures. With the status passed in, the summary line
-# says outright that full coverage is not a clean run. It does not change any exit
-# code; $snakemake_rc is still what gets re-raised below.
+# existed is invisible to it. So this check can print full coverage and "no gaps"
+# on a night when builds failed, truthfully, and read as an all-clear sitting
+# directly above the failures. With the status passed in, the summary line says
+# outright that full coverage is not a clean run. It does not change any exit code;
+# $snakemake_rc is still what gets re-raised below.
 echo "$(date) | run_builds: checking asset coverage against the PEP..."
 python3 build/check_coverage.py --db-config "$REFGENIE_DB_CONFIG_PATH" \
     --build-status "$snakemake_rc" \
@@ -723,10 +716,9 @@ python3 build/check_coverage.py --db-config "$REFGENIE_DB_CONFIG_PATH" \
 
 # --- registration report ---------------------------------------------------
 # Coverage answers "did every REQUESTED asset get built?", which is scoped to the
-# build queue and so cannot see a genome that was never requested. On 2026-08-18
-# twenty-six vertebrate genomes merged and existed nowhere -- no store, no
-# catalog, no index -- and coverage reported "145/145 ... no gaps" every morning
-# after, correctly, because none of them was in pep/samples.csv.
+# build queue and so cannot see a genome that was never requested. A genome can be
+# added to the repo, be in no queue, exist in no store and no catalog, and coverage
+# still reports no gaps, correctly, because it was never in pep/samples.csv.
 #
 # This is the other question: does every genome in genomes/**/*.yaml, whatever
 # its tier, actually resolve in the catalog? A store_only genome builds no assets
@@ -743,10 +735,9 @@ if [[ "$snakemake_rc" -ne 0 ]]; then
     exit "$snakemake_rc"
 fi
 
-# A failed push must also surface. Until 2026-07-21 push was fully non-fatal, so
-# job 17162885 reported COMPLETED to SLURM while uploading nothing ("0 succeeded,
-# 6 failed") -- the nightly looked healthy for as long as nobody read the log.
-# The publishing step failing is a failed run.
+# A failed push must also surface. If push is non-fatal the job reports COMPLETED
+# to SLURM while uploading nothing, and the nightly looks healthy for as long as
+# nobody reads the log. The publishing step failing is a failed run.
 if [[ "$push_rc" -ne 0 ]]; then
     echo "$(date) | run_builds: exiting with push status $push_rc (assets built but not published; index left unchanged)"
     exit "$push_rc"

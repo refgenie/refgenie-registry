@@ -3,20 +3,20 @@
 
 The per-genome FHR sidecars are BUILD OUTPUT, not source. pep/metadata/ is a
 gitignored STAGING folder: build/run_builds.sh re-derives every file in it before
-anything downstream reads it. Editing these files by hand is pointless -- the next
+anything downstream reads it. Editing these files by hand is pointless, the next
 run overwrites them. Edit the source genomes/*/*.yaml instead.
 
 They are deliberately NOT committed, unlike pep/samples.csv. samples.csv is
-committed because its diff is the go/no-go gate -- committing it launches builds.
+committed because its diff is the go/no-go gate, committing it launches builds.
 These sidecars gate nothing: they are a deterministic projection of the genome
 YAMLs through tools/genome_to_fhr.py, so reviewing them means reviewing the same
 facts twice, in a format nobody authors.
 
-One file is written per genome YAML -- EVERY genome, not just the ones the PEP
+One file is written per genome YAML, EVERY genome, not just the ones the PEP
 queues. Most of the corpus sits at ``build.tier: store_only``: no PEP row, no
 assets, sequence loaded into a store. The sidecar is exactly what gives such a
 genome its organism and taxonomy in that store, so scoping this generator to the
-build queue is what left hundreds of collections federating in with null species.
+build queue would leave those collections with null species and taxonomy.
 
 Each record is normalized to the FHR shape by the single mapping module
 tools/genome_to_fhr.py, so this generator and the store loader agree on the
@@ -81,7 +81,7 @@ def read_pep_genomes(samples_csv: str = SAMPLES_CSV) -> list[str]:
 def index_yaml_records(genomes_dir: str = GENOMES_DIR) -> dict[str, dict]:
     """Map every genome YAML's ``name:`` field to its parsed record.
 
-    Keyed by the in-file ``name``, not the filename -- the two can differ, and the
+    Keyed by the in-file ``name``, not the filename, the two can differ, and the
     build queue addresses genomes by ``name``.
     """
     records: dict[str, dict] = {}
@@ -107,8 +107,8 @@ def generate(
     Every genome YAML gets a sidecar, plus a minimal record for any queued genome
     that has no YAML. The missing list is advisory (WARNING), never fatal.
 
-    Sorted by genome name so the written set -- and therefore the committed diff
-    and the drift check -- never depends on directory walk order.
+    Sorted by genome name so the written set, and therefore the committed diff
+    and the drift check, never depends on directory walk order.
     """
     records = index_yaml_records(genomes_dir)
     out: dict[str, str] = {}
@@ -136,7 +136,7 @@ def write(desired: dict[str, str], metadata_dir: str = METADATA_DIR) -> None:
 
     Writes are IDEMPOTENT: a sidecar whose on-disk content already matches is left
     untouched, mtime and all. This matters because the nightly regenerates every
-    sidecar on every run -- rewriting unchanged files would bump every mtime a
+    sidecar on every run, rewriting unchanged files would bump every mtime a
     night, and the Rivanna profile drives snakemake from mtime alone
     (rerun-triggers: mtime), so that churn would re-trigger every genome's build.
     """

@@ -18,10 +18,10 @@ venv/
 
 # Generated FHR sidecars. pep/metadata/ is a STAGING folder, not source:
 # build/generate_genome_metadata.py re-derives every file in it from
-# genomes/**/*.yaml on each run, and the nightly regenerates it before anything
-# reads it. Committing them meant a genome PR carried a second file mirroring the
-# first -- 681 of them in the migration -- and reviewing a deterministic
-# projection of the YAML is reviewing the same facts twice.
+# genomes/**/*.yaml, and the nightly regenerates it before anything reads it.
+# Committing them would make every genome PR carry a second file mirroring the
+# first, and reviewing a deterministic projection of the YAML is reviewing the
+# same facts twice.
 # (pep/samples.csv IS still committed: its diff is the go/no-go gate for builds.)
 pep/metadata/
 

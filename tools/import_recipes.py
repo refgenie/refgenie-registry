@@ -21,7 +21,7 @@ What this tool does:
 
 Import is IDEMPOTENT ("sync", not "overwrite"). The build catalog is persistent
 and re-imported every night, so any asset class or recipe whose ``(name,
-version)`` is already present is left untouched and SKIPPED — versioned
+version)`` is already present is left untouched and SKIPPED, versioned
 definitions are immutable, so a matching version in the catalog is by definition
 identical. A genuinely changed definition bumps its version and imports as a new
 version. This deliberately avoids the overwrite path: ``AssetClassManager.add(
@@ -32,7 +32,7 @@ The overwrite path is never exercised.
 DELETION IS NOT PROPAGATED. This loader only adds; it never removes. Deleting a
 recipe or asset class from the registry therefore leaves its row in the
 persistent catalog forever, and ``populate_snakefile_template`` emits one rule
-per recipe NAME in the *catalog*, not per recipe in the repo -- so a deleted
+per recipe NAME in the *catalog*, not per recipe in the repo, so a deleted
 recipe keeps a live Snakefile rule. That rule is inert while nothing requests
 its asset group (the nightly builds only what ``pep/samples.csv`` queues), but
 it is not harmless in general: the rule still carries the deleted recipe's
@@ -41,13 +41,13 @@ that no longer exists in git. Retiring a recipe therefore needs a deliberate
 catalog cleanup (delete the ``recipeassetclassesinputs`` rows, then the
 ``recipe`` row, then the ``assetclassseekkey`` rows and the ``assetclass`` row);
 do it only after confirming no ``asset``/``assetgroup`` references the class.
-Done for ``bismark_bt1_index`` on 2026-07-23 (backup:
+Done for ``bismark_bt1_index`` (backup:
 ``<catalog>/refgenie_build.sqlite.bak-20260723-bismark_bt1``).
 
 The ONLY transformation performed is dropping the additive non-runtime keys
 ``tags``, ``outputs``, ``test``, ``resources``, and ``metadata`` (provenance /
 CI / UX metadata that the builder ignores). No runtime field is renamed or
-translated -- the native build fields (``command_templates``,
+translated, the native build fields (``command_templates``,
 ``input_assets``/``input_files``/``input_params``, ``docker_image``,
 ``custom_seek_keys``, ``default_asset``, ``output_asset_class``) pass through
 verbatim.
@@ -251,7 +251,7 @@ def register_asset_remote(
         print(f"[remote] upserted '{name}' (s3) prefix={prefix} push_command={push_command!r}")
 
 
-def build_refgenie(db_config: str | None, genome_folder: Path | None = None) -> Any:
+def open_refgenie(db_config: str | None, genome_folder: Path | None = None) -> Any:
     """Construct a Refgenie instance.
 
     With ``db_config`` None, an in-memory SQLite database is used.
@@ -338,7 +338,7 @@ def main(argv: list[str] | None = None) -> int:
     )
     args = parser.parse_args(argv)
 
-    refgenie = build_refgenie(args.db_config, genome_folder=args.genome_folder)
+    refgenie = open_refgenie(args.db_config, genome_folder=args.genome_folder)
     summary = import_registry(refgenie, args.registry_root)
 
     # Register the S3 asset-push remote so build children can resolve --push-to

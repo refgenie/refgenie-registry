@@ -5,7 +5,7 @@
 which store holds its sequence and how far to take it (`build.tier`, optionally
 adjusted by `build.add` / `build.drop`); pep/tiers.yaml defines what each tier
 means. samples.csv is a generated artifact (one row per (genome, asset)). Editing
-it by hand is forbidden -- the build/run_builds.sh guard regenerates it and fails
+it by hand is forbidden, the build/run_builds.sh guard regenerates it and fails
 the nightly on any diff.
 
 Genomes at `tier: store_only` produce NO rows: their sequence is loaded into a
@@ -16,17 +16,17 @@ Per-genome asset set:
   2. apply `add:` as a union (append anything not already present, in add order),
   3. apply `drop:` as a difference.
 The result order is deterministic (tier order, then add order), and genomes are
-emitted sorted by name -- directory walk order is not stable, and the drift guard
+emitted sorted by name, directory walk order is not stable, and the drift guard
 compares bytes.
 
 Three validations run before anything is written; any one fails generation:
-  * FASTA source     -- a genome in a build tier needs a `<genome>_fa` key in
+  * FASTA source: a genome in a build tier needs a `<genome>_fa` key in
     pep/config.yaml `derive.sources`, or every row it emits points at a
     nonexistent source and the failure surfaces much later, inside peppy.
-  * Source validation -- a Class-2/3 asset (one whose recipe declares external
+  * Source validation, a Class-2/3 asset (one whose recipe declares external
     input_files) requires a per-genome source key `<genome>_<asset>` in
     pep/config.yaml `derive.sources`.
-  * Dependency closure -- every asset dependency declared by a recipe's
+  * Dependency closure, every asset dependency declared by a recipe's
     `input_assets` must itself be in the genome's resolved set (e.g.
     tallymer_index needs suffixerator_index; salmon_* needs fasta_txome).
 

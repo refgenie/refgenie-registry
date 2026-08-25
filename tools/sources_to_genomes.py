@@ -2,14 +2,14 @@
 """Generate genome YAMLs from a store's sources.csv.
 
 A store's `sources.csv` lists the sequence collections it holds. A genome YAML is
-the registry's record OF one of those collections -- its name, organism, taxonomy,
+the registry's record OF one of those collections, its name, organism, taxonomy,
 assembly accession, and its `build:` block. Most of a store's collections have no
 YAML, so they carry no organism or taxonomy anywhere in the registry, and a client
 browsing the store sees a digest and nothing else.
 
 This script closes that gap in bulk: it walks a store's sources.csv, skips every
 row a genome YAML already covers, and writes one YAML per remaining row at
-`build: {store: <slug>, tier: store_only}` -- registered and described, no assets
+`build: {store: <slug>, tier: store_only}`, registered and described, no assets
 built. It is also how any future hub import lands.
 
 It is IDEMPOTENT: a row already covered (by assembly accession, or by the file
@@ -117,7 +117,7 @@ def _get_json(url: str) -> dict:
 def fetch_taxon(name: str) -> dict | None:
     """{taxon_id, common_name} for an organism name, from NCBI Taxonomy.
 
-    Returns None when NCBI resolves the name to zero or several taxa -- an
+    Returns None when NCBI resolves the name to zero or several taxa, an
     ambiguous name must not be guessed at.
     """
     query = urllib.parse.urlencode({"db": "taxonomy", "term": name, "retmode": "json"})
@@ -326,7 +326,7 @@ def generate(store: str, out_dir: Path, dry_run: bool, offline: bool) -> int:
               f"{' (offline)' if offline else ''}: {unresolved}", file=sys.stderr)
     if skipped_taxon:
         problems += len(skipped_taxon)
-        print(f"  SKIPPED {len(skipped_taxon)} row(s) with no taxon id -- a real gap, "
+        print(f"  SKIPPED {len(skipped_taxon)} row(s) with no taxon id, a real gap, "
               f"not a blank field:", file=sys.stderr)
         for slug, organism in skipped_taxon:
             print(f"    {slug}: {organism}", file=sys.stderr)

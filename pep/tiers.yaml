@@ -9,7 +9,7 @@
 #   full           + suffixerator_index (and star/tallymer once proven)
 #
 # build/generate_samples.py reads this file plus every genome YAML and emits
-# pep/samples.csv. Editing samples.csv by hand is forbidden -- the
+# pep/samples.csv. Editing samples.csv by hand is forbidden, the
 # build/run_builds.sh guard regenerates it and fails the nightly on any diff.
 #
 # ---------------------------------------------------------------------------
@@ -21,7 +21,7 @@
 # those recipes are UNPROVEN in this pipeline, so every genome that names those
 # tiers carries a temporary `drop:` removing them (and the model organisms an
 # `add: [suffixerator_index]`). Activating star/tallymer/bismark is a deliberate
-# follow-up once the recipes are proven -- it just removes the drops.
+# follow-up once the recipes are proven, it just removes the drops.
 # ---------------------------------------------------------------------------
 
 tiers:

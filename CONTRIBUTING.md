@@ -4,8 +4,8 @@
 
 Contributions are welcome via pull requests. You can:
 
-1. **Add a genome** — define a new genome assembly, and say how far to build it
-2. **Add a recipe** — define how to build an asset (e.g., an aligner index)
+1. **Add a genome**, define a new genome assembly, and say how far to build it
+2. **Add a recipe**, define how to build an asset (e.g., an aligner index)
 
 ## Adding a Genome
 
@@ -47,7 +47,7 @@ build:
 | `decoys` | Decoy and spike-in sequences |
 | `demo` | Test data for development |
 
-The store must actually hold the sequence — there must be a row for it in that
+The store must actually hold the sequence, there must be a row for it in that
 store's `sources.csv`. `python build/sync_stores.py` reports any genome whose
 store does not. If no existing store fits, see
 [Adding a new store](stores/README.md#adding-a-new-store).
@@ -63,7 +63,7 @@ it; the definitions live in [`pep/tiers.yaml`](pep/tiers.yaml):
 | `full` | + `suffixerator_index` |
 
 **`store_only` is the right default for a new genome.** It registers the genome,
-gives it organism and taxonomy metadata, and loads its sequence — with no build
+gives it organism and taxonomy metadata, and loads its sequence, with no build
 cost. Most of the registry sits there. Ask for a build tier when you actually need
 the indexes.
 
@@ -82,6 +82,11 @@ vocabulary. The registry-native keys below are the source of truth for the FHR
 core; the optional `fhr:` block is an escape hatch for pure-FHR provenance
 fields that have no registry-native home. See [`schema/README.md`](schema/README.md)
 for the field-by-field YAML → `.fhr.json` mapping.
+
+The FHR metadata that ends up in the store is **generated during the build from
+this YAML**, you never write or commit a `.fhr.json` yourself. The build derives
+one FHR record per genome and publishes it into the store alongside the sequence,
+so what the API serves is exactly what you wrote here.
 
 **Example** (see `genomes/human/hg38.yaml` for a complete reference):
 
@@ -146,11 +151,11 @@ metadata:                       # optional registry bookkeeping (not exported to
   the genome is.
 - `pep/samples.csv` and `pep/metadata/` are **generated** from the genome YAMLs by
   `build/generate_samples.py` and `build/generate_genome_metadata.py`. Never edit
-  them by hand — the nightly regenerates both and fails on any diff.
+  them by hand, the nightly regenerates both and fails on any diff.
 
 ## Adding a Recipe
 
-Recipes use refgenie's **native recipe model** — the single canonical model.
+Recipes use refgenie's **native recipe model**, the single canonical model.
 refgenie is the build system and consumes recipes directly (no conversion step).
 A recipe needs two things: the recipe file itself, and a matching **asset class**
 that types its output (defines the seek keys). Both reference asset classes by
@@ -212,7 +217,7 @@ metadata:
   license: MIT
 ```
 
-**Example asset class** (`asset_classes/my_asset.yaml`) — the **source of truth**
+**Example asset class** (`asset_classes/my_asset.yaml`), the **source of truth**
 for the asset's seek keys:
 
 ```yaml
@@ -256,7 +261,7 @@ serving_modes:
 ## Requesting a Build for an Existing Genome
 
 Raise the genome's `build.tier` (or add the asset to its `build.add` list) in
-`genomes/<organism>/<assembly>.yaml` and open a PR. That is the whole request —
+`genomes/<organism>/<assembly>.yaml` and open a PR. That is the whole request , 
 the tier is the build queue. The nightly regenerates `pep/samples.csv` from the
 genome list, so the next run picks it up.
 
@@ -286,6 +291,6 @@ add the asset class in the same PR if it doesn't already exist.
 
 Your PR will go through three layers of review:
 
-1. **Programmatic checks** — schema validation, URL verification, security scanning (< 2 min)
-2. **AI review** — automated quality and security assessment (< 5 min)
-3. **Human review** — a maintainer reviews and approves
+1. **Programmatic checks**, schema validation, URL verification, security scanning (< 2 min)
+2. **AI review**, automated quality and security assessment (< 5 min)
+3. **Human review**, a maintainer reviews and approves

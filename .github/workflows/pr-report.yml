@@ -1,6 +1,6 @@
 # Posts the result of pr-validate back to the pull request, then runs the
 # AI review. Triggered by workflow_run so it executes in the BASE repo with a
-# write token AND secrets — this is what lets us comment/label/status PRs
+# write token AND secrets, this is what lets us comment/label/status PRs
 # opened from forks, where pr-validate's own token is read-only.
 #
 # SECURITY: this workflow must NEVER check out or execute fork code. It only
@@ -48,7 +48,7 @@ jobs:
             const buildOk = run.conclusion === 'success';
 
             // report.json comes from the UNTRUSTED PR build (a fork can put
-            // anything in it). It is used ONLY as sanitized display text —
+            // anything in it). It is used ONLY as sanitized display text , 
             // never to choose which commit/PR to write to.
             let report = {};
             try { report = JSON.parse(fs.readFileSync('pr-report-artifact/report.json', 'utf8')); }
@@ -105,7 +105,7 @@ jobs:
               const description = overallPass
                 ? 'All checks passed'
                 : (failed.length ? clean(failed.map(c => c.name).join(', '), 100) + ' failed'
-                                 : 'Validation failed — see the pr-validate run');
+                                 : 'Validation failed, see the pr-validate run');
               await github.rest.repos.createCommitStatus({
                 owner: context.repo.owner, repo: context.repo.repo, sha,
                 state: overallPass ? 'success' : 'failure',
@@ -127,7 +127,7 @@ jobs:
             lines.push('');
             for (const c of checks) {
               const status = clean(c.status, 10);
-              lines.push(`- ${icon[status] || ':grey_question:'} **${mdSafe(c.name, 60)}** — ${mdSafe(c.summary)}`);
+              lines.push(`- ${icon[status] || ':grey_question:'} **${mdSafe(c.name, 60)}**, ${mdSafe(c.summary)}`);
             }
             if (!checks.length) {
               lines.push('- :grey_question: No report was produced. See the ' +

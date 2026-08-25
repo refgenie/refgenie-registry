@@ -157,7 +157,7 @@ def test_recipe_output_and_inputs_resolve(imported):
 def test_counts(imported):
     """The headline numbers: 27 asset classes + 29 recipes.
 
-    Was 28 + 30 until 2026-07-23, when bismark_bt1_index was retired: bismark
+    Was 28 + 30 before bismark_bt1_index was retired: bismark
     3.x dropped bowtie1 entirely, and the recipe relied on "no --bowtie2 flag
     means bowtie1", so under 3.x it would have built a bowtie2 index and
     published it as a bowtie1 asset.

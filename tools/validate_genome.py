@@ -211,7 +211,7 @@ def check_build_not_in_fhr(data: dict) -> list[str]:
     """The `build:` block must never reach the FHR sidecar.
 
     genome_yaml_to_fhr() builds its output by explicit whitelist, so this holds
-    by construction -- assert it anyway, so a future exporter change that starts
+    by construction, assert it anyway, so a future exporter change that starts
     passing unknown keys through fails here instead of shipping pipeline
     instructions into published metadata.
     """

@@ -9,17 +9,17 @@
 #
 # QUEUE FORMAT: one row per (genome, asset) build request. Rows that share a
 # `sample_name` are collated by peppy, so `pep.get_sample(name).asset_group_name`
-# becomes the LIST of assets to build for that genome — exactly what the
+# becomes the LIST of assets to build for that genome, exactly what the
 # generated Snakefile's `get_all_asset_targets()` iterates over.
 #
-# SCOPE (deliberately bounded — nightly self-resubmitting mobot build):
+# SCOPE (deliberately bounded, nightly self-resubmitting mobot build):
 #   Two large references provide the real churn:
 #     - hg38        : human reference (multi-hour bwa/hisat2/suffixerator builds)
 #     - mm39        : mouse primary assembly, same flavor as hg38
 #   The rest are small model-organism demos. They cost almost no extra wall clock
 #   (every one is under 45 MB gzipped, and the queue fans out across remote nodes
 #   in parallel), but they widen coverage well beyond "one tiny genome and one
-#   huge one" — so a recipe that breaks on, say, many short scaffolds or an
+#   huge one", so a recipe that breaks on, say, many short scaffolds or an
 #   unusual header alphabet gets caught by a five-minute build instead of by hg38
 #   three hours in:
 #     - yeast_s288c    : budding yeast, the original canary (~4 MB)
@@ -56,15 +56,15 @@ sample_modifiers:
       yeast_s288c_fa: "${REFGETSTORE_FASTA}/plantref/saccharomyces_cerevisiae_strain_s288c/ensembl/ENSEMBL_release_81.fa.gz"
       # hg38 = GRCh38 no-alt analysis set (seqcol EiFob05aCWgVU_B_Ae0cypnQut3cxUP1),
       # matching genomes/human/hg38.yaml. Was pangenome_reference/hg38.fa.gz (full+alts,
-      # NTeQ1GQMt2ocCFkS8Z3_qkvetZjabWSt) -- the WRONG genome under this name. The
+      # NTeQ1GQMt2ocCFkS8Z3_qkvetZjabWSt), the WRONG genome under this name. The
       # already-built NTeQ assets were re-homed under hg38_initial (below).
       hg38_fa: "${REFGETSTORE_FASTA}/legacy/hg38.fa.gz"
       # hg38_initial = UCSC's initial 2013 hg38 release, full assembly with 261 alt
       # loci (455 seqs, seqcol NTeQ1GQMt2ocCFkS8Z3_qkvetZjabWSt), matching
-      # genomes/human/hg38_initial.yaml. This is the file the pre-2026-08-06 "hg38"
-      # was wrongly built from; its assets are already built and re-homed here.
+      # genomes/human/hg38_initial.yaml. "hg38" was once wrongly built from this
+      # file; those assets are already built and re-homed here.
       hg38_initial_fa: "${REFGETSTORE_FASTA}/pangenome_reference/hg38.fa.gz"
-      # Primary assembly (no scaffolds/haplotypes), unmasked -- the same flavor of
+      # Primary assembly (no scaffolds/haplotypes), unmasked, the same flavor of
       # reference as hg38 above, so index sizes and build times are comparable.
       mm39_fa: "${REFGETSTORE_FASTA}/jungle/mus_musculus/ensembl/mm39/fasta/Mus_musculus.GRCm39.dna.primary_assembly.fa.gz"
       # Small model-organism demos. All four confirmed staged and readable, with
@@ -76,7 +76,7 @@ sample_modifiers:
       # --- Historical genomes from the legacy refgenomes.databio.org server ------
       # Staged as clean-extension .gz symlinks under $REFGETSTORE_FASTA/legacy/
       # (targets: /project/shefflab/www/refgenie_refgenomes.databio.org/<g>-fasta-fasta,
-      # verified gzip 2026-08-06). Added for the historical-genome matrix fill-in.
+      # verified gzip). Added for the historical-genome matrix fill-in.
       dm6_fa: "${REFGETSTORE_FASTA}/legacy/dm6.fa.gz"
       hg18_fa: "${REFGETSTORE_FASTA}/legacy/hg18.fa.gz"
       hg19_fa: "${REFGETSTORE_FASTA}/legacy/hg19.fa.gz"

@@ -4,14 +4,13 @@
 Every genome YAML declares, in `build.store`, the store that holds its sequence.
 This script is the link between the two halves of that claim:
 
-  * COVERAGE -- for each genome, is there actually a row in that store's
+  * COVERAGE, for each genome, is there actually a row in that store's
     sources.csv for it? A genome whose store does not hold its sequence is
     registered but unloadable, and nothing else notices.
   * CHANGE   -- has a store's sources.csv changed since the store was last built?
-    The nightly needs this: store building was removed from it on 2026-07-18
-    because re-syncing plantref's ~476k objects every night is wasteful, and that
-    reasoning still holds. The fix is to rebuild a store only when its sources
-    changed, which is the question this answers.
+    Rebuilding every store nightly is wasteful (the largest hold hundreds of
+    thousands of objects), so the nightly rebuilds a store only when its sources
+    changed. This is the question that gates it.
 
 A store records the sources.csv it was built from in a `.sources.sha256` file
 inside the built store ($REFGETSTORE_BASE/<slug>/), written by `--record` after a
@@ -24,7 +23,7 @@ An earlier design had this script REGENERATE each sources.csv from the genome
 YAMLs. It cannot: a store row's `fasta` is the path or URL the store actually
 ingests (jungle's are staged relative paths like
 `homo_sapiens/ENA/hg38/fasta/GRCh38-ena-15_GCA_000001405.fa.gz`), and a genome
-YAML records the upstream provider URL instead -- the two are different strings
+YAML records the upstream provider URL instead, the two are different strings
 for the same sequence. Regenerating would also delete every row that has no genome
 YAML yet, which is most of igenomes, refseq, salmon_txomes and plantref. So this
 verifies and reports; it never rewrites a sources.csv.
@@ -217,8 +216,8 @@ def nightly_enabled(slug: str) -> bool:
     A store sets ``nightly: false`` in its project_config.yaml to stay out of the
     build loop. This is NOT the same as stamping it: a stamp asserts "the built
     store matches this sources.csv", which would be a lie for a store that has
-    never been built. Opting out says what is actually true -- we are choosing
-    not to build this one -- and it survives a sources.csv edit, where a stamp
+    never been built. Opting out says what is actually true, we are choosing
+    not to build this one, and it survives a sources.csv edit, where a stamp
     would silently go stale and pull the store back into the loop.
     """
     return load_pep(STORES_DIR / slug).get("nightly", True) is not False
@@ -255,7 +254,7 @@ def record(slug: str) -> int:
     if stamp is None:
         raise SyncError("REFGETSTORE_BASE is not set; nowhere to record the stamp")
     if not stamp.parent.is_dir():
-        raise SyncError(f"{stamp.parent} does not exist -- build the store first")
+        raise SyncError(f"{stamp.parent} does not exist, build the store first")
     stamp.write_text(digest + "\n")
     print(f"sync_stores: recorded {slug} as built from sources.csv {digest[:12]}")
     return 0

@@ -1,8 +1,8 @@
 # Running the build pipeline manually (Rivanna)
 
 The nightly `refgenie-registry-build` mobot job runs `build/run_builds.sh` as a
-SLURM driver. Sometimes you need to run it **by hand** — to test a change, force
-a rebuild, or do a scoped re-push — without waiting for the nightly. This is how.
+SLURM driver. Sometimes you need to run it **by hand**, to test a change, force
+a rebuild, or do a scoped re-push, without waiting for the nightly. This is how.
 
 ## The one rule: never hand-run `refgenie build` directly
 
@@ -11,7 +11,7 @@ a rebuild, or do a scoped re-push — without waiting for the nightly. This is h
 tools live in the bulker crate (`databio/refgenie:1.1.1`), and the recipe's inner
 `/bin/sh` only resolves them when the build runs as a **snakemake rule under the
 crate**, the way `run_builds.sh` dispatches it. Activating the crate in your shell
-is not enough — the recipe subprocess doesn't inherit the shims.
+is not enough, the recipe subprocess doesn't inherit the shims.
 
 So: **always go through `build/run_builds.sh`** (which regenerates the Snakefile
 and fans out one crate-wrapped SLURM job per asset). Do not assemble `refgenie
@@ -20,7 +20,7 @@ build` commands yourself.
 ## What is shared vs. what the checkout provides
 
 The **catalog** (`refgenie_build.sqlite`) and the **stage folder** live on
-brickyard and are pointed to by `infra/rivanna/env.sh` — they are shared no
+brickyard and are pointed to by `infra/rivanna/env.sh`, they are shared no
 matter which checkout you run from. The checkout only provides the code:
 `run_builds.sh`, `recipes/`, `asset_classes/`, `pep/samples.csv`, the snakemake
 profile (`build/profiles/rivanna`), and `build/update_index.py`.
@@ -39,7 +39,7 @@ Key paths (from `infra/rivanna/env.sh`):
 
 1. **The code behavior you're testing must be deployed.** The build/stage/push
    logic is in **refgenie1**, run from `~/deploy/refgenie1` (editable install, so
-   updating the source updates the running CLI — no reinstall). Put it on the
+   updating the source updates the running CLI, no reinstall). Put it on the
    commit you want:
    ```
    cd ~/deploy/refgenie1 && git fetch origin && git merge --ff-only origin/<branch>
@@ -56,7 +56,7 @@ Key paths (from `infra/rivanna/env.sh`):
 ## Scoping a rebuild: remove, then let snakemake refill
 
 `run_builds.sh` builds the whole PEP, but snakemake only rebuilds **missing**
-assets. So to rebuild a subset, remove exactly those assets first — everything
+assets. So to rebuild a subset, remove exactly those assets first, everything
 else is left in place (already built → skipped; already pushed → skipped):
 
 ```
@@ -67,7 +67,7 @@ export REFGENIE_DB_CONFIG_PATH=/project/shefflab/brickyard/results_pipeline/refg
 `remove` cascades: asset row, on-disk content, seek keys, the RemoteAssetLink,
 and (if last in its group) the asset group + alias files. It does **not** delete
 the S3 object (S3 delete is unimplemented), so old name-based objects linger as
-orphans — harmless; a separate cleanup can remove them later.
+orphans, harmless; a separate cleanup can remove them later.
 
 Removing an asset makes its next build a fresh stage + push. Under
 content-addressed storage, the rebuild stages `{genome_digest}/{group}/{asset_digest}.tgz`
@@ -96,12 +96,12 @@ Notes:
 - **`run_builds.sh` resolves `refgenie`, `snakemake`, and `aws` to absolute host
   paths itself** (SLURM children get a bare PATH), and sources `infra/rivanna/env.sh`,
   so you don't set those. It uses the **host** snakemake (has the slurm executor
-  plugin) — a bulker-shim snakemake would die on `--executor slurm`.
+  plugin), a bulker-shim snakemake would die on `--executor slurm`.
 - **Bump the driver time up to `08:00:00` for a full mammalian rebuild**
   (hg38/mm39 suffixerator alone needs ~480 min at the job level). For the 5 small
   genomes, 02:00:00 is ample.
 - **DRY RUN first** to preview the DAG without submitting: prepend `DRY_RUN=1` to
-  the `bash build/run_builds.sh` (or run it directly on a login shell — the
+  the `bash build/run_builds.sh` (or run it directly on a login shell, the
   dry-run does no heavy work and prints the job DAG + a push preview).
 - The mobot checkout (`$CHECKOUTS/refgenie-registry`) is git-only and gets
   `git reset --hard` at the start of each nightly. Running from it by hand is fine

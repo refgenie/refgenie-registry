@@ -26,7 +26,7 @@ build:
 PEP so that `pep.get_sample(genome).asset_group_name` is the list of recipes to
 build for that genome.
 
-Before 2026-08-25 the queue lived in a separate `build_matrix.yaml` that listed
+The queue previously lived in a separate `build_matrix.yaml` that listed
 26 of the 128 genomes; the other 102 genome YAMLs were inert, and a genome could
 be added to the registry without anything anywhere building or loading it. That
 file is gone: one genome, one file, one `build:` block.
@@ -76,14 +76,14 @@ same way.
 
 `generate_samples.py` refuses to generate when any check fails:
 
-- **FASTA source** — a genome in a build tier requires a `<genome>_fa` key in
+- **FASTA source**, a genome in a build tier requires a `<genome>_fa` key in
   `config.yaml` `derive.sources`. Without this the rows are emitted happily,
   pointing at a source key that does not exist, and the run dies much later inside
   peppy with a message that never names the genome.
-- **Source validation** — any Class-2/3 asset (a recipe with non-empty
+- **Source validation**, any Class-2/3 asset (a recipe with non-empty
   `input_files`) requires a per-genome source key `<genome>_<asset>` in
   `config.yaml` `derive.sources`.
-- **Dependency closure** — every asset dependency declared by a recipe's
+- **Dependency closure**, every asset dependency declared by a recipe's
   `input_assets` must also be in the genome's resolved set (e.g. `tallymer_index`
   needs `suffixerator_index`, `salmon_*` needs `fasta_txome`).
 
