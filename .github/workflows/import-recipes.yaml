@@ -2,7 +2,7 @@ name: Import Recipes
 
 # Verifies that the entire registry (refgenie-native asset classes + recipes)
 # can be loaded into a refgenie1 database via tools/import_recipes.py (a thin
-# loader -- no bioconda translation) AND that the loaded registry drives
+# loader, no bioconda translation) AND that the loaded registry drives
 # refgenie's real build system (a build Snakefile is generated). This is the
 # contract that mobot and the build workflows rely on to ingest the registry.
 
@@ -18,7 +18,7 @@ on:
       - ".github/workflows/import-recipes.yaml"
   push:
     branches:
-      - main
+      - master
     paths:
       - "recipes/**"
       - "asset_classes/**"

@@ -1,0 +1,23 @@
+name: fPhoGun1.2
+description: |
+  Pholis gunnellus assembly fPhoGun1.2 (GCA_910591455.2), from VGP.
+organism:
+  scientific_name: Pholis gunnellus
+  common_name: rock gunnel
+  taxon_id: 56726
+assembly:
+  source: GenBank
+  accession: GCA_910591455.2
+fasta:
+  sources:
+  - provider: UCSC
+    url: https://hgdownload.soe.ucsc.edu/hubs/GCA/910/591/455/GCA_910591455.2/GCA_910591455.2.fa.gz
+  checksum:
+    sha256: compute_on_registration
+seqcol:
+  compute: true
+build:
+  store: vgp
+  tier: store_only
+metadata:
+  added_by: sources_to_genomes

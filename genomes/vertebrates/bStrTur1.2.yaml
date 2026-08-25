@@ -1,0 +1,22 @@
+name: bStrTur1.2
+description: |
+  Streptopelia turtur assembly bStrTur1.2 (GCA_901699155.2), from VGP.
+organism:
+  scientific_name: Streptopelia turtur
+  taxon_id: 177155
+assembly:
+  source: GenBank
+  accession: GCA_901699155.2
+fasta:
+  sources:
+  - provider: UCSC
+    url: https://hgdownload.soe.ucsc.edu/hubs/GCA/901/699/155/GCA_901699155.2/GCA_901699155.2.fa.gz
+  checksum:
+    sha256: compute_on_registration
+seqcol:
+  compute: true
+build:
+  store: vgp
+  tier: store_only
+metadata:
+  added_by: sources_to_genomes

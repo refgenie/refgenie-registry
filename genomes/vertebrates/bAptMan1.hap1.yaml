@@ -1,0 +1,23 @@
+name: bAptMan1.hap1
+description: |
+  Apteryx mantelli assembly bAptMan1.hap1 (GCF_036417845.1), from VGP.
+organism:
+  scientific_name: Apteryx mantelli
+  common_name: North Island brown kiwi
+  taxon_id: 2696672
+assembly:
+  source: RefSeq
+  accession: GCF_036417845.1
+fasta:
+  sources:
+  - provider: UCSC
+    url: https://hgdownload.soe.ucsc.edu/hubs/GCF/036/417/845/GCF_036417845.1/GCF_036417845.1.fa.gz
+  checksum:
+    sha256: compute_on_registration
+seqcol:
+  compute: true
+build:
+  store: vgp
+  tier: store_only
+metadata:
+  added_by: sources_to_genomes

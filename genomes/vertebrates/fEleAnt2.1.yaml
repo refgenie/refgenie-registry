@@ -1,0 +1,22 @@
+name: fEleAnt2.1
+description: |
+  Electrona antarctica assembly fEleAnt2.1 (GCA_951216825.1), from VGP.
+organism:
+  scientific_name: Electrona antarctica
+  taxon_id: 206093
+assembly:
+  source: GenBank
+  accession: GCA_951216825.1
+fasta:
+  sources:
+  - provider: UCSC
+    url: https://hgdownload.soe.ucsc.edu/hubs/GCA/951/216/825/GCA_951216825.1/GCA_951216825.1.fa.gz
+  checksum:
+    sha256: compute_on_registration
+seqcol:
+  compute: true
+build:
+  store: vgp
+  tier: store_only
+metadata:
+  added_by: sources_to_genomes

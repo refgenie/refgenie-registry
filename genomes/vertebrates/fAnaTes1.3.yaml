@@ -1,0 +1,23 @@
+name: fAnaTes1.3
+description: |
+  Anabas testudineus assembly fAnaTes1.3 (GCA_900324465.3), from VGP.
+organism:
+  scientific_name: Anabas testudineus
+  common_name: climbing perch
+  taxon_id: 64144
+assembly:
+  source: GenBank
+  accession: GCA_900324465.3
+fasta:
+  sources:
+  - provider: UCSC
+    url: https://hgdownload.soe.ucsc.edu/hubs/GCA/900/324/465/GCA_900324465.3/GCA_900324465.3.fa.gz
+  checksum:
+    sha256: compute_on_registration
+seqcol:
+  compute: true
+build:
+  store: vgp
+  tier: store_only
+metadata:
+  added_by: sources_to_genomes

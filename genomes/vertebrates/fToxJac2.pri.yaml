@@ -1,0 +1,23 @@
+name: fToxJac2.pri
+description: |
+  Toxotes jaculatrix assembly fToxJac2.pri (GCF_017976425.1), from VGP.
+organism:
+  scientific_name: Toxotes jaculatrix
+  common_name: banded archerfish
+  taxon_id: 941984
+assembly:
+  source: RefSeq
+  accession: GCF_017976425.1
+fasta:
+  sources:
+  - provider: UCSC
+    url: https://hgdownload.soe.ucsc.edu/hubs/GCF/017/976/425/GCF_017976425.1/GCF_017976425.1.fa.gz
+  checksum:
+    sha256: compute_on_registration
+seqcol:
+  compute: true
+build:
+  store: vgp
+  tier: store_only
+metadata:
+  added_by: sources_to_genomes

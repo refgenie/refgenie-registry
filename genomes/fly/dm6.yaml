@@ -24,6 +24,11 @@ fasta:
 seqcol:
   compute: true
 
+build:
+  store: legacy
+  tier: standard
+  drop: [star_index]
+
 metadata:
   added: 2026-05-20
   added_by: nsheff

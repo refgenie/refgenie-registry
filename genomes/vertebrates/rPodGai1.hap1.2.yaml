@@ -1,0 +1,23 @@
+name: rPodGai1.hap1.2
+description: |
+  Podarcis gaigeae assembly rPodGai1.hap1.2 (GCA_964106915.2), from VGP.
+organism:
+  scientific_name: Podarcis gaigeae
+  common_name: Skyros wall lizard
+  taxon_id: 90521
+assembly:
+  source: GenBank
+  accession: GCA_964106915.2
+fasta:
+  sources:
+  - provider: UCSC
+    url: https://hgdownload.soe.ucsc.edu/hubs/GCA/964/106/915/GCA_964106915.2/GCA_964106915.2.fa.gz
+  checksum:
+    sha256: compute_on_registration
+seqcol:
+  compute: true
+build:
+  store: vgp
+  tier: store_only
+metadata:
+  added_by: sources_to_genomes

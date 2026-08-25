@@ -1,0 +1,20 @@
+fasta,name,organism,source,genome_assembly,accession,group
+dm6.fa.gz,dm6,Drosophila melanogaster,refgenie,dm6,GCF_000001215.4,legacy
+hg18.fa.gz,hg18,Homo sapiens,refgenie,hg18,GCF_000001405.12,legacy
+hg19.fa.gz,hg19,Homo sapiens,refgenie,hg19,GCF_000001405.25,legacy
+hg38.fa.gz,hg38,Homo sapiens,refgenie,hg38,GCA_000001405.15,legacy
+hg38_chr22.fa.gz,hg38_chr22,Homo sapiens,refgenie,hg38_chr22,,legacy
+hg38_mm10.fa.gz,hg38_mm10,Homo sapiens,refgenie,hg38_mm10,,legacy
+hg38_noalt_decoy.fa.gz,hg38_noalt_decoy,Homo sapiens,refgenie,hg38_noalt_decoy,,legacy
+hg38_primary.fa.gz,hg38_primary,Homo sapiens,refgenie,hg38_primary,,legacy
+hs38d1.fa.gz,hs38d1,Homo sapiens,refgenie,hs38d1,,legacy
+human_alphasat.fa.gz,human_alphasat,Homo sapiens,refgenie,human_alphasat,,legacy
+human_alu.fa.gz,human_alu,Homo sapiens,refgenie,human_alu,,legacy
+human_rDNA.fa.gz,human_rDNA,Homo sapiens,refgenie,human_rDNA,,legacy
+human_repeats.fa.gz,human_repeats,Homo sapiens,refgenie,human_repeats,,legacy
+mm10.fa.gz,mm10,Mus musculus,refgenie,mm10,GCA_000001635.5,legacy
+mm10_primary.fa.gz,mm10_primary,Mus musculus,refgenie,mm10_primary,,legacy
+mouse_chrM2x.fa.gz,mouse_chrM2x,Mus musculus,refgenie,mouse_chrM2x,,legacy
+rCRSd.fa.gz,rCRSd,Homo sapiens,refgenie,rCRSd,,legacy
+rn6.fa.gz,rn6,Rattus norvegicus,refgenie,rn6,GCA_000001895.4,legacy
+t7.fa.gz,t7,Enterobacteria phage T7,refgenie,t7,,legacy

@@ -1,0 +1,23 @@
+name: mArtLit.hap1
+description: |
+  Artibeus lituratus assembly mArtLit.hap1 (GCA_038363095.2), from VGP.
+organism:
+  scientific_name: Artibeus lituratus
+  common_name: great fruit-eating bat
+  taxon_id: 27634
+assembly:
+  source: GenBank
+  accession: GCA_038363095.2
+fasta:
+  sources:
+  - provider: UCSC
+    url: https://hgdownload.soe.ucsc.edu/hubs/GCA/038/363/095/GCA_038363095.2/GCA_038363095.2.fa.gz
+  checksum:
+    sha256: compute_on_registration
+seqcol:
+  compute: true
+build:
+  store: vgp
+  tier: store_only
+metadata:
+  added_by: sources_to_genomes

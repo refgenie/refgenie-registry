@@ -1,0 +1,23 @@
+name: bNesMay2.1
+description: |
+  Nesoenas mayeri assembly bNesMay2.1 (GCA_963082525.1), from VGP.
+organism:
+  scientific_name: Nesoenas mayeri
+  common_name: pink pigeon
+  taxon_id: 187126
+assembly:
+  source: GenBank
+  accession: GCA_963082525.1
+fasta:
+  sources:
+  - provider: UCSC
+    url: https://hgdownload.soe.ucsc.edu/hubs/GCA/963/082/525/GCA_963082525.1/GCA_963082525.1.fa.gz
+  checksum:
+    sha256: compute_on_registration
+seqcol:
+  compute: true
+build:
+  store: vgp
+  tier: store_only
+metadata:
+  added_by: sources_to_genomes

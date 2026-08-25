@@ -1,0 +1,23 @@
+name: aTriCri1.1
+description: |
+  Triturus cristatus assembly aTriCri1.1 (GCA_964204655.1), from VGP.
+organism:
+  scientific_name: Triturus cristatus
+  common_name: warty newt
+  taxon_id: 8323
+assembly:
+  source: GenBank
+  accession: GCA_964204655.1
+fasta:
+  sources:
+  - provider: UCSC
+    url: https://hgdownload.soe.ucsc.edu/hubs/GCA/964/204/655/GCA_964204655.1/GCA_964204655.1.fa.gz
+  checksum:
+    sha256: compute_on_registration
+seqcol:
+  compute: true
+build:
+  store: vgp
+  tier: store_only
+metadata:
+  added_by: sources_to_genomes

@@ -1,0 +1,23 @@
+name: mMelMel3.1_paternal_haplotype
+description: |
+  Meles meles assembly mMelMel3.1 paternal haplotype (GCF_922984935.1), from VGP.
+organism:
+  scientific_name: Meles meles
+  common_name: Eurasian badger
+  taxon_id: 9662
+assembly:
+  source: RefSeq
+  accession: GCF_922984935.1
+fasta:
+  sources:
+  - provider: UCSC
+    url: https://hgdownload.soe.ucsc.edu/hubs/GCF/922/984/935/GCF_922984935.1/GCF_922984935.1.fa.gz
+  checksum:
+    sha256: compute_on_registration
+seqcol:
+  compute: true
+build:
+  store: vgp
+  tier: store_only
+metadata:
+  added_by: sources_to_genomes

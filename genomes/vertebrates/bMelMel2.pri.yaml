@@ -1,0 +1,22 @@
+name: bMelMel2.pri
+description: |
+  Melospiza melodia melodia assembly bMelMel2.pri (GCF_035770615.1), from VGP.
+organism:
+  scientific_name: Melospiza melodia melodia
+  taxon_id: 1914991
+assembly:
+  source: RefSeq
+  accession: GCF_035770615.1
+fasta:
+  sources:
+  - provider: UCSC
+    url: https://hgdownload.soe.ucsc.edu/hubs/GCF/035/770/615/GCF_035770615.1/GCF_035770615.1.fa.gz
+  checksum:
+    sha256: compute_on_registration
+seqcol:
+  compute: true
+build:
+  store: vgp
+  tier: store_only
+metadata:
+  added_by: sources_to_genomes

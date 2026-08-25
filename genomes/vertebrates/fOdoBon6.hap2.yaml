@@ -1,0 +1,23 @@
+name: fOdoBon6.hap2
+description: |
+  Odontesthes bonariensis assembly fOdoBon6.hap2 (GCA_027942885.1), from VGP.
+organism:
+  scientific_name: Odontesthes bonariensis
+  common_name: pejerrey
+  taxon_id: 219752
+assembly:
+  source: GenBank
+  accession: GCA_027942885.1
+fasta:
+  sources:
+  - provider: UCSC
+    url: https://hgdownload.soe.ucsc.edu/hubs/GCA/027/942/885/GCA_027942885.1/GCA_027942885.1.fa.gz
+  checksum:
+    sha256: compute_on_registration
+seqcol:
+  compute: true
+build:
+  store: vgp
+  tier: store_only
+metadata:
+  added_by: sources_to_genomes

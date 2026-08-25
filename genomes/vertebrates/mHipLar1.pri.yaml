@@ -1,0 +1,22 @@
+name: mHipLar1.pri
+description: |
+  Hipposideros larvatus assembly mHipLar1.pri (GCA_031876335.1), from VGP.
+organism:
+  scientific_name: Hipposideros larvatus
+  taxon_id: 175524
+assembly:
+  source: GenBank
+  accession: GCA_031876335.1
+fasta:
+  sources:
+  - provider: UCSC
+    url: https://hgdownload.soe.ucsc.edu/hubs/GCA/031/876/335/GCA_031876335.1/GCA_031876335.1.fa.gz
+  checksum:
+    sha256: compute_on_registration
+seqcol:
+  compute: true
+build:
+  store: vgp
+  tier: store_only
+metadata:
+  added_by: sources_to_genomes

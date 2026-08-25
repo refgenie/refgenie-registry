@@ -2,7 +2,7 @@
 
 JSON Schemas that define the required structure of registry contributions.
 Every genome and recipe entry submitted to the registry is **validated against
-these schemas** — locally by `tools/validate_genome.py` / `tools/validate_recipe.py`
+these schemas**, locally by `tools/validate_genome.py` / `tools/validate_recipe.py`
 and again automatically in CI on each pull request. They are the source of truth
 for which fields are required, their types, and their allowed values.
 
@@ -30,7 +30,7 @@ vocabulary. The registry-native keys are the source of truth for the FHR core
 (`name`, `aliases`, `organism`, `assembly`, `fasta.checksum`, `seqcol`), and the
 optional `fhr:` block is an escape hatch for pure-FHR provenance fields that have
 no registry-native home. A single exporter, [`tools/genome_to_fhr.py`](../tools/genome_to_fhr.py),
-owns the deterministic YAML → `.fhr.json` mapping — it is the executable source
+owns the deterministic YAML → `.fhr.json` mapping, it is the executable source
 of truth, and the validator's `--check-fhr` self-check runs it on every file.
 
 The emitted JSON uses camelCase keys that match the gtars `FhrMetadata` type
@@ -69,7 +69,27 @@ round-trips it. The **seqcol digest is the sidecar filename**
 | *(exporter constant)* | `schemaVersion` | `1.0` |
 
 `fasta.sources[].provider`, `fasta.checksum.md5`, `seqcol.length`, and the whole
-`metadata` block are registry-only and are dropped from the sidecar.
+`metadata` and `build` blocks are registry-only and are dropped from the sidecar.
+
+### The registry/FHR boundary
+
+`genome.schema.yaml`'s top-level fields fall into two groups, and the nesting says
+which is which:
+
+- **FHR-exported**, `name`, `aliases`, `description`, `organism`, `assembly`,
+  `masking`, `fasta.checksum`, `seqcol`, and the `fhr:` escape hatch. These are
+  facts about the genome.
+- **Registry-only**, `metadata:` (bookkeeping: who added it, when) and `build:`
+  (pipeline instructions: which store holds the sequence, how far to build it).
+  These describe what *we* do with the genome, not what the genome *is*, so they
+  are fenced off in their own blocks and never exported.
+
+The exporter enforces this by construction: `genome_yaml_to_fhr()` builds its
+output by explicit whitelist (`out["genome"] = ...`), never by passing unknown
+keys through, so a new top-level block is ignored automatically. The validator
+asserts it anyway, `check_build_not_in_fhr` runs the export and fails if any
+`build` key appears, so a future exporter that starts forwarding unknown keys
+fails here rather than publishing pipeline state as metadata.
 
 `commonName`, `assemblySource`, and `assemblyLevel` are gtars-native extension
 fields (they ride the sidecar's `extra` catch-all, not upstream FHR 1.0). They
@@ -93,7 +113,7 @@ fields for a *complete publishable record* and forbids extras; a registry export
 is intentionally partial and its true round-trip target is the permissive gtars
 `FhrMetadata`. The profile therefore (1) drops upstream's top-level `required`,
 (2) allows the gtars-native `license` field (upstream uses `reuseConditions`),
-and (3) accepts the `algo:value` checksum form — while keeping every property
+and (3) accepts the `algo:value` checksum form, while keeping every property
 type/pattern/enum and `additionalProperties: false` so typos are still caught.
 
 To update the vendored copy, re-download from the source URL and update the

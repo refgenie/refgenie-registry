@@ -1,0 +1,23 @@
+name: bSylAtr1.pri
+description: |
+  Sylvia atricapilla assembly bSylAtr1.pri (GCF_009819655.1), from VGP.
+organism:
+  scientific_name: Sylvia atricapilla
+  common_name: blackcap
+  taxon_id: 48155
+assembly:
+  source: RefSeq
+  accession: GCF_009819655.1
+fasta:
+  sources:
+  - provider: UCSC
+    url: https://hgdownload.soe.ucsc.edu/hubs/GCF/009/819/655/GCF_009819655.1/GCF_009819655.1.fa.gz
+  checksum:
+    sha256: compute_on_registration
+seqcol:
+  compute: true
+build:
+  store: vgp
+  tier: store_only
+metadata:
+  added_by: sources_to_genomes

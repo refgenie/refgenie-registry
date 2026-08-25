@@ -1,0 +1,22 @@
+name: sSteTig4.hap1
+description: |
+  Stegostoma tigrinum assembly sSteTig4.hap1 (GCF_030684315.1), from VGP.
+organism:
+  scientific_name: Stegostoma tigrinum
+  taxon_id: 3053191
+assembly:
+  source: RefSeq
+  accession: GCF_030684315.1
+fasta:
+  sources:
+  - provider: UCSC
+    url: https://hgdownload.soe.ucsc.edu/hubs/GCF/030/684/315/GCF_030684315.1/GCF_030684315.1.fa.gz
+  checksum:
+    sha256: compute_on_registration
+seqcol:
+  compute: true
+build:
+  store: vgp
+  tier: store_only
+metadata:
+  added_by: sources_to_genomes

@@ -1,0 +1,23 @@
+name: fCypVen1.hap2
+description: |
+  Cyprinella venusta assembly fCypVen1.hap2 (GCA_038024135.1), from VGP.
+organism:
+  scientific_name: Cyprinella venusta
+  common_name: blacktail shiner
+  taxon_id: 28792
+assembly:
+  source: GenBank
+  accession: GCA_038024135.1
+fasta:
+  sources:
+  - provider: UCSC
+    url: https://hgdownload.soe.ucsc.edu/hubs/GCA/038/024/135/GCA_038024135.1/GCA_038024135.1.fa.gz
+  checksum:
+    sha256: compute_on_registration
+seqcol:
+  compute: true
+build:
+  store: vgp
+  tier: store_only
+metadata:
+  added_by: sources_to_genomes

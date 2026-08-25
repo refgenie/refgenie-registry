@@ -1,0 +1,23 @@
+name: fAloSap1.pri
+description: |
+  Alosa sapidissima assembly fAloSap1.pri (GCF_018492685.1), from VGP.
+organism:
+  scientific_name: Alosa sapidissima
+  common_name: American shad
+  taxon_id: 34773
+assembly:
+  source: RefSeq
+  accession: GCF_018492685.1
+fasta:
+  sources:
+  - provider: UCSC
+    url: https://hgdownload.soe.ucsc.edu/hubs/GCF/018/492/685/GCF_018492685.1/GCF_018492685.1.fa.gz
+  checksum:
+    sha256: compute_on_registration
+seqcol:
+  compute: true
+build:
+  store: vgp
+  tier: store_only
+metadata:
+  added_by: sources_to_genomes

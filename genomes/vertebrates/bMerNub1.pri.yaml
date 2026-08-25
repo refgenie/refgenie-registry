@@ -1,0 +1,23 @@
+name: bMerNub1.pri
+description: |
+  Merops nubicus assembly bMerNub1.pri (GCA_009819595.1), from VGP.
+organism:
+  scientific_name: Merops nubicus
+  common_name: carmine bee-eater
+  taxon_id: 57421
+assembly:
+  source: GenBank
+  accession: GCA_009819595.1
+fasta:
+  sources:
+  - provider: UCSC
+    url: https://hgdownload.soe.ucsc.edu/hubs/GCA/009/819/595/GCA_009819595.1/GCA_009819595.1.fa.gz
+  checksum:
+    sha256: compute_on_registration
+seqcol:
+  compute: true
+build:
+  store: vgp
+  tier: store_only
+metadata:
+  added_by: sources_to_genomes

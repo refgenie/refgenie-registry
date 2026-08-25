@@ -1,7 +1,7 @@
 # infra/rivanna/
 
 Rivanna (UVA HPC) execution layer for building and publishing RefgetStores.
-**Not needed to use the registry** — this is the operator-side machinery that
+**Not needed to use the registry**, this is the operator-side machinery that
 runs the `stores/` build pipeline on the cluster. It is isolated here so the
 rest of the repo reads cleanly for external contributors.
 

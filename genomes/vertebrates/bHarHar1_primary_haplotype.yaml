@@ -1,0 +1,23 @@
+name: bHarHar1_primary_haplotype
+description: |
+  Harpia harpyja assembly bHarHar1 primary haplotype (GCF_026419915.1), from VGP.
+organism:
+  scientific_name: Harpia harpyja
+  common_name: harpy eagle
+  taxon_id: 202280
+assembly:
+  source: RefSeq
+  accession: GCF_026419915.1
+fasta:
+  sources:
+  - provider: UCSC
+    url: https://hgdownload.soe.ucsc.edu/hubs/GCF/026/419/915/GCF_026419915.1/GCF_026419915.1.fa.gz
+  checksum:
+    sha256: compute_on_registration
+seqcol:
+  compute: true
+build:
+  store: vgp
+  tier: store_only
+metadata:
+  added_by: sources_to_genomes

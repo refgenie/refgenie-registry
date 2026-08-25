@@ -1,0 +1,23 @@
+name: bStrHab1.2.pri
+description: |
+  Strigops habroptila assembly bStrHab1.2.pri (GCF_004027225.2), from VGP.
+organism:
+  scientific_name: Strigops habroptila
+  common_name: Kakapo
+  taxon_id: 2489341
+assembly:
+  source: RefSeq
+  accession: GCF_004027225.2
+fasta:
+  sources:
+  - provider: UCSC
+    url: https://hgdownload.soe.ucsc.edu/hubs/GCF/004/027/225/GCF_004027225.2/GCF_004027225.2.fa.gz
+  checksum:
+    sha256: compute_on_registration
+seqcol:
+  compute: true
+build:
+  store: vgp
+  tier: store_only
+metadata:
+  added_by: sources_to_genomes

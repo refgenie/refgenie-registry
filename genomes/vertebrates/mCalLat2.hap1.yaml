@@ -1,0 +1,23 @@
+name: mCalLat2.hap1
+description: |
+  Callospermophilus lateralis assembly mCalLat2.hap1 (GCA_048772815.1), from VGP.
+organism:
+  scientific_name: Callospermophilus lateralis
+  common_name: golden-mantled ground squirrel
+  taxon_id: 76772
+assembly:
+  source: GenBank
+  accession: GCA_048772815.1
+fasta:
+  sources:
+  - provider: UCSC
+    url: https://hgdownload.soe.ucsc.edu/hubs/GCA/048/772/815/GCA_048772815.1/GCA_048772815.1.fa.gz
+  checksum:
+    sha256: compute_on_registration
+seqcol:
+  compute: true
+build:
+  store: vgp
+  tier: store_only
+metadata:
+  added_by: sources_to_genomes

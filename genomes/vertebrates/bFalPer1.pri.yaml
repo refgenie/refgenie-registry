@@ -1,0 +1,23 @@
+name: bFalPer1.pri
+description: |
+  Falco peregrinus assembly bFalPer1.pri (GCF_023634155.1), from VGP.
+organism:
+  scientific_name: Falco peregrinus
+  common_name: peregrine falcon
+  taxon_id: 8954
+assembly:
+  source: RefSeq
+  accession: GCF_023634155.1
+fasta:
+  sources:
+  - provider: UCSC
+    url: https://hgdownload.soe.ucsc.edu/hubs/GCF/023/634/155/GCF_023634155.1/GCF_023634155.1.fa.gz
+  checksum:
+    sha256: compute_on_registration
+seqcol:
+  compute: true
+build:
+  store: vgp
+  tier: store_only
+metadata:
+  added_by: sources_to_genomes

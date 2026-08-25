@@ -1,0 +1,22 @@
+name: ktThaDemo2.hap1.1
+description: |
+  Thalia democratica assembly ktThaDemo2.hap1.1 (GCA_965202585.1), from VGP.
+organism:
+  scientific_name: Thalia democratica
+  taxon_id: 34761
+assembly:
+  source: GenBank
+  accession: GCA_965202585.1
+fasta:
+  sources:
+  - provider: UCSC
+    url: https://hgdownload.soe.ucsc.edu/hubs/GCA/965/202/585/GCA_965202585.1/GCA_965202585.1.fa.gz
+  checksum:
+    sha256: compute_on_registration
+seqcol:
+  compute: true
+build:
+  store: vgp
+  tier: store_only
+metadata:
+  added_by: sources_to_genomes

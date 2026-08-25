@@ -5,7 +5,7 @@
 Community-curated genome definitions and build recipes for refgenie.
 
 > **This registry is the single source of truth for refgenie1 recipes, asset
-> classes, and genomes** — and the one place to contribute them. It **replaces
+> classes, and genomes**, and the one place to contribute them. It **replaces
 > the legacy [`recipes`](https://github.com/refgenie/recipes) repository**, which
 > served the end-of-life refgenie (`refgenie` / `refgenconf` / `refgenieserver`)
 > and is not used by refgenie1. refgenie1 builds directly from this registry
@@ -19,13 +19,13 @@ unique digest, so analysis tools can fetch exactly the resource they need
 instead of every group rebuilding the same indexes by hand. Assets are served
 publicly from a refgenie server:
 
-- [**api.refgenie.org**](https://api.refgenie.org) — the **current** refgenie server. This is
+- [**api.refgenie.org**](https://api.refgenie.org), the **current** refgenie server. This is
   the live service that **this registry populates**: assets built here are published to it,
   and clients pull from it.
-- [**refgenomes.databio.org**](http://refgenomes.databio.org) — the **legacy** refgenie server.
+- [**refgenomes.databio.org**](http://refgenomes.databio.org), the **legacy** refgenie server.
   It predates this registry and is fed by a different (older) mechanism; it remains online for
   existing users but is not driven by this repo.
-- [**refgenie.org**](https://refgenie.org) — documentation and the `refgenie` CLI.
+- [**refgenie.org**](https://refgenie.org), documentation and the `refgenie` CLI.
 
 This repository is the **data layer behind the current service.** It is a monorepo of
 reference-genome metadata, organized like [bioconda](https://bioconda.github.io/) for
@@ -36,7 +36,7 @@ large genome files, the registry stores the **definitions** (where a genome come
 how to build its assets) and a generated index of what has been built.
 
 **refgenie is the build system.** Recipes are written in refgenie's own native
-recipe model and consumed directly — there is no separate registry format and no
+recipe model and consumed directly, there is no separate registry format and no
 conversion step. `refgenie generate snakefile` renders a Snakemake workflow from
 the recipes; each rule runs `refgenie1 build` inside the recipe's `docker_image`,
 executing its `command_templates` and tagging the asset from `custom_seek_keys` +
@@ -45,18 +45,19 @@ keys. See [design.md](./design.md) for the full data model.
 
 The repository is organized as:
 
-- **`genomes/`** — YAML definitions of genome assemblies (community-contributed via PR)
-- **`recipes/`** — refgenie-native YAML build recipes for creating genome assets (community-contributed via PR)
-- **`asset_classes/`** — Typed asset-class definitions: the **source of truth** for an asset's seek keys and serving modes. Recipes reference these by name (community-contributed via PR)
-- **`index/`** — Auto-generated manifest of built assets (CI-only, no human edits — see [`index/README.md`](index/README.md))
-- **`stores/`** — RefgetStore source manifests: content-addressable sequence collections, one PEP project per store (see [`stores/README.md`](stores/README.md))
-- **`schema/`** — JSON Schemas that genome and recipe entries are validated against (see [`schema/README.md`](schema/README.md))
-- **`tools/`** — Validation scripts and helpers (see [`tools/README.md`](tools/README.md))
-- **`infra/`** — Operator-side build/deploy infrastructure, e.g. the Rivanna HPC layer ([`infra/rivanna/`](infra/rivanna/)); not needed to use the registry
+- **`genomes/`**, YAML definitions of genome assemblies, each with a `build:` block naming the store that holds its sequence and how far to build it. **This is the single list of genomes** (community-contributed via PR)
+- **`recipes/`**, refgenie-native YAML build recipes for creating genome assets (community-contributed via PR)
+- **`asset_classes/`**, Typed asset-class definitions: the **source of truth** for an asset's seek keys and serving modes. Recipes reference these by name (community-contributed via PR)
+- **`index/`**, Auto-generated manifest of built assets (CI-only, no human edits, see [`index/README.md`](index/README.md))
+- **`pep/`**, the generated nightly build queue: `tiers.yaml` defines what each build tier means; `samples.csv` and `metadata/` are generated from `genomes/` and must never be hand-edited (see [`pep/README.md`](pep/README.md))
+- **`stores/`**, RefgetStore source manifests: content-addressable sequence collections, one PEP project per store (see [`stores/README.md`](stores/README.md))
+- **`schema/`**, JSON Schemas that genome and recipe entries are validated against (see [`schema/README.md`](schema/README.md))
+- **`tools/`**, Validation scripts and helpers (see [`tools/README.md`](tools/README.md))
+- **`infra/`**, Operator-side build/deploy infrastructure, e.g. the Rivanna HPC layer ([`infra/rivanna/`](infra/rivanna/)); not needed to use the registry
 
 ## Data channel
 
-This registry **publishes the refgenie1 client data channel** — the `index.yaml`
+This registry **publishes the refgenie1 client data channel**, the `index.yaml`
 plus recipe and asset-class YAML files that a refgenie1 client syncs to build
 assets. It is served from GitHub Pages in the registry's **native layout** (no
 flattening, no conversion): a channel path maps 1:1 to a registry path
@@ -86,8 +87,9 @@ Define a new genome assembly. Fork, branch, and create
 `genomes/<organism>/<assembly>.yaml`, then open a PR titled
 "Add genome: \<organism\> \<assembly\>".
 
-- **Required fields:** `name`, `description`, `organism.scientific_name`, `organism.taxon_id`, `fasta` (a `sources[].url` or a `checksum`), `seqcol` (a `digest` or `compute: true`)
-- The checksum, when present, is the SHA-256 of the **uncompressed** FASTA (or the `compute_on_registration` sentinel); use NCBI, Ensembl, or UCSC as the source. The schema is [FHR](https://github.com/FAIR-bioHeaders/FHR-Specification)-aligned — see [`schema/README.md`](schema/README.md).
+- **Required fields:** `name`, `description`, `organism.scientific_name`, `organism.taxon_id`, `fasta` (a `sources[].url` or a `checksum`), `seqcol` (a `digest` or `compute: true`), `build` (a `store` and a `tier`)
+- **`build:` is the whole request.** `store` names a directory under [`stores/`](stores/) that holds the sequence; `tier` says how far to take it, `store_only` (registered and browsable, nothing built) through `sequence_only`, `standard`, `full`. `store_only` is the right default. There is no second file to edit and no build request to open.
+- The checksum, when present, is the SHA-256 of the **uncompressed** FASTA (or the `compute_on_registration` sentinel); use NCBI, Ensembl, or UCSC as the source. The schema is [FHR](https://github.com/FAIR-bioHeaders/FHR-Specification)-aligned, see [`schema/README.md`](schema/README.md).
 - See [`genomes/human/hg38.yaml`](genomes/human/hg38.yaml) for a complete reference and [CONTRIBUTING.md § Adding a Genome](./CONTRIBUTING.md#adding-a-genome).
 
 ### Add a recipe
@@ -105,9 +107,11 @@ a matching `asset_classes/<name>.yaml`, then open a PR titled
 
 ### Request a build
 
-If a genome and recipe both exist but the asset hasn't been built yet,
-[open a build request issue](../../issues/new?template=build_request.yml) naming
-the genome and recipe. The bot validates both exist and queues the build.
+If a genome and recipe both exist but the asset hasn't been built yet, raise the
+genome's `build.tier` (or add the asset to its `build.add` list) in
+`genomes/<organism>/<assembly>.yaml` and open a PR. The tier **is** the build
+queue: `pep/samples.csv` is generated from the genome list, so the next nightly
+picks the change up. See [Adding a genome](./CONTRIBUTING.md#adding-a-genome).
 
 ### Validate locally before submitting
 
@@ -115,12 +119,17 @@ the genome and recipe. The bot validates both exist and queues the build.
 pip install -r tools/requirements.txt
 python tools/validate_genome.py genomes/<organism>/<assembly>.yaml
 python tools/validate_recipe.py recipes/<asset_name>/recipe.yaml
+
+# If you changed a build: block:
+python build/generate_samples.py --check
+python build/generate_genome_metadata.py --check
+python build/sync_stores.py --check
 ```
 
 ## Review Process
 
 Contributions go through three layers of review:
 
-1. **Programmatic validation** — schema checks, URL verification, security scanning (< 2 min)
-2. **AI review** — Claude evaluates appropriateness, quality, and security (< 5 min)
-3. **Human confirmation** — a maintainer reviews the AI summary and approves
+1. **Programmatic validation**, schema checks, URL verification, security scanning (< 2 min)
+2. **AI review**, Claude evaluates appropriateness, quality, and security (< 5 min)
+3. **Human confirmation**, a maintainer reviews the AI summary and approves

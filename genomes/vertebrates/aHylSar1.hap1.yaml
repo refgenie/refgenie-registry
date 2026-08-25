@@ -1,0 +1,23 @@
+name: aHylSar1.hap1
+description: |
+  Hyla sarda assembly aHylSar1.hap1 (GCF_029499605.1), from VGP.
+organism:
+  scientific_name: Hyla sarda
+  common_name: Sardinian treefrog
+  taxon_id: 327740
+assembly:
+  source: RefSeq
+  accession: GCF_029499605.1
+fasta:
+  sources:
+  - provider: UCSC
+    url: https://hgdownload.soe.ucsc.edu/hubs/GCF/029/499/605/GCF_029499605.1/GCF_029499605.1.fa.gz
+  checksum:
+    sha256: compute_on_registration
+seqcol:
+  compute: true
+build:
+  store: vgp
+  tier: store_only
+metadata:
+  added_by: sources_to_genomes

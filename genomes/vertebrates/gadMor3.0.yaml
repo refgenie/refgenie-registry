@@ -1,0 +1,23 @@
+name: gadMor3.0
+description: |
+  Gadus morhua assembly gadMor3.0 (GCF_902167405.1), from VGP.
+organism:
+  scientific_name: Gadus morhua
+  common_name: Atlantic cod
+  taxon_id: 8049
+assembly:
+  source: RefSeq
+  accession: GCF_902167405.1
+fasta:
+  sources:
+  - provider: UCSC
+    url: https://hgdownload.soe.ucsc.edu/hubs/GCF/902/167/405/GCF_902167405.1/GCF_902167405.1.fa.gz
+  checksum:
+    sha256: compute_on_registration
+seqcol:
+  compute: true
+build:
+  store: vgp
+  tier: store_only
+metadata:
+  added_by: sources_to_genomes

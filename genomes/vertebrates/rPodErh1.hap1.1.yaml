@@ -1,0 +1,22 @@
+name: rPodErh1.hap1.1
+description: |
+  Podarcis erhardii assembly rPodErh1.hap1.1 (GCA_964252035.1), from VGP.
+organism:
+  scientific_name: Podarcis erhardii
+  taxon_id: 140042
+assembly:
+  source: GenBank
+  accession: GCA_964252035.1
+fasta:
+  sources:
+  - provider: UCSC
+    url: https://hgdownload.soe.ucsc.edu/hubs/GCA/964/252/035/GCA_964252035.1/GCA_964252035.1.fa.gz
+  checksum:
+    sha256: compute_on_registration
+seqcol:
+  compute: true
+build:
+  store: vgp
+  tier: store_only
+metadata:
+  added_by: sources_to_genomes

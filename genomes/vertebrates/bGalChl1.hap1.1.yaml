@@ -1,0 +1,23 @@
+name: bGalChl1.hap1.1
+description: |
+  Gallinula chloropus assembly bGalChl1.hap1.1 (GCA_964237585.1), from VGP.
+organism:
+  scientific_name: Gallinula chloropus
+  common_name: common moorhen
+  taxon_id: 9123
+assembly:
+  source: GenBank
+  accession: GCA_964237585.1
+fasta:
+  sources:
+  - provider: UCSC
+    url: https://hgdownload.soe.ucsc.edu/hubs/GCA/964/237/585/GCA_964237585.1/GCA_964237585.1.fa.gz
+  checksum:
+    sha256: compute_on_registration
+seqcol:
+  compute: true
+build:
+  store: vgp
+  tier: store_only
+metadata:
+  added_by: sources_to_genomes

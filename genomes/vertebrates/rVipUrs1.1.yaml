@@ -1,0 +1,22 @@
+name: rVipUrs1.1
+description: |
+  Vipera ursinii assembly rVipUrs1.1 (GCA_947247035.1), from VGP.
+organism:
+  scientific_name: Vipera ursinii
+  taxon_id: 103942
+assembly:
+  source: GenBank
+  accession: GCA_947247035.1
+fasta:
+  sources:
+  - provider: UCSC
+    url: https://hgdownload.soe.ucsc.edu/hubs/GCA/947/247/035/GCA_947247035.1/GCA_947247035.1.fa.gz
+  checksum:
+    sha256: compute_on_registration
+seqcol:
+  compute: true
+build:
+  store: vgp
+  tier: store_only
+metadata:
+  added_by: sources_to_genomes

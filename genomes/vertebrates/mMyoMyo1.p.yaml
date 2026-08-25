@@ -1,0 +1,22 @@
+name: mMyoMyo1.p
+description: |
+  Myotis myotis assembly mMyoMyo1.p (GCF_014108235.1), from VGP.
+organism:
+  scientific_name: Myotis myotis
+  taxon_id: 51298
+assembly:
+  source: RefSeq
+  accession: GCF_014108235.1
+fasta:
+  sources:
+  - provider: UCSC
+    url: https://hgdownload.soe.ucsc.edu/hubs/GCF/014/108/235/GCF_014108235.1/GCF_014108235.1.fa.gz
+  checksum:
+    sha256: compute_on_registration
+seqcol:
+  compute: true
+build:
+  store: vgp
+  tier: store_only
+metadata:
+  added_by: sources_to_genomes

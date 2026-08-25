@@ -1,0 +1,23 @@
+name: bCygOlo1.pri.v2
+description: |
+  Cygnus olor assembly bCygOlo1.pri.v2 (GCF_009769625.2), from VGP.
+organism:
+  scientific_name: Cygnus olor
+  common_name: mute swan
+  taxon_id: 8869
+assembly:
+  source: RefSeq
+  accession: GCF_009769625.2
+fasta:
+  sources:
+  - provider: UCSC
+    url: https://hgdownload.soe.ucsc.edu/hubs/GCF/009/769/625/GCF_009769625.2/GCF_009769625.2.fa.gz
+  checksum:
+    sha256: compute_on_registration
+seqcol:
+  compute: true
+build:
+  store: vgp
+  tier: store_only
+metadata:
+  added_by: sources_to_genomes

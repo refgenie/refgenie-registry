@@ -1,0 +1,23 @@
+name: aRhiDor1.hap1
+description: |
+  Rhinophrynus dorsalis assembly aRhiDor1.hap1 (GCA_037306005.1), from VGP.
+organism:
+  scientific_name: Rhinophrynus dorsalis
+  common_name: Mexican burrowing toad
+  taxon_id: 43566
+assembly:
+  source: GenBank
+  accession: GCA_037306005.1
+fasta:
+  sources:
+  - provider: UCSC
+    url: https://hgdownload.soe.ucsc.edu/hubs/GCA/037/306/005/GCA_037306005.1/GCA_037306005.1.fa.gz
+  checksum:
+    sha256: compute_on_registration
+seqcol:
+  compute: true
+build:
+  store: vgp
+  tier: store_only
+metadata:
+  added_by: sources_to_genomes

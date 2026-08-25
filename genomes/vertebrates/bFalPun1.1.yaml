@@ -1,0 +1,22 @@
+name: bFalPun1.1
+description: |
+  Falco punctatus assembly bFalPun1.1 (GCA_963210335.1), from VGP.
+organism:
+  scientific_name: Falco punctatus
+  taxon_id: 148596
+assembly:
+  source: GenBank
+  accession: GCA_963210335.1
+fasta:
+  sources:
+  - provider: UCSC
+    url: https://hgdownload.soe.ucsc.edu/hubs/GCA/963/210/335/GCA_963210335.1/GCA_963210335.1.fa.gz
+  checksum:
+    sha256: compute_on_registration
+seqcol:
+  compute: true
+build:
+  store: vgp
+  tier: store_only
+metadata:
+  added_by: sources_to_genomes

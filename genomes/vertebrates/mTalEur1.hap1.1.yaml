@@ -1,0 +1,23 @@
+name: mTalEur1.hap1.1
+description: |
+  Talpa europaea assembly mTalEur1.hap1.1 (GCA_964194135.1), from VGP.
+organism:
+  scientific_name: Talpa europaea
+  common_name: European mole
+  taxon_id: 9375
+assembly:
+  source: GenBank
+  accession: GCA_964194135.1
+fasta:
+  sources:
+  - provider: UCSC
+    url: https://hgdownload.soe.ucsc.edu/hubs/GCA/964/194/135/GCA_964194135.1/GCA_964194135.1.fa.gz
+  checksum:
+    sha256: compute_on_registration
+seqcol:
+  compute: true
+build:
+  store: vgp
+  tier: store_only
+metadata:
+  added_by: sources_to_genomes

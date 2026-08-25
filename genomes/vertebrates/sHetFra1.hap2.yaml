@@ -1,0 +1,23 @@
+name: sHetFra1.hap2
+description: |
+  Heterodontus francisci assembly sHetFra1.hap2 (GCA_036365495.1), from VGP.
+organism:
+  scientific_name: Heterodontus francisci
+  common_name: horn shark
+  taxon_id: 7792
+assembly:
+  source: GenBank
+  accession: GCA_036365495.1
+fasta:
+  sources:
+  - provider: UCSC
+    url: https://hgdownload.soe.ucsc.edu/hubs/GCA/036/365/495/GCA_036365495.1/GCA_036365495.1.fa.gz
+  checksum:
+    sha256: compute_on_registration
+seqcol:
+  compute: true
+build:
+  store: vgp
+  tier: store_only
+metadata:
+  added_by: sources_to_genomes

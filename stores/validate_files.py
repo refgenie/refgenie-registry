@@ -142,7 +142,7 @@ def print_report(r: dict, check_urls: bool) -> bool:
         if check_urls:
             line += f", reachable: {r['url_uncached']}, unreachable: {len(r['unreachable'])}"
         else:
-            line += f", uncached: {r['url_uncached']} — not probed"
+            line += f", uncached: {r['url_uncached']}, not probed"
         line += ")"
         print(line)
         if r["cache_dir"]:

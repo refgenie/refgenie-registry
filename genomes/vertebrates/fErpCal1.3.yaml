@@ -1,0 +1,23 @@
+name: fErpCal1.3
+description: |
+  Erpetoichthys calabaricus assembly fErpCal1.3 (GCF_900747795.2), from VGP.
+organism:
+  scientific_name: Erpetoichthys calabaricus
+  common_name: reedfish
+  taxon_id: 27687
+assembly:
+  source: RefSeq
+  accession: GCF_900747795.2
+fasta:
+  sources:
+  - provider: UCSC
+    url: https://hgdownload.soe.ucsc.edu/hubs/GCF/900/747/795/GCF_900747795.2/GCF_900747795.2.fa.gz
+  checksum:
+    sha256: compute_on_registration
+seqcol:
+  compute: true
+build:
+  store: vgp
+  tier: store_only
+metadata:
+  added_by: sources_to_genomes

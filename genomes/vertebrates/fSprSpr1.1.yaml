@@ -1,0 +1,23 @@
+name: fSprSpr1.1
+description: |
+  Sprattus sprattus assembly fSprSpr1.1 (GCA_963457725.1), from VGP.
+organism:
+  scientific_name: Sprattus sprattus
+  common_name: European sprat
+  taxon_id: 196075
+assembly:
+  source: GenBank
+  accession: GCA_963457725.1
+fasta:
+  sources:
+  - provider: UCSC
+    url: https://hgdownload.soe.ucsc.edu/hubs/GCA/963/457/725/GCA_963457725.1/GCA_963457725.1.fa.gz
+  checksum:
+    sha256: compute_on_registration
+seqcol:
+  compute: true
+build:
+  store: vgp
+  tier: store_only
+metadata:
+  added_by: sources_to_genomes

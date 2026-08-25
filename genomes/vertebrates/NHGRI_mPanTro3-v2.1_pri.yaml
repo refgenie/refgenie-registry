@@ -1,0 +1,23 @@
+name: NHGRI_mPanTro3-v2.1_pri
+description: |
+  Pan troglodytes assembly NHGRI_mPanTro3-v2.1_pri (GCF_028858775.2), from VGP.
+organism:
+  scientific_name: Pan troglodytes
+  common_name: chimpanzee
+  taxon_id: 9598
+assembly:
+  source: RefSeq
+  accession: GCF_028858775.2
+fasta:
+  sources:
+  - provider: UCSC
+    url: https://hgdownload.soe.ucsc.edu/hubs/GCF/028/858/775/GCF_028858775.2/GCF_028858775.2.fa.gz
+  checksum:
+    sha256: compute_on_registration
+seqcol:
+  compute: true
+build:
+  store: vgp
+  tier: store_only
+metadata:
+  added_by: sources_to_genomes

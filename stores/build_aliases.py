@@ -18,12 +18,12 @@ registers two further kinds of aliases:
 
 2. Sequence-level aliases, via two strategies (per store config):
 
-   a. ``header_names`` -- register each collection's FASTA header name (from
+   a. ``header_names``, register each collection's FASTA header name (from
       level2 ``names``) as a sequence alias under a namespace. Useful when the
       headers already are the desired identifier (UCSC ``chr1``, Ensembl ``1``,
       NCBI ``NC_000001.11``). Cheap, needs no network.
 
-   b. ``assembly_report`` -- download/parse the NCBI ``assembly_report.txt``
+   b. ``assembly_report``, download/parse the NCBI ``assembly_report.txt``
       for each row's GCA/GCF accession (or an explicit ``assembly_report``
       column), build the RefSeq<->GenBank<->UCSC<->name mapping, match it to
       the collection's sequences by name+length, and register every alias form
@@ -369,7 +369,7 @@ def _load(store, seq_aliases, coll_aliases):
     Each load_*_aliases() call is already a locked commit on its own, so this is
     not needed for safety. It is here for two reasons:
 
-      * Atomicity. The alias step should land as a unit -- a reader that catches
+      * Atomicity. The alias step should land as a unit, a reader that catches
         the store between namespaces would see refseq aliases resolving and insdc
         aliases not yet existing.
       * Cost. Every commit re-reads the store manifest and rehashes the alias

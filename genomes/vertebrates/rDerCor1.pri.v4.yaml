@@ -1,0 +1,23 @@
+name: rDerCor1.pri.v4
+description: |
+  Dermochelys coriacea assembly rDerCor1.pri.v4 (GCF_009764565.3), from VGP.
+organism:
+  scientific_name: Dermochelys coriacea
+  common_name: leatherback sea turtle
+  taxon_id: 27794
+assembly:
+  source: RefSeq
+  accession: GCF_009764565.3
+fasta:
+  sources:
+  - provider: UCSC
+    url: https://hgdownload.soe.ucsc.edu/hubs/GCF/009/764/565/GCF_009764565.3/GCF_009764565.3.fa.gz
+  checksum:
+    sha256: compute_on_registration
+seqcol:
+  compute: true
+build:
+  store: vgp
+  tier: store_only
+metadata:
+  added_by: sources_to_genomes

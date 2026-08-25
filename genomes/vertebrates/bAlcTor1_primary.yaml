@@ -1,0 +1,23 @@
+name: bAlcTor1_primary
+description: |
+  Alca torda assembly bAlcTor1 primary (GCA_008658365.1), from VGP.
+organism:
+  scientific_name: Alca torda
+  common_name: razorbill
+  taxon_id: 28689
+assembly:
+  source: GenBank
+  accession: GCA_008658365.1
+fasta:
+  sources:
+  - provider: UCSC
+    url: https://hgdownload.soe.ucsc.edu/hubs/GCA/008/658/365/GCA_008658365.1/GCA_008658365.1.fa.gz
+  checksum:
+    sha256: compute_on_registration
+seqcol:
+  compute: true
+build:
+  store: vgp
+  tier: store_only
+metadata:
+  added_by: sources_to_genomes

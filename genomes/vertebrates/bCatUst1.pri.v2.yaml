@@ -1,0 +1,23 @@
+name: bCatUst1.pri.v2
+description: |
+  Catharus ustulatus assembly bCatUst1.pri.v2 (GCF_009819885.2), from VGP.
+organism:
+  scientific_name: Catharus ustulatus
+  common_name: Swainson's thrush
+  taxon_id: 91951
+assembly:
+  source: RefSeq
+  accession: GCF_009819885.2
+fasta:
+  sources:
+  - provider: UCSC
+    url: https://hgdownload.soe.ucsc.edu/hubs/GCF/009/819/885/GCF_009819885.2/GCF_009819885.2.fa.gz
+  checksum:
+    sha256: compute_on_registration
+seqcol:
+  compute: true
+build:
+  store: vgp
+  tier: store_only
+metadata:
+  added_by: sources_to_genomes

@@ -1,0 +1,23 @@
+name: fAntMac1.pri
+description: |
+  Antennarius maculatus assembly fAntMac1.pri (GCA_013358685.1), from VGP.
+organism:
+  scientific_name: Antennarius maculatus
+  common_name: warty frogfish
+  taxon_id: 882753
+assembly:
+  source: GenBank
+  accession: GCA_013358685.1
+fasta:
+  sources:
+  - provider: UCSC
+    url: https://hgdownload.soe.ucsc.edu/hubs/GCA/013/358/685/GCA_013358685.1/GCA_013358685.1.fa.gz
+  checksum:
+    sha256: compute_on_registration
+seqcol:
+  compute: true
+build:
+  store: vgp
+  tier: store_only
+metadata:
+  added_by: sources_to_genomes

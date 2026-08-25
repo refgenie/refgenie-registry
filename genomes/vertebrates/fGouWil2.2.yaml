@@ -1,0 +1,23 @@
+name: fGouWil2.2
+description: |
+  Gouania willdenowi assembly fGouWil2.2 (GCA_900634775.2), from VGP.
+organism:
+  scientific_name: Gouania willdenowi
+  common_name: blunt-snouted clingfish
+  taxon_id: 441366
+assembly:
+  source: GenBank
+  accession: GCA_900634775.2
+fasta:
+  sources:
+  - provider: UCSC
+    url: https://hgdownload.soe.ucsc.edu/hubs/GCA/900/634/775/GCA_900634775.2/GCA_900634775.2.fa.gz
+  checksum:
+    sha256: compute_on_registration
+seqcol:
+  compute: true
+build:
+  store: vgp
+  tier: store_only
+metadata:
+  added_by: sources_to_genomes

@@ -1,0 +1,23 @@
+name: DD_ASM_mEF_20220401
+description: |
+  Eptesicus fuscus assembly DD_ASM_mEF_20220401 (GCF_027574615.1), from VGP.
+organism:
+  scientific_name: Eptesicus fuscus
+  common_name: big brown bat
+  taxon_id: 29078
+assembly:
+  source: RefSeq
+  accession: GCF_027574615.1
+fasta:
+  sources:
+  - provider: UCSC
+    url: https://hgdownload.soe.ucsc.edu/hubs/GCF/027/574/615/GCF_027574615.1/GCF_027574615.1.fa.gz
+  checksum:
+    sha256: compute_on_registration
+seqcol:
+  compute: true
+build:
+  store: vgp
+  tier: store_only
+metadata:
+  added_by: sources_to_genomes

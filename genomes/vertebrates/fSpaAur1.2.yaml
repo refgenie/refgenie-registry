@@ -1,0 +1,23 @@
+name: fSpaAur1.2
+description: |
+  Sparus aurata assembly fSpaAur1.2 (GCA_900880675.2), from VGP.
+organism:
+  scientific_name: Sparus aurata
+  common_name: gilthead seabream
+  taxon_id: 8175
+assembly:
+  source: GenBank
+  accession: GCA_900880675.2
+fasta:
+  sources:
+  - provider: UCSC
+    url: https://hgdownload.soe.ucsc.edu/hubs/GCA/900/880/675/GCA_900880675.2/GCA_900880675.2.fa.gz
+  checksum:
+    sha256: compute_on_registration
+seqcol:
+  compute: true
+build:
+  store: vgp
+  tier: store_only
+metadata:
+  added_by: sources_to_genomes

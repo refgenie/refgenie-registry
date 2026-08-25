@@ -5,7 +5,7 @@ This is the reproducible, idempotent record of the genome-metadata migration to
 the schema defined in ``schema/genome.schema.yaml`` (validated by
 ``tools/validate_genome.py`` and exported by ``tools/genome_to_fhr.py``).
 
-Design note — what "migration" means here
+Design note, what "migration" means here
 ------------------------------------------
 The FHR-aligned schema keeps ``organism.taxon_id`` as an **integer** and the
 exporter (``tools/genome_to_fhr.py``) *derives* the FHR ``taxon.uri`` as
@@ -21,8 +21,8 @@ Normalization rules applied (only when a file actually needs them)
 ------------------------------------------------------------------
 1. Multi-organism / hybrid ``scientific_name`` (contains " / "): the schema's
    ``organism`` block holds a single taxon object, so we resolve to the PRIMARY
-   taxon — the component whose NCBI id equals the file's existing ``taxon_id``
-   (or the first component if none matches, setting ``taxon_id`` to match) — set
+   taxon, the component whose NCBI id equals the file's existing ``taxon_id``
+   (or the first component if none matches, setting ``taxon_id`` to match), set
    ``scientific_name`` to that primary, and record every organism (with NCBI
    taxon ids) in the ``description`` as a provenance note. This keeps the FHR
    export self-consistent (``taxon.name`` and ``taxon.uri`` agree) instead of
@@ -35,7 +35,7 @@ Normalization rules applied (only when a file actually needs them)
 
 Anything that cannot be resolved confidently (a multi-species or missing-id file
 whose organism is not in the lookup table) is classified ``needs-attention`` and
-the script exits non-zero — the gap is surfaced, never silently guessed.
+the script exits non-zero, the gap is surfaced, never silently guessed.
 
 Usage
 -----
@@ -161,7 +161,7 @@ def transform(data) -> tuple[bool, str, list[str]]:
     Returns (changed, status, notes). status is one of:
       already-fhr  -- no change needed (compliant)
       migrated     -- a change was applied
-      needs-attention -- could not resolve confidently (caller exits non-zero)
+      needs-attention, could not resolve confidently (caller exits non-zero)
     """
     notes: list[str] = []
     changed = False

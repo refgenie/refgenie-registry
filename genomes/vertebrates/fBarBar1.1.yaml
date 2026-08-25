@@ -1,0 +1,23 @@
+name: fBarBar1.1
+description: |
+  Barbatula barbatula assembly fBarBar1.1 (GCA_947034865.1), from VGP.
+organism:
+  scientific_name: Barbatula barbatula
+  common_name: stone loach
+  taxon_id: 135647
+assembly:
+  source: GenBank
+  accession: GCA_947034865.1
+fasta:
+  sources:
+  - provider: UCSC
+    url: https://hgdownload.soe.ucsc.edu/hubs/GCA/947/034/865/GCA_947034865.1/GCA_947034865.1.fa.gz
+  checksum:
+    sha256: compute_on_registration
+seqcol:
+  compute: true
+build:
+  store: vgp
+  tier: store_only
+metadata:
+  added_by: sources_to_genomes

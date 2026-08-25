@@ -1,0 +1,23 @@
+name: bColStr4.1.hap1
+description: |
+  Colius striatus assembly bColStr4.1.hap1 (GCF_028858725.1), from VGP.
+organism:
+  scientific_name: Colius striatus
+  common_name: speckled mousebird
+  taxon_id: 57412
+assembly:
+  source: RefSeq
+  accession: GCF_028858725.1
+fasta:
+  sources:
+  - provider: UCSC
+    url: https://hgdownload.soe.ucsc.edu/hubs/GCF/028/858/725/GCF_028858725.1/GCF_028858725.1.fa.gz
+  checksum:
+    sha256: compute_on_registration
+seqcol:
+  compute: true
+build:
+  store: vgp
+  tier: store_only
+metadata:
+  added_by: sources_to_genomes

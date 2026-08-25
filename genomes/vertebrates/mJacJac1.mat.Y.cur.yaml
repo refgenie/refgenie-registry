@@ -1,0 +1,23 @@
+name: mJacJac1.mat.Y.cur
+description: |
+  Jaculus jaculus assembly mJacJac1.mat.Y.cur (GCF_020740685.1), from VGP.
+organism:
+  scientific_name: Jaculus jaculus
+  common_name: lesser Egyptian jerboa
+  taxon_id: 51337
+assembly:
+  source: RefSeq
+  accession: GCF_020740685.1
+fasta:
+  sources:
+  - provider: UCSC
+    url: https://hgdownload.soe.ucsc.edu/hubs/GCF/020/740/685/GCF_020740685.1/GCF_020740685.1.fa.gz
+  checksum:
+    sha256: compute_on_registration
+seqcol:
+  compute: true
+build:
+  store: vgp
+  tier: store_only
+metadata:
+  added_by: sources_to_genomes

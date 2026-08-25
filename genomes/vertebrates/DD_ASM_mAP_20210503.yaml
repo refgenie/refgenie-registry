@@ -1,0 +1,23 @@
+name: DD_ASM_mAP_20210503
+description: |
+  Antrozous pallidus assembly DD_ASM_mAP_20210503 (GCA_027563665.1), from VGP.
+organism:
+  scientific_name: Antrozous pallidus
+  common_name: pallid bat
+  taxon_id: 9440
+assembly:
+  source: GenBank
+  accession: GCA_027563665.1
+fasta:
+  sources:
+  - provider: UCSC
+    url: https://hgdownload.soe.ucsc.edu/hubs/GCA/027/563/665/GCA_027563665.1/GCA_027563665.1.fa.gz
+  checksum:
+    sha256: compute_on_registration
+seqcol:
+  compute: true
+build:
+  store: vgp
+  tier: store_only
+metadata:
+  added_by: sources_to_genomes

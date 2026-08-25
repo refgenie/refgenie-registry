@@ -1,0 +1,23 @@
+name: mPhyDis1.pri.v3
+description: |
+  Phyllostomus discolor assembly mPhyDis1.pri.v3 (GCF_004126475.2), from VGP.
+organism:
+  scientific_name: Phyllostomus discolor
+  common_name: pale spear-nosed bat
+  taxon_id: 89673
+assembly:
+  source: RefSeq
+  accession: GCF_004126475.2
+fasta:
+  sources:
+  - provider: UCSC
+    url: https://hgdownload.soe.ucsc.edu/hubs/GCF/004/126/475/GCF_004126475.2/GCF_004126475.2.fa.gz
+  checksum:
+    sha256: compute_on_registration
+seqcol:
+  compute: true
+build:
+  store: vgp
+  tier: store_only
+metadata:
+  added_by: sources_to_genomes

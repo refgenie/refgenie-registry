@@ -1,0 +1,23 @@
+name: bZonAlb1.hap1
+description: |
+  Zonotrichia albicollis assembly bZonAlb1.hap1 (GCA_047830755.1), from VGP.
+organism:
+  scientific_name: Zonotrichia albicollis
+  common_name: white-throated sparrow
+  taxon_id: 44394
+assembly:
+  source: GenBank
+  accession: GCA_047830755.1
+fasta:
+  sources:
+  - provider: UCSC
+    url: https://hgdownload.soe.ucsc.edu/hubs/GCA/047/830/755/GCA_047830755.1/GCA_047830755.1.fa.gz
+  checksum:
+    sha256: compute_on_registration
+seqcol:
+  compute: true
+build:
+  store: vgp
+  tier: store_only
+metadata:
+  added_by: sources_to_genomes

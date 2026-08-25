@@ -1,0 +1,23 @@
+name: aPelIbe1.pri
+description: |
+  Pelodytes ibericus assembly aPelIbe1.pri (GCA_036172795.1), from VGP.
+organism:
+  scientific_name: Pelodytes ibericus
+  common_name: Iberian parsley frog
+  taxon_id: 233781
+assembly:
+  source: GenBank
+  accession: GCA_036172795.1
+fasta:
+  sources:
+  - provider: UCSC
+    url: https://hgdownload.soe.ucsc.edu/hubs/GCA/036/172/795/GCA_036172795.1/GCA_036172795.1.fa.gz
+  checksum:
+    sha256: compute_on_registration
+seqcol:
+  compute: true
+build:
+  store: vgp
+  tier: store_only
+metadata:
+  added_by: sources_to_genomes

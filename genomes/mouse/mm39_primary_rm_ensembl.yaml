@@ -24,6 +24,10 @@ seqcol:
   digest: D-6wf8dsOttiVNnLSImSglRJvw_8Zr_j
   length: 61
 
+build:
+  store: jungle
+  tier: store_only
+
 metadata:
   added: 2026-05-20
   added_by: nsheff

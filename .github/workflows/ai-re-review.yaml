@@ -1,7 +1,7 @@
 # Maintainer-triggered AI re-review: comment "@RefgenieBot review" on a PR.
 #
 # issue_comment runs in the trusted base-repo context (secrets + write token),
-# so it can run the review directly via the shared ai-review action — no
+# so it can run the review directly via the shared ai-review action, no
 # label-event chaining (labels added with GITHUB_TOKEN never trigger other
 # workflows). The review input is the artifact from the latest pr-validate
 # run for the PR's current head commit.
@@ -74,7 +74,7 @@ jobs:
               await github.rest.issues.createComment({
                 owner: context.repo.owner, repo: context.repo.repo,
                 issue_number: prNumber,
-                body: ':warning: No pr-validate run found for the current head commit — ' +
+                body: ':warning: No pr-validate run found for the current head commit, ' +
                   'push a commit (or re-run pr-validate) first, then request the review again.',
               });
               return;

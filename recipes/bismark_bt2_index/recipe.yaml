@@ -22,8 +22,8 @@ command_templates:
   # `--bowtie2` became the DEFAULT in bismark 3.x, but the flag is still
   # accepted and still means bowtie2. Kept explicit on purpose: this recipe
   # publishes a bowtie2 asset, so the aligner must be stated, not inherited
-  # from whatever the current default happens to be. Verified 2026-07-23 in
-  # bismark:3.1.0--hfa8f182_0 -- `--bowtie2 <folder> --parallel 2` parses and
+  # from whatever the current default happens to be. Verified in
+  # bismark:3.1.0--hfa8f182_0: `--bowtie2 <folder> --parallel 2` parses and
   # produces Bisulfite_Genome/{CT,GA}_conversion/BS_*.bt2, same layout as 0.x.
   - bismark_genome_preparation --bowtie2 {{values.output_folder}} --parallel {{values.params["parallel"]}}
 custom_seek_keys:

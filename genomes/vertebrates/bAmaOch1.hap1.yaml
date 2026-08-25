@@ -1,0 +1,23 @@
+name: bAmaOch1.hap1
+description: |
+  Amazona ochrocephala assembly bAmaOch1.hap1 (GCA_039720435.1), from VGP.
+organism:
+  scientific_name: Amazona ochrocephala
+  common_name: yellow-crowned parrot
+  taxon_id: 151761
+assembly:
+  source: GenBank
+  accession: GCA_039720435.1
+fasta:
+  sources:
+  - provider: UCSC
+    url: https://hgdownload.soe.ucsc.edu/hubs/GCA/039/720/435/GCA_039720435.1/GCA_039720435.1.fa.gz
+  checksum:
+    sha256: compute_on_registration
+seqcol:
+  compute: true
+build:
+  store: vgp
+  tier: store_only
+metadata:
+  added_by: sources_to_genomes

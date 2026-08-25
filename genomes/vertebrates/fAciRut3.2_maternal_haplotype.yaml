@@ -1,0 +1,23 @@
+name: fAciRut3.2_maternal_haplotype
+description: |
+  Acipenser ruthenus assembly fAciRut3.2 maternal haplotype (GCF_902713425.1), from VGP.
+organism:
+  scientific_name: Acipenser ruthenus
+  common_name: sterlet
+  taxon_id: 7906
+assembly:
+  source: RefSeq
+  accession: GCF_902713425.1
+fasta:
+  sources:
+  - provider: UCSC
+    url: https://hgdownload.soe.ucsc.edu/hubs/GCF/902/713/425/GCF_902713425.1/GCF_902713425.1.fa.gz
+  checksum:
+    sha256: compute_on_registration
+seqcol:
+  compute: true
+build:
+  store: vgp
+  tier: store_only
+metadata:
+  added_by: sources_to_genomes

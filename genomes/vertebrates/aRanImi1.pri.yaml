@@ -1,0 +1,23 @@
+name: aRanImi1.pri
+description: |
+  Ranitomeya imitator assembly aRanImi1.pri (GCF_032444005.1), from VGP.
+organism:
+  scientific_name: Ranitomeya imitator
+  common_name: mimic poison frog
+  taxon_id: 111125
+assembly:
+  source: RefSeq
+  accession: GCF_032444005.1
+fasta:
+  sources:
+  - provider: UCSC
+    url: https://hgdownload.soe.ucsc.edu/hubs/GCF/032/444/005/GCF_032444005.1/GCF_032444005.1.fa.gz
+  checksum:
+    sha256: compute_on_registration
+seqcol:
+  compute: true
+build:
+  store: vgp
+  tier: store_only
+metadata:
+  added_by: sources_to_genomes

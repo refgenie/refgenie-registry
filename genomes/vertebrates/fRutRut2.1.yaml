@@ -1,0 +1,23 @@
+name: fRutRut2.1
+description: |
+  Rutilus rutilus assembly fRutRut2.1 (GCA_951802725.1), from VGP.
+organism:
+  scientific_name: Rutilus rutilus
+  common_name: roach minnow
+  taxon_id: 48668
+assembly:
+  source: GenBank
+  accession: GCA_951802725.1
+fasta:
+  sources:
+  - provider: UCSC
+    url: https://hgdownload.soe.ucsc.edu/hubs/GCA/951/802/725/GCA_951802725.1/GCA_951802725.1.fa.gz
+  checksum:
+    sha256: compute_on_registration
+seqcol:
+  compute: true
+build:
+  store: vgp
+  tier: store_only
+metadata:
+  added_by: sources_to_genomes

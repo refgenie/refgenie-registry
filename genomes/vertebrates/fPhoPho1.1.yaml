@@ -1,0 +1,23 @@
+name: fPhoPho1.1
+description: |
+  Phoxinus phoxinus assembly fPhoPho1.1 (GCA_949152265.1), from VGP.
+organism:
+  scientific_name: Phoxinus phoxinus
+  common_name: Eurasian minnow
+  taxon_id: 58324
+assembly:
+  source: GenBank
+  accession: GCA_949152265.1
+fasta:
+  sources:
+  - provider: UCSC
+    url: https://hgdownload.soe.ucsc.edu/hubs/GCA/949/152/265/GCA_949152265.1/GCA_949152265.1.fa.gz
+  checksum:
+    sha256: compute_on_registration
+seqcol:
+  compute: true
+build:
+  store: vgp
+  tier: store_only
+metadata:
+  added_by: sources_to_genomes

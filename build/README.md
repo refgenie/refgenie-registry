@@ -1,4 +1,4 @@
-# build/ — refgenie-native recipe/asset build layer
+# build/, refgenie-native recipe/asset build layer
 
 This directory drives the **asset** half of the nightly Rivanna pipeline (the
 `refgenie-registry-build` job in
@@ -10,7 +10,7 @@ Per [`design.md`](../design.md): **refgenie is the build system.** This layer
 loads the registry's `asset_classes/` + `recipes/` into a refgenie1 database,
 asks refgenie to render a Snakemake workflow, and runs that workflow on Rivanna
 to build one asset per `(genome, asset)` request in [`pep/samples.csv`](../pep/samples.csv).
-There is no conda in the build path — each rule runs `refgenie build` inside the
+There is no conda in the build path, each rule runs `refgenie build` inside the
 recipe's container.
 
 ## Files
@@ -19,7 +19,11 @@ recipe's container.
 |------|------|
 | `run_builds.sh` | Entry point. Imports recipes + renders the Snakefile, then dispatches builds via snakemake. |
 | `profiles/rivanna/config.yaml` | Snakemake SLURM profile (shefflab allocation). One SLURM job per asset; resources live here, not in recipes. |
-| `config.yaml` | Snakemake `configfile:` (placeholder — rules don't read it; satisfies the directive). |
+| `config.yaml` | Snakemake `configfile:` (placeholder, rules don't read it; satisfies the directive). |
+| `generate_samples.py` | **Generates `pep/samples.csv`** from every genome YAML's `build:` block plus `pep/tiers.yaml`. Never hand-edit the CSV. |
+| `generate_genome_metadata.py` | **Generates `pep/metadata/<genome>.fhr.json`** for every genome (not just queued ones). Never hand-edit. |
+| `sync_stores.py` | Reports which genomes their declared store cannot actually load, and (`--changed`) which stores' sources changed since they were built. It reconciles `genomes/` against `stores/*/sources.csv`; it never rewrites either (see [`stores/README.md`](../stores/README.md#sourcescsv-is-not-generated-from-the-genome-list)). |
+| `check_registration.py` | Reports which genomes in `genomes/` do not resolve in the catalog. The companion to `check_coverage.py`, which can only see the build queue. |
 | `update_index.py` | After builds, writes `index/<genome>/<recipe>.yaml` entries from the refgenie DB. |
 | `Snakefile` | **Generated** each run (gitignored). |
 
@@ -30,7 +34,7 @@ recipe's container.
    Snakefile from the *same* instance (so there is no two-process DB mismatch).
 2. `run_builds.sh` patches the generated Snakefile:
    - rewrites the hardcoded `refgenie1` command token to `$REFGENIE_BIN`
-     (default `refgenie` — refgenie1's installed entry point on Rivanna);
+     (default `refgenie`, refgenie1's installed entry point on Rivanna);
    - pins the relative `configfile:`/`pepfile:` paths to absolute repo paths.
 3. `snakemake --profile build/profiles/rivanna/` builds the DAG from
    [`pep/config.yaml`](../pep/config.yaml): a `genome_init` rule per genome,
@@ -41,9 +45,16 @@ recipe's container.
 
 ## The build queue (PEP)
 
-[`pep/samples.csv`](../pep/samples.csv) — **one row per `(genome, asset)`**.
+[`pep/samples.csv`](../pep/samples.csv), **one row per `(genome, asset)`**.
 Rows sharing a `sample_name` are collated by peppy, so each genome's
 `asset_group_name` becomes the list of assets to build for it.
+
+It is a **generated artifact**. The queue itself lives in each genome YAML's
+`build:` block (`store` + `tier`); `generate_samples.py` turns those plus
+`pep/tiers.yaml` into this CSV, and `run_builds.sh` regenerates it at startup and
+fails the nightly on any diff. Genomes at `tier: store_only` produce no rows at
+all, they are loaded into a store and browsable, and nothing is built for them.
+See [`pep/README.md`](../pep/README.md).
 
 | Column | Meaning |
 |--------|---------|
@@ -58,7 +69,7 @@ be exercised cheaply.
 ## Running it
 
 ```bash
-# Dry run — import + render + DAG only, no jobs submitted (safe anywhere):
+# Dry run, import + render + DAG only, no jobs submitted (safe anywhere):
 REFGENIE_INPUTS=/path/to/fastas DRY_RUN=1 bash build/run_builds.sh
 
 # Real dispatch on Rivanna (mobot does this nightly):

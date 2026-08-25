@@ -1,0 +1,23 @@
+name: fTraTra1.2
+description: |
+  Trachurus trachurus assembly fTraTra1.2 (GCA_905171665.2), from VGP.
+organism:
+  scientific_name: Trachurus trachurus
+  common_name: Atlantic horse mackerel
+  taxon_id: 36212
+assembly:
+  source: GenBank
+  accession: GCA_905171665.2
+fasta:
+  sources:
+  - provider: UCSC
+    url: https://hgdownload.soe.ucsc.edu/hubs/GCA/905/171/665/GCA_905171665.2/GCA_905171665.2.fa.gz
+  checksum:
+    sha256: compute_on_registration
+seqcol:
+  compute: true
+build:
+  store: vgp
+  tier: store_only
+metadata:
+  added_by: sources_to_genomes

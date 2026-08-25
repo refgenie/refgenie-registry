@@ -11,8 +11,7 @@ the validators, collects AI-review input as plain text, and writes:
 pr-report.yml (workflow_run, trusted base context) downloads the artifact,
 treats every string in it as untrusted, and does all PR writes.
 
-Checks (invocations identical to the old lint-genomes / lint-recipes /
-build-test workflows):
+Checks:
     genome-validation   tools/validate_genome.py --check-fhr
     asset-classes       jsonschema check of asset_classes/*.yaml
     recipe-cross-check  tools/validate_recipe.py --no-url-check recipes/*/recipe.yaml
@@ -59,6 +58,50 @@ def cap(text, limit=MAX_CHECK_OUTPUT):
     if len(text) > limit:
         return text[:limit] + f"\n[TRUNCATED at {limit} chars]"
     return text
+
+
+def fasta_urls_at(rev, path):
+    """The set of fasta.sources[].url in a genome YAML at a git revision.
+
+    Returns None when the file does not exist at that revision (i.e. the PR adds
+    it), which callers treat as "every URL here is new".
+    """
+    import yaml
+
+    code, out = run(["git", "show", f"{rev}:{path}"])
+    if code != 0:
+        return None
+    try:
+        data = yaml.safe_load(out) or {}
+    except yaml.YAMLError:
+        # Unparseable at this revision: force a URL check rather than skip one.
+        return None
+    sources = ((data.get("fasta") or {}).get("sources") or [])
+    return {s.get("url") for s in sources if isinstance(s, dict) and s.get("url")}
+
+
+def split_by_url_change(genome_files, base_sha, head_sha):
+    """Split genome files into (url_checked, skipped) by whether their URLs changed.
+
+    Checking URL liveness is the point of validating a genome submission, a
+    contributor's download link has to actually work. But it must not fire on a
+    file the PR only touched incidentally: a repo-wide change (adding a field to
+    every genome) would otherwise re-probe every upstream host and fail on links
+    nobody in that PR submitted.
+
+    So a file is URL-checked when it is new, or when its fasta.sources URLs
+    actually changed. Everything else is still fully validated, just with
+    --no-url-check.
+    """
+    url_checked, skipped = [], []
+    for path in genome_files:
+        head_urls = fasta_urls_at(head_sha, path)
+        base_urls = fasta_urls_at(base_sha, path)
+        if base_urls is None or head_urls is None or head_urls != base_urls:
+            url_checked.append(path)
+        else:
+            skipped.append(path)
+    return url_checked, skipped
 
 
 def check_asset_classes():
@@ -142,13 +185,33 @@ def main():
     else:
         genome_files = changed_genomes
     if genome_files:
-        code, out = run([sys.executable, "tools/validate_genome.py", "--check-fhr", *genome_files])
+        url_checked, no_url = split_by_url_change(
+            genome_files, args.base_sha, args.head_sha
+        )
+        code, parts = 0, []
+        if url_checked:
+            c, out = run([sys.executable, "tools/validate_genome.py",
+                          "--check-fhr", *url_checked])
+            code |= c
+            parts.append(
+                f"# {len(url_checked)} file(s) with new/changed FASTA URLs "
+                f"(URLs checked)\n{out}"
+            )
+        if no_url:
+            c, out = run([sys.executable, "tools/validate_genome.py",
+                          "--check-fhr", "--no-url-check", *no_url])
+            code |= c
+            parts.append(
+                f"# {len(no_url)} file(s) with unchanged FASTA URLs "
+                f"(URL check skipped)\n{out}"
+            )
         record(
             "genome-validation",
             "pass" if code == 0 else "fail",
-            f"{len(genome_files)} genome file(s) validated"
+            f"{len(genome_files)} genome file(s) validated "
+            f"({len(url_checked)} with URL checks)"
             if code == 0 else "genome validation failed",
-            out,
+            "\n\n".join(parts),
         )
     else:
         record("genome-validation", "skipped", "no genome files changed")

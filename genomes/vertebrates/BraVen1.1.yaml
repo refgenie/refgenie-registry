@@ -1,0 +1,23 @@
+name: BraVen1.1
+description: |
+  Bradypodion ventrale assembly BraVen1.1 (GCA_035047345.1), from VGP.
+organism:
+  scientific_name: Bradypodion ventrale
+  common_name: Southern dwarf chameleon
+  taxon_id: 179890
+assembly:
+  source: GenBank
+  accession: GCA_035047345.1
+fasta:
+  sources:
+  - provider: UCSC
+    url: https://hgdownload.soe.ucsc.edu/hubs/GCA/035/047/345/GCA_035047345.1/GCA_035047345.1.fa.gz
+  checksum:
+    sha256: compute_on_registration
+seqcol:
+  compute: true
+build:
+  store: vgp
+  tier: store_only
+metadata:
+  added_by: sources_to_genomes

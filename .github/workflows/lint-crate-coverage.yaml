@@ -4,7 +4,7 @@ name: Lint Crate Coverage
 # does not define.
 #
 # The nightly Rivanna build activates ONE crate, databio/refgenie. A recipe that
-# invokes a command that crate lacks does not fail loudly -- the shell falls
+# invokes a command that crate lacks does not fail loudly, the shell falls
 # through to whatever the Rivanna host happens to have, and since every recipe's
 # version expression pipes through `grep -aoP` and `awk`, a host/container
 # mismatch can change the *answer* rather than error, which silently renames the

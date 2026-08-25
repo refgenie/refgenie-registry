@@ -1,0 +1,14 @@
+pep_version: "2.1.0"
+sample_table: sources.csv
+sample_table_index: fasta
+
+# Root for relative fasta paths in sources.csv ($REFGETSTORE_FASTA set by env.sh).
+# These are the clean-extension .gz symlinks staged from the legacy server's
+# files at /project/shefflab/www/refgenie_refgenomes.databio.org/<genome>-fasta-fasta.
+fasta_root: $REFGETSTORE_FASTA/legacy
+
+# No `aliasing:` block on purpose. build_aliases.py's assembly_report strategy
+# needs a GCA/GCF accession per row, and most of these collections have none --
+# they are reduced references, decoys and repeat libraries, not the assemblies
+# they derive from. Collection-level aliases from the name column are what
+# applies here, and the name is the identifier the legacy server used.

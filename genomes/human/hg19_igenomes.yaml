@@ -21,6 +21,10 @@ seqcol:
   digest: GOIHeGSorDrbznRxihs5rIb6vTiTKaw7
   length: 25
 
+build:
+  store: jungle
+  tier: store_only
+
 metadata:
   added: 2026-05-20
   added_by: nsheff

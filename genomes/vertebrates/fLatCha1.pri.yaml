@@ -1,0 +1,23 @@
+name: fLatCha1.pri
+description: |
+  Latimeria chalumnae assembly fLatCha1.pri (GCF_037176945.1), from VGP.
+organism:
+  scientific_name: Latimeria chalumnae
+  common_name: coelacanth
+  taxon_id: 7897
+assembly:
+  source: RefSeq
+  accession: GCF_037176945.1
+fasta:
+  sources:
+  - provider: UCSC
+    url: https://hgdownload.soe.ucsc.edu/hubs/GCF/037/176/945/GCF_037176945.1/GCF_037176945.1.fa.gz
+  checksum:
+    sha256: compute_on_registration
+seqcol:
+  compute: true
+build:
+  store: vgp
+  tier: store_only
+metadata:
+  added_by: sources_to_genomes

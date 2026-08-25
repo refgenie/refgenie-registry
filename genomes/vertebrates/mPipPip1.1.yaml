@@ -1,0 +1,23 @@
+name: mPipPip1.1
+description: |
+  Pipistrellus pipistrellus assembly mPipPip1.1 (GCA_903992545.1), from VGP.
+organism:
+  scientific_name: Pipistrellus pipistrellus
+  common_name: common pipistrelle
+  taxon_id: 59474
+assembly:
+  source: GenBank
+  accession: GCA_903992545.1
+fasta:
+  sources:
+  - provider: UCSC
+    url: https://hgdownload.soe.ucsc.edu/hubs/GCA/903/992/545/GCA_903992545.1/GCA_903992545.1.fa.gz
+  checksum:
+    sha256: compute_on_registration
+seqcol:
+  compute: true
+build:
+  store: vgp
+  tier: store_only
+metadata:
+  added_by: sources_to_genomes

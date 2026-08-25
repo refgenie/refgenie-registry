@@ -1,0 +1,23 @@
+name: bAytMar2.hap1.1
+description: |
+  Aythya marila assembly bAytMar2.hap1.1 (GCA_965140915.1), from VGP.
+organism:
+  scientific_name: Aythya marila
+  common_name: greater scaup
+  taxon_id: 189534
+assembly:
+  source: GenBank
+  accession: GCA_965140915.1
+fasta:
+  sources:
+  - provider: UCSC
+    url: https://hgdownload.soe.ucsc.edu/hubs/GCA/965/140/915/GCA_965140915.1/GCA_965140915.1.fa.gz
+  checksum:
+    sha256: compute_on_registration
+seqcol:
+  compute: true
+build:
+  store: vgp
+  tier: store_only
+metadata:
+  added_by: sources_to_genomes

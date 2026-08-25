@@ -1,0 +1,23 @@
+name: T2T_pig1.0
+description: |
+  Sus scrofa assembly T2T_pig1.0 (GCA_048338725.1), from VGP.
+organism:
+  scientific_name: Sus scrofa
+  common_name: pig
+  taxon_id: 9823
+assembly:
+  source: GenBank
+  accession: GCA_048338725.1
+fasta:
+  sources:
+  - provider: UCSC
+    url: https://hgdownload.soe.ucsc.edu/hubs/GCA/048/338/725/GCA_048338725.1/GCA_048338725.1.fa.gz
+  checksum:
+    sha256: compute_on_registration
+seqcol:
+  compute: true
+build:
+  store: vgp
+  tier: store_only
+metadata:
+  added_by: sources_to_genomes

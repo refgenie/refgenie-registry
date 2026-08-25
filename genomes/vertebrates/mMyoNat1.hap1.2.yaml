@@ -1,0 +1,23 @@
+name: mMyoNat1.hap1.2
+description: |
+  Myotis nattereri assembly mMyoNat1.hap1.2 (GCA_964212035.2), from VGP.
+organism:
+  scientific_name: Myotis nattereri
+  common_name: Natterer's bat
+  taxon_id: 109481
+assembly:
+  source: GenBank
+  accession: GCA_964212035.2
+fasta:
+  sources:
+  - provider: UCSC
+    url: https://hgdownload.soe.ucsc.edu/hubs/GCA/964/212/035/GCA_964212035.2/GCA_964212035.2.fa.gz
+  checksum:
+    sha256: compute_on_registration
+seqcol:
+  compute: true
+build:
+  store: vgp
+  tier: store_only
+metadata:
+  added_by: sources_to_genomes

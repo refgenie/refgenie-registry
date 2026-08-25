@@ -1,0 +1,23 @@
+name: mPanOnc1_haplotype_1
+description: |
+  Panthera onca assembly mPanOnc1_haplotype_1 (GCA_046562885.1), from VGP.
+organism:
+  scientific_name: Panthera onca
+  common_name: jaguar
+  taxon_id: 9690
+assembly:
+  source: GenBank
+  accession: GCA_046562885.1
+fasta:
+  sources:
+  - provider: UCSC
+    url: https://hgdownload.soe.ucsc.edu/hubs/GCA/046/562/885/GCA_046562885.1/GCA_046562885.1.fa.gz
+  checksum:
+    sha256: compute_on_registration
+seqcol:
+  compute: true
+build:
+  store: vgp
+  tier: store_only
+metadata:
+  added_by: sources_to_genomes

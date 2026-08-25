@@ -6,6 +6,9 @@ Runs, per file:
   2. JSON Schema validation (schema/genome.schema.yaml)
   3. Content checks the schema can't express (checksum hex, taxon id, ORCID/DOI
      shape in the optional `fhr:` block, ...)
+  3b. `build:` checks: the store slug names a real stores/<slug>/, the tier is
+     one of pep/tiers.yaml, every add/drop asset has a recipe, and the block
+     never leaks into the FHR export
   4. Name matches filename; alias-conflict scan across the corpus
   5. FHR export self-check: map the YAML to its .fhr.json via genome_to_fhr and
      confirm the result is JSON-serializable and structurally FHR-valid (on by
@@ -29,8 +32,18 @@ from jsonschema import Draft202012Validator
 
 import genome_to_fhr
 
-SCHEMA_PATH = Path(__file__).resolve().parent.parent / "schema" / "genome.schema.yaml"
-GENOMES_DIR = Path(__file__).resolve().parent.parent / "genomes"
+REPO_ROOT = Path(__file__).resolve().parent.parent
+SCHEMA_PATH = REPO_ROOT / "schema" / "genome.schema.yaml"
+GENOMES_DIR = REPO_ROOT / "genomes"
+STORES_DIR = REPO_ROOT / "stores"
+RECIPES_DIR = REPO_ROOT / "recipes"
+TIERS_PATH = REPO_ROOT / "pep" / "tiers.yaml"
+
+# `stores/store_config.py` owns the single definition of "a store exists"
+# (get_store_dirs). It depends on pyyaml only, so importing it here does not drag
+# peppy/refget into the validator's (CI) dependency set.
+sys.path.insert(0, str(STORES_DIR))
+from store_config import store_slugs  # noqa: E402
 
 MASKING_VALUES = {"soft-masked", "hard-masked", "not-masked", "unknown"}
 ORCID_RE = re.compile(r"^https://orcid\.org/\d{4}-\d{4}-\d{4}-\d{3}[\dX]$")
@@ -119,6 +132,102 @@ def check_taxon(data: dict) -> list[str]:
     elif not isinstance(taxon_id, int) or isinstance(taxon_id, bool) or taxon_id < 1:
         errors.append(f"organism.taxon_id must be a positive integer, got: {taxon_id!r}")
     return errors
+
+
+def load_tiers(path: Path = TIERS_PATH) -> dict:
+    """The tier ladder from pep/tiers.yaml ({tier_name: [asset, ...]})."""
+    with open(path) as f:
+        return (yaml.safe_load(f) or {}).get("tiers") or {}
+
+
+def known_recipes(recipes_dir: Path = RECIPES_DIR) -> set[str]:
+    """Every buildable asset name (a recipes/<name>/recipe.yaml exists)."""
+    if not recipes_dir.is_dir():
+        return set()
+    return {d.name for d in recipes_dir.iterdir() if (d / "recipe.yaml").is_file()}
+
+
+def check_build_store(data: dict, stores_dir: Path = STORES_DIR) -> list[str]:
+    """`build.store` must name an existing store directory under stores/.
+
+    The valid slugs are listed in the error: a contributor has no other way to
+    discover them.
+    """
+    build = data.get("build")
+    if not isinstance(build, dict):
+        return []
+    store = build.get("store")
+    if store is None:
+        return []
+    slugs = store_slugs(stores_dir)
+    if store not in slugs:
+        return [
+            f"build.store '{store}' is not a store. Valid stores: "
+            f"{', '.join(slugs)}. (A store is a directory under stores/ with a "
+            f"project_config.yaml.)"
+        ]
+    return []
+
+
+def check_build_tier(
+    data: dict, tiers: dict | None = None, recipes: set[str] | None = None
+) -> list[str]:
+    """`build.tier` must exist in pep/tiers.yaml; add/drop must name real recipes.
+
+    Catches a typo'd asset name on the PR instead of at 3am in the nightly.
+    """
+    build = data.get("build")
+    if not isinstance(build, dict):
+        return []
+    if tiers is None:
+        tiers = load_tiers()
+    if recipes is None:
+        recipes = known_recipes()
+
+    errors = []
+    tier = build.get("tier")
+    if tier is not None and tier not in tiers:
+        errors.append(
+            f"build.tier '{tier}' is not a known tier. Valid tiers: "
+            f"{', '.join(sorted(tiers))} (defined in pep/tiers.yaml)."
+        )
+    for key in ("add", "drop"):
+        value = build.get(key)
+        if value is None:
+            continue
+        if not isinstance(value, list):
+            errors.append(f"build.{key} must be a list, got {type(value).__name__}")
+            continue
+        for asset in value:
+            if asset not in recipes:
+                errors.append(
+                    f"build.{key} names '{asset}', which has no recipe under "
+                    f"recipes/. Check the spelling against the recipe directory names."
+                )
+    return errors
+
+
+def check_build_not_in_fhr(data: dict) -> list[str]:
+    """The `build:` block must never reach the FHR sidecar.
+
+    genome_yaml_to_fhr() builds its output by explicit whitelist, so this holds
+    by construction, assert it anyway, so a future exporter change that starts
+    passing unknown keys through fails here instead of shipping pipeline
+    instructions into published metadata.
+    """
+    if "build" not in data:
+        return []
+    try:
+        fhr = genome_to_fhr.genome_yaml_to_fhr(data)
+    except Exception as exc:  # noqa: BLE001
+        return [f"FHR export failed while checking build-block isolation: {exc}"]
+    leaked = sorted(k for k in fhr if k.lower().startswith("build"))
+    if leaked:
+        return [
+            f"build: leaked into the FHR export as {leaked}. The build block is "
+            f"registry pipeline state and must not be published as metadata."
+        ]
+    return []
 
 
 def check_masking(data: dict) -> list[str]:
@@ -212,35 +321,57 @@ def check_url_reachable(url: str, timeout: int = 15) -> str | None:
         return f"URL unreachable: {url} ({exc})"
 
 
-def check_alias_conflicts(data: dict, current_path: Path) -> list[str]:
-    """Check whether any alias/name conflicts with names/aliases in other files."""
-    errors = []
-    proposed_names = {data.get("name", "").lower()}
-    for alias in data.get("aliases", []):
-        proposed_names.add(alias.lower())
-    proposed_names.discard("")
+def _record_names(data: dict) -> set[str]:
+    """Lowercased name + aliases for one record."""
+    names = {str(data.get("name", "")).lower()}
+    for alias in data.get("aliases") or []:
+        names.add(str(alias).lower())
+    names.discard("")
+    return names
 
-    for genome_file in GENOMES_DIR.rglob("*.yaml"):
-        if genome_file.resolve() == current_path.resolve():
-            continue
+
+def build_alias_index(genomes_dir: Path = GENOMES_DIR) -> dict[str, list[Path]]:
+    """{lowercased name-or-alias: [file, ...]} across the whole corpus.
+
+    Built ONCE per run and reused. The check is inherently a corpus-wide
+    question, so the naive form re-read every genome YAML for every genome YAML:
+    at 707 files that is half a million file reads and the validator does not
+    finish. This is the same comparison, done in one pass.
+    """
+    index: dict[str, list[Path]] = {}
+    for genome_file in sorted(genomes_dir.rglob("*.yaml")):
         try:
             with open(genome_file) as f:
                 other = yaml.safe_load(f)
-        except Exception:
+        except Exception:  # noqa: BLE001 - a malformed file is reported by its own check
             continue
         if not isinstance(other, dict):
             continue
-        other_names = {other.get("name", "").lower()}
-        for alias in other.get("aliases", []):
-            other_names.add(alias.lower())
-        other_names.discard("")
-        conflicts = proposed_names & other_names
-        if conflicts:
-            errors.append(
-                f"Alias conflict with {genome_file.relative_to(GENOMES_DIR)}: "
-                f"conflicting name(s): {', '.join(sorted(conflicts))}"
-            )
-    return errors
+        for name in _record_names(other):
+            index.setdefault(name, []).append(genome_file)
+    return index
+
+
+def check_alias_conflicts(
+    data: dict, current_path: Path, index: dict[str, list[Path]] | None = None
+) -> list[str]:
+    """Check whether any alias/name conflicts with names/aliases in other files."""
+    if index is None:
+        index = build_alias_index()
+    current = current_path.resolve()
+
+    conflicts: dict[Path, set[str]] = {}
+    for name in _record_names(data):
+        for other_file in index.get(name, []):
+            if other_file.resolve() == current:
+                continue
+            conflicts.setdefault(other_file, set()).add(name)
+
+    return [
+        f"Alias conflict with {other.relative_to(GENOMES_DIR)}: "
+        f"conflicting name(s): {', '.join(sorted(names))}"
+        for other, names in sorted(conflicts.items())
+    ]
 
 
 def check_name_matches_filename(data: dict, path: Path) -> list[str]:
@@ -262,6 +393,9 @@ def validate_genome(
     check_urls: bool = True,
     check_fhr: bool = True,
     verbose: bool = False,
+    tiers: dict | None = None,
+    recipes: set[str] | None = None,
+    alias_index: dict | None = None,
 ) -> list[str]:
     """Run all validation checks on a single genome file. Return list of errors."""
     errors = []
@@ -279,9 +413,12 @@ def validate_genome(
     errors.extend(check_taxon(data))
     errors.extend(check_checksum_format(data))
     errors.extend(check_masking(data))
+    errors.extend(check_build_store(data))
+    errors.extend(check_build_tier(data, tiers, recipes))
+    errors.extend(check_build_not_in_fhr(data))
     errors.extend(check_fhr_block(data))
     errors.extend(check_name_matches_filename(data, path))
-    errors.extend(check_alias_conflicts(data, path))
+    errors.extend(check_alias_conflicts(data, path, alias_index))
 
     if check_fhr:
         errors.extend(check_fhr_export(data))
@@ -328,6 +465,12 @@ def main():
     args = parser.parse_args()
 
     schema = load_schema()
+    # Loaded once for the whole run: the tier ladder and the recipe list are the
+    # same for every file, and re-globbing recipes/ per file is 700x wasted work
+    # on a full-corpus validate.
+    tiers = load_tiers()
+    recipes = known_recipes()
+    alias_index = build_alias_index()
     all_passed = True
 
     for filepath in args.files:
@@ -341,6 +484,9 @@ def main():
             check_urls=not args.no_url_check,
             check_fhr=not args.no_fhr_check,
             verbose=args.verbose,
+            tiers=tiers,
+            recipes=recipes,
+            alias_index=alias_index,
         )
         if errors:
             all_passed = False

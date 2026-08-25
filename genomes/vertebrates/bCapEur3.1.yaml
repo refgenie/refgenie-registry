@@ -1,0 +1,23 @@
+name: bCapEur3.1
+description: |
+  Caprimulgus europaeus assembly bCapEur3.1 (GCA_907165065.1), from VGP.
+organism:
+  scientific_name: Caprimulgus europaeus
+  common_name: Eurasian nightjar
+  taxon_id: 111811
+assembly:
+  source: GenBank
+  accession: GCA_907165065.1
+fasta:
+  sources:
+  - provider: UCSC
+    url: https://hgdownload.soe.ucsc.edu/hubs/GCA/907/165/065/GCA_907165065.1/GCA_907165065.1.fa.gz
+  checksum:
+    sha256: compute_on_registration
+seqcol:
+  compute: true
+build:
+  store: vgp
+  tier: store_only
+metadata:
+  added_by: sources_to_genomes

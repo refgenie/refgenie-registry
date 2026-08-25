@@ -1,0 +1,23 @@
+name: sHydCol1.hap2
+description: |
+  Hydrolagus colliei assembly sHydCol1.hap2 (GCA_035084275.1), from VGP.
+organism:
+  scientific_name: Hydrolagus colliei
+  common_name: spotted ratfish
+  taxon_id: 7873
+assembly:
+  source: GenBank
+  accession: GCA_035084275.1
+fasta:
+  sources:
+  - provider: UCSC
+    url: https://hgdownload.soe.ucsc.edu/hubs/GCA/035/084/275/GCA_035084275.1/GCA_035084275.1.fa.gz
+  checksum:
+    sha256: compute_on_registration
+seqcol:
+  compute: true
+build:
+  store: vgp
+  tier: store_only
+metadata:
+  added_by: sources_to_genomes

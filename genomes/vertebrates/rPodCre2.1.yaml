@@ -1,0 +1,22 @@
+name: rPodCre2.1
+description: |
+  Podarcis cretensis assembly rPodCre2.1 (GCA_951804945.1), from VGP.
+organism:
+  scientific_name: Podarcis cretensis
+  taxon_id: 1330250
+assembly:
+  source: GenBank
+  accession: GCA_951804945.1
+fasta:
+  sources:
+  - provider: UCSC
+    url: https://hgdownload.soe.ucsc.edu/hubs/GCA/951/804/945/GCA_951804945.1/GCA_951804945.1.fa.gz
+  checksum:
+    sha256: compute_on_registration
+seqcol:
+  compute: true
+build:
+  store: vgp
+  tier: store_only
+metadata:
+  added_by: sources_to_genomes

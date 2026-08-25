@@ -1,0 +1,23 @@
+name: mSunEtr1.pri.cur
+description: |
+  Suncus etruscus assembly mSunEtr1.pri.cur (GCF_024139225.1), from VGP.
+organism:
+  scientific_name: Suncus etruscus
+  common_name: white-toothed pygmy shrew
+  taxon_id: 109475
+assembly:
+  source: RefSeq
+  accession: GCF_024139225.1
+fasta:
+  sources:
+  - provider: UCSC
+    url: https://hgdownload.soe.ucsc.edu/hubs/GCF/024/139/225/GCF_024139225.1/GCF_024139225.1.fa.gz
+  checksum:
+    sha256: compute_on_registration
+seqcol:
+  compute: true
+build:
+  store: vgp
+  tier: store_only
+metadata:
+  added_by: sources_to_genomes

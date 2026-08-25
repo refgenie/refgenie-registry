@@ -1,0 +1,23 @@
+name: aLisVul1.1
+description: |
+  Lissotriton vulgaris assembly aLisVul1.1 (GCA_964263255.1), from VGP.
+organism:
+  scientific_name: Lissotriton vulgaris
+  common_name: common newt
+  taxon_id: 8324
+assembly:
+  source: GenBank
+  accession: GCA_964263255.1
+fasta:
+  sources:
+  - provider: UCSC
+    url: https://hgdownload.soe.ucsc.edu/hubs/GCA/964/263/255/GCA_964263255.1/GCA_964263255.1.fa.gz
+  checksum:
+    sha256: compute_on_registration
+seqcol:
+  compute: true
+build:
+  store: vgp
+  tier: store_only
+metadata:
+  added_by: sources_to_genomes

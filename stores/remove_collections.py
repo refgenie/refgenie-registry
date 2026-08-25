@@ -3,7 +3,7 @@
 
 `build.py` is additive only: it calls `add_sequence_collections_from_fastas`
 and never removes anything. Deleting a row from a store's `sources.csv` and
-rebuilding therefore does NOT drop that collection — it persists in the store
+rebuilding therefore does NOT drop that collection, it persists in the store
 forever. Removal has to be an explicit, separate operation, which is what this
 script is.
 
@@ -12,7 +12,7 @@ remove_orphan_sequences=True)`. That drops the collection record, its name
 lookup, its FHR metadata, and every collection alias pointing at it, and then
 garbage-collects the sequences that no remaining collection references. Because
 the store is content-addressed, sequences shared with a surviving collection are
-correctly retained — do NOT try to do this by deleting `.seq` files by hand.
+correctly retained, do NOT try to do this by deleting `.seq` files by hand.
 
 For `on_disk` stores `store.is_persisting` is True, so changes hit disk as they
 are made; there is no explicit `write()` to call.
@@ -117,7 +117,7 @@ def preview_orphan_removal(store: RefgetStore, targets: list) -> int:
     the store is in a state where GC is unsafe this raises HERE, before anything
     has been removed.
 
-    ADVISORY, though. It takes no lock -- deliberately, since blocking every
+    ADVISORY, though. It takes no lock, deliberately, since blocking every
     concurrent build for the length of a full-store scan (about a minute on
     plantref) to answer a question the operator may decline would be absurd. The
     authoritative scan runs again inside remove_collection() under the lock, so
@@ -138,7 +138,7 @@ def resolve_targets(
 ) -> list[tuple[str, str]]:
     """Resolve every target to (label, digest), aborting on any mismatch.
 
-    Nothing is removed until ALL targets resolve cleanly — a partial removal
+    Nothing is removed until ALL targets resolve cleanly, a partial removal
     followed by an abort would leave the store in a state neither the old nor
     the new sources.csv describes.
     """
@@ -155,7 +155,7 @@ def resolve_targets(
         if meta.digest != expected:
             problems.append(
                 f"alias {ALIAS_NAMESPACE}:{alias!r} resolves to {meta.digest}, "
-                f"expected {expected} — REFUSING (upstream rename?)"
+                f"expected {expected}, REFUSING (upstream rename?)"
             )
             continue
         print(f"  resolved {alias} -> {meta.digest} (n_sequences={meta.n_sequences})")
@@ -217,7 +217,7 @@ def main():
         sys.exit(f"Store not found on disk: {sp}")
 
     print("=" * 78)
-    print(f"REMOVE COLLECTIONS  —  store '{args.store}'")
+    print(f"REMOVE COLLECTIONS ,  store '{args.store}'")
     print(f"  store path : {sp}")
     print(f"  mode       : {'DRY RUN' if args.dry_run else 'LIVE REMOVAL'}")
     print(f"  orphan seqs: {'RETAINED' if args.keep_orphan_sequences else 'REMOVED'}")
@@ -240,7 +240,7 @@ def main():
     )
 
     if args.dry_run:
-        print("\nDRY RUN — nothing removed.")
+        print("\nDRY RUN, nothing removed.")
         return
 
     predicted_orphans = 0
@@ -255,7 +255,7 @@ def main():
     #
     # Each remove_collection() also takes (or re-enters) this lock and re-derives
     # its own live set under it, so the safety of the orphan GC does not depend
-    # on this batch lock -- it only makes the batch as a whole atomic.
+    # on this batch lock, it only makes the batch as a whole atomic.
     store.lock_for_batch("remove_collections")
     try:
         print("\nRemoving:")
@@ -265,7 +265,7 @@ def main():
             )
             print(f"  {'removed' if removed else 'NOT FOUND'}  {digest}  ({label})")
             if not removed:
-                sys.exit(f"remove_collection returned False for {digest} — stopping.")
+                sys.exit(f"remove_collection returned False for {digest}, stopping.")
     finally:
         store.release_batch_lock()
 
@@ -294,10 +294,10 @@ def main():
     # way but at different times, and the preview holds no lock, so they are not
     # required to agree:
     #
-    #   reclaimed < predicted  -- a concurrent build committed a collection that
+    #   reclaimed < predicted: a concurrent build committed a collection that
     #     references one of the planned orphans. The removal re-derived the live
     #     set under the lock and correctly spared it. Expected, not alarming.
-    #   reclaimed > predicted  -- nothing legitimate produces this. Something was
+    #   reclaimed > predicted: nothing legitimate produces this. Something was
     #     deleted that the plan did not account for; check the store before
     #     syncing.
     #
@@ -313,7 +313,7 @@ def main():
                 print(
                     f"\nWARNING: orphan GC reclaimed {actual:,} sequences but the dry run "
                     f"predicted only {predicted_orphans:,}. Nothing normal reclaims MORE "
-                    "than planned. Verify the store on disk before syncing to S3 — a "
+                    "than planned. Verify the store on disk before syncing to S3, a "
                     "--delete sync makes this permanent.",
                     file=sys.stderr,
                 )

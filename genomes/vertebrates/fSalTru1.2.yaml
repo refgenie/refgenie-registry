@@ -1,0 +1,23 @@
+name: fSalTru1.2
+description: |
+  Salmo trutta assembly fSalTru1.2 (GCA_901001165.2), from VGP.
+organism:
+  scientific_name: Salmo trutta
+  common_name: river trout
+  taxon_id: 8032
+assembly:
+  source: GenBank
+  accession: GCA_901001165.2
+fasta:
+  sources:
+  - provider: UCSC
+    url: https://hgdownload.soe.ucsc.edu/hubs/GCA/901/001/165/GCA_901001165.2/GCA_901001165.2.fa.gz
+  checksum:
+    sha256: compute_on_registration
+seqcol:
+  compute: true
+build:
+  store: vgp
+  tier: store_only
+metadata:
+  added_by: sources_to_genomes

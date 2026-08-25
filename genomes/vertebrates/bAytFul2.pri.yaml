@@ -1,0 +1,23 @@
+name: bAytFul2.pri
+description: |
+  Aythya fuligula assembly bAytFul2.pri (GCF_009819795.1), from VGP.
+organism:
+  scientific_name: Aythya fuligula
+  common_name: tufted duck
+  taxon_id: 219594
+assembly:
+  source: RefSeq
+  accession: GCF_009819795.1
+fasta:
+  sources:
+  - provider: UCSC
+    url: https://hgdownload.soe.ucsc.edu/hubs/GCF/009/819/795/GCF_009819795.1/GCF_009819795.1.fa.gz
+  checksum:
+    sha256: compute_on_registration
+seqcol:
+  compute: true
+build:
+  store: vgp
+  tier: store_only
+metadata:
+  added_by: sources_to_genomes

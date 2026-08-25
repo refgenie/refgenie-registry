@@ -1,49 +1,40 @@
 #!/usr/bin/env python3
 """Report which (genome, asset_group) requests in the PEP did not get built.
 
-Motivation
-----------
-On 2026-07-23 the nightly widened the build queue from 3 genomes to 7. Six of
-the 42 requested assets -- every athaliana asset -- simply did not exist when the
-run finished. The run still pushed 21 asset modes, still refreshed ``index/``,
-still committed and pushed to the registry, and nothing anywhere named the gap.
-The only signal was the process exit code, which says *that* something failed but
-never *what is missing*.
+Why this exists
+---------------
+``snakemake --keep-going`` is deliberate: one broken recipe must not abort the
+batch. The cost is that a run can be badly incomplete and still look like a normal
+night in the log. It pushes what succeeded, refreshes ``index/``, commits, and the
+only signal is an exit code, which says something failed but never what is
+missing.
 
-That is the failure mode this closes. ``snakemake --keep-going`` is deliberate --
-one broken recipe must not abort the batch -- but its consequence is that a run
-can be substantially incomplete and still look like a normal night's work in the
-log. Every new genome or recipe added to the registry widens the queue and widens
-that blind spot, so the check has to be derived from the PEP rather than from a
-hardcoded expectation.
+This names what is missing. It is derived from the PEP rather than a hardcoded
+expectation, so it stays correct as genomes and recipes are added.
 
 What it compares
 ----------------
-Requests come from ``pep/samples.csv`` -- one row per (genome_name,
+Requests come from ``pep/samples.csv``, one row per (genome_name,
 asset_group_name). Reality comes from the persistent catalog: an ``assetgroup``
 row for that genome digest and name means the asset was built and registered.
 
-Genome names are resolved through the alias manager, so a genome whose alias does
-not resolve is reported as entirely missing rather than crashing the check -- that
-is exactly the athaliana state, and the report should describe it, not die on it.
+Genome names resolve through the alias manager. A genome whose alias does not
+resolve is reported as entirely missing rather than crashing the check, because
+that state is worth describing.
 
 What it CANNOT see
 ------------------
-This is a question about STATE, not about this run. An ``assetgroup`` row means
-the asset is registered *by some run*, not that tonight's attempt succeeded. So a
-failed REBUILD of an asset that already exists is invisible here: the row from the
-previous night still satisfies the check.
+This is a question about state, not about this run. An ``assetgroup`` row means
+the asset is registered by some run, not that tonight's attempt succeeded. A
+failed rebuild of an asset that already exists is invisible here: last night's row
+still satisfies the check. So this check can print ``no gaps`` on a night when
+builds failed, and be correct.
 
-That is not hypothetical. On 2026-07-29 five builds failed (a wedged compute node
-ate every job it was handed) and this check still printed ``42/42`` and ``no gaps``
--- correctly, because all 42 assets were registered on 07-26 and none of them
-disappeared. The line was true and read as an all-clear directly above the failure.
-
-Do not "fix" that by filtering on build timestamps. Snakemake is incremental, so on
-a normal night nothing rebuilds at all; a freshness test would fire constantly on
-healthy runs. The gap is a reporting one, and it is closed by ``--build-status``:
-pass the builder's exit code and the summary line says plainly that a green
-coverage report does not mean a green run.
+Do not fix that by filtering on build timestamps. Snakemake is incremental, so on
+a normal night nothing rebuilds at all, and a freshness test would fire constantly
+on healthy runs. The gap is a reporting one, closed by ``--build-status``: pass
+the builder's exit code and the summary says plainly that a green coverage report
+does not mean a green run.
 
 Usage
 -----
@@ -87,7 +78,14 @@ def read_pep_requests(root: Path) -> list[tuple[str, str]]:
     return requests
 
 
-def build_refgenie(db_config: str | None):
+def open_refgenie(db_config: str | None):
+    """Open the refgenie catalog and return the client.
+
+    ``db_config`` is a path to a refgenie database config; when given it is
+    exported as REFGENIE_DB_CONFIG_PATH, which is how Refgenie() locates the
+    catalog. Passing None falls back to whatever that variable already holds.
+    Imported lazily so --help works without refgenie installed.
+    """
     from refgenie import Refgenie
 
     if db_config:
@@ -111,7 +109,7 @@ def main(argv: list[str] | None = None) -> int:
         help=(
             "Exit code of the build step that just ran. Nonzero qualifies the summary "
             "line so a full-coverage report cannot be misread as a successful run. "
-            "Does NOT affect this script's own exit code -- the caller re-raises the "
+            "Does NOT affect this script's own exit code, the caller re-raises the "
             "real build status."
         ),
     )
@@ -119,7 +117,7 @@ def main(argv: list[str] | None = None) -> int:
 
     root = registry_root()
     requests = read_pep_requests(root)
-    rg = build_refgenie(args.db_config)
+    rg = open_refgenie(args.db_config)
 
     # Resolve each genome once. An unresolvable alias is not an error here: it
     # means the genome never registered, and every asset it requested is missing.
@@ -167,18 +165,17 @@ def main(argv: list[str] | None = None) -> int:
         # Full coverage AND a failed build is the confusing case: every requested
         # asset is registered, but at least one of tonight's builds failed, so some
         # of those rows are older than this run. Say so, or the reader takes the
-        # coverage line as an all-clear -- which is exactly what happened on
-        # 2026-07-29.
+        # coverage line as an all-clear, which is exactly what happened on
         print(
             f"coverage: no gaps in the CATALOG, but the build step exited "
-            f"{args.build_status} — this is NOT a clean run."
+            f"{args.build_status}, this is NOT a clean run."
         )
         print("  Coverage counts assets registered by ANY run. An asset that already")
         print("  existed still counts even if tonight's rebuild of it failed, so the")
         print("  failures above are real and are NOT contradicted by this line.")
         print("  Read the build log for which rules failed.")
     else:
-        print("coverage: no gaps — every asset the PEP requests is registered.")
+        print("coverage: no gaps, every asset the PEP requests is registered.")
 
     if missing and args.build_status != 0:
         # Gaps plus a failed build: name the likely relationship so the reader does

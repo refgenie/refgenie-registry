@@ -1,0 +1,23 @@
+name: aPseCor3.hap2
+description: |
+  Pseudophryne corroboree assembly aPseCor3.hap2 (GCF_028390025.1), from VGP.
+organism:
+  scientific_name: Pseudophryne corroboree
+  common_name: corroboree frog
+  taxon_id: 495146
+assembly:
+  source: RefSeq
+  accession: GCF_028390025.1
+fasta:
+  sources:
+  - provider: UCSC
+    url: https://hgdownload.soe.ucsc.edu/hubs/GCF/028/390/025/GCF_028390025.1/GCF_028390025.1.fa.gz
+  checksum:
+    sha256: compute_on_registration
+seqcol:
+  compute: true
+build:
+  store: vgp
+  tier: store_only
+metadata:
+  added_by: sources_to_genomes

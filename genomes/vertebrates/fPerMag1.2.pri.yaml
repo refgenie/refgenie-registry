@@ -1,0 +1,22 @@
+name: fPerMag1.2.pri
+description: |
+  Periophthalmus magnuspinnatus assembly fPerMag1.2.pri (GCF_009829125.3), from VGP.
+organism:
+  scientific_name: Periophthalmus magnuspinnatus
+  taxon_id: 409849
+assembly:
+  source: RefSeq
+  accession: GCF_009829125.3
+fasta:
+  sources:
+  - provider: UCSC
+    url: https://hgdownload.soe.ucsc.edu/hubs/GCF/009/829/125/GCF_009829125.3/GCF_009829125.3.fa.gz
+  checksum:
+    sha256: compute_on_registration
+seqcol:
+  compute: true
+build:
+  store: vgp
+  tier: store_only
+metadata:
+  added_by: sources_to_genomes

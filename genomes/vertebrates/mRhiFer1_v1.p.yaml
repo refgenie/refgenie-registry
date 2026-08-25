@@ -1,0 +1,23 @@
+name: mRhiFer1_v1.p
+description: |
+  Rhinolophus ferrumequinum assembly mRhiFer1_v1.p (GCF_004115265.2), from VGP.
+organism:
+  scientific_name: Rhinolophus ferrumequinum
+  common_name: greater horseshoe bat
+  taxon_id: 59479
+assembly:
+  source: RefSeq
+  accession: GCF_004115265.2
+fasta:
+  sources:
+  - provider: UCSC
+    url: https://hgdownload.soe.ucsc.edu/hubs/GCF/004/115/265/GCF_004115265.2/GCF_004115265.2.fa.gz
+  checksum:
+    sha256: compute_on_registration
+seqcol:
+  compute: true
+build:
+  store: vgp
+  tier: store_only
+metadata:
+  added_by: sources_to_genomes

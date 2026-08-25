@@ -1,0 +1,23 @@
+name: mMinSch1.hap1.2
+description: |
+  Miniopterus schreibersii assembly mMinSch1.hap1.2 (GCA_964146895.2), from VGP.
+organism:
+  scientific_name: Miniopterus schreibersii
+  common_name: Schreibers' long-fingered bat
+  taxon_id: 9433
+assembly:
+  source: GenBank
+  accession: GCA_964146895.2
+fasta:
+  sources:
+  - provider: UCSC
+    url: https://hgdownload.soe.ucsc.edu/hubs/GCA/964/146/895/GCA_964146895.2/GCA_964146895.2.fa.gz
+  checksum:
+    sha256: compute_on_registration
+seqcol:
+  compute: true
+build:
+  store: vgp
+  tier: store_only
+metadata:
+  added_by: sources_to_genomes

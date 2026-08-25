@@ -1,0 +1,23 @@
+name: fNotCoa1.1
+description: |
+  Notolepis coatsorum assembly fNotCoa1.1 (GCA_963971535.1), from VGP.
+organism:
+  scientific_name: Notolepis coatsorum
+  common_name: Antarctic jonasfish
+  taxon_id: 948063
+assembly:
+  source: GenBank
+  accession: GCA_963971535.1
+fasta:
+  sources:
+  - provider: UCSC
+    url: https://hgdownload.soe.ucsc.edu/hubs/GCA/963/971/535/GCA_963971535.1/GCA_963971535.1.fa.gz
+  checksum:
+    sha256: compute_on_registration
+seqcol:
+  compute: true
+build:
+  store: vgp
+  tier: store_only
+metadata:
+  added_by: sources_to_genomes

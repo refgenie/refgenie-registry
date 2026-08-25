@@ -1,0 +1,23 @@
+name: bPteGut1.pri
+description: |
+  Pterocles gutturalis assembly bPteGut1.pri (GCA_009769525.1), from VGP.
+organism:
+  scientific_name: Pterocles gutturalis
+  common_name: yellow-throated sandgrouse
+  taxon_id: 240206
+assembly:
+  source: GenBank
+  accession: GCA_009769525.1
+fasta:
+  sources:
+  - provider: UCSC
+    url: https://hgdownload.soe.ucsc.edu/hubs/GCA/009/769/525/GCA_009769525.1/GCA_009769525.1.fa.gz
+  checksum:
+    sha256: compute_on_registration
+seqcol:
+  compute: true
+build:
+  store: vgp
+  tier: store_only
+metadata:
+  added_by: sources_to_genomes

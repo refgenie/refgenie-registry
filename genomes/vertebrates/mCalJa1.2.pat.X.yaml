@@ -1,0 +1,23 @@
+name: mCalJa1.2.pat.X
+description: |
+  Callithrix jacchus assembly mCalJa1.2.pat.X (GCF_011100555.1), from VGP.
+organism:
+  scientific_name: Callithrix jacchus
+  common_name: white-tufted-ear marmoset
+  taxon_id: 9483
+assembly:
+  source: RefSeq
+  accession: GCF_011100555.1
+fasta:
+  sources:
+  - provider: UCSC
+    url: https://hgdownload.soe.ucsc.edu/hubs/GCF/011/100/555/GCF_011100555.1/GCF_011100555.1.fa.gz
+  checksum:
+    sha256: compute_on_registration
+seqcol:
+  compute: true
+build:
+  store: vgp
+  tier: store_only
+metadata:
+  added_by: sources_to_genomes

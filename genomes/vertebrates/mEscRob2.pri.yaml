@@ -1,0 +1,23 @@
+name: mEscRob2.pri
+description: |
+  Eschrichtius robustus assembly mEscRob2.pri (GCF_028021215.1), from VGP.
+organism:
+  scientific_name: Eschrichtius robustus
+  common_name: grey whale
+  taxon_id: 9764
+assembly:
+  source: RefSeq
+  accession: GCF_028021215.1
+fasta:
+  sources:
+  - provider: UCSC
+    url: https://hgdownload.soe.ucsc.edu/hubs/GCF/028/021/215/GCF_028021215.1/GCF_028021215.1.fa.gz
+  checksum:
+    sha256: compute_on_registration
+seqcol:
+  compute: true
+build:
+  store: vgp
+  tier: store_only
+metadata:
+  added_by: sources_to_genomes

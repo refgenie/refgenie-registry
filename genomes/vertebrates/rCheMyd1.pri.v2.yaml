@@ -1,0 +1,23 @@
+name: rCheMyd1.pri.v2
+description: |
+  Chelonia mydas assembly rCheMyd1.pri.v2 (GCF_015237465.2), from VGP.
+organism:
+  scientific_name: Chelonia mydas
+  common_name: Green sea turtle
+  taxon_id: 8469
+assembly:
+  source: RefSeq
+  accession: GCF_015237465.2
+fasta:
+  sources:
+  - provider: UCSC
+    url: https://hgdownload.soe.ucsc.edu/hubs/GCF/015/237/465/GCF_015237465.2/GCF_015237465.2.fa.gz
+  checksum:
+    sha256: compute_on_registration
+seqcol:
+  compute: true
+build:
+  store: vgp
+  tier: store_only
+metadata:
+  added_by: sources_to_genomes

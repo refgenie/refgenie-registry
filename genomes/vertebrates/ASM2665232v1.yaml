@@ -1,0 +1,23 @@
+name: ASM2665232v1
+description: |
+  Pleurodeles waltl assembly ASM2665232v1 (GCA_026652325.1), from VGP.
+organism:
+  scientific_name: Pleurodeles waltl
+  common_name: Iberian ribbed newt
+  taxon_id: 8319
+assembly:
+  source: GenBank
+  accession: GCA_026652325.1
+fasta:
+  sources:
+  - provider: UCSC
+    url: https://hgdownload.soe.ucsc.edu/hubs/GCA/026/652/325/GCA_026652325.1/GCA_026652325.1.fa.gz
+  checksum:
+    sha256: compute_on_registration
+seqcol:
+  compute: true
+build:
+  store: vgp
+  tier: store_only
+metadata:
+  added_by: sources_to_genomes

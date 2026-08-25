@@ -1,0 +1,23 @@
+name: bBalReg1.pri
+description: |
+  Balearica regulorum gibbericeps assembly bBalReg1.pri (GCA_011004875.1), from VGP.
+organism:
+  scientific_name: Balearica regulorum gibbericeps
+  common_name: East African grey crowned-crane
+  taxon_id: 100784
+assembly:
+  source: GenBank
+  accession: GCA_011004875.1
+fasta:
+  sources:
+  - provider: UCSC
+    url: https://hgdownload.soe.ucsc.edu/hubs/GCA/011/004/875/GCA_011004875.1/GCA_011004875.1.fa.gz
+  checksum:
+    sha256: compute_on_registration
+seqcol:
+  compute: true
+build:
+  store: vgp
+  tier: store_only
+metadata:
+  added_by: sources_to_genomes

@@ -1,0 +1,22 @@
+name: fSalAlp2_p1.0
+description: |
+  Salvelinus alpinus oquassa assembly fSalAlp2_p1.0 (GCA_036784965.1), from VGP.
+organism:
+  scientific_name: Salvelinus alpinus oquassa
+  taxon_id: 152111
+assembly:
+  source: GenBank
+  accession: GCA_036784965.1
+fasta:
+  sources:
+  - provider: UCSC
+    url: https://hgdownload.soe.ucsc.edu/hubs/GCA/036/784/965/GCA_036784965.1/GCA_036784965.1.fa.gz
+  checksum:
+    sha256: compute_on_registration
+seqcol:
+  compute: true
+build:
+  store: vgp
+  tier: store_only
+metadata:
+  added_by: sources_to_genomes

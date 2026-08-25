@@ -1,0 +1,23 @@
+name: fOsmMor3.pri
+description: |
+  Osmerus mordax assembly fOsmMor3.pri (GCA_038355195.1), from VGP.
+organism:
+  scientific_name: Osmerus mordax
+  common_name: rainbow smelt
+  taxon_id: 8014
+assembly:
+  source: GenBank
+  accession: GCA_038355195.1
+fasta:
+  sources:
+  - provider: UCSC
+    url: https://hgdownload.soe.ucsc.edu/hubs/GCA/038/355/195/GCA_038355195.1/GCA_038355195.1.fa.gz
+  checksum:
+    sha256: compute_on_registration
+seqcol:
+  compute: true
+build:
+  store: vgp
+  tier: store_only
+metadata:
+  added_by: sources_to_genomes

@@ -1,0 +1,23 @@
+name: bWilVid1_haplotype_1
+description: |
+  Willisornis vidua assembly bWilVid1 haplotype 1 (GCA_045364795.1), from VGP.
+organism:
+  scientific_name: Willisornis vidua
+  common_name: Xingu scale-backed antbird
+  taxon_id: 1566151
+assembly:
+  source: GenBank
+  accession: GCA_045364795.1
+fasta:
+  sources:
+  - provider: UCSC
+    url: https://hgdownload.soe.ucsc.edu/hubs/GCA/045/364/795/GCA_045364795.1/GCA_045364795.1.fa.gz
+  checksum:
+    sha256: compute_on_registration
+seqcol:
+  compute: true
+build:
+  store: vgp
+  tier: store_only
+metadata:
+  added_by: sources_to_genomes

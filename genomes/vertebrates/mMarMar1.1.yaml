@@ -1,0 +1,23 @@
+name: mMarMar1.1
+description: |
+  Martes martes assembly mMarMar1.1 (GCA_963455335.1), from VGP.
+organism:
+  scientific_name: Martes martes
+  common_name: European pine marten
+  taxon_id: 29065
+assembly:
+  source: GenBank
+  accession: GCA_963455335.1
+fasta:
+  sources:
+  - provider: UCSC
+    url: https://hgdownload.soe.ucsc.edu/hubs/GCA/963/455/335/GCA_963455335.1/GCA_963455335.1.fa.gz
+  checksum:
+    sha256: compute_on_registration
+seqcol:
+  compute: true
+build:
+  store: vgp
+  tier: store_only
+metadata:
+  added_by: sources_to_genomes

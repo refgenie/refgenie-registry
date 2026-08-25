@@ -1,0 +1,23 @@
+name: bAccGen1.2
+description: |
+  Astur gentilis assembly bAccGen1.2 (GCA_929443795.2), from VGP.
+organism:
+  scientific_name: Astur gentilis
+  common_name: Northern goshawk
+  taxon_id: 8957
+assembly:
+  source: GenBank
+  accession: GCA_929443795.2
+fasta:
+  sources:
+  - provider: UCSC
+    url: https://hgdownload.soe.ucsc.edu/hubs/GCA/929/443/795/GCA_929443795.2/GCA_929443795.2.fa.gz
+  checksum:
+    sha256: compute_on_registration
+seqcol:
+  compute: true
+build:
+  store: vgp
+  tier: store_only
+metadata:
+  added_by: sources_to_genomes

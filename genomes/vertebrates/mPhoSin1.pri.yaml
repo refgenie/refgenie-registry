@@ -1,0 +1,23 @@
+name: mPhoSin1.pri
+description: |
+  Phocoena sinus assembly mPhoSin1.pri (GCF_008692025.1), from VGP.
+organism:
+  scientific_name: Phocoena sinus
+  common_name: vaquita
+  taxon_id: 42100
+assembly:
+  source: RefSeq
+  accession: GCF_008692025.1
+fasta:
+  sources:
+  - provider: UCSC
+    url: https://hgdownload.soe.ucsc.edu/hubs/GCF/008/692/025/GCF_008692025.1/GCF_008692025.1.fa.gz
+  checksum:
+    sha256: compute_on_registration
+seqcol:
+  compute: true
+build:
+  store: vgp
+  tier: store_only
+metadata:
+  added_by: sources_to_genomes

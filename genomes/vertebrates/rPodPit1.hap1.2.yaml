@@ -1,0 +1,22 @@
+name: rPodPit1.hap1.2
+description: |
+  Podarcis pityusensis assembly rPodPit1.hap1.2 (GCA_964106645.2), from VGP.
+organism:
+  scientific_name: Podarcis pityusensis
+  taxon_id: 74359
+assembly:
+  source: GenBank
+  accession: GCA_964106645.2
+fasta:
+  sources:
+  - provider: UCSC
+    url: https://hgdownload.soe.ucsc.edu/hubs/GCA/964/106/645/GCA_964106645.2/GCA_964106645.2.fa.gz
+  checksum:
+    sha256: compute_on_registration
+seqcol:
+  compute: true
+build:
+  store: vgp
+  tier: store_only
+metadata:
+  added_by: sources_to_genomes

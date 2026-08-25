@@ -1,0 +1,22 @@
+name: fPhoLeu1.pri
+description: |
+  Pholidichthys leucotaenia assembly fPhoLeu1.pri (GCA_020510985.1), from VGP.
+organism:
+  scientific_name: Pholidichthys leucotaenia
+  taxon_id: 390368
+assembly:
+  source: GenBank
+  accession: GCA_020510985.1
+fasta:
+  sources:
+  - provider: UCSC
+    url: https://hgdownload.soe.ucsc.edu/hubs/GCA/020/510/985/GCA_020510985.1/GCA_020510985.1.fa.gz
+  checksum:
+    sha256: compute_on_registration
+seqcol:
+  compute: true
+build:
+  store: vgp
+  tier: store_only
+metadata:
+  added_by: sources_to_genomes

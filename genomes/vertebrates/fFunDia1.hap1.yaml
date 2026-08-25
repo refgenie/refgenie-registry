@@ -1,0 +1,23 @@
+name: fFunDia1.hap1
+description: |
+  Fundulus diaphanus assembly fFunDia1.hap1 (GCA_037039145.1), from VGP.
+organism:
+  scientific_name: Fundulus diaphanus
+  common_name: banded killifish
+  taxon_id: 54267
+assembly:
+  source: GenBank
+  accession: GCA_037039145.1
+fasta:
+  sources:
+  - provider: UCSC
+    url: https://hgdownload.soe.ucsc.edu/hubs/GCA/037/039/145/GCA_037039145.1/GCA_037039145.1.fa.gz
+  checksum:
+    sha256: compute_on_registration
+seqcol:
+  compute: true
+build:
+  store: vgp
+  tier: store_only
+metadata:
+  added_by: sources_to_genomes

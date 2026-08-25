@@ -1,0 +1,23 @@
+name: T2T-goat2.0
+description: |
+  Capra hircus assembly T2T-goat2.0 (GCA_041735815.1), from VGP.
+organism:
+  scientific_name: Capra hircus
+  common_name: goat
+  taxon_id: 9925
+assembly:
+  source: GenBank
+  accession: GCA_041735815.1
+fasta:
+  sources:
+  - provider: UCSC
+    url: https://hgdownload.soe.ucsc.edu/hubs/GCA/041/735/815/GCA_041735815.1/GCA_041735815.1.fa.gz
+  checksum:
+    sha256: compute_on_registration
+seqcol:
+  compute: true
+build:
+  store: vgp
+  tier: store_only
+metadata:
+  added_by: sources_to_genomes

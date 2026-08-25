@@ -1,0 +1,22 @@
+name: mPerMan1.0.p
+description: |
+  Peromyscus maniculatus sonoriensis assembly mPerMan1.0.p (GCA_026229955.1), from VGP.
+organism:
+  scientific_name: Peromyscus maniculatus sonoriensis
+  taxon_id: 372063
+assembly:
+  source: GenBank
+  accession: GCA_026229955.1
+fasta:
+  sources:
+  - provider: UCSC
+    url: https://hgdownload.soe.ucsc.edu/hubs/GCA/026/229/955/GCA_026229955.1/GCA_026229955.1.fa.gz
+  checksum:
+    sha256: compute_on_registration
+seqcol:
+  compute: true
+build:
+  store: vgp
+  tier: store_only
+metadata:
+  added_by: sources_to_genomes

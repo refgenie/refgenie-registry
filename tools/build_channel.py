@@ -4,7 +4,7 @@
 A "data channel" is what a refgenie1 client syncs recipes and asset classes
 from: an ``index.yaml`` plus the recipe / asset-class YAML files, served over
 HTTP (GitHub Pages). This registry is the single source of truth for those
-files, so the channel is published in the registry's OWN native layout -- no
+files, so the channel is published in the registry's OWN native layout, no
 flattening, no format conversion. A channel path maps 1:1 to a registry path:
 
     asset_classes/<name>.yaml        ->  channel/asset_classes/<name>.yaml
@@ -21,7 +21,7 @@ the published asset classes and recipes and links to ``index.yaml`` and each
 file. Machine clients ignore it and fetch ``index.yaml`` directly.
 
 Only the channel artifact (``index.yaml``, ``index.html``, ``asset_classes/``,
-``recipes/``) is written to the output dir -- nothing else from the repo is
+``recipes/``) is written to the output dir, nothing else from the repo is
 exposed.
 
 Usage:

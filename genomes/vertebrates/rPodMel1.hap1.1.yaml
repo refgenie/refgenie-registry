@@ -1,0 +1,22 @@
+name: rPodMel1.hap1.1
+description: |
+  Podarcis melisellensis assembly rPodMel1.hap1.1 (GCA_964234715.1), from VGP.
+organism:
+  scientific_name: Podarcis melisellensis
+  taxon_id: 65482
+assembly:
+  source: GenBank
+  accession: GCA_964234715.1
+fasta:
+  sources:
+  - provider: UCSC
+    url: https://hgdownload.soe.ucsc.edu/hubs/GCA/964/234/715/GCA_964234715.1/GCA_964234715.1.fa.gz
+  checksum:
+    sha256: compute_on_registration
+seqcol:
+  compute: true
+build:
+  store: vgp
+  tier: store_only
+metadata:
+  added_by: sources_to_genomes

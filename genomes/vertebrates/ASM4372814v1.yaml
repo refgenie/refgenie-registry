@@ -1,0 +1,23 @@
+name: ASM4372814v1
+description: |
+  Rhinolophus trifoliatus assembly ASM4372814v1 (GCA_043728145.1), from VGP.
+organism:
+  scientific_name: Rhinolophus trifoliatus
+  common_name: Trefoil horseshoe bat
+  taxon_id: 430492
+assembly:
+  source: GenBank
+  accession: GCA_043728145.1
+fasta:
+  sources:
+  - provider: UCSC
+    url: https://hgdownload.soe.ucsc.edu/hubs/GCA/043/728/145/GCA_043728145.1/GCA_043728145.1.fa.gz
+  checksum:
+    sha256: compute_on_registration
+seqcol:
+  compute: true
+build:
+  store: vgp
+  tier: store_only
+metadata:
+  added_by: sources_to_genomes

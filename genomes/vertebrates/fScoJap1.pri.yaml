@@ -1,0 +1,23 @@
+name: fScoJap1.pri
+description: |
+  Scomber japonicus assembly fScoJap1.pri (GCF_027409825.1), from VGP.
+organism:
+  scientific_name: Scomber japonicus
+  common_name: chub mackerel
+  taxon_id: 13676
+assembly:
+  source: RefSeq
+  accession: GCF_027409825.1
+fasta:
+  sources:
+  - provider: UCSC
+    url: https://hgdownload.soe.ucsc.edu/hubs/GCF/027/409/825/GCF_027409825.1/GCF_027409825.1.fa.gz
+  checksum:
+    sha256: compute_on_registration
+seqcol:
+  compute: true
+build:
+  store: vgp
+  tier: store_only
+metadata:
+  added_by: sources_to_genomes

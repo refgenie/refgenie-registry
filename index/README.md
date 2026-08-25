@@ -3,7 +3,7 @@
 Auto-generated asset index. **Do not edit by hand.**
 
 `manifest.yaml` is a roll-up of every built asset, regenerated from the
-`index/<genome>/<recipe>.yaml` entries. It is produced and committed by CI —
+`index/<genome>/<recipe>.yaml` entries. It is produced and committed by CI,
 the [Regenerate Manifest](../.github/workflows/regenerate-manifest.yaml)
 workflow (weekly cron + `workflow_dispatch`), which runs
 [`.github/scripts/regenerate-manifest.py`](../.github/scripts/regenerate-manifest.py).

@@ -1,0 +1,23 @@
+name: bCygCol1.1
+description: |
+  Cygnus columbianus assembly bCygCol1.1 (GCA_965151615.1), from VGP.
+organism:
+  scientific_name: Cygnus columbianus
+  common_name: tundra swan
+  taxon_id: 110926
+assembly:
+  source: GenBank
+  accession: GCA_965151615.1
+fasta:
+  sources:
+  - provider: UCSC
+    url: https://hgdownload.soe.ucsc.edu/hubs/GCA/965/151/615/GCA_965151615.1/GCA_965151615.1.fa.gz
+  checksum:
+    sha256: compute_on_registration
+seqcol:
+  compute: true
+build:
+  store: vgp
+  tier: store_only
+metadata:
+  added_by: sources_to_genomes

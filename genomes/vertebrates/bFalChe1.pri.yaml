@@ -1,0 +1,23 @@
+name: bFalChe1.pri
+description: |
+  Falco cherrug assembly bFalChe1.pri (GCF_023634085.1), from VGP.
+organism:
+  scientific_name: Falco cherrug
+  common_name: Saker falcon
+  taxon_id: 345164
+assembly:
+  source: RefSeq
+  accession: GCF_023634085.1
+fasta:
+  sources:
+  - provider: UCSC
+    url: https://hgdownload.soe.ucsc.edu/hubs/GCF/023/634/085/GCF_023634085.1/GCF_023634085.1.fa.gz
+  checksum:
+    sha256: compute_on_registration
+seqcol:
+  compute: true
+build:
+  store: vgp
+  tier: store_only
+metadata:
+  added_by: sources_to_genomes

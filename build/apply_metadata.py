@@ -9,8 +9,8 @@ after the genome was registered would never reach the catalog without this step.
 
 For every genome the PEP queues (pep/samples.csv, column ``genome_name``) it reads
 the generated pep/metadata/<genome_name>.fhr.json and calls
-``GenomeManager.apply_fhr(digest, record)`` -- the SAME helper ``genome init --fhr``
-and ``genome set-metadata --fhr`` funnel through -- which upserts the genome row's
+``GenomeManager.apply_fhr(digest, record)``, the SAME helper ``genome init --fhr``
+and ``genome set-metadata --fhr`` funnel through, which upserts the genome row's
 description/species_name columns and (re)writes the RefgetStore FHR sidecar. The
 sidecars this writes are picked up by run_builds.sh's ``aws s3 sync .refget_store``;
 the columns ride the subsequent ``catalog-export``.
@@ -23,7 +23,7 @@ state), so:
   * re-running over an already-correct catalog is a no-op.
 
 Metadata is NON-BLOCKING: a genome that is not yet registered (its build failed) or
-whose sidecar is missing is a WARNING, never a fatal error -- a build must never fail
+whose sidecar is missing is a WARNING, never a fatal error, a build must never fail
 because a description could not be applied.
 
 Usage::
@@ -65,7 +65,7 @@ def read_pep_genomes(registry_root: Path) -> list[str]:
     return genomes
 
 
-def _build_refgenie(db_config: str | None):
+def _open_refgenie(db_config: str | None):
     """Construct a Refgenie the SAME way build/reconcile_genomes.py does.
 
     No ``rg.init()``: applying metadata needs only the engine and the store, both
@@ -122,9 +122,9 @@ def main(argv: list[str] | None = None) -> int:
     genomes = read_pep_genomes(registry_root)
     print(f"apply_metadata: PEP queues {len(genomes)} genome(s)")
     if args.dry_run:
-        print("apply_metadata: --dry-run (report-only) — nothing will be written")
+        print("apply_metadata: --dry-run (report-only), nothing will be written")
 
-    rg = _build_refgenie(args.db_config)
+    rg = _open_refgenie(args.db_config)
 
     applied = 0
     skipped = 0
@@ -154,7 +154,7 @@ def main(argv: list[str] | None = None) -> int:
             failures += 1
 
     print(
-        f"apply_metadata: done — applied={applied}, skipped={skipped}, failed={failures}"
+        f"apply_metadata: done, applied={applied}, skipped={skipped}, failed={failures}"
         + (" (dry-run)" if args.dry_run else "")
     )
     # Non-zero only on real apply errors; run_builds.sh treats this step as

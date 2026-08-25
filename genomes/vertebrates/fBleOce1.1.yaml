@@ -1,0 +1,23 @@
+name: fBleOce1.1
+description: |
+  Blennius ocellaris assembly fBleOce1.1 (GCA_963422515.1), from VGP.
+organism:
+  scientific_name: Blennius ocellaris
+  common_name: butterfly blenny
+  taxon_id: 195075
+assembly:
+  source: GenBank
+  accession: GCA_963422515.1
+fasta:
+  sources:
+  - provider: UCSC
+    url: https://hgdownload.soe.ucsc.edu/hubs/GCA/963/422/515/GCA_963422515.1/GCA_963422515.1.fa.gz
+  checksum:
+    sha256: compute_on_registration
+seqcol:
+  compute: true
+build:
+  store: vgp
+  tier: store_only
+metadata:
+  added_by: sources_to_genomes

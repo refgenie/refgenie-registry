@@ -15,6 +15,7 @@ required:
   - organism
   - fasta
   - seqcol
+  - build
 properties:
   name:
     type: string
@@ -210,6 +211,38 @@ properties:
             type: string
         additionalProperties: false
         description: Assembly summary statistics. Exported to FHR `vitalStats`.
+    additionalProperties: false
+  build:
+    type: object
+    description: >-
+      Registry pipeline instructions. NOT exported to FHR, these describe what
+      the registry does with the genome, not what the genome is. Nested (rather
+      than top-level) to keep the FHR boundary obvious, the same way `metadata:`
+      is fenced off.
+    required:
+      - store
+      - tier
+    properties:
+      store:
+        type: string
+        pattern: "^[a-z0-9_-]+$"
+        description: >-
+          Slug of the store holding this genome's sequence. Must name an existing
+          directory under stores/ that contains a project_config.yaml.
+      tier:
+        type: string
+        enum: [store_only, sequence_only, standard, full]
+        description: >-
+          How far to take this genome. Each tier includes every tier below it.
+          store_only loads the sequence and builds no assets.
+      add:
+        type: array
+        items: {type: string}
+        description: Extra assets to build beyond the tier, by recipe name.
+      drop:
+        type: array
+        items: {type: string}
+        description: Assets to skip from the tier, by recipe name.
     additionalProperties: false
   metadata:
     type: object

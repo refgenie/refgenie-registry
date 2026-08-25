@@ -1,0 +1,23 @@
+name: bAthNoc1.hap1.1
+description: |
+  Athene noctua assembly bAthNoc1.hap1.1 (GCA_965140245.1), from VGP.
+organism:
+  scientific_name: Athene noctua
+  common_name: little owl
+  taxon_id: 126797
+assembly:
+  source: GenBank
+  accession: GCA_965140245.1
+fasta:
+  sources:
+  - provider: UCSC
+    url: https://hgdownload.soe.ucsc.edu/hubs/GCA/965/140/245/GCA_965140245.1/GCA_965140245.1.fa.gz
+  checksum:
+    sha256: compute_on_registration
+seqcol:
+  compute: true
+build:
+  store: vgp
+  tier: store_only
+metadata:
+  added_by: sources_to_genomes

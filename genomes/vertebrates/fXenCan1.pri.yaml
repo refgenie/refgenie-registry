@@ -1,0 +1,23 @@
+name: fXenCan1.pri
+description: |
+  Xenentodon cancila assembly fXenCan1.pri (GCA_014839995.1), from VGP.
+organism:
+  scientific_name: Xenentodon cancila
+  common_name: freshwater garfish
+  taxon_id: 129108
+assembly:
+  source: GenBank
+  accession: GCA_014839995.1
+fasta:
+  sources:
+  - provider: UCSC
+    url: https://hgdownload.soe.ucsc.edu/hubs/GCA/014/839/995/GCA_014839995.1/GCA_014839995.1.fa.gz
+  checksum:
+    sha256: compute_on_registration
+seqcol:
+  compute: true
+build:
+  store: vgp
+  tier: store_only
+metadata:
+  added_by: sources_to_genomes

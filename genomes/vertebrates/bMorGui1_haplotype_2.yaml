@@ -1,0 +1,23 @@
+name: bMorGui1_haplotype_2
+description: |
+  Morphnus guianensis assembly bMorGui1 haplotype 2 (GCA_045345515.1), from VGP.
+organism:
+  scientific_name: Morphnus guianensis
+  common_name: crested eagle
+  taxon_id: 252789
+assembly:
+  source: GenBank
+  accession: GCA_045345515.1
+fasta:
+  sources:
+  - provider: UCSC
+    url: https://hgdownload.soe.ucsc.edu/hubs/GCA/045/345/515/GCA_045345515.1/GCA_045345515.1.fa.gz
+  checksum:
+    sha256: compute_on_registration
+seqcol:
+  compute: true
+build:
+  store: vgp
+  tier: store_only
+metadata:
+  added_by: sources_to_genomes

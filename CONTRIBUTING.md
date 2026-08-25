@@ -4,11 +4,14 @@
 
 Contributions are welcome via pull requests. You can:
 
-1. **Add a genome** — define a new genome assembly
-2. **Add a recipe** — define how to build an asset (e.g., an aligner index)
-3. **Request a build** — ask for a specific asset to be built for a genome
+1. **Add a genome**, define a new genome assembly, and say how far to build it
+2. **Add a recipe**, define how to build an asset (e.g., an aligner index)
 
 ## Adding a Genome
+
+Adding a genome is **one file and one PR**. The YAML says what the genome is and,
+in its `build:` block, what the registry should do with it. There is no second
+file to edit and no build request to open.
 
 1. Fork this repo and create a branch.
 2. Create `genomes/<organism>/<assembly>.yaml` following the schema.
@@ -16,13 +19,74 @@ Contributions are welcome via pull requests. You can:
 
 **Required fields:** `name`, `description`, `organism.scientific_name`,
 `organism.taxon_id`, `fasta` (at least one `sources[].url` or a `checksum`),
-`seqcol` (a `digest`, or `compute: true`)
+`seqcol` (a `digest`, or `compute: true`), and `build` (a `store` and a `tier`)
+
+### The `build:` block
+
+```yaml
+build:
+  store: jungle          # which store holds this genome's sequence
+  tier: standard         # how far to take it
+  add: [suffixerator_index]   # optional: extra assets beyond the tier
+  drop: [star_index]          # optional: assets to skip from the tier
+```
+
+**`store`** must name an existing directory under [`stores/`](stores/):
+
+| Store | Contents |
+|---|---|
+| `legacy` | The genomes the old refgenomes.databio.org server published |
+| `jungle` | Human and mouse reference assemblies (the reference-jungle dataset) |
+| `plantref` | Plants and model organisms |
+| `vgp` | Vertebrate Genomes Project assemblies |
+| `pangenome` | HPRC pangenome haplotypes |
+| `igenomes` | AWS iGenomes references |
+| `refseq` | NCBI protein and transcript sequences |
+| `salmon_txomes` | Salmon/tximeta transcriptomes |
+| `vrs` | VRS allele-identification reference sequences |
+| `decoys` | Decoy and spike-in sequences |
+| `demo` | Test data for development |
+
+The store must actually hold the sequence, there must be a row for it in that
+store's `sources.csv`. `python build/sync_stores.py` reports any genome whose
+store does not. If no existing store fits, see
+[Adding a new store](stores/README.md#adding-a-new-store).
+
+**`tier`** says how far to take the genome. Each tier includes every tier below
+it; the definitions live in [`pep/tiers.yaml`](pep/tiers.yaml):
+
+| Tier | What gets built |
+|---|---|
+| `store_only` | Nothing. The sequence is loaded into its store and is browsable. |
+| `sequence_only` | + `fasta`, `fasta_index` |
+| `standard` | + `bwa_index`, `bowtie2_index`, `hisat2_index` |
+| `full` | + `suffixerator_index` |
+
+**`store_only` is the right default for a new genome.** It registers the genome,
+gives it organism and taxonomy metadata, and loads its sequence, with no build
+cost. Most of the registry sits there. Ask for a build tier when you actually need
+the indexes.
+
+A genome in a build tier needs its FASTA **staged** and a matching `<genome>_fa`
+key in [`pep/config.yaml`](pep/config.yaml) `derive.sources`. Generation fails
+loudly and names the genome if that key is missing, so a build tier on an unstaged
+genome is caught on the PR, not at 3am.
+
+> `star_index` and `tallymer_index` appear in the `standard` and `full` tier
+> definitions but are **unproven** in this pipeline, so existing genomes carry a
+> temporary `drop:` removing them. Match the neighbouring genomes in your file's
+> directory.
 
 The schema is aligned to the [FAIR Headers Reference genome (FHR)](https://github.com/FAIR-bioHeaders/FHR-Specification)
 vocabulary. The registry-native keys below are the source of truth for the FHR
 core; the optional `fhr:` block is an escape hatch for pure-FHR provenance
 fields that have no registry-native home. See [`schema/README.md`](schema/README.md)
 for the field-by-field YAML → `.fhr.json` mapping.
+
+The FHR metadata that ends up in the store is **generated during the build from
+this YAML**, you never write or commit a `.fhr.json` yourself. The build derives
+one FHR record per genome and publishes it into the store alongside the sequence,
+so what the API serves is exactly what you wrote here.
 
 **Example** (see `genomes/human/hg38.yaml` for a complete reference):
 
@@ -57,6 +121,10 @@ fasta:                          # required (need sources[].url OR a checksum)
 seqcol:                         # required
   compute: true                 # or: digest: <seqcol digest>
 
+build:                          # required: what the registry does with this genome
+  store: jungle                 # a directory under stores/ that holds the sequence
+  tier: store_only              # store_only | sequence_only | standard | full
+
 fhr:                            # optional: pure-FHR provenance (all fields optional)
   license: CC0-1.0
   funding: NIH
@@ -78,10 +146,16 @@ metadata:                       # optional registry bookkeeping (not exported to
 - `organism.taxon_id` is required; the exporter derives the resolvable
   `taxon.uri` (`https://identifiers.org/taxonomy:<id>`) from it.
 - The `name` field must match the filename (without `.yaml`).
+- The `build:` block is registry pipeline state and is **not** exported to FHR, the
+  same way `metadata:` is not. It describes what we do with the genome, not what
+  the genome is.
+- `pep/samples.csv` and `pep/metadata/` are **generated** from the genome YAMLs by
+  `build/generate_samples.py` and `build/generate_genome_metadata.py`. Never edit
+  them by hand, the nightly regenerates both and fails on any diff.
 
 ## Adding a Recipe
 
-Recipes use refgenie's **native recipe model** — the single canonical model.
+Recipes use refgenie's **native recipe model**, the single canonical model.
 refgenie is the build system and consumes recipes directly (no conversion step).
 A recipe needs two things: the recipe file itself, and a matching **asset class**
 that types its output (defines the seek keys). Both reference asset classes by
@@ -143,7 +217,7 @@ metadata:
   license: MIT
 ```
 
-**Example asset class** (`asset_classes/my_asset.yaml`) — the **source of truth**
+**Example asset class** (`asset_classes/my_asset.yaml`), the **source of truth**
 for the asset's seek keys:
 
 ```yaml
@@ -184,13 +258,15 @@ serving_modes:
 - No `sudo` or root operations
 - No background processes or daemons
 
-## Requesting a Build
+## Requesting a Build for an Existing Genome
 
-If a genome and recipe both exist but the asset hasn't been built yet:
+Raise the genome's `build.tier` (or add the asset to its `build.add` list) in
+`genomes/<organism>/<assembly>.yaml` and open a PR. That is the whole request , 
+the tier is the build queue. The nightly regenerates `pep/samples.csv` from the
+genome list, so the next run picks it up.
 
-1. [Open a build request issue](../../issues/new?template=build_request.yml)
-2. Specify the genome name and recipe name
-3. The bot will validate both exist and queue the build
+If the genome is not staged yet, the PR will fail generation with a message naming
+the genome and the `<genome>_fa` key it needs in `pep/config.yaml`.
 
 ## Local Validation
 
@@ -200,6 +276,11 @@ Before submitting a PR, validate your files locally:
 pip install -r tools/requirements.txt
 python tools/validate_genome.py genomes/<organism>/<assembly>.yaml
 python tools/validate_recipe.py recipes/<asset_name>/recipe.yaml
+
+# If you changed a build: block, confirm the generated queue still resolves:
+python build/generate_samples.py --check
+python build/generate_genome_metadata.py --check
+python build/sync_stores.py --check
 ```
 
 Validation also checks that every recipe's `output_asset_class` and every
@@ -210,6 +291,6 @@ add the asset class in the same PR if it doesn't already exist.
 
 Your PR will go through three layers of review:
 
-1. **Programmatic checks** — schema validation, URL verification, security scanning (< 2 min)
-2. **AI review** — automated quality and security assessment (< 5 min)
-3. **Human review** — a maintainer reviews and approves
+1. **Programmatic checks**, schema validation, URL verification, security scanning (< 2 min)
+2. **AI review**, automated quality and security assessment (< 5 min)
+3. **Human review**, a maintainer reviews and approves

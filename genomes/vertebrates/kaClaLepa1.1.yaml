@@ -1,0 +1,23 @@
+name: kaClaLepa1.1
+description: |
+  Clavelina lepadiformis assembly kaClaLepa1.1 (GCA_947623445.1), from VGP.
+organism:
+  scientific_name: Clavelina lepadiformis
+  common_name: light-bulb sea squirt
+  taxon_id: 159417
+assembly:
+  source: GenBank
+  accession: GCA_947623445.1
+fasta:
+  sources:
+  - provider: UCSC
+    url: https://hgdownload.soe.ucsc.edu/hubs/GCA/947/623/445/GCA_947623445.1/GCA_947623445.1.fa.gz
+  checksum:
+    sha256: compute_on_registration
+seqcol:
+  compute: true
+build:
+  store: vgp
+  tier: store_only
+metadata:
+  added_by: sources_to_genomes

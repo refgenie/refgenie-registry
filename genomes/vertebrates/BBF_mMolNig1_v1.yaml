@@ -1,0 +1,23 @@
+name: BBF_mMolNig1_v1
+description: |
+  Molossus nigricans assembly BBF_mMolNig1_v1 (GCA_026936385.1), from VGP.
+organism:
+  scientific_name: Molossus nigricans
+  common_name: northern black mastiff bat
+  taxon_id: 2997257
+assembly:
+  source: GenBank
+  accession: GCA_026936385.1
+fasta:
+  sources:
+  - provider: UCSC
+    url: https://hgdownload.soe.ucsc.edu/hubs/GCA/026/936/385/GCA_026936385.1/GCA_026936385.1.fa.gz
+  checksum:
+    sha256: compute_on_registration
+seqcol:
+  compute: true
+build:
+  store: vgp
+  tier: store_only
+metadata:
+  added_by: sources_to_genomes

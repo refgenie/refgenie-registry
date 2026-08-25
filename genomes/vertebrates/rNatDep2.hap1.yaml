@@ -1,0 +1,23 @@
+name: rNatDep2.hap1
+description: |
+  Natator depressus assembly rNatDep2.hap1 (GCA_965152275.1), from VGP.
+organism:
+  scientific_name: Natator depressus
+  common_name: flatback sea turtle
+  taxon_id: 27790
+assembly:
+  source: GenBank
+  accession: GCA_965152275.1
+fasta:
+  sources:
+  - provider: UCSC
+    url: https://hgdownload.soe.ucsc.edu/hubs/GCA/965/152/275/GCA_965152275.1/GCA_965152275.1.fa.gz
+  checksum:
+    sha256: compute_on_registration
+seqcol:
+  compute: true
+build:
+  store: vgp
+  tier: store_only
+metadata:
+  added_by: sources_to_genomes

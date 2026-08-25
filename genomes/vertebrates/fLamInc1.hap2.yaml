@@ -1,0 +1,23 @@
+name: fLamInc1.hap2
+description: |
+  Lampris incognitus assembly fLamInc1.hap2 (GCF_029633865.1), from VGP.
+organism:
+  scientific_name: Lampris incognitus
+  common_name: smalleye Pacific opah
+  taxon_id: 2546036
+assembly:
+  source: RefSeq
+  accession: GCF_029633865.1
+fasta:
+  sources:
+  - provider: UCSC
+    url: https://hgdownload.soe.ucsc.edu/hubs/GCF/029/633/865/GCF_029633865.1/GCF_029633865.1.fa.gz
+  checksum:
+    sha256: compute_on_registration
+seqcol:
+  compute: true
+build:
+  store: vgp
+  tier: store_only
+metadata:
+  added_by: sources_to_genomes

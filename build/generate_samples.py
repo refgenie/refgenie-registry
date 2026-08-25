@@ -1,23 +1,32 @@
 #!/usr/bin/env python3
-"""Generate pep/samples.csv from pep/build_matrix.yaml.
+"""Generate pep/samples.csv from genomes/**/*.yaml plus pep/tiers.yaml.
 
-build_matrix.yaml is the SOURCE OF TRUTH for the nightly build queue; samples.csv is a
-generated artifact (one row per (genome, asset)). Editing samples.csv by hand is
-forbidden -- the build/run_builds.sh guard regenerates it and fails the nightly
-on any diff.
+`genomes/**/*.yaml` is the single list of genomes. Each file's `build:` block says
+which store holds its sequence and how far to take it (`build.tier`, optionally
+adjusted by `build.add` / `build.drop`); pep/tiers.yaml defines what each tier
+means. samples.csv is a generated artifact (one row per (genome, asset)). Editing
+it by hand is forbidden, the build/run_builds.sh guard regenerates it and fails
+the nightly on any diff.
+
+Genomes at `tier: store_only` produce NO rows: their sequence is loaded into a
+store and browsable, and no assets are built for them. That is most of the corpus.
 
 Per-genome asset set:
   1. start from tiers[tier] (in tier order),
   2. apply `add:` as a union (append anything not already present, in add order),
   3. apply `drop:` as a difference.
-The result order is deterministic (tier order, then add order) so the CSV diff
-is stable.
+The result order is deterministic (tier order, then add order), and genomes are
+emitted sorted by name, directory walk order is not stable, and the drift guard
+compares bytes.
 
-Two validations run before anything is written; either fails generation:
-  * Source validation  -- a Class-2/3 asset (one whose recipe declares external
+Three validations run before anything is written; any one fails generation:
+  * FASTA source: a genome in a build tier needs a `<genome>_fa` key in
+    pep/config.yaml `derive.sources`, or every row it emits points at a
+    nonexistent source and the failure surfaces much later, inside peppy.
+  * Source validation, a Class-2/3 asset (one whose recipe declares external
     input_files) requires a per-genome source key `<genome>_<asset>` in
     pep/config.yaml `derive.sources`.
-  * Dependency closure  -- every asset dependency declared by a recipe's
+  * Dependency closure, every asset dependency declared by a recipe's
     `input_assets` must itself be in the genome's resolved set (e.g.
     tallymer_index needs suffixerator_index; salmon_* needs fasta_txome).
 
@@ -29,6 +38,7 @@ Usage:
 from __future__ import annotations
 
 import argparse
+import glob
 import io
 import os
 import sys
@@ -37,21 +47,25 @@ import yaml
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 REPO = os.path.dirname(HERE)
-BUILD_MATRIX_YAML = os.path.join(REPO, "pep", "build_matrix.yaml")
+GENOMES_DIR = os.path.join(REPO, "genomes")
+TIERS_YAML = os.path.join(REPO, "pep", "tiers.yaml")
 CONFIG_YAML = os.path.join(REPO, "pep", "config.yaml")
 RECIPES_DIR = os.path.join(REPO, "recipes")
 SAMPLES_CSV = os.path.join(REPO, "pep", "samples.csv")
 
 # NOTE: samples.csv deliberately carries NO leading `# GENERATED` comment line.
 # peppy reads it with a bare pandas.read_csv (no comment char), so a `#` first
-# line is parsed as the header and corrupts the queue. Provenance lives in
-# pep/build_matrix.yaml and pep/README.md instead; the run_builds.sh guard is what
+# line is parsed as the header and corrupts the queue. Provenance lives in the
+# genome YAMLs and pep/README.md instead; the run_builds.sh guard is what
 # actually enforces "generated only".
 CSV_HEADER = "sample_name,genome_name,asset_group_name,fasta_file_path,fhr_file_path\n"
 
 # fasta is always supplied via the fasta_file_path column / genome init, never a
 # per-asset external source, so it is never subject to source validation.
 FASTA_ASSET = "fasta"
+
+# The tier that means "load the sequence, build nothing". No PEP rows.
+STORE_ONLY_TIER = "store_only"
 
 # Every row's fhr_file_path column holds this single shared derive-source key. The
 # source pattern in pep/config.yaml interpolates {genome_name} so each row resolves
@@ -61,7 +75,38 @@ FHR_SOURCE_KEY = "fhr_default"
 
 
 class GenerationError(Exception):
-    """Raised when build_matrix.yaml cannot produce a valid queue."""
+    """Raised when the genome list cannot produce a valid queue."""
+
+
+def load_genomes(genomes_dir: str = GENOMES_DIR) -> list:
+    """Return [(genome_name, record)] for every genome YAML, sorted by name.
+
+    Sorted here, once, so row order in the CSV never depends on directory walk
+    order (which is not stable across filesystems).
+    """
+    genomes = []
+    seen = {}
+    pattern = os.path.join(genomes_dir, "**", "*.yaml")
+    for path in sorted(glob.glob(pattern, recursive=True)):
+        with open(path) as fh:
+            data = yaml.safe_load(fh)
+        if not isinstance(data, dict) or not data.get("name"):
+            raise GenerationError(f"{path}: not a genome record (no `name`)")
+        name = data["name"]
+        if name in seen:
+            raise GenerationError(
+                f"genome '{name}' is defined twice: {seen[name]} and {path}"
+            )
+        seen[name] = path
+        genomes.append((name, data))
+    genomes.sort(key=lambda item: item[0])
+    return genomes
+
+
+def load_tiers(tiers_yaml: str = TIERS_YAML) -> dict:
+    """The tier ladder from pep/tiers.yaml."""
+    with open(tiers_yaml) as fh:
+        return (yaml.safe_load(fh) or {}).get("tiers") or {}
 
 
 def load_recipes(recipes_dir: str = RECIPES_DIR) -> dict:
@@ -102,24 +147,21 @@ def asset_dependencies(recipe: dict) -> list:
     return deps
 
 
-def resolve_genome(genome: str, value, tiers: dict) -> list:
-    """Resolve a genome's build_matrix.yaml value to an ordered asset list."""
-    if isinstance(value, str):
-        tier, add, drop = value, [], []
-    elif isinstance(value, dict):
-        tier = value.get("tier")
-        add = value.get("add") or []
-        drop = value.get("drop") or []
-    else:
+def resolve_genome(genome: str, build: dict, tiers: dict) -> list:
+    """Resolve a genome's `build:` block to an ordered asset list."""
+    if not isinstance(build, dict):
         raise GenerationError(
-            f"genome '{genome}': value must be a tier name or a mapping, "
-            f"got {type(value).__name__}"
+            f"genome '{genome}': `build:` must be a mapping with `store` and "
+            f"`tier`, got {type(build).__name__}"
         )
+    tier = build.get("tier")
+    add = build.get("add") or []
+    drop = build.get("drop") or []
     if tier is None:
-        raise GenerationError(f"genome '{genome}': no tier specified")
+        raise GenerationError(f"genome '{genome}': build.tier is not set")
     if tier not in tiers:
         raise GenerationError(
-            f"genome '{genome}': unknown tier '{tier}' "
+            f"genome '{genome}': unknown build.tier '{tier}' "
             f"(known: {', '.join(sorted(tiers))})"
         )
     # 1. tier order
@@ -132,6 +174,22 @@ def resolve_genome(genome: str, value, tiers: dict) -> list:
     drop_set = set(drop)
     assets = [a for a in assets if a not in drop_set]
     return assets
+
+
+def validate_fasta_source(genome: str, sources: dict):
+    """A genome that builds anything needs its `<genome>_fa` derive source.
+
+    Without this check the rows are emitted happily, pointing at a source key
+    that does not exist, and the build fails much later inside peppy with a
+    message that does not name the genome.
+    """
+    key = f"{genome}_fa"
+    if key not in sources:
+        raise GenerationError(
+            f"genome '{genome}': builds assets but pep/config.yaml `derive.sources` "
+            f"has no key '{key}'. Stage the FASTA and add the key, or set "
+            f"`build.tier: {STORE_ONLY_TIER}` in the genome YAML."
+        )
 
 
 def validate_sources(genome: str, assets: list, recipes: dict, sources: dict):
@@ -173,13 +231,15 @@ def validate_dependencies(genome: str, assets: list, recipes: dict):
                 )
 
 
-def build_rows(tiers_doc: dict, recipes: dict, sources: dict) -> list:
+def build_rows(genomes: list, tiers: dict, recipes: dict, sources: dict) -> list:
     """Resolve and validate every genome, returning ordered CSV rows."""
-    tiers = tiers_doc.get("tiers") or {}
-    genomes = tiers_doc.get("genomes") or {}
     rows = []
-    for genome, value in genomes.items():
-        assets = resolve_genome(genome, value, tiers)
+    for genome, data in genomes:
+        assets = resolve_genome(genome, data.get("build"), tiers)
+        if not assets:
+            # store_only (or a tier whose every asset was dropped): nothing queued.
+            continue
+        validate_fasta_source(genome, sources)
         validate_sources(genome, assets, recipes, sources)
         validate_dependencies(genome, assets, recipes)
         fasta_key = f"{genome}_fa"
@@ -197,19 +257,20 @@ def render_csv(rows: list) -> str:
 
 
 def generate(
-    tiers_yaml: str = BUILD_MATRIX_YAML,
+    genomes_dir: str = GENOMES_DIR,
+    tiers_yaml: str = TIERS_YAML,
     config_yaml: str = CONFIG_YAML,
     recipes_dir: str = RECIPES_DIR,
 ) -> str:
-    with open(tiers_yaml) as fh:
-        tiers_doc = yaml.safe_load(fh)
+    genomes = load_genomes(genomes_dir)
+    tiers = load_tiers(tiers_yaml)
     with open(config_yaml) as fh:
         config = yaml.safe_load(fh)
     sources = (
         (config.get("sample_modifiers") or {}).get("derive") or {}
     ).get("sources") or {}
     recipes = load_recipes(recipes_dir)
-    rows = build_rows(tiers_doc, recipes, sources)
+    rows = build_rows(genomes, tiers, recipes, sources)
     return render_csv(rows)
 
 

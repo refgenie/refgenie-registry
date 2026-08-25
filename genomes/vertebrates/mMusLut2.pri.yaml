@@ -1,0 +1,23 @@
+name: mMusLut2.pri
+description: |
+  Mustela lutreola assembly mMusLut2.pri (GCF_030435805.1), from VGP.
+organism:
+  scientific_name: Mustela lutreola
+  common_name: European mink
+  taxon_id: 9666
+assembly:
+  source: RefSeq
+  accession: GCF_030435805.1
+fasta:
+  sources:
+  - provider: UCSC
+    url: https://hgdownload.soe.ucsc.edu/hubs/GCF/030/435/805/GCF_030435805.1/GCF_030435805.1.fa.gz
+  checksum:
+    sha256: compute_on_registration
+seqcol:
+  compute: true
+build:
+  store: vgp
+  tier: store_only
+metadata:
+  added_by: sources_to_genomes

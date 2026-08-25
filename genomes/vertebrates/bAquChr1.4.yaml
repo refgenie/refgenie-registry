@@ -1,0 +1,22 @@
+name: bAquChr1.4
+description: |
+  Aquila chrysaetos chrysaetos assembly bAquChr1.4 (GCF_900496995.4), from VGP.
+organism:
+  scientific_name: Aquila chrysaetos chrysaetos
+  taxon_id: 223781
+assembly:
+  source: RefSeq
+  accession: GCF_900496995.4
+fasta:
+  sources:
+  - provider: UCSC
+    url: https://hgdownload.soe.ucsc.edu/hubs/GCF/900/496/995/GCF_900496995.4/GCF_900496995.4.fa.gz
+  checksum:
+    sha256: compute_on_registration
+seqcol:
+  compute: true
+build:
+  store: vgp
+  tier: store_only
+metadata:
+  added_by: sources_to_genomes

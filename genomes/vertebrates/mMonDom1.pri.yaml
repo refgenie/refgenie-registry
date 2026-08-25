@@ -1,0 +1,23 @@
+name: mMonDom1.pri
+description: |
+  Monodelphis domestica assembly mMonDom1.pri (GCF_027887165.1), from VGP.
+organism:
+  scientific_name: Monodelphis domestica
+  common_name: gray short-tailed opossum
+  taxon_id: 13616
+assembly:
+  source: RefSeq
+  accession: GCF_027887165.1
+fasta:
+  sources:
+  - provider: UCSC
+    url: https://hgdownload.soe.ucsc.edu/hubs/GCF/027/887/165/GCF_027887165.1/GCF_027887165.1.fa.gz
+  checksum:
+    sha256: compute_on_registration
+seqcol:
+  compute: true
+build:
+  store: vgp
+  tier: store_only
+metadata:
+  added_by: sources_to_genomes

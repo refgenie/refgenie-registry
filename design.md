@@ -5,7 +5,7 @@ monorepo of genome definitions, build recipes, and asset-class type definitions
 consumed directly by [refgenie](https://refgenie.org).
 
 **refgenie is the build system.** A recipe is written in refgenie's own native
-model and is consumed directly by refgenie — there is no separate "registry
+model and is consumed directly by refgenie, there is no separate "registry
 format" and no bioconda->refgenie translation step. `refgenie generate snakefile`
 renders a Snakemake workflow from the recipes; each generated rule runs
 `refgenie1 build <genome>/<asset>:<tag>`, which executes the recipe's
@@ -14,7 +14,7 @@ renders a Snakemake workflow from the recipes; each generated rule runs
 
 ## 1. Goals
 
-- Store recipes in **one canonical model** — refgenie's native recipe model — so
+- Store recipes in **one canonical model**, refgenie's native recipe model, so
   refgenie consumes registry content directly with no lossy conversion.
 - Keep a clean separation between **type** (what an asset *is*, addressed by
   named seek keys, defined by the asset class) and **build** (how an asset is
@@ -25,16 +25,16 @@ renders a Snakemake workflow from the recipes; each generated rule runs
 
 ## 2. Repository layout
 
-- **`genomes/`** — YAML definitions of genome assemblies.
-- **`recipes/`** — refgenie-native YAML build recipes (one per asset class).
-- **`asset_classes/`** — Typed asset-class definitions. The **source of truth**
+- **`genomes/`**, YAML definitions of genome assemblies.
+- **`recipes/`**, refgenie-native YAML build recipes (one per asset class).
+- **`asset_classes/`**, Typed asset-class definitions. The **source of truth**
   for seek keys and serving modes (see §3.4).
-- **`schema/`** — JSON Schemas that genome, recipe, and asset-class entries are
+- **`schema/`**, JSON Schemas that genome, recipe, and asset-class entries are
   validated against.
-- **`tools/`** — Validation scripts and helpers.
-- **`index/`** — Auto-generated manifest of built assets (CI-only).
-- **`stores/`** — RefgetStore source manifests.
-- **`infra/`** — Operator-side build/deploy infrastructure.
+- **`tools/`**, Validation scripts and helpers.
+- **`index/`**, Auto-generated manifest of built assets (CI-only).
+- **`stores/`**, RefgetStore source manifests.
+- **`infra/`**, Operator-side build/deploy infrastructure.
 
 ## 3. Data model
 
@@ -46,24 +46,25 @@ assembly: its names/aliases, organism, assembly accession, and the source FASTA
 
 #### Refgenie is an overlay on a RefgetStore
 
-The served genome list is not defined by what the nightly builds — it is
+The served genome list is not defined by what the nightly builds, it is
 defined by a RefgetStore. The store's `collections.rgci` is the authoritative
 set of genomes; refgenie is an **overlay** on that set. Every collection in an
 overlay store appears as a genome, in one of two states:
 
-- **Browse overlay** — registered with the store's curated aliases (the `name`
+- **Browse overlay**, registered with the store's curated aliases (the `name`
   alias namespace) and any FHR metadata, but with zero assets. Created by
-  `refgenie genome sync`, which the nightly runs against every store in
-  `$REFGENIE_OVERLAY_STORES` (see `build/run_builds.sh` and
-  `infra/rivanna/env.sh`).
-- **Assets attached** — additionally has assets built by the recipe fan-out
-  (queued in `pep/build_matrix.yaml`).
+  `refgenie store sync`, which the nightly runs over the federation registry
+  (the `store` table, managed with `refgenie store add|list|remove`; see
+  `build/run_builds.sh`). This is the state a genome at `build.tier: store_only`
+  reaches, and most of the registry sits there.
+- **Assets attached**, additionally has assets built by the recipe fan-out,
+  queued by the genome's `build.tier` in `genomes/**/*.yaml`.
 
 Sync is idempotent and never repoints an alias that a built genome already
 owns. One asymmetry to know about: listing, browsing and serving genome
 metadata work from a *remote* store URL, but building a genome's `fasta` asset
 still requires a *local* store (`refgenie-build-fasta` opens the store with
-`open_local`) — fine on Rivanna, where the store lives on brickyard.
+`open_local`), fine on Rivanna, where the store lives on brickyard.
 
 ### 3.2 Assets
 
@@ -74,7 +75,7 @@ class.
 
 ### 3.3 Recipes (refgenie-native model)
 
-Recipes are written in **refgenie's native recipe model** — the single canonical
+Recipes are written in **refgenie's native recipe model**, the single canonical
 model. refgenie is the build system and consumes these recipes directly; there is
 no separate "registry format" and no conversion step. A recipe declares the asset
 class it produces, the input assets/files/params it consumes, the container it
@@ -126,22 +127,22 @@ refgenie at build time) include `{{values.output_folder}}`,
 
 Key fields and their roles:
 
-- **`name`** / **`version`** — recipe identifier and semantic version. Required.
-- **`output_asset_class`** — the output asset class (the recipe's *type* link).
+- **`name`** / **`version`**, recipe identifier and semantic version. Required.
+- **`output_asset_class`**, the output asset class (the recipe's *type* link).
   Required. Must reference an existing `asset_classes/<name>.yaml`.
-- **`command_templates`** — ordered list of shell command templates that produce
+- **`command_templates`**, ordered list of shell command templates that produce
   the asset's files. Required (at least one).
-- **`input_assets`** — map of handle -> `{asset_class, default?, description?,
+- **`input_assets`**, map of handle -> `{asset_class, default?, description?,
   colocate?}`. Each `asset_class` must reference an existing
   `asset_classes/<name>.yaml`. `colocate` copies named seek-key files from the
   input asset into the output folder before the commands run.
-- **`input_files`** / **`input_params`** — user-supplied files and scalar build
+- **`input_files`** / **`input_params`**, user-supplied files and scalar build
   parameters.
-- **`docker_image`** — container the command templates run in (`null` to run
+- **`docker_image`**, container the command templates run in (`null` to run
   without a per-recipe container).
-- **`custom_seek_keys`** — map of name -> shell command whose stdout becomes a
+- **`custom_seek_keys`**, map of name -> shell command whose stdout becomes a
   value (typically a tool version) used for tagging.
-- **`default_asset`** — template resolving to the asset tag/name (often
+- **`default_asset`**, template resolving to the asset tag/name (often
   `"{{values.custom_seek_keys.version}}"` or a literal like `"default"`).
 
 **Optional additive, non-runtime fields** (the builder ignores them; they exist
@@ -206,7 +207,7 @@ translator). Builds run entirely through refgenie:
 4. The asset's tag/name is derived from `custom_seek_keys` + `default_asset`.
 
 Seek keys are taken from the asset class, **never** derived from a recipe's
-optional `outputs`. There is no conda in the build path — `docker_image` +
+optional `outputs`. There is no conda in the build path, `docker_image` +
 `command_templates` are the whole build contract.
 
 ## 4. Validation and review

@@ -1,0 +1,23 @@
+name: sHemOce1.pat.X.cur
+description: |
+  Hemiscyllium ocellatum assembly sHemOce1.pat.X.cur. (GCF_020745735.1), from VGP.
+organism:
+  scientific_name: Hemiscyllium ocellatum
+  common_name: epaulette shark
+  taxon_id: 170820
+assembly:
+  source: RefSeq
+  accession: GCF_020745735.1
+fasta:
+  sources:
+  - provider: UCSC
+    url: https://hgdownload.soe.ucsc.edu/hubs/GCF/020/745/735/GCF_020745735.1/GCF_020745735.1.fa.gz
+  checksum:
+    sha256: compute_on_registration
+seqcol:
+  compute: true
+build:
+  store: vgp
+  tier: store_only
+metadata:
+  added_by: sources_to_genomes

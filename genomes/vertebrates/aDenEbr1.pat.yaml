@@ -1,0 +1,23 @@
+name: aDenEbr1.pat
+description: |
+  Dendropsophus ebraccatus assembly aDenEbr1.pat (GCF_027789765.1), from VGP.
+organism:
+  scientific_name: Dendropsophus ebraccatus
+  common_name: hourglass treefrog
+  taxon_id: 150705
+assembly:
+  source: RefSeq
+  accession: GCF_027789765.1
+fasta:
+  sources:
+  - provider: UCSC
+    url: https://hgdownload.soe.ucsc.edu/hubs/GCF/027/789/765/GCF_027789765.1/GCF_027789765.1.fa.gz
+  checksum:
+    sha256: compute_on_registration
+seqcol:
+  compute: true
+build:
+  store: vgp
+  tier: store_only
+metadata:
+  added_by: sources_to_genomes

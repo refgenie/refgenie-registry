@@ -1,4 +1,4 @@
-# Snakemake profile for Rivanna (UVA HPC) — refgenie asset builds.
+# Snakemake profile for Rivanna (UVA HPC), refgenie asset builds.
 #
 # Used by build/run_builds.sh:  snakemake --profile build/profiles/rivanna/
 # Requires snakemake >= 8 with the SLURM executor plugin
@@ -19,12 +19,11 @@ jobs: 20                       # max concurrent SLURM jobs
 # genome_init declares `refget_store_writer = 1` in refgenie1's Snakefile template
 # (refgenie/snakefile/template/template.smk), so whatever budget appears here IS
 # the number of concurrent genome_inits. Snakemake treats an undeclared custom
-# resource as UNLIMITED, so omitting this key means unbounded -- verify the
+# resource as UNLIMITED, so omitting this key means unbounded, verify the
 # template still declares it before assuming this key does anything.
 #
-# History. This was 1 from 2026-07-23, as the stopgap for that morning's
-# incident: four genome_inits were dispatched in the same second and athaliana
-# lost the race. RefgetStore took no file lock and rewrote collections.rgci and
+# Why this is capped. With it unbounded, several genome_inits can be dispatched
+# in the same second and one loses the race. RefgetStore took no file lock and rewrote collections.rgci and
 # aliases/collections/refgenie.tsv wholesale from the state it loaded at open
 # time, so concurrent inits were last-writer-wins. athaliana's collection file
 # was written but dropped from both indexes, its alias stopped resolving, and the
@@ -41,7 +40,7 @@ jobs: 20                       # max concurrent SLURM jobs
 # whole init, so inits genuinely parallelize.
 #
 # So why cap it at all? Because the lock has not yet carried a real nightly. It is
-# well covered by tests -- including multi-process ones that reproduce the 07-23
+# well covered by tests, including multi-process ones that reproduce the 07-23
 # incident, and a read-only cross-check against all 147 plantref collections --
 # but "passes tests" and "has survived production" are different claims, and the
 # failure being guarded against is silent data loss noticed hours later. 4 is
@@ -49,7 +48,7 @@ jobs: 20                       # max concurrent SLURM jobs
 # few enough that a regression is bounded.
 #
 # REMOVE THIS KEY (restoring unlimited) once a few nightlies have run clean with
-# contention actually observed -- `gtars refget lock-status <store>` shows it.
+# contention actually observed, `gtars refget lock-status <store>` shows it.
 # That is the intended end state; this cap is scaffolding, not architecture. Do
 # not re-lower it to 1 as a correctness measure: if 4 breaks something, the bug is
 # in the lock and belongs in gtars, not here.
@@ -62,14 +61,14 @@ rerun-incomplete: true
 #
 # Snakemake's default trigger set is {mtime, params, input, software-env, code}.
 # All of those except mtime are per-RULE, not per-output: touch the genome_init
-# rule's definition -- add an input, tweak the shell line -- and snakemake
+# rule's definition, add an input, tweak the shell line, and snakemake
 # considers genome_init stale for EVERY genome, cascading a full rebuild of all
 # 26 (hg38 and mm39 included, multi-hour indexers and all). Adding five model
 # organisms should not re-init human.
 #
 # Restricting to mtime means a genome rebuilds only when its own input files are
 # newer than its own outputs. The deliberate tradeoff: editing a recipe, a param,
-# or the Snakefile template no longer auto-triggers rebuilds -- those must be
+# or the Snakefile template no longer auto-triggers rebuilds, those must be
 # forced explicitly (delete the target sentinel, or `--forcerun <rule>`). That is
 # the intended behavior here. The go/no-go gate for this pipeline is the
 # samples.csv / queue diff, which is reviewed and committed; silent global
@@ -83,12 +82,12 @@ use-singularity: false         # recipes run in containers via refgenie/bulker, 
 # Default SLURM resources for every rule (shefflab standard partition).
 # Override per-rule below for memory-hungry indexers.
 #
-# History: on 2026-08-07 these were briefly raised to 16000/24000 after three
-# genome_inits OOM'd at ~5 GB -- refgenie-build-fasta was calling
-# load_all_sequences(), making memory scale with the whole store's sequence
-# payload (7.4 GB) instead of the one genome being exported. That was fixed in
-# refgenie1 (build_fasta.py loads only the target collection), so the caps came
-# back down: genome_init now needs roughly one genome's bytes (~3 GB for human).
+# These were briefly raised to 16000/24000 when genome_inits OOM'd at ~5 GB:
+# refgenie-build-fasta was calling load_all_sequences(), so memory scaled with the
+# whole store's sequence payload instead of the one genome being exported. That is
+# fixed in refgenie1 (build_fasta.py loads only the target collection), so the caps
+# came back down. genome_init now needs roughly one genome's bytes (~3 GB for
+# human).
 default-resources:
   slurm_account: "shefflab"
   slurm_partition: "standard"

@@ -1,0 +1,23 @@
+name: bAnaPla2.hap1.1
+description: |
+  Anas platyrhynchos assembly bAnaPla2.hap1.1 (GCA_964188345.1), from VGP.
+organism:
+  scientific_name: Anas platyrhynchos
+  common_name: mallard
+  taxon_id: 8839
+assembly:
+  source: GenBank
+  accession: GCA_964188345.1
+fasta:
+  sources:
+  - provider: UCSC
+    url: https://hgdownload.soe.ucsc.edu/hubs/GCA/964/188/345/GCA_964188345.1/GCA_964188345.1.fa.gz
+  checksum:
+    sha256: compute_on_registration
+seqcol:
+  compute: true
+build:
+  store: vgp
+  tier: store_only
+metadata:
+  added_by: sources_to_genomes

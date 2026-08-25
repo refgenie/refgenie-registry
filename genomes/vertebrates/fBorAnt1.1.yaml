@@ -1,0 +1,23 @@
+name: fBorAnt1.1
+description: |
+  Borostomias antarcticus assembly fBorAnt1.1 (GCA_949987555.1), from VGP.
+organism:
+  scientific_name: Borostomias antarcticus
+  common_name: large-eye snaggletooth
+  taxon_id: 473354
+assembly:
+  source: GenBank
+  accession: GCA_949987555.1
+fasta:
+  sources:
+  - provider: UCSC
+    url: https://hgdownload.soe.ucsc.edu/hubs/GCA/949/987/555/GCA_949987555.1/GCA_949987555.1.fa.gz
+  checksum:
+    sha256: compute_on_registration
+seqcol:
+  compute: true
+build:
+  store: vgp
+  tier: store_only
+metadata:
+  added_by: sources_to_genomes

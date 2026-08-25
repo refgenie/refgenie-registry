@@ -1,0 +1,22 @@
+name: Bb-hap
+description: |
+  Branchiostoma floridae x Branchiostoma belcheri assembly Bb-hap (GCA_019207075.1), from VGP.
+organism:
+  scientific_name: Branchiostoma floridae x Branchiostoma belcheri
+  taxon_id: 2700040
+assembly:
+  source: GenBank
+  accession: GCA_019207075.1
+fasta:
+  sources:
+  - provider: UCSC
+    url: https://hgdownload.soe.ucsc.edu/hubs/GCA/019/207/075/GCA_019207075.1/GCA_019207075.1.fa.gz
+  checksum:
+    sha256: compute_on_registration
+seqcol:
+  compute: true
+build:
+  store: vgp
+  tier: store_only
+metadata:
+  added_by: sources_to_genomes

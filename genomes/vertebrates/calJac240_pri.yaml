@@ -1,0 +1,23 @@
+name: calJac240_pri
+description: |
+  Callithrix jacchus assembly calJac240_pri (GCA_049354715.1), from VGP.
+organism:
+  scientific_name: Callithrix jacchus
+  common_name: white-tufted-ear marmoset
+  taxon_id: 9483
+assembly:
+  source: GenBank
+  accession: GCA_049354715.1
+fasta:
+  sources:
+  - provider: UCSC
+    url: https://hgdownload.soe.ucsc.edu/hubs/GCA/049/354/715/GCA_049354715.1/GCA_049354715.1.fa.gz
+  checksum:
+    sha256: compute_on_registration
+seqcol:
+  compute: true
+build:
+  store: vgp
+  tier: store_only
+metadata:
+  added_by: sources_to_genomes

@@ -1,0 +1,23 @@
+name: bPhaCar2.1
+description: |
+  Phalacrocorax carbo assembly bPhaCar2.1 (GCF_963921805.1), from VGP.
+organism:
+  scientific_name: Phalacrocorax carbo
+  common_name: great cormorant
+  taxon_id: 9209
+assembly:
+  source: RefSeq
+  accession: GCF_963921805.1
+fasta:
+  sources:
+  - provider: UCSC
+    url: https://hgdownload.soe.ucsc.edu/hubs/GCF/963/921/805/GCF_963921805.1/GCF_963921805.1.fa.gz
+  checksum:
+    sha256: compute_on_registration
+seqcol:
+  compute: true
+build:
+  store: vgp
+  tier: store_only
+metadata:
+  added_by: sources_to_genomes

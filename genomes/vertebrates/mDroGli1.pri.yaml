@@ -1,0 +1,23 @@
+name: mDroGli1.pri
+description: |
+  Dromiciops gliroides assembly mDroGli1.pri (GCF_019393635.1), from VGP.
+organism:
+  scientific_name: Dromiciops gliroides
+  common_name: monito del monte
+  taxon_id: 33562
+assembly:
+  source: RefSeq
+  accession: GCF_019393635.1
+fasta:
+  sources:
+  - provider: UCSC
+    url: https://hgdownload.soe.ucsc.edu/hubs/GCF/019/393/635/GCF_019393635.1/GCF_019393635.1.fa.gz
+  checksum:
+    sha256: compute_on_registration
+seqcol:
+  compute: true
+build:
+  store: vgp
+  tier: store_only
+metadata:
+  added_by: sources_to_genomes

@@ -3,14 +3,14 @@
 #
 # WHY THIS EXISTS
 #
-# Until 2026-07-28 the nightly had no environment of its own. `refgenie` and
-# `snakemake` were `~/.local/bin` entry points on the cluster miniforge python,
-# so every package came from `~/.local/lib/python3.11/site-packages` -- the
+# The nightly needs an environment of its own. Without this, `refgenie` and
+# `snakemake` are `~/.local/bin` entry points on the cluster miniforge python,
+# so every package came from `~/.local/lib/python3.11/site-packages`, the
 # account-wide user site that every other python3.11 process on this account
 # also sees. Three things followed from that:
 #
-#   * A gtars built on 2026-07-18 was still what the nightly imported ten days
-#     later, because nothing owned the environment enough to update it.
+#   * A months-old gtars stayed what the nightly imported, because nothing owned
+#     the environment enough to update it.
 #   * Updating it had account-wide blast radius, so nobody wanted to.
 #   * pandas/bottleneck in `~/.local` were built against numpy 1.x while numpy
 #     2.4.6 was installed, which is the `_ARRAY_API not found` traceback in
@@ -22,7 +22,7 @@
 # and a one-off `stores/build.py` all get the same interpreter with no thought
 # and no activation step.
 #
-# BASE PYTHON -- read before changing
+# BASE PYTHON, read before changing
 #
 # The venv is built from the SAME miniforge module the SLURM jobs load. Do not
 # build it from an arbitrary `python3` on a login node. The cautionary tale is
@@ -30,7 +30,7 @@
 # that the cluster has since superseded with `202606_build`: its base
 # interpreter is gone, so it now dies with `libffi.so.8: cannot open shared
 # object file` on any import of ctypes. Expect to re-run this script when the
-# cluster rolls its application tree -- that is normal, and it is why this is a
+# cluster rolls its application tree, that is normal, and it is why this is a
 # script and not a one-time manual setup.
 #
 # USAGE
@@ -94,10 +94,10 @@ python -m pip install --quiet -e "${REFGENIE_SRC}[snakemake]"
 echo "  [2/4] snakemake SLURM executor plugin ..."
 python -m pip install --quiet 'snakemake-executor-plugin-slurm'
 
-echo "  [3/4] refget (editable, local branch -- overrides the PyPI wheel) ..."
+echo "  [3/4] refget (editable, local branch, overrides the PyPI wheel) ..."
 python -m pip install --quiet --force-reinstall --no-deps -e "$REFGET_SRC"
 
-echo "  [4/4] gtars (built from source -- overrides the PyPI wheel) ..."
+echo "  [4/4] gtars (built from source, overrides the PyPI wheel) ..."
 python -m pip install --quiet --upgrade 'maturin>=1.8.1'
 python -m pip install --quiet --force-reinstall --no-deps "$GTARS_SRC/gtars-python"
 
@@ -156,6 +156,6 @@ if [[ "$FAIL" == "0" ]]; then
     echo "refgenie build env READY: $VENV"
     echo "env.sh pins REFGENIE_BIN and SNAKEMAKE_BIN here; nothing needs to activate it by hand."
 else
-    echo "refgenie build env INCOMPLETE -- see FAIL lines above." >&2
+    echo "refgenie build env INCOMPLETE, see FAIL lines above." >&2
     exit 1
 fi

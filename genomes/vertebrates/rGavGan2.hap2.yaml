@@ -1,0 +1,23 @@
+name: rGavGan2.hap2
+description: |
+  Gavialis gangeticus assembly rGavGan2.hap2 (GCA_030020295.1), from VGP.
+organism:
+  scientific_name: Gavialis gangeticus
+  common_name: Gharial
+  taxon_id: 94835
+assembly:
+  source: GenBank
+  accession: GCA_030020295.1
+fasta:
+  sources:
+  - provider: UCSC
+    url: https://hgdownload.soe.ucsc.edu/hubs/GCA/030/020/295/GCA_030020295.1/GCA_030020295.1.fa.gz
+  checksum:
+    sha256: compute_on_registration
+seqcol:
+  compute: true
+build:
+  store: vgp
+  tier: store_only
+metadata:
+  added_by: sources_to_genomes

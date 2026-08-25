@@ -1,0 +1,23 @@
+name: aGeoSer1.2
+description: |
+  Geotrypetes seraphini assembly aGeoSer1.2 (GCA_902459505.2), from VGP.
+organism:
+  scientific_name: Geotrypetes seraphini
+  common_name: Gabon caecilian
+  taxon_id: 260995
+assembly:
+  source: GenBank
+  accession: GCA_902459505.2
+fasta:
+  sources:
+  - provider: UCSC
+    url: https://hgdownload.soe.ucsc.edu/hubs/GCA/902/459/505/GCA_902459505.2/GCA_902459505.2.fa.gz
+  checksum:
+    sha256: compute_on_registration
+seqcol:
+  compute: true
+build:
+  store: vgp
+  tier: store_only
+metadata:
+  added_by: sources_to_genomes

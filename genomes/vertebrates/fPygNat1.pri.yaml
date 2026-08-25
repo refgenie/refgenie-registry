@@ -1,0 +1,23 @@
+name: fPygNat1.pri
+description: |
+  Pygocentrus nattereri assembly fPygNat1.pri (GCF_015220715.1), from VGP.
+organism:
+  scientific_name: Pygocentrus nattereri
+  common_name: red-bellied piranha
+  taxon_id: 42514
+assembly:
+  source: RefSeq
+  accession: GCF_015220715.1
+fasta:
+  sources:
+  - provider: UCSC
+    url: https://hgdownload.soe.ucsc.edu/hubs/GCF/015/220/715/GCF_015220715.1/GCF_015220715.1.fa.gz
+  checksum:
+    sha256: compute_on_registration
+seqcol:
+  compute: true
+build:
+  store: vgp
+  tier: store_only
+metadata:
+  added_by: sources_to_genomes

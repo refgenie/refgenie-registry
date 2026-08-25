@@ -3,12 +3,13 @@
 > Part of [refgenie-registry](../README.md). See the top-level README for the
 > repo layout (`genomes/`, `recipes/`, `index/`, `schema/`, `tools/`).
 
-Each subfolder defines a refgetstore — a content-addressable sequence collection. Store folders contain source manifests and any store-specific scripts. The core build tooling is in the `refget`/`gtars` packages.
+Each subfolder defines a refgetstore, a content-addressable sequence collection. Store folders contain source manifests and any store-specific scripts. The core build tooling is in the `refget`/`gtars` packages.
 
 ## Stores
 
 | Store | Contents |
 |-------|----------|
+| **legacy** | The genomes the old refgenomes.databio.org server published |
 | **jungle** | Reference genome jungle paper dataset |
 | **pangenome** | HPRC pangenome haplotypes |
 | **vgp** | VGP vertebrate genomes |
@@ -17,7 +18,48 @@ Each subfolder defines a refgetstore — a content-addressable sequence collecti
 | **salmon_txomes** | Salmon/tximeta transcriptomes |
 | **igenomes** | AWS iGenomes reference genomes |
 | **plantref** | Plant + model-organism genomes (recovered from legacy big.databio.org) |
+| **decoys** | Decoy and spike-in sequences |
 | **demo** | Test data for development |
+
+## The link to `genomes/`
+
+Every genome YAML in [`genomes/`](../genomes) names one of these stores in its
+`build.store` field, claiming that the store holds its sequence.
+[`build/sync_stores.py`](../build/sync_stores.py) is what checks that claim:
+
+```bash
+python build/sync_stores.py            # coverage report, all stores
+python build/sync_stores.py --check    # non-zero if a genome is not loadable
+python build/sync_stores.py --changed  # stores whose sources.csv changed since they were built
+```
+
+A genome whose declared store has no row for it is **registered but unloadable**,
+and nothing else reports that. `--changed` is what the nightly
+uses to decide which stores to reload: a store is rebuilt only when its
+`sources.csv` differs from the `.sources.sha256` stamp written inside the built
+store, so plantref's ~476k objects are not re-synced every night.
+
+### `sources.csv` is NOT generated from the genome list
+
+`pep/samples.csv` and `pep/metadata/` are generated from `genomes/**/*.yaml` and
+must never be hand-edited. **`sources.csv` is the opposite: it is hand-maintained,
+and `sync_stores.py` never rewrites it.** The asymmetry is deliberate, for two
+reasons:
+
+1. **The two files name different things.** A store row's `fasta` is the path or
+   URL the store actually ingests, jungle's are staged relative paths like
+   `homo_sapiens/ENA/hg38/fasta/GRCh38-ena-15_GCA_000001405.fa.gz`, while a
+   genome YAML records the upstream provider URL. They are different strings for
+   the same sequence, and a genome YAML does not carry enough information to
+   reconstruct the store's.
+2. **Most store rows have no genome YAML.** Only `vgp` and `legacy` are fully
+   covered. Generating `sources.csv` from the genome list would silently delete
+   most of `igenomes`, `refseq`, `salmon_txomes` and `plantref`.
+
+So the direction of truth differs by file: the genome list drives the build
+queue and the published metadata, and `sources.csv` drives what a store holds.
+`sync_stores.py` reconciles them and reports disagreements rather than resolving
+them one way by fiat.
 
 ## Per-store structure
 
@@ -30,17 +72,17 @@ store_name/
 └── project_config.yaml  # PEP config (+ optional `fasta_root:` / `aliasing:`, see below)
 ```
 
-The store-build scripts in this directory are generic — they take a store name
+The store-build scripts in this directory are generic, they take a store name
 and read everything store-specific from that store's `project_config.yaml` /
 `sources.csv`. Two optional `project_config.yaml` keys configure them:
 
-- **`fasta_root:`** — base directory for **relative** `fasta` paths in `sources.csv`.
+- **`fasta_root:`**, base directory for **relative** `fasta` paths in `sources.csv`.
   Environment variables are expanded, so the absolute machine location stays out of
   the committed data: e.g. `fasta_root: $REFGETSTORE_FASTA/jungle` (with
   `$REFGETSTORE_FASTA` set by [`infra/rivanna/env.sh`](../infra/rivanna/env.sh)) lets
   `sources.csv` hold `homo_sapiens/ENA/.../GRCh38.fa.gz`. A `fasta` value that is a URL
   or an absolute path is used as-is and ignores `fasta_root`.
-- **`aliasing:`** — non-default sequence-alias strategy (see [Aliases](#aliases-post-build)).
+- **`aliasing:`**, non-default sequence-alias strategy (see [Aliases](#aliases-post-build)).
 
 A store with genuinely bespoke logic can instead ship its own script in its
 folder (e.g. [`vrs/build_aliases.py`](vrs/build_aliases.py)).
@@ -61,7 +103,7 @@ folder (e.g. [`vrs/build_aliases.py`](vrs/build_aliases.py)).
    [Per-store structure](#per-store-structure)), and an `aliasing:` block if the
    store needs sequence aliases (see [Aliases](#aliases-post-build)).
 
-3. **Write `sources.csv`** — one FASTA per row. Only the **`fasta`** column is
+3. **Write `sources.csv`**, one FASTA per row. Only the **`fasta`** column is
    required; each value is either a URL (`http(s)://`, `ftp://`, `s3://`) or a
    path relative to `fasta_root` (a row may list several space-separated FASTAs
    that get concatenated into one collection). Recommended columns, used for
@@ -85,7 +127,7 @@ folder (e.g. [`vrs/build_aliases.py`](vrs/build_aliases.py)).
    sbatch --job-name=build-<name> infra/rivanna/build_store.slurm <name>   # or as a SLURM job
    ```
 
-7. **Aliases** (optional, post-build) and **deploy to S3** — see the sections below.
+7. **Aliases** (optional, post-build) and **deploy to S3**, see the sections below.
 
 ## Building
 
@@ -100,9 +142,9 @@ python build.py vgp -j 6        # Limit parallel ingest workers (default: $SLURM
 Stores are built to `$REFGETSTORE_BASE/<store_name>` and synced to `$REFGETSTORE_S3/<store_name>`.
 Ingest runs in parallel in Rust (`add_sequence_collections_from_fastas`); `-j`/`$SLURM_CPUS_PER_TASK`
 sets the worker count. Memory is bounded (streaming), but high-sequence-count transcriptomes are
-heavier per worker — drop `-j` if a build OOMs. Each build writes a **`<store>_build_report.json`**
+heavier per worker, drop `-j` if a build OOMs. Each build writes a **`<store>_build_report.json`**
 (start/end/duration, loaded/skipped/failed counts, n_collections/n_sequences, gtars/refget versions,
-git rev, per-collection records) to a **local reports dir** — `$REFGENIE_BUILD_REPORTS_DIR`, else a
+git rev, per-collection records) to a **local reports dir**, `$REFGENIE_BUILD_REPORTS_DIR`, else a
 `_build_reports/` sibling of the store dirs. It is operator provenance nothing consumes, so it is kept
 out of the store dir (which is synced to the public bucket) and never published.
 
@@ -143,11 +185,11 @@ python build_aliases.py jungle --seq-strategy header_names  # CLI override of th
 ```
 
 Notes:
-- **vrs** is not config-driven — it ships its own [`vrs/build_aliases.py`](vrs/build_aliases.py) with
+- **vrs** is not config-driven, it ships its own [`vrs/build_aliases.py`](vrs/build_aliases.py) with
   VRS-specific namespace logic (Ensembl ENST/ENSP, multiple assembly versions). Run that directly.
 - **vgp** fetches NCBI `assembly_report.txt` per accession (rate-limited). Reuse the already-staged
   reports at `$REFGETSTORE_BASE/../refget_staging/assembly_reports/` (`<accession>_assembly_report.txt`)
-  to avoid re-downloading — pre-seed the script's `.assembly_reports_vgp/` cache from there.
+  to avoid re-downloading, pre-seed the script's `.assembly_reports_vgp/` cache from there.
 - **jungle** uses per-authority namespaces (the `source` column: ucsc/ensembl/ncbi/ENA/...) for
   sequence aliases; only the ~24 rows with a GCA/GCF accession also get assembly-report cross-aliases.
 - `build_aliases.py` strips the VRS `SQ.` prefix from level-2 digests before registering (the bare
@@ -155,28 +197,41 @@ Notes:
 
 ## FHR metadata (post-build)
 
-FHR (FAIR Headers Reference genome) sidecars — `fhr/<digest>.fhr.json` — carry per-collection
+FHR (FAIR Headers Reference genome) sidecars, `fhr/<digest>.fhr.json`, carry per-collection
 organism/assembly metadata (`genome`, `commonName`, `taxon`, `documentation`,
 `assemblySource`, `accessionID`, `assemblyLevel`). These are what `refgenie genome sync`
 reads to populate the description and faceted metadata columns (species, common name,
 taxon id, assembly source/accession/level) for store-overlay genomes, so a store without
 them syncs as genomes with null metadata.
 
-`build_fhr.py` writes them from `sources.csv` columns (organism → scientific/common name +
-taxon URI; name/genome_assembly/source → a one-sentence `documentation`; source →
-assemblySource; accession → accessionID, plus assemblyLevel from the script's static
-per-accession `ASSEMBLY_LEVELS` map sourced from NCBI Datasets), resolving each row to its
-collection digest via the aliases `build.py` registered. It only knows human and mouse and
-**fails loudly** on any other organism (extend its `ORGANISMS` map deliberately — never
-guess); likewise an accession missing from `ASSEMBLY_LEVELS` just gets no assemblyLevel.
+`build_fhr.py` resolves each `sources.csv` row to its collection digest (via the aliases
+`build.py` registered) and writes that collection's sidecar. Fields come from three
+sources, least to most specific:
+
+1. **The CSV derivation**, organism → scientific/common name + taxon URI;
+   name/genome_assembly/source → a one-sentence `documentation`; source → assemblySource;
+   accession → accessionID, plus assemblyLevel from the script's static per-accession
+   `ASSEMBLY_LEVELS` map sourced from NCBI Datasets. This path knows only human and mouse
+   and **fails loudly** on any other organism (extend its `ORGANISMS` map deliberately , 
+   never guess); an accession missing from `ASSEMBLY_LEVELS` just gets no assemblyLevel.
+2. **The curated registry record**, if a `genomes/**/*.yaml` names this store in its
+   `build.store` and matches the row (on `name` or `accession`), the row's fields come from
+   that genome's `pep/metadata/<genome>.fhr.json` instead. That sidecar is generated from
+   the genome YAML through the one mapping module (`tools/genome_to_fhr.py`), so the store's
+   published metadata and the registry catalog's are the same record. This is what lets a
+   store of non-model organisms carry real metadata: `vgp` holds 605 vertebrate species, and
+   none of them are in `ORGANISMS`. Rows with a curated record are exempt from the
+   organism validation. Pass `--no-registry` to derive every row from the CSV instead.
+3. **A per-genome override YAML**, see below.
+
 Idempotent; re-runs overwrite. It also re-commits `rgstore.json` so the manifest's
 `fhr_digest` advertises the sidecars (required for remote `pull_fhr`).
 
-**Per-genome YAML overrides** — "use YAML if it exists, use CSV otherwise":
+**Per-genome YAML overrides**, "use YAML if it exists, use CSV otherwise":
 `stores/<store>/genomes/<row_name>.yaml` is a flat camelCase FHR-field mapping merged
 over that row's CSV-derived fields, field by field (a YAML field wins wholesale; absent
 fields keep the CSV derivation). Use these for hand-curated metadata the CSV can't
-express — corrected `assemblySource`, richer `documentation`, `relatedLink` provenance
+express, corrected `assemblySource`, richer `documentation`, `relatedLink` provenance
 URLs, an explicit `assemblyLevel` (which beats the static map). For rows that share a
 digest, the last row still wins; put the override on the digest-winning row (mirroring
 it on same-digest twins keeps it reorder-safe). jungle's `genomes/` dir carries
@@ -195,7 +250,7 @@ After running, sync the store's `fhr/` dir **and** `rgstore.json` to S3 (see bel
 
 Stores are served publicly from `s3://refgenie/refget-store/<store>/`
 (`https://refgenie.s3.us-east-1.amazonaws.com/refget-store/<store>/`). Push runs **on Rivanna**
-using its own `~/.aws` `refgenie` profile (authenticates as `RefgenieDataBot`) — **use
+using its own `~/.aws` `refgenie` profile (authenticates as `RefgenieDataBot`), **use
 `--profile refgenie`**; the default profile (`s3user`) is AccessDenied on this bucket.
 
 ```bash
@@ -209,13 +264,13 @@ aws s3 sync "$REFGETSTORE_BASE/vgp" "$REFGETSTORE_S3/vgp" --profile refgenie --d
 (vgp ~378 GB) are best pushed as a background/SLURM job. Verify after:
 `curl -sI https://refgenie.s3.us-east-1.amazonaws.com/refget-store/<store>/store_metadata.json`.
 
-Note: `build.py --sync` runs `aws s3 sync` with the **default** profile, so it fails on this bucket —
+Note: `build.py --sync` runs `aws s3 sync` with the **default** profile, so it fails on this bucket , 
 either export `AWS_PROFILE=refgenie` first, or sync manually as above.
 
 ## Files & infrastructure
 
 Build/validation tooling (env-agnostic Python) lives in this `stores/` directory.
-The **Rivanna/HPC execution layer** — environment, SLURM jobs, and yoke config —
+The **Rivanna/HPC execution layer**, environment, SLURM jobs, and yoke config , 
 is isolated under [`../infra/rivanna/`](../infra/rivanna/) so it stays out of the
 way of external viewers. See [`infra/rivanna/README.md`](../infra/rivanna/README.md).
 
@@ -235,7 +290,7 @@ Rivanna/HPC execution layer ([`infra/rivanna/`](../infra/rivanna/)):
 
 | Path | Role |
 |------|------|
-| [`infra/rivanna/env.sh`](../infra/rivanna/env.sh) | Sets `REFGETSTORE_BASE` / `REFGETSTORE_S3` — `source ../infra/rivanna/env.sh` before building |
+| [`infra/rivanna/env.sh`](../infra/rivanna/env.sh) | Sets `REFGETSTORE_BASE` / `REFGETSTORE_S3`, `source ../infra/rivanna/env.sh` before building |
 | [`infra/rivanna/build_store.slurm`](../infra/rivanna/build_store.slurm) | SLURM job (8 CPU / 32 GB): `sbatch --job-name=build-<store> infra/rivanna/build_store.slurm <store>` |
 | [`infra/rivanna/download_igenomes.slurm`](../infra/rivanna/download_igenomes.slurm) | SLURM job to stage iGenomes FASTAs |
 | [`infra/rivanna/download_salmon_txomes.slurm`](../infra/rivanna/download_salmon_txomes.slurm) | SLURM job to stage Salmon transcriptomes |

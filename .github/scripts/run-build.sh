@@ -5,7 +5,7 @@
 # asset classes; refgenie loads them directly (tools/import_recipes.py), then
 # `refgenie generate snakefile` renders a Snakemake workflow whose rules build
 # each asset via `refgenie1 build {genome}/{asset}:{tag}` inside the recipe's
-# container. There is NO conda/mamba/bioconda tool-install path here -- recipes
+# container. There is NO conda/mamba/bioconda tool-install path here, recipes
 # are not built with conda.
 #
 # Subcommands:

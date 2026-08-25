@@ -1,0 +1,23 @@
+name: rPodMur119.hap1.1
+description: |
+  Podarcis muralis assembly rPodMur119.hap1.1 (GCA_964188315.1), from VGP.
+organism:
+  scientific_name: Podarcis muralis
+  common_name: Common wall lizard
+  taxon_id: 64176
+assembly:
+  source: GenBank
+  accession: GCA_964188315.1
+fasta:
+  sources:
+  - provider: UCSC
+    url: https://hgdownload.soe.ucsc.edu/hubs/GCA/964/188/315/GCA_964188315.1/GCA_964188315.1.fa.gz
+  checksum:
+    sha256: compute_on_registration
+seqcol:
+  compute: true
+build:
+  store: vgp
+  tier: store_only
+metadata:
+  added_by: sources_to_genomes

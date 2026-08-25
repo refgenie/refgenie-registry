@@ -1,0 +1,23 @@
+name: mLynCan4.pri.v2
+description: |
+  Lynx canadensis assembly mLynCan4.pri.v2 (GCF_007474595.2), from VGP.
+organism:
+  scientific_name: Lynx canadensis
+  common_name: Canada lynx
+  taxon_id: 61383
+assembly:
+  source: RefSeq
+  accession: GCF_007474595.2
+fasta:
+  sources:
+  - provider: UCSC
+    url: https://hgdownload.soe.ucsc.edu/hubs/GCF/007/474/595/GCF_007474595.2/GCF_007474595.2.fa.gz
+  checksum:
+    sha256: compute_on_registration
+seqcol:
+  compute: true
+build:
+  store: vgp
+  tier: store_only
+metadata:
+  added_by: sources_to_genomes

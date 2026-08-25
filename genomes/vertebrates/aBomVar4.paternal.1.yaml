@@ -1,0 +1,23 @@
+name: aBomVar4.paternal.1
+description: |
+  Bombina variegata assembly aBomVar4.paternal.1 (GCA_964205295.1), from VGP.
+organism:
+  scientific_name: Bombina variegata
+  common_name: yellow-bellied toad
+  taxon_id: 8348
+assembly:
+  source: GenBank
+  accession: GCA_964205295.1
+fasta:
+  sources:
+  - provider: UCSC
+    url: https://hgdownload.soe.ucsc.edu/hubs/GCA/964/205/295/GCA_964205295.1/GCA_964205295.1.fa.gz
+  checksum:
+    sha256: compute_on_registration
+seqcol:
+  compute: true
+build:
+  store: vgp
+  tier: store_only
+metadata:
+  added_by: sources_to_genomes

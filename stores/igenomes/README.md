@@ -1,6 +1,6 @@
 # igenomes
 
-AWS iGenomes — pre-built reference genomes used by nf-core and Illumina pipelines.
+AWS iGenomes, pre-built reference genomes used by nf-core and Illumina pipelines.
 
 ## Contents
 

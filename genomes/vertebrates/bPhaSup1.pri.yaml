@@ -1,0 +1,23 @@
+name: bPhaSup1.pri
+description: |
+  Phaethornis superciliosus assembly bPhaSup1.pri (GCA_023637945.2), from VGP.
+organism:
+  scientific_name: Phaethornis superciliosus
+  common_name: long-tailed hermit
+  taxon_id: 46513
+assembly:
+  source: GenBank
+  accession: GCA_023637945.2
+fasta:
+  sources:
+  - provider: UCSC
+    url: https://hgdownload.soe.ucsc.edu/hubs/GCA/023/637/945/GCA_023637945.2/GCA_023637945.2.fa.gz
+  checksum:
+    sha256: compute_on_registration
+seqcol:
+  compute: true
+build:
+  store: vgp
+  tier: store_only
+metadata:
+  added_by: sources_to_genomes

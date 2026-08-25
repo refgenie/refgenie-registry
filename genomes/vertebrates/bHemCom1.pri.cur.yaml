@@ -1,0 +1,22 @@
+name: bHemCom1.pri.cur
+description: |
+  Hemiprocne comata assembly bHemCom1.pri.cur (GCA_020745705.1), from VGP.
+organism:
+  scientific_name: Hemiprocne comata
+  taxon_id: 243314
+assembly:
+  source: GenBank
+  accession: GCA_020745705.1
+fasta:
+  sources:
+  - provider: UCSC
+    url: https://hgdownload.soe.ucsc.edu/hubs/GCA/020/745/705/GCA_020745705.1/GCA_020745705.1.fa.gz
+  checksum:
+    sha256: compute_on_registration
+seqcol:
+  compute: true
+build:
+  store: vgp
+  tier: store_only
+metadata:
+  added_by: sources_to_genomes

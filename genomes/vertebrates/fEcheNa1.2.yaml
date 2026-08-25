@@ -1,0 +1,23 @@
+name: fEcheNa1.2
+description: |
+  Echeneis naucrates assembly fEcheNa1.2 (GCA_900963305.2), from VGP.
+organism:
+  scientific_name: Echeneis naucrates
+  common_name: live sharksucker
+  taxon_id: 173247
+assembly:
+  source: GenBank
+  accession: GCA_900963305.2
+fasta:
+  sources:
+  - provider: UCSC
+    url: https://hgdownload.soe.ucsc.edu/hubs/GCA/900/963/305/GCA_900963305.2/GCA_900963305.2.fa.gz
+  checksum:
+    sha256: compute_on_registration
+seqcol:
+  compute: true
+build:
+  store: vgp
+  tier: store_only
+metadata:
+  added_by: sources_to_genomes

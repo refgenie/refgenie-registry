@@ -1,6 +1,6 @@
 # decoys
 
-Prealignment decoy sequences. These are **not** reference assemblies -- they are
+Prealignment decoy sequences. These are **not** reference assemblies, they are
 derived constructs used to soak up reads before the main alignment, and they are
 kept in their own store so they are not mistaken for references in `jungle`.
 
@@ -25,7 +25,7 @@ not hold.
 
 ## Provenance
 
-Recovered on 2026-07-27 from the Accbase-local refgenie1 deployment at
+Recovered from the Accbase-local refgenie1 deployment at
 `datasets_downloaded/refgenie1/genomes/data/<digest>/fasta/default/`, which was
 the only remaining copy of either sequence. They are needed by the lab-wide
 registry before that deployment can be retired.

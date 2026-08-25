@@ -1,0 +1,23 @@
+name: phaCin_HiC
+description: |
+  Phascolarctos cinereus assembly phaCin_HiC (GCA_003287225.2), from VGP.
+organism:
+  scientific_name: Phascolarctos cinereus
+  common_name: koala
+  taxon_id: 38626
+assembly:
+  source: GenBank
+  accession: GCA_003287225.2
+fasta:
+  sources:
+  - provider: UCSC
+    url: https://hgdownload.soe.ucsc.edu/hubs/GCA/003/287/225/GCA_003287225.2/GCA_003287225.2.fa.gz
+  checksum:
+    sha256: compute_on_registration
+seqcol:
+  compute: true
+build:
+  store: vgp
+  tier: store_only
+metadata:
+  added_by: sources_to_genomes

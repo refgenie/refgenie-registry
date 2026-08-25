@@ -1,0 +1,23 @@
+name: fMicPou1.1
+description: |
+  Micromesistius poutassou assembly fMicPou1.1 (GCA_964030765.1), from VGP.
+organism:
+  scientific_name: Micromesistius poutassou
+  common_name: blue whiting
+  taxon_id: 81636
+assembly:
+  source: GenBank
+  accession: GCA_964030765.1
+fasta:
+  sources:
+  - provider: UCSC
+    url: https://hgdownload.soe.ucsc.edu/hubs/GCA/964/030/765/GCA_964030765.1/GCA_964030765.1.fa.gz
+  checksum:
+    sha256: compute_on_registration
+seqcol:
+  compute: true
+build:
+  store: vgp
+  tier: store_only
+metadata:
+  added_by: sources_to_genomes

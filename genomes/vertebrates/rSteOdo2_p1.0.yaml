@@ -1,0 +1,22 @@
+name: rSteOdo2_p1.0
+description: |
+  Sternotherus odoratus assembly rSteOdo2_p1.0 (GCA_032164245.1), from VGP.
+organism:
+  scientific_name: Sternotherus odoratus
+  taxon_id: 142480
+assembly:
+  source: GenBank
+  accession: GCA_032164245.1
+fasta:
+  sources:
+  - provider: UCSC
+    url: https://hgdownload.soe.ucsc.edu/hubs/GCA/032/164/245/GCA_032164245.1/GCA_032164245.1.fa.gz
+  checksum:
+    sha256: compute_on_registration
+seqcol:
+  compute: true
+build:
+  store: vgp
+  tier: store_only
+metadata:
+  added_by: sources_to_genomes

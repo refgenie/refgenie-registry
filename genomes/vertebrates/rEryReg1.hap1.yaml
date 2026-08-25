@@ -1,0 +1,23 @@
+name: rEryReg1.hap1
+description: |
+  Erythrolamprus reginae assembly rEryReg1.hap1 (GCF_031021105.1), from VGP.
+organism:
+  scientific_name: Erythrolamprus reginae
+  common_name: royal ground snake
+  taxon_id: 121349
+assembly:
+  source: RefSeq
+  accession: GCF_031021105.1
+fasta:
+  sources:
+  - provider: UCSC
+    url: https://hgdownload.soe.ucsc.edu/hubs/GCF/031/021/105/GCF_031021105.1/GCF_031021105.1.fa.gz
+  checksum:
+    sha256: compute_on_registration
+seqcol:
+  compute: true
+build:
+  store: vgp
+  tier: store_only
+metadata:
+  added_by: sources_to_genomes

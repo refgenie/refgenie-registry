@@ -1,0 +1,23 @@
+name: sAmbRad1.1.pri
+description: |
+  Amblyraja radiata assembly sAmbRad1.1.pri (GCF_010909765.2), from VGP.
+organism:
+  scientific_name: Amblyraja radiata
+  common_name: thorny skate
+  taxon_id: 386614
+assembly:
+  source: RefSeq
+  accession: GCF_010909765.2
+fasta:
+  sources:
+  - provider: UCSC
+    url: https://hgdownload.soe.ucsc.edu/hubs/GCF/010/909/765/GCF_010909765.2/GCF_010909765.2.fa.gz
+  checksum:
+    sha256: compute_on_registration
+seqcol:
+  compute: true
+build:
+  store: vgp
+  tier: store_only
+metadata:
+  added_by: sources_to_genomes

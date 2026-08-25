@@ -1,0 +1,23 @@
+name: mMunRee1.1_alternate_haplotype
+description: |
+  Muntiacus reevesi assembly mMunRee1.1_alternate_haplotype (GCA_963930665.1), from VGP.
+organism:
+  scientific_name: Muntiacus reevesi
+  common_name: Reeves' muntjac
+  taxon_id: 9886
+assembly:
+  source: GenBank
+  accession: GCA_963930665.1
+fasta:
+  sources:
+  - provider: UCSC
+    url: https://hgdownload.soe.ucsc.edu/hubs/GCA/963/930/665/GCA_963930665.1/GCA_963930665.1.fa.gz
+  checksum:
+    sha256: compute_on_registration
+seqcol:
+  compute: true
+build:
+  store: vgp
+  tier: store_only
+metadata:
+  added_by: sources_to_genomes

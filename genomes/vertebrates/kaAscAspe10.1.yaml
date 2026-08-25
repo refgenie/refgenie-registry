@@ -1,0 +1,22 @@
+name: kaAscAspe10.1
+description: |
+  Ascidiella aspersa assembly kaAscAspe10.1 (GCA_963924565.1), from VGP.
+organism:
+  scientific_name: Ascidiella aspersa
+  taxon_id: 201961
+assembly:
+  source: GenBank
+  accession: GCA_963924565.1
+fasta:
+  sources:
+  - provider: UCSC
+    url: https://hgdownload.soe.ucsc.edu/hubs/GCA/963/924/565/GCA_963924565.1/GCA_963924565.1.fa.gz
+  checksum:
+    sha256: compute_on_registration
+seqcol:
+  compute: true
+build:
+  store: vgp
+  tier: store_only
+metadata:
+  added_by: sources_to_genomes

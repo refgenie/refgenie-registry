@@ -1,0 +1,23 @@
+name: mMusErm1.Pri
+description: |
+  Mustela erminea assembly mMusErm1.Pri (GCF_009829155.1), from VGP.
+organism:
+  scientific_name: Mustela erminea
+  common_name: ermine
+  taxon_id: 36723
+assembly:
+  source: RefSeq
+  accession: GCF_009829155.1
+fasta:
+  sources:
+  - provider: UCSC
+    url: https://hgdownload.soe.ucsc.edu/hubs/GCF/009/829/155/GCF_009829155.1/GCF_009829155.1.fa.gz
+  checksum:
+    sha256: compute_on_registration
+seqcol:
+  compute: true
+build:
+  store: vgp
+  tier: store_only
+metadata:
+  added_by: sources_to_genomes
