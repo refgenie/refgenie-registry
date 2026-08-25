@@ -1,0 +1,23 @@
+name: ASM4372783v1
+description: |
+  Aselliscus stoliczkanus assembly ASM4372783v1 (GCA_043727835.1), from VGP.
+organism:
+  scientific_name: Aselliscus stoliczkanus
+  common_name: Stoliczka's trident bat
+  taxon_id: 188568
+assembly:
+  source: GenBank
+  accession: GCA_043727835.1
+fasta:
+  sources:
+  - provider: UCSC
+    url: https://hgdownload.soe.ucsc.edu/hubs/GCA/043/727/835/GCA_043727835.1/GCA_043727835.1.fa.gz
+  checksum:
+    sha256: compute_on_registration
+seqcol:
+  compute: true
+build:
+  store: vgp
+  tier: store_only
+metadata:
+  added_by: sources_to_genomes

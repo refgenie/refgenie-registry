@@ -1,0 +1,17 @@
+{
+  "schema": "https://raw.githubusercontent.com/FAIR-bioHeaders/FHR-Specification/main/fhr.json",
+  "schemaVersion": 1.0,
+  "genome": "Poecile atricapillus",
+  "taxon": {
+    "name": "Poecile atricapillus",
+    "uri": "https://identifiers.org/taxonomy:48891"
+  },
+  "commonName": "Black-capped chickadee",
+  "version": "bPoeAtr1.hap1",
+  "accessionID": {
+    "name": "GCF_030490865.1",
+    "url": "https://www.ncbi.nlm.nih.gov/datasets/genome/GCF_030490865.1/"
+  },
+  "assemblySource": "RefSeq",
+  "documentation": "Poecile atricapillus assembly bPoeAtr1.hap1 (GCF_030490865.1), from VGP.\n"
+}

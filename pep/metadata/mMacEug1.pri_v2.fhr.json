@@ -1,0 +1,17 @@
+{
+  "schema": "https://raw.githubusercontent.com/FAIR-bioHeaders/FHR-Specification/main/fhr.json",
+  "schemaVersion": 1.0,
+  "genome": "Notamacropus eugenii",
+  "taxon": {
+    "name": "Notamacropus eugenii",
+    "uri": "https://identifiers.org/taxonomy:9315"
+  },
+  "commonName": "tammar wallaby",
+  "version": "mMacEug1.pri_v2",
+  "accessionID": {
+    "name": "GCF_028372415.1",
+    "url": "https://www.ncbi.nlm.nih.gov/datasets/genome/GCF_028372415.1/"
+  },
+  "assemblySource": "RefSeq",
+  "documentation": "Notamacropus eugenii assembly mMacEug1.pri_v2 (GCF_028372415.1), from VGP.\n"
+}

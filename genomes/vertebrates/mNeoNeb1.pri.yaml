@@ -1,0 +1,23 @@
+name: mNeoNeb1.pri
+description: |
+  Neofelis nebulosa assembly mNeoNeb1.pri (GCF_028018385.1), from VGP.
+organism:
+  scientific_name: Neofelis nebulosa
+  common_name: Clouded leopard
+  taxon_id: 61452
+assembly:
+  source: RefSeq
+  accession: GCF_028018385.1
+fasta:
+  sources:
+  - provider: UCSC
+    url: https://hgdownload.soe.ucsc.edu/hubs/GCF/028/018/385/GCF_028018385.1/GCF_028018385.1.fa.gz
+  checksum:
+    sha256: compute_on_registration
+seqcol:
+  compute: true
+build:
+  store: vgp
+  tier: store_only
+metadata:
+  added_by: sources_to_genomes

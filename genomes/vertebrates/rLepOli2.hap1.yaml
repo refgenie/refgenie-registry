@@ -1,0 +1,23 @@
+name: rLepOli2.hap1
+description: |
+  Lepidochelys olivacea assembly rLepOli2.hap1 (GCA_965140295.1), from VGP.
+organism:
+  scientific_name: Lepidochelys olivacea
+  common_name: Pacific ridley
+  taxon_id: 27788
+assembly:
+  source: GenBank
+  accession: GCA_965140295.1
+fasta:
+  sources:
+  - provider: UCSC
+    url: https://hgdownload.soe.ucsc.edu/hubs/GCA/965/140/295/GCA_965140295.1/GCA_965140295.1.fa.gz
+  checksum:
+    sha256: compute_on_registration
+seqcol:
+  compute: true
+build:
+  store: vgp
+  tier: store_only
+metadata:
+  added_by: sources_to_genomes

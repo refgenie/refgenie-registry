@@ -1,0 +1,23 @@
+name: fLepOcu1.hap2
+description: |
+  Lepisosteus oculatus assembly fLepOcu1.hap2 (GCF_040954835.1), from VGP.
+organism:
+  scientific_name: Lepisosteus oculatus
+  common_name: spotted gar
+  taxon_id: 7918
+assembly:
+  source: RefSeq
+  accession: GCF_040954835.1
+fasta:
+  sources:
+  - provider: UCSC
+    url: https://hgdownload.soe.ucsc.edu/hubs/GCF/040/954/835/GCF_040954835.1/GCF_040954835.1.fa.gz
+  checksum:
+    sha256: compute_on_registration
+seqcol:
+  compute: true
+build:
+  store: vgp
+  tier: store_only
+metadata:
+  added_by: sources_to_genomes

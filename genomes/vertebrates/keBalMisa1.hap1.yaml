@@ -1,0 +1,22 @@
+name: keBalMisa1.hap1
+description: |
+  Balanoglossus misakiensis assembly keBalMisa1.hap1 (GCA_040954625.2), from VGP.
+organism:
+  scientific_name: Balanoglossus misakiensis
+  taxon_id: 509136
+assembly:
+  source: GenBank
+  accession: GCA_040954625.2
+fasta:
+  sources:
+  - provider: UCSC
+    url: https://hgdownload.soe.ucsc.edu/hubs/GCA/040/954/625/GCA_040954625.2/GCA_040954625.2.fa.gz
+  checksum:
+    sha256: compute_on_registration
+seqcol:
+  compute: true
+build:
+  store: vgp
+  tier: store_only
+metadata:
+  added_by: sources_to_genomes

@@ -1,0 +1,17 @@
+{
+  "schema": "https://raw.githubusercontent.com/FAIR-bioHeaders/FHR-Specification/main/fhr.json",
+  "schemaVersion": 1.0,
+  "genome": "Pagrus pagrus",
+  "taxon": {
+    "name": "Pagrus pagrus",
+    "uri": "https://identifiers.org/taxonomy:8173"
+  },
+  "commonName": "common seabream",
+  "version": "fPagPag1.hap1.1",
+  "accessionID": {
+    "name": "GCA_965226575.1",
+    "url": "https://www.ncbi.nlm.nih.gov/datasets/genome/GCA_965226575.1/"
+  },
+  "assemblySource": "GenBank",
+  "documentation": "Pagrus pagrus assembly fPagPag1.hap1.1 (GCA_965226575.1), from VGP.\n"
+}

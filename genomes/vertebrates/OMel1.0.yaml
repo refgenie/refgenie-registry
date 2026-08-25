@@ -1,0 +1,22 @@
+name: OMel1.0
+description: |
+  Oenanthe melanoleuca assembly OMel1.0 (GCF_029582105.1), from VGP.
+organism:
+  scientific_name: Oenanthe melanoleuca
+  taxon_id: 2939378
+assembly:
+  source: RefSeq
+  accession: GCF_029582105.1
+fasta:
+  sources:
+  - provider: UCSC
+    url: https://hgdownload.soe.ucsc.edu/hubs/GCF/029/582/105/GCF_029582105.1/GCF_029582105.1.fa.gz
+  checksum:
+    sha256: compute_on_registration
+seqcol:
+  compute: true
+build:
+  store: vgp
+  tier: store_only
+metadata:
+  added_by: sources_to_genomes

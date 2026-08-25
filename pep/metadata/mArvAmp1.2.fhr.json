@@ -1,0 +1,17 @@
+{
+  "schema": "https://raw.githubusercontent.com/FAIR-bioHeaders/FHR-Specification/main/fhr.json",
+  "schemaVersion": 1.0,
+  "genome": "Arvicola amphibius",
+  "taxon": {
+    "name": "Arvicola amphibius",
+    "uri": "https://identifiers.org/taxonomy:1047088"
+  },
+  "commonName": "Eurasian water vole",
+  "version": "mArvAmp1.2",
+  "accessionID": {
+    "name": "GCF_903992535.2",
+    "url": "https://www.ncbi.nlm.nih.gov/datasets/genome/GCF_903992535.2/"
+  },
+  "assemblySource": "RefSeq",
+  "documentation": "Arvicola amphibius assembly mArvAmp1.2 (GCF_903992535.2), from VGP.\n"
+}

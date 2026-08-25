@@ -1,0 +1,17 @@
+{
+  "schema": "https://raw.githubusercontent.com/FAIR-bioHeaders/FHR-Specification/main/fhr.json",
+  "schemaVersion": 1.0,
+  "genome": "Pelodytes ibericus",
+  "taxon": {
+    "name": "Pelodytes ibericus",
+    "uri": "https://identifiers.org/taxonomy:233781"
+  },
+  "commonName": "Iberian parsley frog",
+  "version": "aPelIbe1.pri",
+  "accessionID": {
+    "name": "GCA_036172795.1",
+    "url": "https://www.ncbi.nlm.nih.gov/datasets/genome/GCA_036172795.1/"
+  },
+  "assemblySource": "GenBank",
+  "documentation": "Pelodytes ibericus assembly aPelIbe1.pri (GCA_036172795.1), from VGP.\n"
+}

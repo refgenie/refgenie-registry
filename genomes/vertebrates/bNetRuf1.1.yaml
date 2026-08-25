@@ -1,0 +1,23 @@
+name: bNetRuf1.1
+description: |
+  Netta rufina assembly bNetRuf1.1 (GCA_964035555.1), from VGP.
+organism:
+  scientific_name: Netta rufina
+  common_name: red-crested pochard
+  taxon_id: 30387
+assembly:
+  source: GenBank
+  accession: GCA_964035555.1
+fasta:
+  sources:
+  - provider: UCSC
+    url: https://hgdownload.soe.ucsc.edu/hubs/GCA/964/035/555/GCA_964035555.1/GCA_964035555.1.fa.gz
+  checksum:
+    sha256: compute_on_registration
+seqcol:
+  compute: true
+build:
+  store: vgp
+  tier: store_only
+metadata:
+  added_by: sources_to_genomes

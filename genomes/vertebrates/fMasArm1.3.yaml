@@ -1,0 +1,23 @@
+name: fMasArm1.3
+description: |
+  Mastacembelus armatus assembly fMasArm1.3 (GCA_900324485.3), from VGP.
+organism:
+  scientific_name: Mastacembelus armatus
+  common_name: zig-zag eel
+  taxon_id: 205130
+assembly:
+  source: GenBank
+  accession: GCA_900324485.3
+fasta:
+  sources:
+  - provider: UCSC
+    url: https://hgdownload.soe.ucsc.edu/hubs/GCA/900/324/485/GCA_900324485.3/GCA_900324485.3.fa.gz
+  checksum:
+    sha256: compute_on_registration
+seqcol:
+  compute: true
+build:
+  store: vgp
+  tier: store_only
+metadata:
+  added_by: sources_to_genomes

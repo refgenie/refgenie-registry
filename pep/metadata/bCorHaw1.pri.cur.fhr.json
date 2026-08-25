@@ -1,0 +1,17 @@
+{
+  "schema": "https://raw.githubusercontent.com/FAIR-bioHeaders/FHR-Specification/main/fhr.json",
+  "schemaVersion": 1.0,
+  "genome": "Corvus hawaiiensis",
+  "taxon": {
+    "name": "Corvus hawaiiensis",
+    "uri": "https://identifiers.org/taxonomy:134902"
+  },
+  "commonName": "hawaiian crow",
+  "version": "bCorHaw1.pri.cur",
+  "accessionID": {
+    "name": "GCF_020740725.1",
+    "url": "https://www.ncbi.nlm.nih.gov/datasets/genome/GCF_020740725.1/"
+  },
+  "assemblySource": "RefSeq",
+  "documentation": "Corvus hawaiiensis assembly bCorHaw1.pri.cur (GCF_020740725.1), from VGP.\n"
+}

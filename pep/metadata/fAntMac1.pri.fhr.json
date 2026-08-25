@@ -1,0 +1,17 @@
+{
+  "schema": "https://raw.githubusercontent.com/FAIR-bioHeaders/FHR-Specification/main/fhr.json",
+  "schemaVersion": 1.0,
+  "genome": "Antennarius maculatus",
+  "taxon": {
+    "name": "Antennarius maculatus",
+    "uri": "https://identifiers.org/taxonomy:882753"
+  },
+  "commonName": "warty frogfish",
+  "version": "fAntMac1.pri",
+  "accessionID": {
+    "name": "GCA_013358685.1",
+    "url": "https://www.ncbi.nlm.nih.gov/datasets/genome/GCA_013358685.1/"
+  },
+  "assemblySource": "GenBank",
+  "documentation": "Antennarius maculatus assembly fAntMac1.pri (GCA_013358685.1), from VGP.\n"
+}

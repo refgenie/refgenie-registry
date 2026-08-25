@@ -1,0 +1,23 @@
+name: bGruAme1.mat
+description: |
+  Grus americana assembly bGruAme1.mat (GCF_028858705.1), from VGP.
+organism:
+  scientific_name: Grus americana
+  common_name: Whooping crane
+  taxon_id: 9117
+assembly:
+  source: RefSeq
+  accession: GCF_028858705.1
+fasta:
+  sources:
+  - provider: UCSC
+    url: https://hgdownload.soe.ucsc.edu/hubs/GCF/028/858/705/GCF_028858705.1/GCF_028858705.1.fa.gz
+  checksum:
+    sha256: compute_on_registration
+seqcol:
+  compute: true
+build:
+  store: vgp
+  tier: store_only
+metadata:
+  added_by: sources_to_genomes

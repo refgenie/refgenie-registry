@@ -1,0 +1,22 @@
+name: fAplTae1.pri
+description: |
+  Aplochiton taeniatus assembly fAplTae1.pri (GCA_017639675.1), from VGP.
+organism:
+  scientific_name: Aplochiton taeniatus
+  taxon_id: 946358
+assembly:
+  source: GenBank
+  accession: GCA_017639675.1
+fasta:
+  sources:
+  - provider: UCSC
+    url: https://hgdownload.soe.ucsc.edu/hubs/GCA/017/639/675/GCA_017639675.1/GCA_017639675.1.fa.gz
+  checksum:
+    sha256: compute_on_registration
+seqcol:
+  compute: true
+build:
+  store: vgp
+  tier: store_only
+metadata:
+  added_by: sources_to_genomes

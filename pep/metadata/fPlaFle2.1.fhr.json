@@ -1,0 +1,17 @@
+{
+  "schema": "https://raw.githubusercontent.com/FAIR-bioHeaders/FHR-Specification/main/fhr.json",
+  "schemaVersion": 1.0,
+  "genome": "Platichthys flesus",
+  "taxon": {
+    "name": "Platichthys flesus",
+    "uri": "https://identifiers.org/taxonomy:8260"
+  },
+  "commonName": "European flounder",
+  "version": "fPlaFle2.1",
+  "accessionID": {
+    "name": "GCF_949316205.1",
+    "url": "https://www.ncbi.nlm.nih.gov/datasets/genome/GCF_949316205.1/"
+  },
+  "assemblySource": "RefSeq",
+  "documentation": "Platichthys flesus assembly fPlaFle2.1 (GCF_949316205.1), from VGP.\n"
+}

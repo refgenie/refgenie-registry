@@ -1,0 +1,17 @@
+{
+  "schema": "https://raw.githubusercontent.com/FAIR-bioHeaders/FHR-Specification/main/fhr.json",
+  "schemaVersion": 1.0,
+  "genome": "Mesoplodon mirus",
+  "taxon": {
+    "name": "Mesoplodon mirus",
+    "uri": "https://identifiers.org/taxonomy:52113"
+  },
+  "commonName": "True's beaked whale",
+  "version": "mMesMir1.hap1.1",
+  "accessionID": {
+    "name": "GCA_964341445.1",
+    "url": "https://www.ncbi.nlm.nih.gov/datasets/genome/GCA_964341445.1/"
+  },
+  "assemblySource": "GenBank",
+  "documentation": "Mesoplodon mirus assembly mMesMir1.hap1.1 (GCA_964341445.1), from VGP.\n"
+}

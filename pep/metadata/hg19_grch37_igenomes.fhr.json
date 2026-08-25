@@ -1,0 +1,16 @@
+{
+  "schema": "https://raw.githubusercontent.com/FAIR-bioHeaders/FHR-Specification/main/fhr.json",
+  "schemaVersion": 1.0,
+  "genome": "Homo sapiens",
+  "taxon": {
+    "name": "Homo sapiens",
+    "uri": "https://identifiers.org/taxonomy:9606"
+  },
+  "commonName": "human",
+  "version": "hg19_grch37_igenomes",
+  "genomeSynonym": [
+    "GRCh37-igenomes-ensembl"
+  ],
+  "assemblySource": "iGenomes",
+  "documentation": "igenomes hosted GRCh37\n"
+}

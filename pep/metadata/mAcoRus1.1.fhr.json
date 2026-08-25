@@ -1,0 +1,17 @@
+{
+  "schema": "https://raw.githubusercontent.com/FAIR-bioHeaders/FHR-Specification/main/fhr.json",
+  "schemaVersion": 1.0,
+  "genome": "Acomys russatus",
+  "taxon": {
+    "name": "Acomys russatus",
+    "uri": "https://identifiers.org/taxonomy:60746"
+  },
+  "commonName": "golden spiny mouse",
+  "version": "mAcoRus1.1",
+  "accessionID": {
+    "name": "GCF_903995435.1",
+    "url": "https://www.ncbi.nlm.nih.gov/datasets/genome/GCF_903995435.1/"
+  },
+  "assemblySource": "RefSeq",
+  "documentation": "Acomys russatus assembly mAcoRus1.1 (GCF_903995435.1), from VGP.\n"
+}

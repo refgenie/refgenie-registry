@@ -1,0 +1,17 @@
+{
+  "schema": "https://raw.githubusercontent.com/FAIR-bioHeaders/FHR-Specification/main/fhr.json",
+  "schemaVersion": 1.0,
+  "genome": "Homo sapiens",
+  "taxon": {
+    "name": "Homo sapiens",
+    "uri": "https://identifiers.org/taxonomy:9606"
+  },
+  "commonName": "human",
+  "version": "hg19_primary_gencode",
+  "genomeSynonym": [
+    "GRCh37-primary-assembly-47-gencode",
+    "GRCh37-primary-assembly-46-gencode"
+  ],
+  "assemblySource": "GENCODE",
+  "documentation": "release 47 of gencode primary assembly GRCh37\n"
+}

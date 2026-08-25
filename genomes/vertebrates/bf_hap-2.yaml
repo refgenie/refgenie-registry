@@ -1,0 +1,22 @@
+name: bf_hap-2
+description: |
+  Branchiostoma floridae x Branchiostoma japonicum assembly bf_hap-2 (GCA_015852565.1), from VGP.
+organism:
+  scientific_name: Branchiostoma floridae x Branchiostoma japonicum
+  taxon_id: 2700039
+assembly:
+  source: GenBank
+  accession: GCA_015852565.1
+fasta:
+  sources:
+  - provider: UCSC
+    url: https://hgdownload.soe.ucsc.edu/hubs/GCA/015/852/565/GCA_015852565.1/GCA_015852565.1.fa.gz
+  checksum:
+    sha256: compute_on_registration
+seqcol:
+  compute: true
+build:
+  store: vgp
+  tier: store_only
+metadata:
+  added_by: sources_to_genomes

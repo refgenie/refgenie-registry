@@ -1,0 +1,23 @@
+name: bGalGal1.pat.whiteleghornlayer.GRCg7w_WZ
+description: |
+  Gallus gallus assembly bGalGal1.pat.whiteleghornlayer.GRCg7w_WZ (GCF_016700215.2), from VGP.
+organism:
+  scientific_name: Gallus gallus
+  common_name: chicken
+  taxon_id: 9031
+assembly:
+  source: RefSeq
+  accession: GCF_016700215.2
+fasta:
+  sources:
+  - provider: UCSC
+    url: https://hgdownload.soe.ucsc.edu/hubs/GCF/016/700/215/GCF_016700215.2/GCF_016700215.2.fa.gz
+  checksum:
+    sha256: compute_on_registration
+seqcol:
+  compute: true
+build:
+  store: vgp
+  tier: store_only
+metadata:
+  added_by: sources_to_genomes

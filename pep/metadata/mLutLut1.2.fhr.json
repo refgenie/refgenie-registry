@@ -1,0 +1,17 @@
+{
+  "schema": "https://raw.githubusercontent.com/FAIR-bioHeaders/FHR-Specification/main/fhr.json",
+  "schemaVersion": 1.0,
+  "genome": "Lutra lutra",
+  "taxon": {
+    "name": "Lutra lutra",
+    "uri": "https://identifiers.org/taxonomy:9657"
+  },
+  "commonName": "Eurasian river otter",
+  "version": "mLutLut1.2",
+  "accessionID": {
+    "name": "GCF_902655055.1",
+    "url": "https://www.ncbi.nlm.nih.gov/datasets/genome/GCF_902655055.1/"
+  },
+  "assemblySource": "RefSeq",
+  "documentation": "Lutra lutra assembly mLutLut1.2 (GCF_902655055.1), from VGP.\n"
+}

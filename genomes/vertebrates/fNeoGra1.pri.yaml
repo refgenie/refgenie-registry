@@ -1,0 +1,23 @@
+name: fNeoGra1.pri
+description: |
+  Neoarius graeffei assembly fNeoGra1.pri (GCF_027579695.1), from VGP.
+organism:
+  scientific_name: Neoarius graeffei
+  common_name: lesser salmon catfish
+  taxon_id: 443677
+assembly:
+  source: RefSeq
+  accession: GCF_027579695.1
+fasta:
+  sources:
+  - provider: UCSC
+    url: https://hgdownload.soe.ucsc.edu/hubs/GCF/027/579/695/GCF_027579695.1/GCF_027579695.1.fa.gz
+  checksum:
+    sha256: compute_on_registration
+seqcol:
+  compute: true
+build:
+  store: vgp
+  tier: store_only
+metadata:
+  added_by: sources_to_genomes

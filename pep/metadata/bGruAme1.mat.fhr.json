@@ -1,0 +1,17 @@
+{
+  "schema": "https://raw.githubusercontent.com/FAIR-bioHeaders/FHR-Specification/main/fhr.json",
+  "schemaVersion": 1.0,
+  "genome": "Grus americana",
+  "taxon": {
+    "name": "Grus americana",
+    "uri": "https://identifiers.org/taxonomy:9117"
+  },
+  "commonName": "Whooping crane",
+  "version": "bGruAme1.mat",
+  "accessionID": {
+    "name": "GCF_028858705.1",
+    "url": "https://www.ncbi.nlm.nih.gov/datasets/genome/GCF_028858705.1/"
+  },
+  "assemblySource": "RefSeq",
+  "documentation": "Grus americana assembly bGruAme1.mat (GCF_028858705.1), from VGP.\n"
+}

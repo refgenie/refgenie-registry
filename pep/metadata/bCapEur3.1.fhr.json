@@ -1,0 +1,17 @@
+{
+  "schema": "https://raw.githubusercontent.com/FAIR-bioHeaders/FHR-Specification/main/fhr.json",
+  "schemaVersion": 1.0,
+  "genome": "Caprimulgus europaeus",
+  "taxon": {
+    "name": "Caprimulgus europaeus",
+    "uri": "https://identifiers.org/taxonomy:111811"
+  },
+  "commonName": "Eurasian nightjar",
+  "version": "bCapEur3.1",
+  "accessionID": {
+    "name": "GCA_907165065.1",
+    "url": "https://www.ncbi.nlm.nih.gov/datasets/genome/GCA_907165065.1/"
+  },
+  "assemblySource": "GenBank",
+  "documentation": "Caprimulgus europaeus assembly bCapEur3.1 (GCA_907165065.1), from VGP.\n"
+}

@@ -1,0 +1,17 @@
+{
+  "schema": "https://raw.githubusercontent.com/FAIR-bioHeaders/FHR-Specification/main/fhr.json",
+  "schemaVersion": 1.0,
+  "genome": "Lathamus discolor",
+  "taxon": {
+    "name": "Lathamus discolor",
+    "uri": "https://identifiers.org/taxonomy:678569"
+  },
+  "commonName": "Swift parrot",
+  "version": "bLatDis1.hap1",
+  "accessionID": {
+    "name": "GCF_037157495.1",
+    "url": "https://www.ncbi.nlm.nih.gov/datasets/genome/GCF_037157495.1/"
+  },
+  "assemblySource": "RefSeq",
+  "documentation": "Lathamus discolor assembly bLatDis1.hap1 (GCF_037157495.1), from VGP.\n"
+}

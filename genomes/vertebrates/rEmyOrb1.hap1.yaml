@@ -1,0 +1,23 @@
+name: rEmyOrb1.hap1
+description: |
+  Emys orbicularis assembly rEmyOrb1.hap1 (GCF_028017835.1), from VGP.
+organism:
+  scientific_name: Emys orbicularis
+  common_name: European pond turtle
+  taxon_id: 82168
+assembly:
+  source: RefSeq
+  accession: GCF_028017835.1
+fasta:
+  sources:
+  - provider: UCSC
+    url: https://hgdownload.soe.ucsc.edu/hubs/GCF/028/017/835/GCF_028017835.1/GCF_028017835.1.fa.gz
+  checksum:
+    sha256: compute_on_registration
+seqcol:
+  compute: true
+build:
+  store: vgp
+  tier: store_only
+metadata:
+  added_by: sources_to_genomes

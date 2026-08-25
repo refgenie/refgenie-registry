@@ -1,0 +1,17 @@
+{
+  "schema": "https://raw.githubusercontent.com/FAIR-bioHeaders/FHR-Specification/main/fhr.json",
+  "schemaVersion": 1.0,
+  "genome": "Coilia mystus",
+  "taxon": {
+    "name": "Coilia mystus",
+    "uri": "https://identifiers.org/taxonomy:286537"
+  },
+  "commonName": "Osbeck's grenadier anchovy",
+  "version": "fCoiMys1.hap2",
+  "accessionID": {
+    "name": "GCA_048544225.1",
+    "url": "https://www.ncbi.nlm.nih.gov/datasets/genome/GCA_048544225.1/"
+  },
+  "assemblySource": "GenBank",
+  "documentation": "Coilia mystus assembly fCoiMys1.hap2 (GCA_048544225.1), from VGP.\n"
+}

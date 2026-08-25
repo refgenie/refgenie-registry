@@ -1,0 +1,21 @@
+{
+  "schema": "https://raw.githubusercontent.com/FAIR-bioHeaders/FHR-Specification/main/fhr.json",
+  "schemaVersion": 1.0,
+  "genome": "Hirundo rustica",
+  "taxon": {
+    "name": "Hirundo rustica",
+    "uri": "https://identifiers.org/taxonomy:43150"
+  },
+  "version": "bHirRus1.pri.v3",
+  "dateCreated": "2021-11-30",
+  "accessionID": {
+    "name": "GCF_015227805.2",
+    "url": "https://www.ncbi.nlm.nih.gov/datasets/genome/GCF_015227805.2/"
+  },
+  "assemblySource": "RefSeq",
+  "documentation": "barn swallow (v3 primary hap 2021 refseq)\n",
+  "identifier": [
+    "bioproject:PRJNA636192",
+    "biosample:SAMN14675488"
+  ]
+}

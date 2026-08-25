@@ -1,0 +1,17 @@
+{
+  "schema": "https://raw.githubusercontent.com/FAIR-bioHeaders/FHR-Specification/main/fhr.json",
+  "schemaVersion": 1.0,
+  "genome": "Danio rerio",
+  "taxon": {
+    "name": "Danio rerio",
+    "uri": "https://identifiers.org/taxonomy:7955"
+  },
+  "commonName": "zebrafish",
+  "version": "fDanRer4.1",
+  "accessionID": {
+    "name": "GCA_944039275.1",
+    "url": "https://www.ncbi.nlm.nih.gov/datasets/genome/GCA_944039275.1/"
+  },
+  "assemblySource": "GenBank",
+  "documentation": "Danio rerio assembly fDanRer4.1 (GCA_944039275.1), from VGP.\n"
+}

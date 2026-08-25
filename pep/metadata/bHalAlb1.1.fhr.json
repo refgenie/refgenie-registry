@@ -1,0 +1,17 @@
+{
+  "schema": "https://raw.githubusercontent.com/FAIR-bioHeaders/FHR-Specification/main/fhr.json",
+  "schemaVersion": 1.0,
+  "genome": "Haliaeetus albicilla",
+  "taxon": {
+    "name": "Haliaeetus albicilla",
+    "uri": "https://identifiers.org/taxonomy:8969"
+  },
+  "commonName": "white-tailed eagle",
+  "version": "bHalAlb1.1",
+  "accessionID": {
+    "name": "GCF_947461875.1",
+    "url": "https://www.ncbi.nlm.nih.gov/datasets/genome/GCF_947461875.1/"
+  },
+  "assemblySource": "RefSeq",
+  "documentation": "Haliaeetus albicilla assembly bHalAlb1.1 (GCF_947461875.1), from VGP.\n"
+}

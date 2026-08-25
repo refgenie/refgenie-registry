@@ -1,0 +1,33 @@
+# tiers.yaml - the build-tier ladder. THE definition of what each tier means.
+#
+# Every genome names one tier in its `build.tier` field (genomes/**/*.yaml).
+# Each tier includes everything below it:
+#
+#   store_only     sequence loaded into its store; no assets, no PEP row
+#   sequence_only  + fasta, fasta_index
+#   standard       + bwa_index, bowtie2_index, hisat2_index
+#   full           + suffixerator_index (and star/tallymer once proven)
+#
+# build/generate_samples.py reads this file plus every genome YAML and emits
+# pep/samples.csv. Editing samples.csv by hand is forbidden -- the
+# build/run_builds.sh guard regenerates it and fails the nightly on any diff.
+#
+# ---------------------------------------------------------------------------
+# PROVEN-6 CEILING
+# ---------------------------------------------------------------------------
+# Only six assets build successfully today: fasta, fasta_index, bwa_index,
+# bowtie2_index, hisat2_index, suffixerator_index. The tier definitions below
+# still include star_index (standard and full) and tallymer_index (full), but
+# those recipes are UNPROVEN in this pipeline, so every genome that names those
+# tiers carries a temporary `drop:` removing them (and the model organisms an
+# `add: [suffixerator_index]`). Activating star/tallymer/bismark is a deliberate
+# follow-up once the recipes are proven -- it just removes the drops.
+# ---------------------------------------------------------------------------
+
+tiers:
+  store_only:    []
+  sequence_only: [fasta, fasta_index]
+  standard:      [fasta, fasta_index, bwa_index, bowtie2_index, hisat2_index,
+                  star_index]
+  full:          [fasta, fasta_index, bwa_index, bowtie2_index, hisat2_index,
+                  star_index, suffixerator_index, tallymer_index]

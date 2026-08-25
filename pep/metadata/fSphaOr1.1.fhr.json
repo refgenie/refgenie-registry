@@ -1,0 +1,17 @@
+{
+  "schema": "https://raw.githubusercontent.com/FAIR-bioHeaders/FHR-Specification/main/fhr.json",
+  "schemaVersion": 1.0,
+  "genome": "Sphaeramia orbicularis",
+  "taxon": {
+    "name": "Sphaeramia orbicularis",
+    "uri": "https://identifiers.org/taxonomy:375764"
+  },
+  "commonName": "orbiculate cardinalfish",
+  "version": "fSphaOr1.1",
+  "accessionID": {
+    "name": "GCF_902148855.1",
+    "url": "https://www.ncbi.nlm.nih.gov/datasets/genome/GCF_902148855.1/"
+  },
+  "assemblySource": "RefSeq",
+  "documentation": "Sphaeramia orbicularis assembly fSphaOr1.1 (GCF_902148855.1), from VGP.\n"
+}

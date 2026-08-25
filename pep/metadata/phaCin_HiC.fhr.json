@@ -1,0 +1,17 @@
+{
+  "schema": "https://raw.githubusercontent.com/FAIR-bioHeaders/FHR-Specification/main/fhr.json",
+  "schemaVersion": 1.0,
+  "genome": "Phascolarctos cinereus",
+  "taxon": {
+    "name": "Phascolarctos cinereus",
+    "uri": "https://identifiers.org/taxonomy:38626"
+  },
+  "commonName": "koala",
+  "version": "phaCin_HiC",
+  "accessionID": {
+    "name": "GCA_003287225.2",
+    "url": "https://www.ncbi.nlm.nih.gov/datasets/genome/GCA_003287225.2/"
+  },
+  "assemblySource": "GenBank",
+  "documentation": "Phascolarctos cinereus assembly phaCin_HiC (GCA_003287225.2), from VGP.\n"
+}

@@ -1,0 +1,23 @@
+name: fHypImm3.1
+description: |
+  Hyperoplus immaculatus assembly fHypImm3.1 (GCA_949357725.1), from VGP.
+organism:
+  scientific_name: Hyperoplus immaculatus
+  common_name: greater sand-eel
+  taxon_id: 1484357
+assembly:
+  source: GenBank
+  accession: GCA_949357725.1
+fasta:
+  sources:
+  - provider: UCSC
+    url: https://hgdownload.soe.ucsc.edu/hubs/GCA/949/357/725/GCA_949357725.1/GCA_949357725.1.fa.gz
+  checksum:
+    sha256: compute_on_registration
+seqcol:
+  compute: true
+build:
+  store: vgp
+  tier: store_only
+metadata:
+  added_by: sources_to_genomes

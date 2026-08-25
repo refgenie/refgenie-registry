@@ -1,0 +1,17 @@
+{
+  "schema": "https://raw.githubusercontent.com/FAIR-bioHeaders/FHR-Specification/main/fhr.json",
+  "schemaVersion": 1.0,
+  "genome": "Arripis georgiana",
+  "taxon": {
+    "name": "Arripis georgiana",
+    "uri": "https://identifiers.org/taxonomy:3352246"
+  },
+  "commonName": "Australian ruff",
+  "version": "fArrGeo1.hap2",
+  "accessionID": {
+    "name": "GCA_042242135.1",
+    "url": "https://www.ncbi.nlm.nih.gov/datasets/genome/GCA_042242135.1/"
+  },
+  "assemblySource": "GenBank",
+  "documentation": "Arripis georgiana assembly fArrGeo1.hap2 (GCA_042242135.1), from VGP.\n"
+}

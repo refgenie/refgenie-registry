@@ -1,0 +1,22 @@
+name: rAspTig1.1.pri
+description: |
+  Aspidoscelis tigris stejnegeri assembly rAspTig1.1.pri (GCA_023333525.2), from VGP.
+organism:
+  scientific_name: Aspidoscelis tigris stejnegeri
+  taxon_id: 2917703
+assembly:
+  source: GenBank
+  accession: GCA_023333525.2
+fasta:
+  sources:
+  - provider: UCSC
+    url: https://hgdownload.soe.ucsc.edu/hubs/GCA/023/333/525/GCA_023333525.2/GCA_023333525.2.fa.gz
+  checksum:
+    sha256: compute_on_registration
+seqcol:
+  compute: true
+build:
+  store: vgp
+  tier: store_only
+metadata:
+  added_by: sources_to_genomes

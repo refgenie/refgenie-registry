@@ -1,0 +1,17 @@
+{
+  "schema": "https://raw.githubusercontent.com/FAIR-bioHeaders/FHR-Specification/main/fhr.json",
+  "schemaVersion": 1.0,
+  "genome": "Myxine glutinosa",
+  "taxon": {
+    "name": "Myxine glutinosa",
+    "uri": "https://identifiers.org/taxonomy:7769"
+  },
+  "commonName": "Atlantic hagfish",
+  "version": "kmMyxGlut1.1",
+  "accessionID": {
+    "name": "GCA_964187855.1",
+    "url": "https://www.ncbi.nlm.nih.gov/datasets/genome/GCA_964187855.1/"
+  },
+  "assemblySource": "GenBank",
+  "documentation": "Myxine glutinosa assembly kmMyxGlut1.1 (GCA_964187855.1), from VGP.\n"
+}

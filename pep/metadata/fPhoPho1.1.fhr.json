@@ -1,0 +1,17 @@
+{
+  "schema": "https://raw.githubusercontent.com/FAIR-bioHeaders/FHR-Specification/main/fhr.json",
+  "schemaVersion": 1.0,
+  "genome": "Phoxinus phoxinus",
+  "taxon": {
+    "name": "Phoxinus phoxinus",
+    "uri": "https://identifiers.org/taxonomy:58324"
+  },
+  "commonName": "Eurasian minnow",
+  "version": "fPhoPho1.1",
+  "accessionID": {
+    "name": "GCA_949152265.1",
+    "url": "https://www.ncbi.nlm.nih.gov/datasets/genome/GCA_949152265.1/"
+  },
+  "assemblySource": "GenBank",
+  "documentation": "Phoxinus phoxinus assembly fPhoPho1.1 (GCA_949152265.1), from VGP.\n"
+}

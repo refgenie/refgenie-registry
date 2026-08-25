@@ -1,0 +1,16 @@
+{
+  "schema": "https://raw.githubusercontent.com/FAIR-bioHeaders/FHR-Specification/main/fhr.json",
+  "schemaVersion": 1.0,
+  "genome": "Ascidia mentula",
+  "taxon": {
+    "name": "Ascidia mentula",
+    "uri": "https://identifiers.org/taxonomy:38561"
+  },
+  "version": "kaAscMent1.1",
+  "accessionID": {
+    "name": "GCA_947561715.1",
+    "url": "https://www.ncbi.nlm.nih.gov/datasets/genome/GCA_947561715.1/"
+  },
+  "assemblySource": "GenBank",
+  "documentation": "Ascidia mentula assembly kaAscMent1.1 (GCA_947561715.1), from VGP.\n"
+}

@@ -1,0 +1,17 @@
+{
+  "schema": "https://raw.githubusercontent.com/FAIR-bioHeaders/FHR-Specification/main/fhr.json",
+  "schemaVersion": 1.0,
+  "genome": "Pangshura tecta",
+  "taxon": {
+    "name": "Pangshura tecta",
+    "uri": "https://identifiers.org/taxonomy:260642"
+  },
+  "commonName": "Indian roofed turtle",
+  "version": "rPanTec1.hap2",
+  "accessionID": {
+    "name": "GCA_045781085.1",
+    "url": "https://www.ncbi.nlm.nih.gov/datasets/genome/GCA_045781085.1/"
+  },
+  "assemblySource": "GenBank",
+  "documentation": "Pangshura tecta assembly rPanTec1.hap2 (GCA_045781085.1), from VGP.\n"
+}

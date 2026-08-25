@@ -1,0 +1,17 @@
+{
+  "schema": "https://raw.githubusercontent.com/FAIR-bioHeaders/FHR-Specification/main/fhr.json",
+  "schemaVersion": 1.0,
+  "genome": "Eptesicus fuscus",
+  "taxon": {
+    "name": "Eptesicus fuscus",
+    "uri": "https://identifiers.org/taxonomy:29078"
+  },
+  "commonName": "big brown bat",
+  "version": "DD_ASM_mEF_20220401",
+  "accessionID": {
+    "name": "GCF_027574615.1",
+    "url": "https://www.ncbi.nlm.nih.gov/datasets/genome/GCF_027574615.1/"
+  },
+  "assemblySource": "RefSeq",
+  "documentation": "Eptesicus fuscus assembly DD_ASM_mEF_20220401 (GCF_027574615.1), from VGP.\n"
+}

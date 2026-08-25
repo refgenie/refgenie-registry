@@ -1,0 +1,22 @@
+name: fNanAnt1.1
+description: |
+  Nansenia antarctica assembly fNanAnt1.1 (GCA_963989245.1), from VGP.
+organism:
+  scientific_name: Nansenia antarctica
+  taxon_id: 443705
+assembly:
+  source: GenBank
+  accession: GCA_963989245.1
+fasta:
+  sources:
+  - provider: UCSC
+    url: https://hgdownload.soe.ucsc.edu/hubs/GCA/963/989/245/GCA_963989245.1/GCA_963989245.1.fa.gz
+  checksum:
+    sha256: compute_on_registration
+seqcol:
+  compute: true
+build:
+  store: vgp
+  tier: store_only
+metadata:
+  added_by: sources_to_genomes

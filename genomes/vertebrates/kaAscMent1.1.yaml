@@ -1,0 +1,22 @@
+name: kaAscMent1.1
+description: |
+  Ascidia mentula assembly kaAscMent1.1 (GCA_947561715.1), from VGP.
+organism:
+  scientific_name: Ascidia mentula
+  taxon_id: 38561
+assembly:
+  source: GenBank
+  accession: GCA_947561715.1
+fasta:
+  sources:
+  - provider: UCSC
+    url: https://hgdownload.soe.ucsc.edu/hubs/GCA/947/561/715/GCA_947561715.1/GCA_947561715.1.fa.gz
+  checksum:
+    sha256: compute_on_registration
+seqcol:
+  compute: true
+build:
+  store: vgp
+  tier: store_only
+metadata:
+  added_by: sources_to_genomes

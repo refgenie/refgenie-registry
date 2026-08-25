@@ -1,0 +1,17 @@
+{
+  "schema": "https://raw.githubusercontent.com/FAIR-bioHeaders/FHR-Specification/main/fhr.json",
+  "schemaVersion": 1.0,
+  "genome": "Desmodus rotundus",
+  "taxon": {
+    "name": "Desmodus rotundus",
+    "uri": "https://identifiers.org/taxonomy:9430"
+  },
+  "commonName": "common vampire bat",
+  "version": "HLdesRot8A.1",
+  "accessionID": {
+    "name": "GCA_022682495.2",
+    "url": "https://www.ncbi.nlm.nih.gov/datasets/genome/GCA_022682495.2/"
+  },
+  "assemblySource": "GenBank",
+  "documentation": "Desmodus rotundus assembly HLdesRot8A.1 (GCA_022682495.2), from VGP.\n"
+}

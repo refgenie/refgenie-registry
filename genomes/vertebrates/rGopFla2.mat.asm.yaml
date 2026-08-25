@@ -1,0 +1,23 @@
+name: rGopFla2.mat.asm
+description: |
+  Gopherus flavomarginatus assembly rGopFla2.mat.asm (GCF_025201925.1), from VGP.
+organism:
+  scientific_name: Gopherus flavomarginatus
+  common_name: Mexican gopher tortoise
+  taxon_id: 286002
+assembly:
+  source: RefSeq
+  accession: GCF_025201925.1
+fasta:
+  sources:
+  - provider: UCSC
+    url: https://hgdownload.soe.ucsc.edu/hubs/GCF/025/201/925/GCF_025201925.1/GCF_025201925.1.fa.gz
+  checksum:
+    sha256: compute_on_registration
+seqcol:
+  compute: true
+build:
+  store: vgp
+  tier: store_only
+metadata:
+  added_by: sources_to_genomes

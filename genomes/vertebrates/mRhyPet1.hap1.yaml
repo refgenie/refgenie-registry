@@ -1,0 +1,23 @@
+name: mRhyPet1.hap1
+description: |
+  Rhynchocyon petersi assembly mRhyPet1.hap1 (GCA_043290085.1), from VGP.
+organism:
+  scientific_name: Rhynchocyon petersi
+  common_name: black and rufous elephant shrew
+  taxon_id: 320637
+assembly:
+  source: GenBank
+  accession: GCA_043290085.1
+fasta:
+  sources:
+  - provider: UCSC
+    url: https://hgdownload.soe.ucsc.edu/hubs/GCA/043/290/085/GCA_043290085.1/GCA_043290085.1.fa.gz
+  checksum:
+    sha256: compute_on_registration
+seqcol:
+  compute: true
+build:
+  store: vgp
+  tier: store_only
+metadata:
+  added_by: sources_to_genomes

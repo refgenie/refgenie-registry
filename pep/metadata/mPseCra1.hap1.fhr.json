@@ -1,0 +1,17 @@
+{
+  "schema": "https://raw.githubusercontent.com/FAIR-bioHeaders/FHR-Specification/main/fhr.json",
+  "schemaVersion": 1.0,
+  "genome": "Pseudorca crassidens",
+  "taxon": {
+    "name": "Pseudorca crassidens",
+    "uri": "https://identifiers.org/taxonomy:82174"
+  },
+  "commonName": "false killer whale",
+  "version": "mPseCra1.hap1",
+  "accessionID": {
+    "name": "GCF_039906515.1",
+    "url": "https://www.ncbi.nlm.nih.gov/datasets/genome/GCF_039906515.1/"
+  },
+  "assemblySource": "RefSeq",
+  "documentation": "Pseudorca crassidens assembly mPseCra1.hap1 (GCF_039906515.1), from VGP.\n"
+}

@@ -1,0 +1,16 @@
+{
+  "schema": "https://raw.githubusercontent.com/FAIR-bioHeaders/FHR-Specification/main/fhr.json",
+  "schemaVersion": 1.0,
+  "genome": "Podarcis melisellensis",
+  "taxon": {
+    "name": "Podarcis melisellensis",
+    "uri": "https://identifiers.org/taxonomy:65482"
+  },
+  "version": "rPodMel1.hap1.1",
+  "accessionID": {
+    "name": "GCA_964234715.1",
+    "url": "https://www.ncbi.nlm.nih.gov/datasets/genome/GCA_964234715.1/"
+  },
+  "assemblySource": "GenBank",
+  "documentation": "Podarcis melisellensis assembly rPodMel1.hap1.1 (GCA_964234715.1), from VGP.\n"
+}

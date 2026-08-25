@@ -1,0 +1,23 @@
+name: mPseCra1.hap1
+description: |
+  Pseudorca crassidens assembly mPseCra1.hap1 (GCF_039906515.1), from VGP.
+organism:
+  scientific_name: Pseudorca crassidens
+  common_name: false killer whale
+  taxon_id: 82174
+assembly:
+  source: RefSeq
+  accession: GCF_039906515.1
+fasta:
+  sources:
+  - provider: UCSC
+    url: https://hgdownload.soe.ucsc.edu/hubs/GCF/039/906/515/GCF_039906515.1/GCF_039906515.1.fa.gz
+  checksum:
+    sha256: compute_on_registration
+seqcol:
+  compute: true
+build:
+  store: vgp
+  tier: store_only
+metadata:
+  added_by: sources_to_genomes

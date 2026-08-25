@@ -1,0 +1,17 @@
+{
+  "schema": "https://raw.githubusercontent.com/FAIR-bioHeaders/FHR-Specification/main/fhr.json",
+  "schemaVersion": 1.0,
+  "genome": "Fringilla coelebs",
+  "taxon": {
+    "name": "Fringilla coelebs",
+    "uri": "https://identifiers.org/taxonomy:37598"
+  },
+  "commonName": "chaffinch",
+  "version": "bFriCoe1.1",
+  "accessionID": {
+    "name": "GCA_963513975.1",
+    "url": "https://www.ncbi.nlm.nih.gov/datasets/genome/GCA_963513975.1/"
+  },
+  "assemblySource": "GenBank",
+  "documentation": "Fringilla coelebs assembly bFriCoe1.1 (GCA_963513975.1), from VGP.\n"
+}

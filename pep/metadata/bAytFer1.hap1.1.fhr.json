@@ -1,0 +1,17 @@
+{
+  "schema": "https://raw.githubusercontent.com/FAIR-bioHeaders/FHR-Specification/main/fhr.json",
+  "schemaVersion": 1.0,
+  "genome": "Aythya ferina",
+  "taxon": {
+    "name": "Aythya ferina",
+    "uri": "https://identifiers.org/taxonomy:219593"
+  },
+  "commonName": "common pochard",
+  "version": "bAytFer1.hap1.1",
+  "accessionID": {
+    "name": "GCA_964211825.1",
+    "url": "https://www.ncbi.nlm.nih.gov/datasets/genome/GCA_964211825.1/"
+  },
+  "assemblySource": "GenBank",
+  "documentation": "Aythya ferina assembly bAytFer1.hap1.1 (GCA_964211825.1), from VGP.\n"
+}

@@ -1,0 +1,23 @@
+name: mMolMol1.p
+description: |
+  Molossus molossus assembly mMolMol1.p (GCF_014108415.1), from VGP.
+organism:
+  scientific_name: Molossus molossus
+  common_name: Pallas's mastiff bat
+  taxon_id: 27622
+assembly:
+  source: RefSeq
+  accession: GCF_014108415.1
+fasta:
+  sources:
+  - provider: UCSC
+    url: https://hgdownload.soe.ucsc.edu/hubs/GCF/014/108/415/GCF_014108415.1/GCF_014108415.1.fa.gz
+  checksum:
+    sha256: compute_on_registration
+seqcol:
+  compute: true
+build:
+  store: vgp
+  tier: store_only
+metadata:
+  added_by: sources_to_genomes

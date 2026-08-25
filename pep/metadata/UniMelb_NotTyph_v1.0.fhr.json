@@ -1,0 +1,17 @@
+{
+  "schema": "https://raw.githubusercontent.com/FAIR-bioHeaders/FHR-Specification/main/fhr.json",
+  "schemaVersion": 1.0,
+  "genome": "Notoryctes typhlops",
+  "taxon": {
+    "name": "Notoryctes typhlops",
+    "uri": "https://identifiers.org/taxonomy:37699"
+  },
+  "commonName": "marsupial mole",
+  "version": "UniMelb_NotTyph_v1.0",
+  "accessionID": {
+    "name": "GCA_048126345.1",
+    "url": "https://www.ncbi.nlm.nih.gov/datasets/genome/GCA_048126345.1/"
+  },
+  "assemblySource": "GenBank",
+  "documentation": "Notoryctes typhlops assembly UniMelb_NotTyph_v1.0 (GCA_048126345.1), from VGP.\n"
+}

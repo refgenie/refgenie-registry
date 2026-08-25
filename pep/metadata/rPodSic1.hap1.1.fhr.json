@@ -1,0 +1,17 @@
+{
+  "schema": "https://raw.githubusercontent.com/FAIR-bioHeaders/FHR-Specification/main/fhr.json",
+  "schemaVersion": 1.0,
+  "genome": "Podarcis siculus",
+  "taxon": {
+    "name": "Podarcis siculus",
+    "uri": "https://identifiers.org/taxonomy:65484"
+  },
+  "commonName": "Italian wall lizard",
+  "version": "rPodSic1.hap1.1",
+  "accessionID": {
+    "name": "GCA_964188175.1",
+    "url": "https://www.ncbi.nlm.nih.gov/datasets/genome/GCA_964188175.1/"
+  },
+  "assemblySource": "GenBank",
+  "documentation": "Podarcis siculus assembly rPodSic1.hap1.1 (GCA_964188175.1), from VGP.\n"
+}

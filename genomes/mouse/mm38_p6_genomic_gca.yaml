@@ -25,6 +25,10 @@ seqcol:
   digest: JL56x8L1q1Fs_-jHvZxBG01Vitac-CmO
   length: 239
 
+build:
+  store: jungle
+  tier: store_only
+
 metadata:
   added: 2026-05-20
   added_by: nsheff

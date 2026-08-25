@@ -1,0 +1,22 @@
+name: ASM1470629v1
+description: |
+  Lycocorax pyrrhopterus obiensis assembly ASM1470629v1 (GCA_014706295.1), from VGP.
+organism:
+  scientific_name: Lycocorax pyrrhopterus obiensis
+  taxon_id: 2767082
+assembly:
+  source: GenBank
+  accession: GCA_014706295.1
+fasta:
+  sources:
+  - provider: UCSC
+    url: https://hgdownload.soe.ucsc.edu/hubs/GCA/014/706/295/GCA_014706295.1/GCA_014706295.1.fa.gz
+  checksum:
+    sha256: compute_on_registration
+seqcol:
+  compute: true
+build:
+  store: vgp
+  tier: store_only
+metadata:
+  added_by: sources_to_genomes

@@ -1,0 +1,23 @@
+name: mMarFla1.hap1
+description: |
+  Marmota flaviventris assembly mMarFla1.hap1 (GCF_047511675.1), from VGP.
+organism:
+  scientific_name: Marmota flaviventris
+  common_name: yellow-bellied marmot
+  taxon_id: 93162
+assembly:
+  source: RefSeq
+  accession: GCF_047511675.1
+fasta:
+  sources:
+  - provider: UCSC
+    url: https://hgdownload.soe.ucsc.edu/hubs/GCF/047/511/675/GCF_047511675.1/GCF_047511675.1.fa.gz
+  checksum:
+    sha256: compute_on_registration
+seqcol:
+  compute: true
+build:
+  store: vgp
+  tier: store_only
+metadata:
+  added_by: sources_to_genomes

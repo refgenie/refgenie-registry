@@ -1,0 +1,17 @@
+{
+  "schema": "https://raw.githubusercontent.com/FAIR-bioHeaders/FHR-Specification/main/fhr.json",
+  "schemaVersion": 1.0,
+  "genome": "Blennius ocellaris",
+  "taxon": {
+    "name": "Blennius ocellaris",
+    "uri": "https://identifiers.org/taxonomy:195075"
+  },
+  "commonName": "butterfly blenny",
+  "version": "fBleOce1.1",
+  "accessionID": {
+    "name": "GCA_963422515.1",
+    "url": "https://www.ncbi.nlm.nih.gov/datasets/genome/GCA_963422515.1/"
+  },
+  "assemblySource": "GenBank",
+  "documentation": "Blennius ocellaris assembly fBleOce1.1 (GCA_963422515.1), from VGP.\n"
+}

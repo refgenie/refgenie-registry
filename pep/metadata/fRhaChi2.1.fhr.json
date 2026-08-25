@@ -1,0 +1,16 @@
+{
+  "schema": "https://raw.githubusercontent.com/FAIR-bioHeaders/FHR-Specification/main/fhr.json",
+  "schemaVersion": 1.0,
+  "genome": "Rhamphochromis sp. 'chilingali'",
+  "taxon": {
+    "name": "Rhamphochromis sp. 'chilingali'",
+    "uri": "https://identifiers.org/taxonomy:454631"
+  },
+  "version": "fRhaChi2.1",
+  "accessionID": {
+    "name": "GCA_963969265.1",
+    "url": "https://www.ncbi.nlm.nih.gov/datasets/genome/GCA_963969265.1/"
+  },
+  "assemblySource": "GenBank",
+  "documentation": "Rhamphochromis sp. 'chilingali' assembly fRhaChi2.1 (GCA_963969265.1), from VGP.\n"
+}

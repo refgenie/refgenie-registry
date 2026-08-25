@@ -1,0 +1,17 @@
+{
+  "schema": "https://raw.githubusercontent.com/FAIR-bioHeaders/FHR-Specification/main/fhr.json",
+  "schemaVersion": 1.0,
+  "genome": "Falco rusticolus",
+  "taxon": {
+    "name": "Falco rusticolus",
+    "uri": "https://identifiers.org/taxonomy:120794"
+  },
+  "commonName": "gyrfalcon",
+  "version": "bFalRus1.pri",
+  "accessionID": {
+    "name": "GCF_015220075.1",
+    "url": "https://www.ncbi.nlm.nih.gov/datasets/genome/GCF_015220075.1/"
+  },
+  "assemblySource": "RefSeq",
+  "documentation": "Falco rusticolus assembly bFalRus1.pri (GCF_015220075.1), from VGP.\n"
+}

@@ -1,0 +1,21 @@
+{
+  "schema": "https://raw.githubusercontent.com/FAIR-bioHeaders/FHR-Specification/main/fhr.json",
+  "schemaVersion": 1.0,
+  "genome": "Struthio camelus",
+  "taxon": {
+    "name": "Struthio camelus",
+    "uri": "https://identifiers.org/taxonomy:8801"
+  },
+  "version": "bStrCam1.hap1",
+  "dateCreated": "2024-07-22",
+  "accessionID": {
+    "name": "GCF_040807025.1",
+    "url": "https://www.ncbi.nlm.nih.gov/datasets/genome/GCF_040807025.1/"
+  },
+  "assemblySource": "RefSeq",
+  "documentation": "African ostrich (bStrCam1hap1 2024)\n",
+  "identifier": [
+    "bioproject:PRJNA1129091",
+    "biosample:SAMN42123890"
+  ]
+}

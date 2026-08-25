@@ -1,0 +1,17 @@
+{
+  "schema": "https://raw.githubusercontent.com/FAIR-bioHeaders/FHR-Specification/main/fhr.json",
+  "schemaVersion": 1.0,
+  "genome": "Spermophilus citellus",
+  "taxon": {
+    "name": "Spermophilus citellus",
+    "uri": "https://identifiers.org/taxonomy:9997"
+  },
+  "commonName": "European ground squirrel",
+  "version": "mSpeCit3.1",
+  "accessionID": {
+    "name": "GCA_964194105.1",
+    "url": "https://www.ncbi.nlm.nih.gov/datasets/genome/GCA_964194105.1/"
+  },
+  "assemblySource": "GenBank",
+  "documentation": "Spermophilus citellus assembly mSpeCit3.1 (GCA_964194105.1), from VGP.\n"
+}

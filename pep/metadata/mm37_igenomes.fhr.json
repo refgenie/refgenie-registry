@@ -1,0 +1,18 @@
+{
+  "schema": "https://raw.githubusercontent.com/FAIR-bioHeaders/FHR-Specification/main/fhr.json",
+  "schemaVersion": 1.0,
+  "genome": "Mus musculus",
+  "taxon": {
+    "name": "Mus musculus",
+    "uri": "https://identifiers.org/taxonomy:10090"
+  },
+  "commonName": "mouse",
+  "version": "mm37_igenomes",
+  "genomeSynonym": [
+    "NCBIM37-igenomes-ensembl",
+    "mm37-build37.1-igenomes-ncbi",
+    "mm37-build37.2-igenomes-ncbi"
+  ],
+  "assemblySource": "iGenomes",
+  "documentation": "igenomes's NCBIM37 from Ensembl\n"
+}

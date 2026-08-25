@@ -1,0 +1,17 @@
+{
+  "schema": "https://raw.githubusercontent.com/FAIR-bioHeaders/FHR-Specification/main/fhr.json",
+  "schemaVersion": 1.0,
+  "genome": "Spea bombifrons",
+  "taxon": {
+    "name": "Spea bombifrons",
+    "uri": "https://identifiers.org/taxonomy:233779"
+  },
+  "commonName": "plains spadefoot toad",
+  "version": "aSpeBom1.2.pri",
+  "accessionID": {
+    "name": "GCF_027358695.1",
+    "url": "https://www.ncbi.nlm.nih.gov/datasets/genome/GCF_027358695.1/"
+  },
+  "assemblySource": "RefSeq",
+  "documentation": "Spea bombifrons assembly aSpeBom1.2.pri (GCF_027358695.1), from VGP.\n"
+}

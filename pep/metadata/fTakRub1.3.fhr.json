@@ -1,0 +1,17 @@
+{
+  "schema": "https://raw.githubusercontent.com/FAIR-bioHeaders/FHR-Specification/main/fhr.json",
+  "schemaVersion": 1.0,
+  "genome": "Takifugu rubripes",
+  "taxon": {
+    "name": "Takifugu rubripes",
+    "uri": "https://identifiers.org/taxonomy:31033"
+  },
+  "commonName": "torafugu",
+  "version": "fTakRub1.3",
+  "accessionID": {
+    "name": "GCA_901000725.3",
+    "url": "https://www.ncbi.nlm.nih.gov/datasets/genome/GCA_901000725.3/"
+  },
+  "assemblySource": "GenBank",
+  "documentation": "Takifugu rubripes assembly fTakRub1.3 (GCA_901000725.3), from VGP.\n"
+}

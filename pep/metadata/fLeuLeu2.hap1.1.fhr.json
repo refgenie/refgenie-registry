@@ -1,0 +1,17 @@
+{
+  "schema": "https://raw.githubusercontent.com/FAIR-bioHeaders/FHR-Specification/main/fhr.json",
+  "schemaVersion": 1.0,
+  "genome": "Leuciscus leuciscus",
+  "taxon": {
+    "name": "Leuciscus leuciscus",
+    "uri": "https://identifiers.org/taxonomy:58325"
+  },
+  "commonName": "common dace",
+  "version": "fLeuLeu2.hap1.1",
+  "accessionID": {
+    "name": "GCA_965113295.1",
+    "url": "https://www.ncbi.nlm.nih.gov/datasets/genome/GCA_965113295.1/"
+  },
+  "assemblySource": "GenBank",
+  "documentation": "Leuciscus leuciscus assembly fLeuLeu2.hap1.1 (GCA_965113295.1), from VGP.\n"
+}

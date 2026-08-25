@@ -1,0 +1,22 @@
+name: sPriJap1.hap1
+description: |
+  Pristiophorus japonicus assembly sPriJap1.hap1 (GCF_044704955.1), from VGP.
+organism:
+  scientific_name: Pristiophorus japonicus
+  taxon_id: 55135
+assembly:
+  source: RefSeq
+  accession: GCF_044704955.1
+fasta:
+  sources:
+  - provider: UCSC
+    url: https://hgdownload.soe.ucsc.edu/hubs/GCF/044/704/955/GCF_044704955.1/GCF_044704955.1.fa.gz
+  checksum:
+    sha256: compute_on_registration
+seqcol:
+  compute: true
+build:
+  store: vgp
+  tier: store_only
+metadata:
+  added_by: sources_to_genomes

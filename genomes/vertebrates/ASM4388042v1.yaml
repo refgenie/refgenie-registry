@@ -1,0 +1,23 @@
+name: ASM4388042v1
+description: |
+  Rhinolophus yonghoiseni assembly ASM4388042v1 (GCA_043880425.1), from VGP.
+organism:
+  scientific_name: Rhinolophus yonghoiseni
+  common_name: Yong Hoi Sen's woolly horseshoe bat
+  taxon_id: 2952509
+assembly:
+  source: GenBank
+  accession: GCA_043880425.1
+fasta:
+  sources:
+  - provider: UCSC
+    url: https://hgdownload.soe.ucsc.edu/hubs/GCA/043/880/425/GCA_043880425.1/GCA_043880425.1.fa.gz
+  checksum:
+    sha256: compute_on_registration
+seqcol:
+  compute: true
+build:
+  store: vgp
+  tier: store_only
+metadata:
+  added_by: sources_to_genomes

@@ -1,0 +1,23 @@
+name: bCarCri1.pri
+description: |
+  Cariama cristata assembly bCarCri1.pri (GCA_009819825.1), from VGP.
+organism:
+  scientific_name: Cariama cristata
+  common_name: Red-legged seriema
+  taxon_id: 54380
+assembly:
+  source: GenBank
+  accession: GCA_009819825.1
+fasta:
+  sources:
+  - provider: UCSC
+    url: https://hgdownload.soe.ucsc.edu/hubs/GCA/009/819/825/GCA_009819825.1/GCA_009819825.1.fa.gz
+  checksum:
+    sha256: compute_on_registration
+seqcol:
+  compute: true
+build:
+  store: vgp
+  tier: store_only
+metadata:
+  added_by: sources_to_genomes

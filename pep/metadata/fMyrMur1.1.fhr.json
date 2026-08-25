@@ -1,0 +1,17 @@
+{
+  "schema": "https://raw.githubusercontent.com/FAIR-bioHeaders/FHR-Specification/main/fhr.json",
+  "schemaVersion": 1.0,
+  "genome": "Myripristis murdjan",
+  "taxon": {
+    "name": "Myripristis murdjan",
+    "uri": "https://identifiers.org/taxonomy:586833"
+  },
+  "commonName": "pinecone soldierfish",
+  "version": "fMyrMur1.1",
+  "accessionID": {
+    "name": "GCF_902150065.1",
+    "url": "https://www.ncbi.nlm.nih.gov/datasets/genome/GCF_902150065.1/"
+  },
+  "assemblySource": "RefSeq",
+  "documentation": "Myripristis murdjan assembly fMyrMur1.1 (GCF_902150065.1), from VGP.\n"
+}

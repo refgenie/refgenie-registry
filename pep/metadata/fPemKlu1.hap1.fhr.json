@@ -1,0 +1,16 @@
+{
+  "schema": "https://raw.githubusercontent.com/FAIR-bioHeaders/FHR-Specification/main/fhr.json",
+  "schemaVersion": 1.0,
+  "genome": "Pempheris klunzingeri",
+  "taxon": {
+    "name": "Pempheris klunzingeri",
+    "uri": "https://identifiers.org/taxonomy:3127111"
+  },
+  "version": "fPemKlu1.hap1",
+  "accessionID": {
+    "name": "GCF_042242105.1",
+    "url": "https://www.ncbi.nlm.nih.gov/datasets/genome/GCF_042242105.1/"
+  },
+  "assemblySource": "RefSeq",
+  "documentation": "Pempheris klunzingeri assembly fPemKlu1.hap1 (GCF_042242105.1), from VGP.\n"
+}

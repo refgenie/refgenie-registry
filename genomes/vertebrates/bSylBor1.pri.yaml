@@ -1,0 +1,23 @@
+name: bSylBor1.pri
+description: |
+  Sylvia borin assembly bSylBor1.pri (GCA_014839755.1), from VGP.
+organism:
+  scientific_name: Sylvia borin
+  common_name: garden warbler
+  taxon_id: 73324
+assembly:
+  source: GenBank
+  accession: GCA_014839755.1
+fasta:
+  sources:
+  - provider: UCSC
+    url: https://hgdownload.soe.ucsc.edu/hubs/GCA/014/839/755/GCA_014839755.1/GCA_014839755.1.fa.gz
+  checksum:
+    sha256: compute_on_registration
+seqcol:
+  compute: true
+build:
+  store: vgp
+  tier: store_only
+metadata:
+  added_by: sources_to_genomes

@@ -1,0 +1,23 @@
+name: bPtePen1.pri
+description: |
+  Rhea pennata assembly bPtePen1.pri (GCF_028389875.1), from VGP.
+organism:
+  scientific_name: Rhea pennata
+  common_name: lesser rhea
+  taxon_id: 8795
+assembly:
+  source: RefSeq
+  accession: GCF_028389875.1
+fasta:
+  sources:
+  - provider: UCSC
+    url: https://hgdownload.soe.ucsc.edu/hubs/GCF/028/389/875/GCF_028389875.1/GCF_028389875.1.fa.gz
+  checksum:
+    sha256: compute_on_registration
+seqcol:
+  compute: true
+build:
+  store: vgp
+  tier: store_only
+metadata:
+  added_by: sources_to_genomes

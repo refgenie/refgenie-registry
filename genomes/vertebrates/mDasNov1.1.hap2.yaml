@@ -1,0 +1,23 @@
+name: mDasNov1.1.hap2
+description: |
+  Dasypus novemcinctus assembly mDasNov1.1.hap2 (GCF_030445035.2), from VGP.
+organism:
+  scientific_name: Dasypus novemcinctus
+  common_name: nine-banded armadillo
+  taxon_id: 9361
+assembly:
+  source: RefSeq
+  accession: GCF_030445035.2
+fasta:
+  sources:
+  - provider: UCSC
+    url: https://hgdownload.soe.ucsc.edu/hubs/GCF/030/445/035/GCF_030445035.2/GCF_030445035.2.fa.gz
+  checksum:
+    sha256: compute_on_registration
+seqcol:
+  compute: true
+build:
+  store: vgp
+  tier: store_only
+metadata:
+  added_by: sources_to_genomes

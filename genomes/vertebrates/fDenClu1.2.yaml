@@ -1,0 +1,23 @@
+name: fDenClu1.2
+description: |
+  Denticeps clupeoides assembly fDenClu1.2 (GCA_900700375.2), from VGP.
+organism:
+  scientific_name: Denticeps clupeoides
+  common_name: denticle herring
+  taxon_id: 299321
+assembly:
+  source: GenBank
+  accession: GCA_900700375.2
+fasta:
+  sources:
+  - provider: UCSC
+    url: https://hgdownload.soe.ucsc.edu/hubs/GCA/900/700/375/GCA_900700375.2/GCA_900700375.2.fa.gz
+  checksum:
+    sha256: compute_on_registration
+seqcol:
+  compute: true
+build:
+  store: vgp
+  tier: store_only
+metadata:
+  added_by: sources_to_genomes

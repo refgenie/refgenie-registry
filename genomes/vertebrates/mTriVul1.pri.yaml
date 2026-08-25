@@ -1,0 +1,23 @@
+name: mTriVul1.pri
+description: |
+  Trichosurus vulpecula assembly mTriVul1.pri (GCF_011100635.1), from VGP.
+organism:
+  scientific_name: Trichosurus vulpecula
+  common_name: common brushtail
+  taxon_id: 9337
+assembly:
+  source: RefSeq
+  accession: GCF_011100635.1
+fasta:
+  sources:
+  - provider: UCSC
+    url: https://hgdownload.soe.ucsc.edu/hubs/GCF/011/100/635/GCF_011100635.1/GCF_011100635.1.fa.gz
+  checksum:
+    sha256: compute_on_registration
+seqcol:
+  compute: true
+build:
+  store: vgp
+  tier: store_only
+metadata:
+  added_by: sources_to_genomes

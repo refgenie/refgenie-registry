@@ -1,0 +1,17 @@
+{
+  "schema": "https://raw.githubusercontent.com/FAIR-bioHeaders/FHR-Specification/main/fhr.json",
+  "schemaVersion": 1.0,
+  "genome": "Symphodus melops",
+  "taxon": {
+    "name": "Symphodus melops",
+    "uri": "https://identifiers.org/taxonomy:171736"
+  },
+  "commonName": "corkwing wrasse",
+  "version": "fSymMel2.1",
+  "accessionID": {
+    "name": "GCA_947650265.1",
+    "url": "https://www.ncbi.nlm.nih.gov/datasets/genome/GCA_947650265.1/"
+  },
+  "assemblySource": "GenBank",
+  "documentation": "Symphodus melops assembly fSymMel2.1 (GCA_947650265.1), from VGP.\n"
+}

@@ -1,0 +1,17 @@
+{
+  "schema": "https://raw.githubusercontent.com/FAIR-bioHeaders/FHR-Specification/main/fhr.json",
+  "schemaVersion": 1.0,
+  "genome": "Anableps anableps",
+  "taxon": {
+    "name": "Anableps anableps",
+    "uri": "https://identifiers.org/taxonomy:195821"
+  },
+  "commonName": "largescale foureyes",
+  "version": "fAnaAna1.pri",
+  "accessionID": {
+    "name": "GCA_014839685.1",
+    "url": "https://www.ncbi.nlm.nih.gov/datasets/genome/GCA_014839685.1/"
+  },
+  "assemblySource": "GenBank",
+  "documentation": "Anableps anableps assembly fAnaAna1.pri (GCA_014839685.1), from VGP.\n"
+}

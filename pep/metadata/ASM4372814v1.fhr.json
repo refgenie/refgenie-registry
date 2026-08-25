@@ -1,0 +1,17 @@
+{
+  "schema": "https://raw.githubusercontent.com/FAIR-bioHeaders/FHR-Specification/main/fhr.json",
+  "schemaVersion": 1.0,
+  "genome": "Rhinolophus trifoliatus",
+  "taxon": {
+    "name": "Rhinolophus trifoliatus",
+    "uri": "https://identifiers.org/taxonomy:430492"
+  },
+  "commonName": "Trefoil horseshoe bat",
+  "version": "ASM4372814v1",
+  "accessionID": {
+    "name": "GCA_043728145.1",
+    "url": "https://www.ncbi.nlm.nih.gov/datasets/genome/GCA_043728145.1/"
+  },
+  "assemblySource": "GenBank",
+  "documentation": "Rhinolophus trifoliatus assembly ASM4372814v1 (GCA_043728145.1), from VGP.\n"
+}

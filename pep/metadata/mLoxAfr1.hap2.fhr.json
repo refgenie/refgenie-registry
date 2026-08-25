@@ -1,0 +1,17 @@
+{
+  "schema": "https://raw.githubusercontent.com/FAIR-bioHeaders/FHR-Specification/main/fhr.json",
+  "schemaVersion": 1.0,
+  "genome": "Loxodonta africana",
+  "taxon": {
+    "name": "Loxodonta africana",
+    "uri": "https://identifiers.org/taxonomy:9785"
+  },
+  "commonName": "African savanna elephant",
+  "version": "mLoxAfr1.hap2",
+  "accessionID": {
+    "name": "GCF_030014295.1",
+    "url": "https://www.ncbi.nlm.nih.gov/datasets/genome/GCF_030014295.1/"
+  },
+  "assemblySource": "RefSeq",
+  "documentation": "Loxodonta africana assembly mLoxAfr1.hap2 (GCF_030014295.1), from VGP.\n"
+}

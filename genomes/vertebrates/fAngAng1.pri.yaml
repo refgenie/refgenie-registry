@@ -1,0 +1,23 @@
+name: fAngAng1.pri
+description: |
+  Anguilla anguilla assembly fAngAng1.pri (GCF_013347855.1), from VGP.
+organism:
+  scientific_name: Anguilla anguilla
+  common_name: European eel
+  taxon_id: 7936
+assembly:
+  source: RefSeq
+  accession: GCF_013347855.1
+fasta:
+  sources:
+  - provider: UCSC
+    url: https://hgdownload.soe.ucsc.edu/hubs/GCF/013/347/855/GCF_013347855.1/GCF_013347855.1.fa.gz
+  checksum:
+    sha256: compute_on_registration
+seqcol:
+  compute: true
+build:
+  store: vgp
+  tier: store_only
+metadata:
+  added_by: sources_to_genomes

@@ -1,0 +1,23 @@
+name: ASM4859323v1
+description: |
+  Sminthopsis crassicaudata assembly ASM4859323v1 (GCA_048593235.1), from VGP.
+organism:
+  scientific_name: Sminthopsis crassicaudata
+  common_name: fat-tailed dunnart
+  taxon_id: 9301
+assembly:
+  source: GenBank
+  accession: GCA_048593235.1
+fasta:
+  sources:
+  - provider: UCSC
+    url: https://hgdownload.soe.ucsc.edu/hubs/GCA/048/593/235/GCA_048593235.1/GCA_048593235.1.fa.gz
+  checksum:
+    sha256: compute_on_registration
+seqcol:
+  compute: true
+build:
+  store: vgp
+  tier: store_only
+metadata:
+  added_by: sources_to_genomes

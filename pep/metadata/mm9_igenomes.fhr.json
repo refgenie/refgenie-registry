@@ -1,0 +1,16 @@
+{
+  "schema": "https://raw.githubusercontent.com/FAIR-bioHeaders/FHR-Specification/main/fhr.json",
+  "schemaVersion": 1.0,
+  "genome": "Mus musculus",
+  "taxon": {
+    "name": "Mus musculus",
+    "uri": "https://identifiers.org/taxonomy:10090"
+  },
+  "commonName": "mouse",
+  "version": "mm9_igenomes",
+  "genomeSynonym": [
+    "mm9-igenomes-ucsc"
+  ],
+  "assemblySource": "iGenomes",
+  "documentation": "igenomes's UCSC mm9\n"
+}

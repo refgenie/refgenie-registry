@@ -1,0 +1,23 @@
+name: mBalBor1.hap1.1
+description: |
+  Balaenoptera borealis assembly mBalBor1.hap1.1 (GCA_965194805.1), from VGP.
+organism:
+  scientific_name: Balaenoptera borealis
+  common_name: sei whale
+  taxon_id: 9768
+assembly:
+  source: GenBank
+  accession: GCA_965194805.1
+fasta:
+  sources:
+  - provider: UCSC
+    url: https://hgdownload.soe.ucsc.edu/hubs/GCA/965/194/805/GCA_965194805.1/GCA_965194805.1.fa.gz
+  checksum:
+    sha256: compute_on_registration
+seqcol:
+  compute: true
+build:
+  store: vgp
+  tier: store_only
+metadata:
+  added_by: sources_to_genomes

@@ -1,0 +1,23 @@
+name: rMyuGeo1.pri
+description: |
+  Myuchelys georgesi assembly rMyuGeo1.pri (GCA_040894355.2), from VGP.
+organism:
+  scientific_name: Myuchelys georgesi
+  common_name: Bellinger river turtle
+  taxon_id: 1041117
+assembly:
+  source: GenBank
+  accession: GCA_040894355.2
+fasta:
+  sources:
+  - provider: UCSC
+    url: https://hgdownload.soe.ucsc.edu/hubs/GCA/040/894/355/GCA_040894355.2/GCA_040894355.2.fa.gz
+  checksum:
+    sha256: compute_on_registration
+seqcol:
+  compute: true
+build:
+  store: vgp
+  tier: store_only
+metadata:
+  added_by: sources_to_genomes

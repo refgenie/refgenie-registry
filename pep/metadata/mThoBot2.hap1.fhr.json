@@ -1,0 +1,17 @@
+{
+  "schema": "https://raw.githubusercontent.com/FAIR-bioHeaders/FHR-Specification/main/fhr.json",
+  "schemaVersion": 1.0,
+  "genome": "Thomomys bottae",
+  "taxon": {
+    "name": "Thomomys bottae",
+    "uri": "https://identifiers.org/taxonomy:3774380"
+  },
+  "commonName": "Botta's pocket gopher",
+  "version": "mThoBot2.hap1",
+  "accessionID": {
+    "name": "GCA_031878675.1",
+    "url": "https://www.ncbi.nlm.nih.gov/datasets/genome/GCA_031878675.1/"
+  },
+  "assemblySource": "GenBank",
+  "documentation": "Thomomys bottae assembly mThoBot2.hap1 (GCA_031878675.1), from VGP.\n"
+}

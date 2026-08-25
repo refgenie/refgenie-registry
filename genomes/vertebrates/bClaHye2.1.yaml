@@ -1,0 +1,23 @@
+name: bClaHye2.1
+description: |
+  Clangula hyemalis assembly bClaHye2.1 (GCA_963989345.1), from VGP.
+organism:
+  scientific_name: Clangula hyemalis
+  common_name: long-tailed duck
+  taxon_id: 197941
+assembly:
+  source: GenBank
+  accession: GCA_963989345.1
+fasta:
+  sources:
+  - provider: UCSC
+    url: https://hgdownload.soe.ucsc.edu/hubs/GCA/963/989/345/GCA_963989345.1/GCA_963989345.1.fa.gz
+  checksum:
+    sha256: compute_on_registration
+seqcol:
+  compute: true
+build:
+  store: vgp
+  tier: store_only
+metadata:
+  added_by: sources_to_genomes

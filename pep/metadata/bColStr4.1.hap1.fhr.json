@@ -1,0 +1,17 @@
+{
+  "schema": "https://raw.githubusercontent.com/FAIR-bioHeaders/FHR-Specification/main/fhr.json",
+  "schemaVersion": 1.0,
+  "genome": "Colius striatus",
+  "taxon": {
+    "name": "Colius striatus",
+    "uri": "https://identifiers.org/taxonomy:57412"
+  },
+  "commonName": "speckled mousebird",
+  "version": "bColStr4.1.hap1",
+  "accessionID": {
+    "name": "GCF_028858725.1",
+    "url": "https://www.ncbi.nlm.nih.gov/datasets/genome/GCF_028858725.1/"
+  },
+  "assemblySource": "RefSeq",
+  "documentation": "Colius striatus assembly bColStr4.1.hap1 (GCF_028858725.1), from VGP.\n"
+}

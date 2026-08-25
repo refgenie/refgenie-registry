@@ -69,7 +69,27 @@ round-trips it. The **seqcol digest is the sidecar filename**
 | *(exporter constant)* | `schemaVersion` | `1.0` |
 
 `fasta.sources[].provider`, `fasta.checksum.md5`, `seqcol.length`, and the whole
-`metadata` block are registry-only and are dropped from the sidecar.
+`metadata` and `build` blocks are registry-only and are dropped from the sidecar.
+
+### The registry/FHR boundary
+
+`genome.schema.yaml`'s top-level fields fall into two groups, and the nesting says
+which is which:
+
+- **FHR-exported** — `name`, `aliases`, `description`, `organism`, `assembly`,
+  `masking`, `fasta.checksum`, `seqcol`, and the `fhr:` escape hatch. These are
+  facts about the genome.
+- **Registry-only** — `metadata:` (bookkeeping: who added it, when) and `build:`
+  (pipeline instructions: which store holds the sequence, how far to build it).
+  These describe what *we* do with the genome, not what the genome *is*, so they
+  are fenced off in their own blocks and never exported.
+
+The exporter enforces this by construction: `genome_yaml_to_fhr()` builds its
+output by explicit whitelist (`out["genome"] = ...`), never by passing unknown
+keys through, so a new top-level block is ignored automatically. The validator
+asserts it anyway — `check_build_not_in_fhr` runs the export and fails if any
+`build` key appears — so a future exporter that starts forwarding unknown keys
+fails here rather than publishing pipeline state as metadata.
 
 `commonName`, `assemblySource`, and `assemblyLevel` are gtars-native extension
 fields (they ride the sidecar's `extra` catch-all, not upstream FHR 1.0). They

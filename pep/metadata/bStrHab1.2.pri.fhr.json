@@ -1,0 +1,17 @@
+{
+  "schema": "https://raw.githubusercontent.com/FAIR-bioHeaders/FHR-Specification/main/fhr.json",
+  "schemaVersion": 1.0,
+  "genome": "Strigops habroptila",
+  "taxon": {
+    "name": "Strigops habroptila",
+    "uri": "https://identifiers.org/taxonomy:2489341"
+  },
+  "commonName": "Kakapo",
+  "version": "bStrHab1.2.pri",
+  "accessionID": {
+    "name": "GCF_004027225.2",
+    "url": "https://www.ncbi.nlm.nih.gov/datasets/genome/GCF_004027225.2/"
+  },
+  "assemblySource": "RefSeq",
+  "documentation": "Strigops habroptila assembly bStrHab1.2.pri (GCF_004027225.2), from VGP.\n"
+}

@@ -1,0 +1,23 @@
+name: mZalCal1.pri.v2
+description: |
+  Zalophus californianus assembly mZalCal1.pri.v2 (GCF_009762305.2), from VGP.
+organism:
+  scientific_name: Zalophus californianus
+  common_name: California sea lion
+  taxon_id: 9704
+assembly:
+  source: RefSeq
+  accession: GCF_009762305.2
+fasta:
+  sources:
+  - provider: UCSC
+    url: https://hgdownload.soe.ucsc.edu/hubs/GCF/009/762/305/GCF_009762305.2/GCF_009762305.2.fa.gz
+  checksum:
+    sha256: compute_on_registration
+seqcol:
+  compute: true
+build:
+  store: vgp
+  tier: store_only
+metadata:
+  added_by: sources_to_genomes

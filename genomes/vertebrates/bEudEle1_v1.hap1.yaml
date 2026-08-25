@@ -1,0 +1,23 @@
+name: bEudEle1_v1.hap1
+description: |
+  Eudromia elegans assembly bEudEle1_v1.hap1 (GCA_047922985.1), from VGP.
+organism:
+  scientific_name: Eudromia elegans
+  common_name: elegant crested-tinamou
+  taxon_id: 8805
+assembly:
+  source: GenBank
+  accession: GCA_047922985.1
+fasta:
+  sources:
+  - provider: UCSC
+    url: https://hgdownload.soe.ucsc.edu/hubs/GCA/047/922/985/GCA_047922985.1/GCA_047922985.1.fa.gz
+  checksum:
+    sha256: compute_on_registration
+seqcol:
+  compute: true
+build:
+  store: vgp
+  tier: store_only
+metadata:
+  added_by: sources_to_genomes

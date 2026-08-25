@@ -1,0 +1,16 @@
+{
+  "schema": "https://raw.githubusercontent.com/FAIR-bioHeaders/FHR-Specification/main/fhr.json",
+  "schemaVersion": 1.0,
+  "genome": "Homo sapiens",
+  "taxon": {
+    "name": "Homo sapiens",
+    "uri": "https://identifiers.org/taxonomy:9606"
+  },
+  "commonName": "human",
+  "version": "hg19_1kg",
+  "genomeSynonym": [
+    "hs37-1kg"
+  ],
+  "assemblySource": "1000 Genomes Project",
+  "documentation": "hs37-1kg genome referenced on HL blog 2017 1000 Genomes Project (1000G) reference in 2010\n"
+}

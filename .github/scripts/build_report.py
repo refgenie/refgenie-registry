@@ -11,8 +11,7 @@ the validators, collects AI-review input as plain text, and writes:
 pr-report.yml (workflow_run, trusted base context) downloads the artifact,
 treats every string in it as untrusted, and does all PR writes.
 
-Checks (invocations identical to the old lint-genomes / lint-recipes /
-build-test workflows):
+Checks:
     genome-validation   tools/validate_genome.py --check-fhr
     asset-classes       jsonschema check of asset_classes/*.yaml
     recipe-cross-check  tools/validate_recipe.py --no-url-check recipes/*/recipe.yaml

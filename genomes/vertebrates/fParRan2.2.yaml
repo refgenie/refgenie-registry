@@ -1,0 +1,23 @@
+name: fParRan2.2
+description: |
+  Parambassis ranga assembly fParRan2.2 (GCA_900634625.2), from VGP.
+organism:
+  scientific_name: Parambassis ranga
+  common_name: Indian glassy fish
+  taxon_id: 210632
+assembly:
+  source: GenBank
+  accession: GCA_900634625.2
+fasta:
+  sources:
+  - provider: UCSC
+    url: https://hgdownload.soe.ucsc.edu/hubs/GCA/900/634/625/GCA_900634625.2/GCA_900634625.2.fa.gz
+  checksum:
+    sha256: compute_on_registration
+seqcol:
+  compute: true
+build:
+  store: vgp
+  tier: store_only
+metadata:
+  added_by: sources_to_genomes

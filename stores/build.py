@@ -38,6 +38,7 @@ from refget.store import RefgetStore
 
 from fasta_naming import is_url, s3_to_https, cache_name_for, resolve_fasta_token
 from store_config import fasta_root as store_fasta_root
+from store_config import get_store_dirs
 
 
 SCRIPT_DIR = Path(__file__).parent
@@ -359,13 +360,6 @@ def build_store(
         print(f"  REFGETSTORE_S3 not set, skipping sync.", file=sys.stderr)
 
     return failures == 0
-
-
-def get_store_dirs() -> list[Path]:
-    return sorted(
-        d for d in SCRIPT_DIR.iterdir()
-        if d.is_dir() and (d / PEP_CONFIG).exists()
-    )
 
 
 def main():

@@ -1,0 +1,17 @@
+{
+  "schema": "https://raw.githubusercontent.com/FAIR-bioHeaders/FHR-Specification/main/fhr.json",
+  "schemaVersion": 1.0,
+  "genome": "Muntiacus reevesi",
+  "taxon": {
+    "name": "Muntiacus reevesi",
+    "uri": "https://identifiers.org/taxonomy:9886"
+  },
+  "commonName": "Reeves' muntjac",
+  "version": "mMunRee1.1",
+  "accessionID": {
+    "name": "GCF_963930625.1",
+    "url": "https://www.ncbi.nlm.nih.gov/datasets/genome/GCF_963930625.1/"
+  },
+  "assemblySource": "RefSeq",
+  "documentation": "Muntiacus reevesi assembly mMunRee1.1 (GCF_963930625.1), from VGP.\n"
+}

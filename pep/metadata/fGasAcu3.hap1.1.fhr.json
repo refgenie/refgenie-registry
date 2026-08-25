@@ -1,0 +1,17 @@
+{
+  "schema": "https://raw.githubusercontent.com/FAIR-bioHeaders/FHR-Specification/main/fhr.json",
+  "schemaVersion": 1.0,
+  "genome": "Gasterosteus aculeatus",
+  "taxon": {
+    "name": "Gasterosteus aculeatus",
+    "uri": "https://identifiers.org/taxonomy:69293"
+  },
+  "commonName": "three-spined stickleback",
+  "version": "fGasAcu3.hap1.1",
+  "accessionID": {
+    "name": "GCA_964276395.1",
+    "url": "https://www.ncbi.nlm.nih.gov/datasets/genome/GCA_964276395.1/"
+  },
+  "assemblySource": "GenBank",
+  "documentation": "Gasterosteus aculeatus assembly fGasAcu3.hap1.1 (GCA_964276395.1), from VGP.\n"
+}

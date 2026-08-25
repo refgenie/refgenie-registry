@@ -1,0 +1,23 @@
+name: mNeoVis2.hap1.1
+description: |
+  Neogale vison assembly mNeoVis2.hap1.1 (GCA_964106545.1), from VGP.
+organism:
+  scientific_name: Neogale vison
+  common_name: American mink
+  taxon_id: 452646
+assembly:
+  source: GenBank
+  accession: GCA_964106545.1
+fasta:
+  sources:
+  - provider: UCSC
+    url: https://hgdownload.soe.ucsc.edu/hubs/GCA/964/106/545/GCA_964106545.1/GCA_964106545.1.fa.gz
+  checksum:
+    sha256: compute_on_registration
+seqcol:
+  compute: true
+build:
+  store: vgp
+  tier: store_only
+metadata:
+  added_by: sources_to_genomes

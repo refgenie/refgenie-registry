@@ -1,0 +1,17 @@
+{
+  "schema": "https://raw.githubusercontent.com/FAIR-bioHeaders/FHR-Specification/main/fhr.json",
+  "schemaVersion": 1.0,
+  "genome": "Podargus strigoides",
+  "taxon": {
+    "name": "Podargus strigoides",
+    "uri": "https://identifiers.org/taxonomy:8905"
+  },
+  "commonName": "tawny frogmouth",
+  "version": "bPodStr1.pri",
+  "accessionID": {
+    "name": "GCA_028020825.1",
+    "url": "https://www.ncbi.nlm.nih.gov/datasets/genome/GCA_028020825.1/"
+  },
+  "assemblySource": "GenBank",
+  "documentation": "Podargus strigoides assembly bPodStr1.pri (GCA_028020825.1), from VGP.\n"
+}

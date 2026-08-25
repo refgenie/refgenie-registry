@@ -1,0 +1,21 @@
+{
+  "schema": "https://raw.githubusercontent.com/FAIR-bioHeaders/FHR-Specification/main/fhr.json",
+  "schemaVersion": 1.0,
+  "genome": "Vipera berus",
+  "taxon": {
+    "name": "Vipera berus",
+    "uri": "https://identifiers.org/taxonomy:31155"
+  },
+  "version": "rVipBer3.hap1.1",
+  "dateCreated": "2024-06-28",
+  "accessionID": {
+    "name": "GCA_964194415.1",
+    "url": "https://www.ncbi.nlm.nih.gov/datasets/genome/GCA_964194415.1/"
+  },
+  "assemblySource": "GenBank",
+  "documentation": "adder (hap1 2024)\n",
+  "identifier": [
+    "bioproject:PRJEB76966",
+    "biosample:SAMEA114293681"
+  ]
+}

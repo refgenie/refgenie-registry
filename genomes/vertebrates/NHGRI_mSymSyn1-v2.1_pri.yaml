@@ -1,0 +1,23 @@
+name: NHGRI_mSymSyn1-v2.1_pri
+description: |
+  Symphalangus syndactylus assembly NHGRI_mSymSyn1-v2.1_pri (GCF_028878055.3), from VGP.
+organism:
+  scientific_name: Symphalangus syndactylus
+  common_name: siamang
+  taxon_id: 9590
+assembly:
+  source: RefSeq
+  accession: GCF_028878055.3
+fasta:
+  sources:
+  - provider: UCSC
+    url: https://hgdownload.soe.ucsc.edu/hubs/GCF/028/878/055/GCF_028878055.3/GCF_028878055.3.fa.gz
+  checksum:
+    sha256: compute_on_registration
+seqcol:
+  compute: true
+build:
+  store: vgp
+  tier: store_only
+metadata:
+  added_by: sources_to_genomes

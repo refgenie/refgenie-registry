@@ -1,0 +1,17 @@
+{
+  "schema": "https://raw.githubusercontent.com/FAIR-bioHeaders/FHR-Specification/main/fhr.json",
+  "schemaVersion": 1.0,
+  "genome": "Phocoena phocoena",
+  "taxon": {
+    "name": "Phocoena phocoena",
+    "uri": "https://identifiers.org/taxonomy:9742"
+  },
+  "commonName": "harbor porpoise",
+  "version": "mPhoPho1.1",
+  "accessionID": {
+    "name": "GCF_963924675.1",
+    "url": "https://www.ncbi.nlm.nih.gov/datasets/genome/GCF_963924675.1/"
+  },
+  "assemblySource": "RefSeq",
+  "documentation": "Phocoena phocoena assembly mPhoPho1.1 (GCF_963924675.1), from VGP.\n"
+}

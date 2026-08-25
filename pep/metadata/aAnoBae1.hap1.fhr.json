@@ -1,0 +1,16 @@
+{
+  "schema": "https://raw.githubusercontent.com/FAIR-bioHeaders/FHR-Specification/main/fhr.json",
+  "schemaVersion": 1.0,
+  "genome": "Anomaloglossus baeobatrachus",
+  "taxon": {
+    "name": "Anomaloglossus baeobatrachus",
+    "uri": "https://identifiers.org/taxonomy:238106"
+  },
+  "version": "aAnoBae1.hap1",
+  "accessionID": {
+    "name": "GCA_048569485.1",
+    "url": "https://www.ncbi.nlm.nih.gov/datasets/genome/GCA_048569485.1/"
+  },
+  "assemblySource": "GenBank",
+  "documentation": "Anomaloglossus baeobatrachus assembly aAnoBae1.hap1 (GCA_048569485.1), from VGP.\n"
+}

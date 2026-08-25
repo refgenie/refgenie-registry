@@ -1,0 +1,23 @@
+name: CGAR_Hap1
+description: |
+  Clarias gariepinus assembly CGAR_Hap1 (GCA_024256435.1), from VGP.
+organism:
+  scientific_name: Clarias gariepinus
+  common_name: North African catfish
+  taxon_id: 13013
+assembly:
+  source: GenBank
+  accession: GCA_024256435.1
+fasta:
+  sources:
+  - provider: UCSC
+    url: https://hgdownload.soe.ucsc.edu/hubs/GCA/024/256/435/GCA_024256435.1/GCA_024256435.1.fa.gz
+  checksum:
+    sha256: compute_on_registration
+seqcol:
+  compute: true
+build:
+  store: vgp
+  tier: store_only
+metadata:
+  added_by: sources_to_genomes

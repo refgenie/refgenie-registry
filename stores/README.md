@@ -9,6 +9,7 @@ Each subfolder defines a refgetstore — a content-addressable sequence collecti
 
 | Store | Contents |
 |-------|----------|
+| **legacy** | The genomes the old refgenomes.databio.org server published |
 | **jungle** | Reference genome jungle paper dataset |
 | **pangenome** | HPRC pangenome haplotypes |
 | **vgp** | VGP vertebrate genomes |
@@ -17,7 +18,48 @@ Each subfolder defines a refgetstore — a content-addressable sequence collecti
 | **salmon_txomes** | Salmon/tximeta transcriptomes |
 | **igenomes** | AWS iGenomes reference genomes |
 | **plantref** | Plant + model-organism genomes (recovered from legacy big.databio.org) |
+| **decoys** | Decoy and spike-in sequences |
 | **demo** | Test data for development |
+
+## The link to `genomes/`
+
+Every genome YAML in [`genomes/`](../genomes) names one of these stores in its
+`build.store` field, claiming that the store holds its sequence.
+[`build/sync_stores.py`](../build/sync_stores.py) is what checks that claim:
+
+```bash
+python build/sync_stores.py            # coverage report, all stores
+python build/sync_stores.py --check    # non-zero if a genome is not loadable
+python build/sync_stores.py --changed  # stores whose sources.csv changed since they were built
+```
+
+A genome whose declared store has no row for it is **registered but unloadable**,
+and until 2026-08-25 nothing anywhere noticed. `--changed` is what the nightly
+uses to decide which stores to reload: a store is rebuilt only when its
+`sources.csv` differs from the `.sources.sha256` stamp written inside the built
+store, so plantref's ~476k objects are not re-synced every night.
+
+### `sources.csv` is NOT generated from the genome list
+
+`pep/samples.csv` and `pep/metadata/` are generated from `genomes/**/*.yaml` and
+must never be hand-edited. **`sources.csv` is the opposite: it is hand-maintained,
+and `sync_stores.py` never rewrites it.** The asymmetry is deliberate, for two
+reasons:
+
+1. **The two files name different things.** A store row's `fasta` is the path or
+   URL the store actually ingests -- jungle's are staged relative paths like
+   `homo_sapiens/ENA/hg38/fasta/GRCh38-ena-15_GCA_000001405.fa.gz` -- while a
+   genome YAML records the upstream provider URL. They are different strings for
+   the same sequence, and a genome YAML does not carry enough information to
+   reconstruct the store's.
+2. **Most store rows have no genome YAML.** Only `vgp` and `legacy` are fully
+   covered. Generating `sources.csv` from the genome list would silently delete
+   most of `igenomes`, `refseq`, `salmon_txomes` and `plantref`.
+
+So the direction of truth differs by file: the genome list drives the build
+queue and the published metadata, and `sources.csv` drives what a store holds.
+`sync_stores.py` reconciles them and reports disagreements rather than resolving
+them one way by fiat.
 
 ## Per-store structure
 
@@ -162,13 +204,26 @@ reads to populate the description and faceted metadata columns (species, common 
 taxon id, assembly source/accession/level) for store-overlay genomes, so a store without
 them syncs as genomes with null metadata.
 
-`build_fhr.py` writes them from `sources.csv` columns (organism → scientific/common name +
-taxon URI; name/genome_assembly/source → a one-sentence `documentation`; source →
-assemblySource; accession → accessionID, plus assemblyLevel from the script's static
-per-accession `ASSEMBLY_LEVELS` map sourced from NCBI Datasets), resolving each row to its
-collection digest via the aliases `build.py` registered. It only knows human and mouse and
-**fails loudly** on any other organism (extend its `ORGANISMS` map deliberately — never
-guess); likewise an accession missing from `ASSEMBLY_LEVELS` just gets no assemblyLevel.
+`build_fhr.py` resolves each `sources.csv` row to its collection digest (via the aliases
+`build.py` registered) and writes that collection's sidecar. Fields come from three
+sources, least to most specific:
+
+1. **The CSV derivation** — organism → scientific/common name + taxon URI;
+   name/genome_assembly/source → a one-sentence `documentation`; source → assemblySource;
+   accession → accessionID, plus assemblyLevel from the script's static per-accession
+   `ASSEMBLY_LEVELS` map sourced from NCBI Datasets. This path knows only human and mouse
+   and **fails loudly** on any other organism (extend its `ORGANISMS` map deliberately —
+   never guess); an accession missing from `ASSEMBLY_LEVELS` just gets no assemblyLevel.
+2. **The curated registry record** — if a `genomes/**/*.yaml` names this store in its
+   `build.store` and matches the row (on `name` or `accession`), the row's fields come from
+   that genome's `pep/metadata/<genome>.fhr.json` instead. That sidecar is generated from
+   the genome YAML through the one mapping module (`tools/genome_to_fhr.py`), so the store's
+   published metadata and the registry catalog's are the same record. This is what lets a
+   store of non-model organisms carry real metadata: `vgp` holds 605 vertebrate species, and
+   none of them are in `ORGANISMS`. Rows with a curated record are exempt from the
+   organism validation. Pass `--no-registry` to derive every row from the CSV instead.
+3. **A per-genome override YAML** — see below.
+
 Idempotent; re-runs overwrite. It also re-commits `rgstore.json` so the manifest's
 `fhr_digest` advertises the sidecars (required for remote `pull_fhr`).
 

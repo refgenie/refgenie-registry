@@ -1,0 +1,23 @@
+name: mChoDid1.pri
+description: |
+  Choloepus didactylus assembly mChoDid1.pri (GCF_015220235.1), from VGP.
+organism:
+  scientific_name: Choloepus didactylus
+  common_name: southern two-toed sloth
+  taxon_id: 27675
+assembly:
+  source: RefSeq
+  accession: GCF_015220235.1
+fasta:
+  sources:
+  - provider: UCSC
+    url: https://hgdownload.soe.ucsc.edu/hubs/GCF/015/220/235/GCF_015220235.1/GCF_015220235.1.fa.gz
+  checksum:
+    sha256: compute_on_registration
+seqcol:
+  compute: true
+build:
+  store: vgp
+  tier: store_only
+metadata:
+  added_by: sources_to_genomes

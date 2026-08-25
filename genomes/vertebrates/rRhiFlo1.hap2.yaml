@@ -1,0 +1,23 @@
+name: rRhiFlo1.hap2
+description: |
+  Rhineura floridana assembly rRhiFlo1.hap2 (GCF_030035675.1), from VGP.
+organism:
+  scientific_name: Rhineura floridana
+  common_name: Florida worm lizard
+  taxon_id: 261503
+assembly:
+  source: RefSeq
+  accession: GCF_030035675.1
+fasta:
+  sources:
+  - provider: UCSC
+    url: https://hgdownload.soe.ucsc.edu/hubs/GCF/030/035/675/GCF_030035675.1/GCF_030035675.1.fa.gz
+  checksum:
+    sha256: compute_on_registration
+seqcol:
+  compute: true
+build:
+  store: vgp
+  tier: store_only
+metadata:
+  added_by: sources_to_genomes

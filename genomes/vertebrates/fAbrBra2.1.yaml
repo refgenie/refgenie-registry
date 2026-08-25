@@ -1,0 +1,23 @@
+name: fAbrBra2.1
+description: |
+  Abramis brama assembly fAbrBra2.1 (GCA_963993115.1), from VGP.
+organism:
+  scientific_name: Abramis brama
+  common_name: common bream
+  taxon_id: 38527
+assembly:
+  source: GenBank
+  accession: GCA_963993115.1
+fasta:
+  sources:
+  - provider: UCSC
+    url: https://hgdownload.soe.ucsc.edu/hubs/GCA/963/993/115/GCA_963993115.1/GCA_963993115.1.fa.gz
+  checksum:
+    sha256: compute_on_registration
+seqcol:
+  compute: true
+build:
+  store: vgp
+  tier: store_only
+metadata:
+  added_by: sources_to_genomes

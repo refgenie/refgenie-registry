@@ -1,0 +1,17 @@
+{
+  "schema": "https://raw.githubusercontent.com/FAIR-bioHeaders/FHR-Specification/main/fhr.json",
+  "schemaVersion": 1.0,
+  "genome": "Falco cherrug",
+  "taxon": {
+    "name": "Falco cherrug",
+    "uri": "https://identifiers.org/taxonomy:345164"
+  },
+  "commonName": "Saker falcon",
+  "version": "bFalChe1.pri",
+  "accessionID": {
+    "name": "GCF_023634085.1",
+    "url": "https://www.ncbi.nlm.nih.gov/datasets/genome/GCF_023634085.1/"
+  },
+  "assemblySource": "RefSeq",
+  "documentation": "Falco cherrug assembly bFalChe1.pri (GCF_023634085.1), from VGP.\n"
+}

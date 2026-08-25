@@ -1,0 +1,23 @@
+name: rPanTec1.hap2
+description: |
+  Pangshura tecta assembly rPanTec1.hap2 (GCA_045781085.1), from VGP.
+organism:
+  scientific_name: Pangshura tecta
+  common_name: Indian roofed turtle
+  taxon_id: 260642
+assembly:
+  source: GenBank
+  accession: GCA_045781085.1
+fasta:
+  sources:
+  - provider: UCSC
+    url: https://hgdownload.soe.ucsc.edu/hubs/GCA/045/781/085/GCA_045781085.1/GCA_045781085.1.fa.gz
+  checksum:
+    sha256: compute_on_registration
+seqcol:
+  compute: true
+build:
+  store: vgp
+  tier: store_only
+metadata:
+  added_by: sources_to_genomes

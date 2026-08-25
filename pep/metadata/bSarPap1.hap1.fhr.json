@@ -1,0 +1,17 @@
+{
+  "schema": "https://raw.githubusercontent.com/FAIR-bioHeaders/FHR-Specification/main/fhr.json",
+  "schemaVersion": 1.0,
+  "genome": "Sarcoramphus papa",
+  "taxon": {
+    "name": "Sarcoramphus papa",
+    "uri": "https://identifiers.org/taxonomy:43583"
+  },
+  "commonName": "king vulture",
+  "version": "bSarPap1.hap1",
+  "accessionID": {
+    "name": "GCA_037962945.1",
+    "url": "https://www.ncbi.nlm.nih.gov/datasets/genome/GCA_037962945.1/"
+  },
+  "assemblySource": "GenBank",
+  "documentation": "Sarcoramphus papa assembly bSarPap1.hap1 (GCA_037962945.1), from VGP.\n"
+}

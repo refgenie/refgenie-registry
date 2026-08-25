@@ -1,0 +1,17 @@
+{
+  "schema": "https://raw.githubusercontent.com/FAIR-bioHeaders/FHR-Specification/main/fhr.json",
+  "schemaVersion": 1.0,
+  "genome": "Rhinolophus ferrumequinum",
+  "taxon": {
+    "name": "Rhinolophus ferrumequinum",
+    "uri": "https://identifiers.org/taxonomy:59479"
+  },
+  "commonName": "greater horseshoe bat",
+  "version": "mRhiFer1.p",
+  "accessionID": {
+    "name": "GCA_014108255.1",
+    "url": "https://www.ncbi.nlm.nih.gov/datasets/genome/GCA_014108255.1/"
+  },
+  "assemblySource": "GenBank",
+  "documentation": "Rhinolophus ferrumequinum assembly mRhiFer1.p (GCA_014108255.1), from VGP.\n"
+}

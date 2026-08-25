@@ -1,0 +1,17 @@
+{
+  "schema": "https://raw.githubusercontent.com/FAIR-bioHeaders/FHR-Specification/main/fhr.json",
+  "schemaVersion": 1.0,
+  "genome": "Doryrhina cyclops",
+  "taxon": {
+    "name": "Doryrhina cyclops",
+    "uri": "https://identifiers.org/taxonomy:249021"
+  },
+  "commonName": "cyclops roundleaf bat",
+  "version": "ASM4388028v1",
+  "accessionID": {
+    "name": "GCA_043880285.1",
+    "url": "https://www.ncbi.nlm.nih.gov/datasets/genome/GCA_043880285.1/"
+  },
+  "assemblySource": "GenBank",
+  "documentation": "Doryrhina cyclops assembly ASM4388028v1 (GCA_043880285.1), from VGP.\n"
+}

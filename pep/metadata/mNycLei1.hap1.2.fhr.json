@@ -1,0 +1,17 @@
+{
+  "schema": "https://raw.githubusercontent.com/FAIR-bioHeaders/FHR-Specification/main/fhr.json",
+  "schemaVersion": 1.0,
+  "genome": "Nyctalus leisleri",
+  "taxon": {
+    "name": "Nyctalus leisleri",
+    "uri": "https://identifiers.org/taxonomy:59465"
+  },
+  "commonName": "lesser noctule",
+  "version": "mNycLei1.hap1.2",
+  "accessionID": {
+    "name": "GCA_964264875.2",
+    "url": "https://www.ncbi.nlm.nih.gov/datasets/genome/GCA_964264875.2/"
+  },
+  "assemblySource": "GenBank",
+  "documentation": "Nyctalus leisleri assembly mNycLei1.hap1.2 (GCA_964264875.2), from VGP.\n"
+}

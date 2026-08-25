@@ -1,0 +1,17 @@
+{
+  "schema": "https://raw.githubusercontent.com/FAIR-bioHeaders/FHR-Specification/main/fhr.json",
+  "schemaVersion": 1.0,
+  "genome": "Antrozous pallidus",
+  "taxon": {
+    "name": "Antrozous pallidus",
+    "uri": "https://identifiers.org/taxonomy:9440"
+  },
+  "commonName": "pallid bat",
+  "version": "DD_ASM_mAP_20210503",
+  "accessionID": {
+    "name": "GCA_027563665.1",
+    "url": "https://www.ncbi.nlm.nih.gov/datasets/genome/GCA_027563665.1/"
+  },
+  "assemblySource": "GenBank",
+  "documentation": "Antrozous pallidus assembly DD_ASM_mAP_20210503 (GCA_027563665.1), from VGP.\n"
+}

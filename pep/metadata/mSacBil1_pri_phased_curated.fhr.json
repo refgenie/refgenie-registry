@@ -1,0 +1,17 @@
+{
+  "schema": "https://raw.githubusercontent.com/FAIR-bioHeaders/FHR-Specification/main/fhr.json",
+  "schemaVersion": 1.0,
+  "genome": "Saccopteryx bilineata",
+  "taxon": {
+    "name": "Saccopteryx bilineata",
+    "uri": "https://identifiers.org/taxonomy:59482"
+  },
+  "commonName": "greater sac-winged bat",
+  "version": "mSacBil1_pri_phased_curated",
+  "accessionID": {
+    "name": "GCF_036850765.1",
+    "url": "https://www.ncbi.nlm.nih.gov/datasets/genome/GCF_036850765.1/"
+  },
+  "assemblySource": "RefSeq",
+  "documentation": "Saccopteryx bilineata assembly mSacBil1_pri_phased_curated (GCF_036850765.1), from VGP.\n"
+}

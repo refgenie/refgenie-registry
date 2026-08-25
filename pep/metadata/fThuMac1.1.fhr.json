@@ -1,0 +1,17 @@
+{
+  "schema": "https://raw.githubusercontent.com/FAIR-bioHeaders/FHR-Specification/main/fhr.json",
+  "schemaVersion": 1.0,
+  "genome": "Thunnus maccoyii",
+  "taxon": {
+    "name": "Thunnus maccoyii",
+    "uri": "https://identifiers.org/taxonomy:8240"
+  },
+  "commonName": "southern bluefin tuna",
+  "version": "fThuMac1.1",
+  "accessionID": {
+    "name": "GCF_910596095.1",
+    "url": "https://www.ncbi.nlm.nih.gov/datasets/genome/GCF_910596095.1/"
+  },
+  "assemblySource": "RefSeq",
+  "documentation": "Thunnus maccoyii assembly fThuMac1.1 (GCF_910596095.1), from VGP.\n"
+}

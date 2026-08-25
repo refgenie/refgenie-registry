@@ -1,0 +1,23 @@
+name: bStrAlu1.hap1
+description: |
+  Strix aluco assembly bStrAlu1.hap1 (GCA_031877795.1), from VGP.
+organism:
+  scientific_name: Strix aluco
+  common_name: Tawny owl
+  taxon_id: 111821
+assembly:
+  source: GenBank
+  accession: GCA_031877795.1
+fasta:
+  sources:
+  - provider: UCSC
+    url: https://hgdownload.soe.ucsc.edu/hubs/GCA/031/877/795/GCA_031877795.1/GCA_031877795.1.fa.gz
+  checksum:
+    sha256: compute_on_registration
+seqcol:
+  compute: true
+build:
+  store: vgp
+  tier: store_only
+metadata:
+  added_by: sources_to_genomes

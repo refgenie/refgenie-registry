@@ -7,15 +7,19 @@ drift, exactly like samples.csv, so the committed pep/metadata/ tree is the go/n
 metadata gate. Editing these files by hand is forbidden; edit the source
 genomes/*/*.yaml and regenerate.
 
-One file is written per genome the PEP queues (pep/samples.csv, column
-``genome_name``). For each, the matching genomes/*/*.yaml record -- keyed by its
-``name:`` field, NOT its filename -- is normalized to the FHR shape by the single
-mapping module tools/genome_to_fhr.py, so this generator and the store loader agree
-on the mapping. A queued genome with no matching YAML (e.g. a model organism whose
-definition has not landed yet) gets a minimal ``{"name": <genome_name>}`` record and
-a WARNING: metadata is non-blocking, and a build must never fail because a
-description is absent. The file always exists so the derived PEP ``fhr_file_path``
-attribute and the post-build apply step have something to read.
+One file is written per genome YAML -- EVERY genome, not just the ones the PEP
+queues. Most of the corpus sits at ``build.tier: store_only``: no PEP row, no
+assets, sequence loaded into a store. The sidecar is exactly what gives such a
+genome its organism and taxonomy in that store, so scoping this generator to the
+build queue is what left hundreds of collections federating in with null species.
+
+Each record is normalized to the FHR shape by the single mapping module
+tools/genome_to_fhr.py, so this generator and the store loader agree on the
+mapping. Queued genomes are a subset, so the derived PEP ``fhr_file_path``
+attribute and the post-build apply step always have their file. A queued genome
+with no YAML at all gets a minimal ``{"name": <genome_name>}`` record and a
+WARNING: metadata is non-blocking, and a build must never fail because a
+description is absent.
 
 Deterministic key order (tools/genome_to_fhr emits a fixed field order; this writer
 does not sort) so the committed diff is stable.
@@ -94,19 +98,22 @@ def generate(
 ) -> tuple[dict[str, str], list[str]]:
     """Return ({genome_name: json_text}, [genomes with no YAML]).
 
-    The missing list is advisory (WARNING), never fatal.
+    Every genome YAML gets a sidecar, plus a minimal record for any queued genome
+    that has no YAML. The missing list is advisory (WARNING), never fatal.
+
+    Sorted by genome name so the written set -- and therefore the committed diff
+    and the drift check -- never depends on directory walk order.
     """
-    queued = read_pep_genomes(samples_csv)
     records = index_yaml_records(genomes_dir)
     out: dict[str, str] = {}
+    for genome in sorted(records):
+        out[genome] = _render(genome_yaml_to_fhr(records[genome]))
+
     missing: list[str] = []
-    for genome in queued:
-        data = records.get(genome)
-        if data is None:
+    for genome in read_pep_genomes(samples_csv):
+        if genome not in out:
             missing.append(genome)
             out[genome] = _render({"name": genome})
-        else:
-            out[genome] = _render(genome_yaml_to_fhr(data))
     return out, missing
 
 
@@ -123,9 +130,9 @@ def write(desired: dict[str, str], metadata_dir: str = METADATA_DIR) -> None:
 
     Writes are IDEMPOTENT: a sidecar whose on-disk content already matches is left
     untouched, mtime and all. This matters because the nightly regenerates every
-    sidecar on every run -- rewriting unchanged files would bump 26 mtimes a night,
-    and the Rivanna profile drives snakemake from mtime alone (rerun-triggers:
-    mtime), so that churn would re-trigger every genome's build.
+    sidecar on every run -- rewriting unchanged files would bump every mtime a
+    night, and the Rivanna profile drives snakemake from mtime alone
+    (rerun-triggers: mtime), so that churn would re-trigger every genome's build.
     """
     os.makedirs(metadata_dir, exist_ok=True)
     wanted = {f"{g}{SIDECAR_SUFFIX}" for g in desired}
@@ -155,7 +162,7 @@ def check(desired: dict[str, str], metadata_dir: str = METADATA_DIR) -> list[str
             if fh.read() != text:
                 problems.append(f"stale {filename}")
     for extra in _existing_sidecars(metadata_dir) - set(wanted):
-        problems.append(f"extra {extra} (genome no longer queued)")
+        problems.append(f"extra {extra} (no genomes/**/*.yaml defines it)")
     return problems
 
 
@@ -171,7 +178,8 @@ def main(argv=None) -> int:
     desired, missing = generate()
     for genome in missing:
         print(
-            f"generate_genome_metadata: WARNING no genomes/*.yaml with name '{genome}'; "
+            f"generate_genome_metadata: WARNING queued genome '{genome}' has no "
+            f"genomes/**/*.yaml; "
             f"wrote a minimal record (metadata is non-blocking).",
             file=sys.stderr,
         )

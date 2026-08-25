@@ -1,0 +1,23 @@
+name: fArrGeo1.hap2
+description: |
+  Arripis georgiana assembly fArrGeo1.hap2 (GCA_042242135.1), from VGP.
+organism:
+  scientific_name: Arripis georgiana
+  common_name: Australian ruff
+  taxon_id: 3352246
+assembly:
+  source: GenBank
+  accession: GCA_042242135.1
+fasta:
+  sources:
+  - provider: UCSC
+    url: https://hgdownload.soe.ucsc.edu/hubs/GCA/042/242/135/GCA_042242135.1/GCA_042242135.1.fa.gz
+  checksum:
+    sha256: compute_on_registration
+seqcol:
+  compute: true
+build:
+  store: vgp
+  tier: store_only
+metadata:
+  added_by: sources_to_genomes

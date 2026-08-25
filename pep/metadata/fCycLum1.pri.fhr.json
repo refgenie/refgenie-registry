@@ -1,0 +1,17 @@
+{
+  "schema": "https://raw.githubusercontent.com/FAIR-bioHeaders/FHR-Specification/main/fhr.json",
+  "schemaVersion": 1.0,
+  "genome": "Cyclopterus lumpus",
+  "taxon": {
+    "name": "Cyclopterus lumpus",
+    "uri": "https://identifiers.org/taxonomy:8103"
+  },
+  "commonName": "lumpfish",
+  "version": "fCycLum1.pri",
+  "accessionID": {
+    "name": "GCF_009769545.1",
+    "url": "https://www.ncbi.nlm.nih.gov/datasets/genome/GCF_009769545.1/"
+  },
+  "assemblySource": "RefSeq",
+  "documentation": "Cyclopterus lumpus assembly fCycLum1.pri (GCF_009769545.1), from VGP.\n"
+}

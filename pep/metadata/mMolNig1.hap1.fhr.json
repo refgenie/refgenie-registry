@@ -1,0 +1,17 @@
+{
+  "schema": "https://raw.githubusercontent.com/FAIR-bioHeaders/FHR-Specification/main/fhr.json",
+  "schemaVersion": 1.0,
+  "genome": "Molossus nigricans",
+  "taxon": {
+    "name": "Molossus nigricans",
+    "uri": "https://identifiers.org/taxonomy:2997257"
+  },
+  "commonName": "northern black mastiff bat",
+  "version": "mMolNig1.hap1",
+  "accessionID": {
+    "name": "GCA_039880945.1",
+    "url": "https://www.ncbi.nlm.nih.gov/datasets/genome/GCA_039880945.1/"
+  },
+  "assemblySource": "GenBank",
+  "documentation": "Molossus nigricans assembly mMolNig1.hap1 (GCA_039880945.1), from VGP.\n"
+}

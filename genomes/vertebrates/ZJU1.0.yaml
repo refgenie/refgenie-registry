@@ -1,0 +1,23 @@
+name: ZJU1.0
+description: |
+  Anas platyrhynchos assembly ZJU1.0 (GCF_015476345.1), from VGP.
+organism:
+  scientific_name: Anas platyrhynchos
+  common_name: mallard
+  taxon_id: 8839
+assembly:
+  source: RefSeq
+  accession: GCF_015476345.1
+fasta:
+  sources:
+  - provider: UCSC
+    url: https://hgdownload.soe.ucsc.edu/hubs/GCF/015/476/345/GCF_015476345.1/GCF_015476345.1.fa.gz
+  checksum:
+    sha256: compute_on_registration
+seqcol:
+  compute: true
+build:
+  store: vgp
+  tier: store_only
+metadata:
+  added_by: sources_to_genomes

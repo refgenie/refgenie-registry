@@ -1,0 +1,23 @@
+{
+  "schema": "https://raw.githubusercontent.com/FAIR-bioHeaders/FHR-Specification/main/fhr.json",
+  "schemaVersion": 1.0,
+  "genome": "Homo sapiens",
+  "taxon": {
+    "name": "Homo sapiens",
+    "uri": "https://identifiers.org/taxonomy:9606"
+  },
+  "commonName": "human",
+  "version": "t2t-chm13",
+  "genomeSynonym": [
+    "T2T-CHM13v2.0",
+    "chm13v2",
+    "hs1"
+  ],
+  "accessionID": {
+    "name": "GCF_009914755.1",
+    "url": "https://www.ncbi.nlm.nih.gov/datasets/genome/GCF_009914755.1/"
+  },
+  "assemblySource": "NCBI",
+  "assemblyLevel": "chromosome",
+  "documentation": "Telomere-to-Telomere CHM13 v2.0 assembly. The first complete,\ngapless sequence of a human genome. Includes all centromeres,\nrDNA arrays, and segmental duplications missing from GRCh38.\nRecommended as the new standard human reference for applications\nthat benefit from a complete assembly.\n"
+}

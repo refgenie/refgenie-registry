@@ -1,0 +1,17 @@
+{
+  "schema": "https://raw.githubusercontent.com/FAIR-bioHeaders/FHR-Specification/main/fhr.json",
+  "schemaVersion": 1.0,
+  "genome": "Mus musculus",
+  "taxon": {
+    "name": "Mus musculus",
+    "uri": "https://identifiers.org/taxonomy:10090"
+  },
+  "commonName": "mouse",
+  "version": "mm38_p1_ena",
+  "genomeSynonym": [
+    "GRCm39-ena-03",
+    "GRCm39-ena-02"
+  ],
+  "assemblySource": "ENA",
+  "documentation": "ref genome hosted on ENA Genome Reference Consortium Mouse Build 38 patch release 1 (GRCm38.p1)\n"
+}

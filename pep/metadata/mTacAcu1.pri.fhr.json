@@ -1,0 +1,17 @@
+{
+  "schema": "https://raw.githubusercontent.com/FAIR-bioHeaders/FHR-Specification/main/fhr.json",
+  "schemaVersion": 1.0,
+  "genome": "Tachyglossus aculeatus",
+  "taxon": {
+    "name": "Tachyglossus aculeatus",
+    "uri": "https://identifiers.org/taxonomy:9261"
+  },
+  "commonName": "Australian echidna",
+  "version": "mTacAcu1.pri",
+  "accessionID": {
+    "name": "GCF_015852505.1",
+    "url": "https://www.ncbi.nlm.nih.gov/datasets/genome/GCF_015852505.1/"
+  },
+  "assemblySource": "RefSeq",
+  "documentation": "Tachyglossus aculeatus assembly mTacAcu1.pri (GCF_015852505.1), from VGP.\n"
+}

@@ -1,0 +1,23 @@
+name: bColMon1.hap1.1
+description: |
+  Coloeus monedula assembly bColMon1.hap1.1 (GCA_965178545.1), from VGP.
+organism:
+  scientific_name: Coloeus monedula
+  common_name: jackdaw
+  taxon_id: 30423
+assembly:
+  source: GenBank
+  accession: GCA_965178545.1
+fasta:
+  sources:
+  - provider: UCSC
+    url: https://hgdownload.soe.ucsc.edu/hubs/GCA/965/178/545/GCA_965178545.1/GCA_965178545.1.fa.gz
+  checksum:
+    sha256: compute_on_registration
+seqcol:
+  compute: true
+build:
+  store: vgp
+  tier: store_only
+metadata:
+  added_by: sources_to_genomes

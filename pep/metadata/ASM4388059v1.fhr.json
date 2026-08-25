@@ -1,0 +1,17 @@
+{
+  "schema": "https://raw.githubusercontent.com/FAIR-bioHeaders/FHR-Specification/main/fhr.json",
+  "schemaVersion": 1.0,
+  "genome": "Megaderma spasma",
+  "taxon": {
+    "name": "Megaderma spasma",
+    "uri": "https://identifiers.org/taxonomy:9414"
+  },
+  "commonName": "lesser false vampire bat",
+  "version": "ASM4388059v1",
+  "accessionID": {
+    "name": "GCA_043880595.1",
+    "url": "https://www.ncbi.nlm.nih.gov/datasets/genome/GCA_043880595.1/"
+  },
+  "assemblySource": "GenBank",
+  "documentation": "Megaderma spasma assembly ASM4388059v1 (GCA_043880595.1), from VGP.\n"
+}

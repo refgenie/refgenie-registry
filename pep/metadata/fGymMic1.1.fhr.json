@@ -1,0 +1,17 @@
+{
+  "schema": "https://raw.githubusercontent.com/FAIR-bioHeaders/FHR-Specification/main/fhr.json",
+  "schemaVersion": 1.0,
+  "genome": "Gymnoscopelus microlampas",
+  "taxon": {
+    "name": "Gymnoscopelus microlampas",
+    "uri": "https://identifiers.org/taxonomy:1090481"
+  },
+  "commonName": "minispotted lanternfish",
+  "version": "fGymMic1.1",
+  "accessionID": {
+    "name": "GCA_963454915.1",
+    "url": "https://www.ncbi.nlm.nih.gov/datasets/genome/GCA_963454915.1/"
+  },
+  "assemblySource": "GenBank",
+  "documentation": "Gymnoscopelus microlampas assembly fGymMic1.1 (GCA_963454915.1), from VGP.\n"
+}

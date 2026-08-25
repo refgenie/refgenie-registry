@@ -1,0 +1,17 @@
+{
+  "schema": "https://raw.githubusercontent.com/FAIR-bioHeaders/FHR-Specification/main/fhr.json",
+  "schemaVersion": 1.0,
+  "genome": "Balaenoptera ricei",
+  "taxon": {
+    "name": "Balaenoptera ricei",
+    "uri": "https://identifiers.org/taxonomy:2746895"
+  },
+  "commonName": "Rice's whale",
+  "version": "mBalRic1.hap2",
+  "accessionID": {
+    "name": "GCF_028023285.1",
+    "url": "https://www.ncbi.nlm.nih.gov/datasets/genome/GCF_028023285.1/"
+  },
+  "assemblySource": "RefSeq",
+  "documentation": "Balaenoptera ricei assembly mBalRic1.hap2 (GCF_028023285.1), from VGP.\n"
+}

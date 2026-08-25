@@ -1,0 +1,23 @@
+name: bEriRub2.2
+description: |
+  Erithacus rubecula assembly bEriRub2.2 (GCA_903797595.2), from VGP.
+organism:
+  scientific_name: Erithacus rubecula
+  common_name: European robin
+  taxon_id: 37610
+assembly:
+  source: GenBank
+  accession: GCA_903797595.2
+fasta:
+  sources:
+  - provider: UCSC
+    url: https://hgdownload.soe.ucsc.edu/hubs/GCA/903/797/595/GCA_903797595.2/GCA_903797595.2.fa.gz
+  checksum:
+    sha256: compute_on_registration
+seqcol:
+  compute: true
+build:
+  store: vgp
+  tier: store_only
+metadata:
+  added_by: sources_to_genomes

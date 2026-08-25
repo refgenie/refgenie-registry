@@ -1,0 +1,23 @@
+name: fCarCar2.1
+description: |
+  Carassius carassius assembly fCarCar2.1 (GCF_963082965.1), from VGP.
+organism:
+  scientific_name: Carassius carassius
+  common_name: crucian carp
+  taxon_id: 217509
+assembly:
+  source: RefSeq
+  accession: GCF_963082965.1
+fasta:
+  sources:
+  - provider: UCSC
+    url: https://hgdownload.soe.ucsc.edu/hubs/GCF/963/082/965/GCF_963082965.1/GCF_963082965.1.fa.gz
+  checksum:
+    sha256: compute_on_registration
+seqcol:
+  compute: true
+build:
+  store: vgp
+  tier: store_only
+metadata:
+  added_by: sources_to_genomes

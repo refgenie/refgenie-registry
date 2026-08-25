@@ -32,11 +32,14 @@ export REFGENIE_ASSET_S3="${REFGENIE_ASSET_S3:-s3://refgenie/assets}"
 export REFGENIE_CATALOG_S3="${REFGENIE_CATALOG_S3:-s3://refgenie/catalog}"
 export REFGENIE_ASSET_HTTPS="${REFGENIE_ASSET_HTTPS:-https://refgenie.s3.us-east-1.amazonaws.com/assets}"
 
-# Stores whose collections the nightly overlays into the catalog as zero-asset
-# browse genomes (`refgenie genome sync` in run_builds.sh). Space-separated
-# store URLs; set empty to disable. Assigned UNCONDITIONALLY (no ${VAR:-...}
-# fallback -- yoke's env_files parser mangles that form; see REFGENIE_BIN below).
-export REFGENIE_OVERLAY_STORES=https://refgenie.s3.us-east-1.amazonaws.com/refget-store/jungle
+# REFGENIE_OVERLAY_STORES is RETIRED. The stores the nightly overlays into the
+# catalog now live in refgenie's own federation registry (the `store` table),
+# managed with `refgenie store add|list|remove` and ingested by `refgenie store
+# sync` in run_builds.sh. The old env var drove `genome sync --server-url`, which
+# opened a fresh remote store per collection and copied each into the local store
+# every night; `store sync` opens each store once. Register a store with:
+#     refgenie store add jungle --url $REFGETSTORE_S3_HTTPS/jungle/ --priority 10
+# and confirm with `refgenie store list`.
 
 # AWS auth for `refgenie push`. Push runs ONCE on the mobot driver/dispatcher
 # host AFTER snakemake returns — it reads the shared build DB + the staged

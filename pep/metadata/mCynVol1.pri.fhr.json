@@ -1,0 +1,17 @@
+{
+  "schema": "https://raw.githubusercontent.com/FAIR-bioHeaders/FHR-Specification/main/fhr.json",
+  "schemaVersion": 1.0,
+  "genome": "Cynocephalus volans",
+  "taxon": {
+    "name": "Cynocephalus volans",
+    "uri": "https://identifiers.org/taxonomy:110931"
+  },
+  "commonName": "Philippine flying lemur",
+  "version": "mCynVol1.pri",
+  "accessionID": {
+    "name": "GCF_027409185.1",
+    "url": "https://www.ncbi.nlm.nih.gov/datasets/genome/GCF_027409185.1/"
+  },
+  "assemblySource": "RefSeq",
+  "documentation": "Cynocephalus volans assembly mCynVol1.pri (GCF_027409185.1), from VGP.\n"
+}

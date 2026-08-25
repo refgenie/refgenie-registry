@@ -1,0 +1,17 @@
+{
+  "schema": "https://raw.githubusercontent.com/FAIR-bioHeaders/FHR-Specification/main/fhr.json",
+  "schemaVersion": 1.0,
+  "genome": "Heptranchias perlo",
+  "taxon": {
+    "name": "Heptranchias perlo",
+    "uri": "https://identifiers.org/taxonomy:212740"
+  },
+  "commonName": "sharpnose sevengill shark",
+  "version": "sHepPer1.hap1",
+  "accessionID": {
+    "name": "GCA_035084215.1",
+    "url": "https://www.ncbi.nlm.nih.gov/datasets/genome/GCA_035084215.1/"
+  },
+  "assemblySource": "GenBank",
+  "documentation": "Heptranchias perlo assembly sHepPer1.hap1 (GCA_035084215.1), from VGP.\n"
+}

@@ -1,0 +1,17 @@
+{
+  "schema": "https://raw.githubusercontent.com/FAIR-bioHeaders/FHR-Specification/main/fhr.json",
+  "schemaVersion": 1.0,
+  "genome": "Mixophyes fleayi",
+  "taxon": {
+    "name": "Mixophyes fleayi",
+    "uri": "https://identifiers.org/taxonomy:3061075"
+  },
+  "commonName": "Fleay's barred frog",
+  "version": "aMixFle1.hap1",
+  "accessionID": {
+    "name": "GCA_038048845.1",
+    "url": "https://www.ncbi.nlm.nih.gov/datasets/genome/GCA_038048845.1/"
+  },
+  "assemblySource": "GenBank",
+  "documentation": "Mixophyes fleayi assembly aMixFle1.hap1 (GCA_038048845.1), from VGP.\n"
+}

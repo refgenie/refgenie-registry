@@ -1,0 +1,17 @@
+{
+  "schema": "https://raw.githubusercontent.com/FAIR-bioHeaders/FHR-Specification/main/fhr.json",
+  "schemaVersion": 1.0,
+  "genome": "Myotis mystacinus",
+  "taxon": {
+    "name": "Myotis mystacinus",
+    "uri": "https://identifiers.org/taxonomy:109479"
+  },
+  "commonName": "whiskered bat",
+  "version": "mMyoMys1.hap1.1",
+  "accessionID": {
+    "name": "GCA_964094495.2",
+    "url": "https://www.ncbi.nlm.nih.gov/datasets/genome/GCA_964094495.2/"
+  },
+  "assemblySource": "GenBank",
+  "documentation": "Myotis mystacinus assembly mMyoMys1.hap1.1 (GCA_964094495.2), from VGP.\n"
+}

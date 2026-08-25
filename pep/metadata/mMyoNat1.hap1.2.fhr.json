@@ -1,0 +1,17 @@
+{
+  "schema": "https://raw.githubusercontent.com/FAIR-bioHeaders/FHR-Specification/main/fhr.json",
+  "schemaVersion": 1.0,
+  "genome": "Myotis nattereri",
+  "taxon": {
+    "name": "Myotis nattereri",
+    "uri": "https://identifiers.org/taxonomy:109481"
+  },
+  "commonName": "Natterer's bat",
+  "version": "mMyoNat1.hap1.2",
+  "accessionID": {
+    "name": "GCA_964212035.2",
+    "url": "https://www.ncbi.nlm.nih.gov/datasets/genome/GCA_964212035.2/"
+  },
+  "assemblySource": "GenBank",
+  "documentation": "Myotis nattereri assembly mMyoNat1.hap1.2 (GCA_964212035.2), from VGP.\n"
+}

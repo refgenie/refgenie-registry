@@ -1,0 +1,17 @@
+{
+  "schema": "https://raw.githubusercontent.com/FAIR-bioHeaders/FHR-Specification/main/fhr.json",
+  "schemaVersion": 1.0,
+  "genome": "Thunnus albacares",
+  "taxon": {
+    "name": "Thunnus albacares",
+    "uri": "https://identifiers.org/taxonomy:8236"
+  },
+  "commonName": "yellowfin tuna",
+  "version": "fThuAlb1.1",
+  "accessionID": {
+    "name": "GCF_914725855.1",
+    "url": "https://www.ncbi.nlm.nih.gov/datasets/genome/GCF_914725855.1/"
+  },
+  "assemblySource": "RefSeq",
+  "documentation": "Thunnus albacares assembly fThuAlb1.1 (GCF_914725855.1), from VGP.\n"
+}

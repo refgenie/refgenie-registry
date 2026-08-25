@@ -1,0 +1,16 @@
+{
+  "schema": "https://raw.githubusercontent.com/FAIR-bioHeaders/FHR-Specification/main/fhr.json",
+  "schemaVersion": 1.0,
+  "genome": "Falco punctatus",
+  "taxon": {
+    "name": "Falco punctatus",
+    "uri": "https://identifiers.org/taxonomy:148596"
+  },
+  "version": "bFalPun1.1",
+  "accessionID": {
+    "name": "GCA_963210335.1",
+    "url": "https://www.ncbi.nlm.nih.gov/datasets/genome/GCA_963210335.1/"
+  },
+  "assemblySource": "GenBank",
+  "documentation": "Falco punctatus assembly bFalPun1.1 (GCA_963210335.1), from VGP.\n"
+}

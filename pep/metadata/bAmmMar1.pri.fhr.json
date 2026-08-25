@@ -1,0 +1,16 @@
+{
+  "schema": "https://raw.githubusercontent.com/FAIR-bioHeaders/FHR-Specification/main/fhr.json",
+  "schemaVersion": 1.0,
+  "genome": "Ammospiza maritima maritima",
+  "taxon": {
+    "name": "Ammospiza maritima maritima",
+    "uri": "https://identifiers.org/taxonomy:3111550"
+  },
+  "version": "bAmmMar1.pri",
+  "accessionID": {
+    "name": "GCA_036010785.1",
+    "url": "https://www.ncbi.nlm.nih.gov/datasets/genome/GCA_036010785.1/"
+  },
+  "assemblySource": "GenBank",
+  "documentation": "Ammospiza maritima maritima assembly bAmmMar1.pri (GCA_036010785.1), from VGP.\n"
+}

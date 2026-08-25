@@ -1,0 +1,17 @@
+{
+  "schema": "https://raw.githubusercontent.com/FAIR-bioHeaders/FHR-Specification/main/fhr.json",
+  "schemaVersion": 1.0,
+  "genome": "Gopherus evgoodei",
+  "taxon": {
+    "name": "Gopherus evgoodei",
+    "uri": "https://identifiers.org/taxonomy:1825980"
+  },
+  "commonName": "Goodes thornscrub tortoise",
+  "version": "rGopEvg1_v1.p",
+  "accessionID": {
+    "name": "GCF_007399415.2",
+    "url": "https://www.ncbi.nlm.nih.gov/datasets/genome/GCF_007399415.2/"
+  },
+  "assemblySource": "RefSeq",
+  "documentation": "Gopherus evgoodei assembly rGopEvg1_v1.p (GCF_007399415.2), from VGP.\n"
+}

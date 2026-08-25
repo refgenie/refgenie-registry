@@ -1,0 +1,23 @@
+name: mSciVul1.2
+description: |
+  Sciurus vulgaris assembly mSciVul1.2 (GCA_902686455.2), from VGP.
+organism:
+  scientific_name: Sciurus vulgaris
+  common_name: Eurasian red squirrel
+  taxon_id: 55149
+assembly:
+  source: GenBank
+  accession: GCA_902686455.2
+fasta:
+  sources:
+  - provider: UCSC
+    url: https://hgdownload.soe.ucsc.edu/hubs/GCA/902/686/455/GCA_902686455.2/GCA_902686455.2.fa.gz
+  checksum:
+    sha256: compute_on_registration
+seqcol:
+  compute: true
+build:
+  store: vgp
+  tier: store_only
+metadata:
+  added_by: sources_to_genomes

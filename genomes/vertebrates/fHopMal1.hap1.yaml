@@ -1,0 +1,23 @@
+name: fHopMal1.hap1
+description: |
+  Hoplias malabaricus assembly fHopMal1.hap1 (GCA_029633855.2), from VGP.
+organism:
+  scientific_name: Hoplias malabaricus
+  common_name: trahira
+  taxon_id: 27720
+assembly:
+  source: GenBank
+  accession: GCA_029633855.2
+fasta:
+  sources:
+  - provider: UCSC
+    url: https://hgdownload.soe.ucsc.edu/hubs/GCA/029/633/855/GCA_029633855.2/GCA_029633855.2.fa.gz
+  checksum:
+    sha256: compute_on_registration
+seqcol:
+  compute: true
+build:
+  store: vgp
+  tier: store_only
+metadata:
+  added_by: sources_to_genomes

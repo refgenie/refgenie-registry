@@ -1,0 +1,23 @@
+name: rGopEvg1_v1.p
+description: |
+  Gopherus evgoodei assembly rGopEvg1_v1.p (GCF_007399415.2), from VGP.
+organism:
+  scientific_name: Gopherus evgoodei
+  common_name: Goodes thornscrub tortoise
+  taxon_id: 1825980
+assembly:
+  source: RefSeq
+  accession: GCF_007399415.2
+fasta:
+  sources:
+  - provider: UCSC
+    url: https://hgdownload.soe.ucsc.edu/hubs/GCF/007/399/415/GCF_007399415.2/GCF_007399415.2.fa.gz
+  checksum:
+    sha256: compute_on_registration
+seqcol:
+  compute: true
+build:
+  store: vgp
+  tier: store_only
+metadata:
+  added_by: sources_to_genomes

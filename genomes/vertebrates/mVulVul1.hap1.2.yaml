@@ -1,0 +1,23 @@
+name: mVulVul1.hap1.2
+description: |
+  Vulpes vulpes assembly mVulVul1.hap1.2 (GCA_964106825.2), from VGP.
+organism:
+  scientific_name: Vulpes vulpes
+  common_name: red fox
+  taxon_id: 9627
+assembly:
+  source: GenBank
+  accession: GCA_964106825.2
+fasta:
+  sources:
+  - provider: UCSC
+    url: https://hgdownload.soe.ucsc.edu/hubs/GCA/964/106/825/GCA_964106825.2/GCA_964106825.2.fa.gz
+  checksum:
+    sha256: compute_on_registration
+seqcol:
+  compute: true
+build:
+  store: vgp
+  tier: store_only
+metadata:
+  added_by: sources_to_genomes

@@ -1,0 +1,20 @@
+{
+  "schema": "https://raw.githubusercontent.com/FAIR-bioHeaders/FHR-Specification/main/fhr.json",
+  "schemaVersion": 1.0,
+  "genome": "Homo sapiens",
+  "taxon": {
+    "name": "Homo sapiens",
+    "uri": "https://identifiers.org/taxonomy:9606"
+  },
+  "commonName": "human",
+  "version": "hg38_full_analysis",
+  "genomeSynonym": [
+    "GRCh38.p14-fasta-full-analysis"
+  ],
+  "accessionID": {
+    "name": "GCA_000001405.15",
+    "url": "https://www.ncbi.nlm.nih.gov/datasets/genome/GCA_000001405.15/"
+  },
+  "assemblySource": "NCBI",
+  "documentation": "GCA_000001405.15_GRCh38_full_analysis_set from NCBI\n"
+}

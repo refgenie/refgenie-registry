@@ -1,0 +1,16 @@
+{
+  "schema": "https://raw.githubusercontent.com/FAIR-bioHeaders/FHR-Specification/main/fhr.json",
+  "schemaVersion": 1.0,
+  "genome": "Aquila chrysaetos chrysaetos",
+  "taxon": {
+    "name": "Aquila chrysaetos chrysaetos",
+    "uri": "https://identifiers.org/taxonomy:223781"
+  },
+  "version": "bAquChr1.4",
+  "accessionID": {
+    "name": "GCF_900496995.4",
+    "url": "https://www.ncbi.nlm.nih.gov/datasets/genome/GCF_900496995.4/"
+  },
+  "assemblySource": "RefSeq",
+  "documentation": "Aquila chrysaetos chrysaetos assembly bAquChr1.4 (GCF_900496995.4), from VGP.\n"
+}

@@ -1,0 +1,23 @@
+name: bGypBar2.pri
+description: |
+  Gypaetus barbatus assembly bGypBar2.pri (GCA_028022735.1), from VGP.
+organism:
+  scientific_name: Gypaetus barbatus
+  common_name: lammergeier
+  taxon_id: 33610
+assembly:
+  source: GenBank
+  accession: GCA_028022735.1
+fasta:
+  sources:
+  - provider: UCSC
+    url: https://hgdownload.soe.ucsc.edu/hubs/GCA/028/022/735/GCA_028022735.1/GCA_028022735.1.fa.gz
+  checksum:
+    sha256: compute_on_registration
+seqcol:
+  compute: true
+build:
+  store: vgp
+  tier: store_only
+metadata:
+  added_by: sources_to_genomes

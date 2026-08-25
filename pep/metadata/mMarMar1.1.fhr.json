@@ -1,0 +1,17 @@
+{
+  "schema": "https://raw.githubusercontent.com/FAIR-bioHeaders/FHR-Specification/main/fhr.json",
+  "schemaVersion": 1.0,
+  "genome": "Martes martes",
+  "taxon": {
+    "name": "Martes martes",
+    "uri": "https://identifiers.org/taxonomy:29065"
+  },
+  "commonName": "European pine marten",
+  "version": "mMarMar1.1",
+  "accessionID": {
+    "name": "GCA_963455335.1",
+    "url": "https://www.ncbi.nlm.nih.gov/datasets/genome/GCA_963455335.1/"
+  },
+  "assemblySource": "GenBank",
+  "documentation": "Martes martes assembly mMarMar1.1 (GCA_963455335.1), from VGP.\n"
+}

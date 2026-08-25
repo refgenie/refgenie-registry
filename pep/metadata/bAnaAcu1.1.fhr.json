@@ -1,0 +1,17 @@
+{
+  "schema": "https://raw.githubusercontent.com/FAIR-bioHeaders/FHR-Specification/main/fhr.json",
+  "schemaVersion": 1.0,
+  "genome": "Anas acuta",
+  "taxon": {
+    "name": "Anas acuta",
+    "uri": "https://identifiers.org/taxonomy:28680"
+  },
+  "commonName": "northern pintail",
+  "version": "bAnaAcu1.1",
+  "accessionID": {
+    "name": "GCF_963932015.1",
+    "url": "https://www.ncbi.nlm.nih.gov/datasets/genome/GCF_963932015.1/"
+  },
+  "assemblySource": "RefSeq",
+  "documentation": "Anas acuta assembly bAnaAcu1.1 (GCF_963932015.1), from VGP.\n"
+}

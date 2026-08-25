@@ -1,0 +1,17 @@
+{
+  "schema": "https://raw.githubusercontent.com/FAIR-bioHeaders/FHR-Specification/main/fhr.json",
+  "schemaVersion": 1.0,
+  "genome": "Geotrypetes seraphini",
+  "taxon": {
+    "name": "Geotrypetes seraphini",
+    "uri": "https://identifiers.org/taxonomy:260995"
+  },
+  "commonName": "Gabon caecilian",
+  "version": "aGeoSer1.2",
+  "accessionID": {
+    "name": "GCA_902459505.2",
+    "url": "https://www.ncbi.nlm.nih.gov/datasets/genome/GCA_902459505.2/"
+  },
+  "assemblySource": "GenBank",
+  "documentation": "Geotrypetes seraphini assembly aGeoSer1.2 (GCA_902459505.2), from VGP.\n"
+}

@@ -1,0 +1,17 @@
+{
+  "schema": "https://raw.githubusercontent.com/FAIR-bioHeaders/FHR-Specification/main/fhr.json",
+  "schemaVersion": 1.0,
+  "genome": "Anas platyrhynchos",
+  "taxon": {
+    "name": "Anas platyrhynchos",
+    "uri": "https://identifiers.org/taxonomy:8839"
+  },
+  "commonName": "mallard",
+  "version": "ZJU1.0",
+  "accessionID": {
+    "name": "GCF_015476345.1",
+    "url": "https://www.ncbi.nlm.nih.gov/datasets/genome/GCF_015476345.1/"
+  },
+  "assemblySource": "RefSeq",
+  "documentation": "Anas platyrhynchos assembly ZJU1.0 (GCF_015476345.1), from VGP.\n"
+}

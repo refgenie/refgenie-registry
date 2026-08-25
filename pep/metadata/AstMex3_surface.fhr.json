@@ -1,0 +1,17 @@
+{
+  "schema": "https://raw.githubusercontent.com/FAIR-bioHeaders/FHR-Specification/main/fhr.json",
+  "schemaVersion": 1.0,
+  "genome": "Astyanax mexicanus",
+  "taxon": {
+    "name": "Astyanax mexicanus",
+    "uri": "https://identifiers.org/taxonomy:7994"
+  },
+  "commonName": "Mexican tetra",
+  "version": "AstMex3_surface",
+  "accessionID": {
+    "name": "GCF_023375975.1",
+    "url": "https://www.ncbi.nlm.nih.gov/datasets/genome/GCF_023375975.1/"
+  },
+  "assemblySource": "RefSeq",
+  "documentation": "Astyanax mexicanus assembly AstMex3_surface (GCF_023375975.1), from VGP.\n"
+}

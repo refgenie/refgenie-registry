@@ -1,0 +1,17 @@
+{
+  "schema": "https://raw.githubusercontent.com/FAIR-bioHeaders/FHR-Specification/main/fhr.json",
+  "schemaVersion": 1.0,
+  "genome": "Phaethornis superciliosus",
+  "taxon": {
+    "name": "Phaethornis superciliosus",
+    "uri": "https://identifiers.org/taxonomy:46513"
+  },
+  "commonName": "long-tailed hermit",
+  "version": "bPhaSup1.pri",
+  "accessionID": {
+    "name": "GCA_023637945.2",
+    "url": "https://www.ncbi.nlm.nih.gov/datasets/genome/GCA_023637945.2/"
+  },
+  "assemblySource": "GenBank",
+  "documentation": "Phaethornis superciliosus assembly bPhaSup1.pri (GCA_023637945.2), from VGP.\n"
+}

@@ -1,0 +1,23 @@
+name: NGI_Narwhal_2
+description: |
+  Monodon monoceros assembly NGI_Narwhal_2 (GCA_005190385.3), from VGP.
+organism:
+  scientific_name: Monodon monoceros
+  common_name: narwhal
+  taxon_id: 40151
+assembly:
+  source: GenBank
+  accession: GCA_005190385.3
+fasta:
+  sources:
+  - provider: UCSC
+    url: https://hgdownload.soe.ucsc.edu/hubs/GCA/005/190/385/GCA_005190385.3/GCA_005190385.3.fa.gz
+  checksum:
+    sha256: compute_on_registration
+seqcol:
+  compute: true
+build:
+  store: vgp
+  tier: store_only
+metadata:
+  added_by: sources_to_genomes

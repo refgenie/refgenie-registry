@@ -1,0 +1,23 @@
+name: fHipHip1.pri
+description: |
+  Hippoglossus hippoglossus assembly fHipHip1.pri (GCF_009819705.1), from VGP.
+organism:
+  scientific_name: Hippoglossus hippoglossus
+  common_name: Atlantic halibut
+  taxon_id: 8267
+assembly:
+  source: RefSeq
+  accession: GCF_009819705.1
+fasta:
+  sources:
+  - provider: UCSC
+    url: https://hgdownload.soe.ucsc.edu/hubs/GCF/009/819/705/GCF_009819705.1/GCF_009819705.1.fa.gz
+  checksum:
+    sha256: compute_on_registration
+seqcol:
+  compute: true
+build:
+  store: vgp
+  tier: store_only
+metadata:
+  added_by: sources_to_genomes

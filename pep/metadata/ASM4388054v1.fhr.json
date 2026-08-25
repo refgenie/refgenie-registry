@@ -1,0 +1,17 @@
+{
+  "schema": "https://raw.githubusercontent.com/FAIR-bioHeaders/FHR-Specification/main/fhr.json",
+  "schemaVersion": 1.0,
+  "genome": "Rhinopoma microphyllum",
+  "taxon": {
+    "name": "Rhinopoma microphyllum",
+    "uri": "https://identifiers.org/taxonomy:173903"
+  },
+  "commonName": "Greater mouse-tailed bat",
+  "version": "ASM4388054v1",
+  "accessionID": {
+    "name": "GCA_043880545.1",
+    "url": "https://www.ncbi.nlm.nih.gov/datasets/genome/GCA_043880545.1/"
+  },
+  "assemblySource": "GenBank",
+  "documentation": "Rhinopoma microphyllum assembly ASM4388054v1 (GCA_043880545.1), from VGP.\n"
+}

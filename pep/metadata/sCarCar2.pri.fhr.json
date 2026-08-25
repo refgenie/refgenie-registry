@@ -1,0 +1,17 @@
+{
+  "schema": "https://raw.githubusercontent.com/FAIR-bioHeaders/FHR-Specification/main/fhr.json",
+  "schemaVersion": 1.0,
+  "genome": "Carcharodon carcharias",
+  "taxon": {
+    "name": "Carcharodon carcharias",
+    "uri": "https://identifiers.org/taxonomy:13397"
+  },
+  "commonName": "great white shark",
+  "version": "sCarCar2.pri",
+  "accessionID": {
+    "name": "GCF_017639515.1",
+    "url": "https://www.ncbi.nlm.nih.gov/datasets/genome/GCF_017639515.1/"
+  },
+  "assemblySource": "RefSeq",
+  "documentation": "Carcharodon carcharias assembly sCarCar2.pri (GCF_017639515.1), from VGP.\n"
+}

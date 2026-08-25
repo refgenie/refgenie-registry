@@ -1,0 +1,16 @@
+{
+  "schema": "https://raw.githubusercontent.com/FAIR-bioHeaders/FHR-Specification/main/fhr.json",
+  "schemaVersion": 1.0,
+  "genome": "Mus musculus",
+  "taxon": {
+    "name": "Mus musculus",
+    "uri": "https://identifiers.org/taxonomy:10090"
+  },
+  "commonName": "mouse",
+  "version": "mm39_primary_rm_ensembl",
+  "genomeSynonym": [
+    "GRCm39-primary-rm-113-ensembl"
+  ],
+  "assemblySource": "Ensembl",
+  "documentation": "ensembl 113 primary assembly rm\n"
+}

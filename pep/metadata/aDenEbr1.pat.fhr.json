@@ -1,0 +1,17 @@
+{
+  "schema": "https://raw.githubusercontent.com/FAIR-bioHeaders/FHR-Specification/main/fhr.json",
+  "schemaVersion": 1.0,
+  "genome": "Dendropsophus ebraccatus",
+  "taxon": {
+    "name": "Dendropsophus ebraccatus",
+    "uri": "https://identifiers.org/taxonomy:150705"
+  },
+  "commonName": "hourglass treefrog",
+  "version": "aDenEbr1.pat",
+  "accessionID": {
+    "name": "GCF_027789765.1",
+    "url": "https://www.ncbi.nlm.nih.gov/datasets/genome/GCF_027789765.1/"
+  },
+  "assemblySource": "RefSeq",
+  "documentation": "Dendropsophus ebraccatus assembly aDenEbr1.pat (GCF_027789765.1), from VGP.\n"
+}

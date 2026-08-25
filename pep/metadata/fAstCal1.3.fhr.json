@@ -1,0 +1,17 @@
+{
+  "schema": "https://raw.githubusercontent.com/FAIR-bioHeaders/FHR-Specification/main/fhr.json",
+  "schemaVersion": 1.0,
+  "genome": "Astatotilapia calliptera",
+  "taxon": {
+    "name": "Astatotilapia calliptera",
+    "uri": "https://identifiers.org/taxonomy:8154"
+  },
+  "commonName": "eastern happy",
+  "version": "fAstCal1.3",
+  "accessionID": {
+    "name": "GCA_900246225.5",
+    "url": "https://www.ncbi.nlm.nih.gov/datasets/genome/GCA_900246225.5/"
+  },
+  "assemblySource": "GenBank",
+  "documentation": "Astatotilapia calliptera assembly fAstCal1.3 (GCA_900246225.5), from VGP.\n"
+}

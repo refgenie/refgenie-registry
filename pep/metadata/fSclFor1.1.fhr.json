@@ -1,0 +1,17 @@
+{
+  "schema": "https://raw.githubusercontent.com/FAIR-bioHeaders/FHR-Specification/main/fhr.json",
+  "schemaVersion": 1.0,
+  "genome": "Scleropages formosus",
+  "taxon": {
+    "name": "Scleropages formosus",
+    "uri": "https://identifiers.org/taxonomy:113540"
+  },
+  "commonName": "Asian bonytongue",
+  "version": "fSclFor1.1",
+  "accessionID": {
+    "name": "GCF_900964775.1",
+    "url": "https://www.ncbi.nlm.nih.gov/datasets/genome/GCF_900964775.1/"
+  },
+  "assemblySource": "RefSeq",
+  "documentation": "Scleropages formosus assembly fSclFor1.1 (GCF_900964775.1), from VGP.\n"
+}

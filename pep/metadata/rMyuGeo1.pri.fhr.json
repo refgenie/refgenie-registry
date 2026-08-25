@@ -1,0 +1,17 @@
+{
+  "schema": "https://raw.githubusercontent.com/FAIR-bioHeaders/FHR-Specification/main/fhr.json",
+  "schemaVersion": 1.0,
+  "genome": "Myuchelys georgesi",
+  "taxon": {
+    "name": "Myuchelys georgesi",
+    "uri": "https://identifiers.org/taxonomy:1041117"
+  },
+  "commonName": "Bellinger river turtle",
+  "version": "rMyuGeo1.pri",
+  "accessionID": {
+    "name": "GCA_040894355.2",
+    "url": "https://www.ncbi.nlm.nih.gov/datasets/genome/GCA_040894355.2/"
+  },
+  "assemblySource": "GenBank",
+  "documentation": "Myuchelys georgesi assembly rMyuGeo1.pri (GCA_040894355.2), from VGP.\n"
+}

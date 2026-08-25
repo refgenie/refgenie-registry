@@ -1,0 +1,17 @@
+{
+  "schema": "https://raw.githubusercontent.com/FAIR-bioHeaders/FHR-Specification/main/fhr.json",
+  "schemaVersion": 1.0,
+  "genome": "Caesio teres",
+  "taxon": {
+    "name": "Caesio teres",
+    "uri": "https://identifiers.org/taxonomy:1311420"
+  },
+  "commonName": "yellow and blueback fusilier",
+  "version": "fCaeTer1.1_haplotype_1",
+  "accessionID": {
+    "name": "GCA_048129055.1",
+    "url": "https://www.ncbi.nlm.nih.gov/datasets/genome/GCA_048129055.1/"
+  },
+  "assemblySource": "GenBank",
+  "documentation": "Caesio teres assembly fCaeTer1.1_haplotype_1 (GCA_048129055.1), from VGP.\n"
+}

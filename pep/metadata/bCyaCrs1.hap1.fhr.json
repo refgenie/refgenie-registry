@@ -1,0 +1,17 @@
+{
+  "schema": "https://raw.githubusercontent.com/FAIR-bioHeaders/FHR-Specification/main/fhr.json",
+  "schemaVersion": 1.0,
+  "genome": "Cyanocitta cristata",
+  "taxon": {
+    "name": "Cyanocitta cristata",
+    "uri": "https://identifiers.org/taxonomy:28727"
+  },
+  "commonName": "blue jay",
+  "version": "bCyaCrs1.hap1",
+  "accessionID": {
+    "name": "GCA_046129655.1",
+    "url": "https://www.ncbi.nlm.nih.gov/datasets/genome/GCA_046129655.1/"
+  },
+  "assemblySource": "GenBank",
+  "documentation": "Cyanocitta cristata assembly bCyaCrs1.hap1 (GCA_046129655.1), from VGP.\n"
+}

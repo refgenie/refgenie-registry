@@ -1,0 +1,17 @@
+{
+  "schema": "https://raw.githubusercontent.com/FAIR-bioHeaders/FHR-Specification/main/fhr.json",
+  "schemaVersion": 1.0,
+  "genome": "Bucephala clangula",
+  "taxon": {
+    "name": "Bucephala clangula",
+    "uri": "https://identifiers.org/taxonomy:107022"
+  },
+  "commonName": "common goldeneye",
+  "version": "bBucCla1.1",
+  "accessionID": {
+    "name": "GCA_964059595.1",
+    "url": "https://www.ncbi.nlm.nih.gov/datasets/genome/GCA_964059595.1/"
+  },
+  "assemblySource": "GenBank",
+  "documentation": "Bucephala clangula assembly bBucCla1.1 (GCA_964059595.1), from VGP.\n"
+}

@@ -1,0 +1,22 @@
+name: kaTriClin1.1
+description: |
+  Trididemnum clinides assembly kaTriClin1.1 (GCA_963675345.1), from VGP.
+organism:
+  scientific_name: Trididemnum clinides
+  taxon_id: 641091
+assembly:
+  source: GenBank
+  accession: GCA_963675345.1
+fasta:
+  sources:
+  - provider: UCSC
+    url: https://hgdownload.soe.ucsc.edu/hubs/GCA/963/675/345/GCA_963675345.1/GCA_963675345.1.fa.gz
+  checksum:
+    sha256: compute_on_registration
+seqcol:
+  compute: true
+build:
+  store: vgp
+  tier: store_only
+metadata:
+  added_by: sources_to_genomes

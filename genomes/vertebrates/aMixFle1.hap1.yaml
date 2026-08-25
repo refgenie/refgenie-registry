@@ -1,0 +1,23 @@
+name: aMixFle1.hap1
+description: |
+  Mixophyes fleayi assembly aMixFle1.hap1 (GCA_038048845.1), from VGP.
+organism:
+  scientific_name: Mixophyes fleayi
+  common_name: Fleay's barred frog
+  taxon_id: 3061075
+assembly:
+  source: GenBank
+  accession: GCA_038048845.1
+fasta:
+  sources:
+  - provider: UCSC
+    url: https://hgdownload.soe.ucsc.edu/hubs/GCA/038/048/845/GCA_038048845.1/GCA_038048845.1.fa.gz
+  checksum:
+    sha256: compute_on_registration
+seqcol:
+  compute: true
+build:
+  store: vgp
+  tier: store_only
+metadata:
+  added_by: sources_to_genomes

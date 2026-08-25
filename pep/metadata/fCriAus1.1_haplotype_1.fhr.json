@@ -1,0 +1,17 @@
+{
+  "schema": "https://raw.githubusercontent.com/FAIR-bioHeaders/FHR-Specification/main/fhr.json",
+  "schemaVersion": 1.0,
+  "genome": "Cristiceps australis",
+  "taxon": {
+    "name": "Cristiceps australis",
+    "uri": "https://identifiers.org/taxonomy:879810"
+  },
+  "commonName": "crested weedfish",
+  "version": "fCriAus1.1_haplotype_1",
+  "accessionID": {
+    "name": "GCA_049082185.1",
+    "url": "https://www.ncbi.nlm.nih.gov/datasets/genome/GCA_049082185.1/"
+  },
+  "assemblySource": "GenBank",
+  "documentation": "Cristiceps australis assembly fCriAus1.1_haplotype_1 (GCA_049082185.1), from VGP.\n"
+}

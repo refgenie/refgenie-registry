@@ -1,0 +1,16 @@
+{
+  "schema": "https://raw.githubusercontent.com/FAIR-bioHeaders/FHR-Specification/main/fhr.json",
+  "schemaVersion": 1.0,
+  "genome": "Ammospiza nelsoni",
+  "taxon": {
+    "name": "Ammospiza nelsoni",
+    "uri": "https://identifiers.org/taxonomy:2857394"
+  },
+  "version": "bAmmNel1.pri",
+  "accessionID": {
+    "name": "GCF_027579445.1",
+    "url": "https://www.ncbi.nlm.nih.gov/datasets/genome/GCF_027579445.1/"
+  },
+  "assemblySource": "RefSeq",
+  "documentation": "Ammospiza nelsoni assembly bAmmNel1.pri (GCF_027579445.1), from VGP.\n"
+}

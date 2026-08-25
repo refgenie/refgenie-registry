@@ -1,0 +1,23 @@
+name: fMicKit1.1
+description: |
+  Microstomus kitt assembly fMicKit1.1 (GCA_964266715.1), from VGP.
+organism:
+  scientific_name: Microstomus kitt
+  common_name: lemon sole
+  taxon_id: 106175
+assembly:
+  source: GenBank
+  accession: GCA_964266715.1
+fasta:
+  sources:
+  - provider: UCSC
+    url: https://hgdownload.soe.ucsc.edu/hubs/GCA/964/266/715/GCA_964266715.1/GCA_964266715.1.fa.gz
+  checksum:
+    sha256: compute_on_registration
+seqcol:
+  compute: true
+build:
+  store: vgp
+  tier: store_only
+metadata:
+  added_by: sources_to_genomes

@@ -1,0 +1,17 @@
+{
+  "schema": "https://raw.githubusercontent.com/FAIR-bioHeaders/FHR-Specification/main/fhr.json",
+  "schemaVersion": 1.0,
+  "genome": "Inia geoffrensis",
+  "taxon": {
+    "name": "Inia geoffrensis",
+    "uri": "https://identifiers.org/taxonomy:9725"
+  },
+  "commonName": "Amazon river dolphin",
+  "version": "mIniGeo1.hap1",
+  "accessionID": {
+    "name": "GCA_036417435.1",
+    "url": "https://www.ncbi.nlm.nih.gov/datasets/genome/GCA_036417435.1/"
+  },
+  "assemblySource": "GenBank",
+  "documentation": "Inia geoffrensis assembly mIniGeo1.hap1 (GCA_036417435.1), from VGP.\n"
+}

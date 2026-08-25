@@ -1,0 +1,23 @@
+name: mSpeCit3.1
+description: |
+  Spermophilus citellus assembly mSpeCit3.1 (GCA_964194105.1), from VGP.
+organism:
+  scientific_name: Spermophilus citellus
+  common_name: European ground squirrel
+  taxon_id: 9997
+assembly:
+  source: GenBank
+  accession: GCA_964194105.1
+fasta:
+  sources:
+  - provider: UCSC
+    url: https://hgdownload.soe.ucsc.edu/hubs/GCA/964/194/105/GCA_964194105.1/GCA_964194105.1.fa.gz
+  checksum:
+    sha256: compute_on_registration
+seqcol:
+  compute: true
+build:
+  store: vgp
+  tier: store_only
+metadata:
+  added_by: sources_to_genomes

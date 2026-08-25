@@ -1,0 +1,17 @@
+{
+  "schema": "https://raw.githubusercontent.com/FAIR-bioHeaders/FHR-Specification/main/fhr.json",
+  "schemaVersion": 1.0,
+  "genome": "Parambassis ranga",
+  "taxon": {
+    "name": "Parambassis ranga",
+    "uri": "https://identifiers.org/taxonomy:210632"
+  },
+  "commonName": "Indian glassy fish",
+  "version": "fParRan2.2",
+  "accessionID": {
+    "name": "GCA_900634625.2",
+    "url": "https://www.ncbi.nlm.nih.gov/datasets/genome/GCA_900634625.2/"
+  },
+  "assemblySource": "GenBank",
+  "documentation": "Parambassis ranga assembly fParRan2.2 (GCA_900634625.2), from VGP.\n"
+}

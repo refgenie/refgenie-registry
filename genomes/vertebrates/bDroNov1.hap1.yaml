@@ -1,0 +1,23 @@
+name: bDroNov1.hap1
+description: |
+  Dromaius novaehollandiae assembly bDroNov1.hap1 (GCF_036370855.1), from VGP.
+organism:
+  scientific_name: Dromaius novaehollandiae
+  common_name: emu
+  taxon_id: 8790
+assembly:
+  source: RefSeq
+  accession: GCF_036370855.1
+fasta:
+  sources:
+  - provider: UCSC
+    url: https://hgdownload.soe.ucsc.edu/hubs/GCF/036/370/855/GCF_036370855.1/GCF_036370855.1.fa.gz
+  checksum:
+    sha256: compute_on_registration
+seqcol:
+  compute: true
+build:
+  store: vgp
+  tier: store_only
+metadata:
+  added_by: sources_to_genomes

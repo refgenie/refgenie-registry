@@ -1,0 +1,17 @@
+{
+  "schema": "https://raw.githubusercontent.com/FAIR-bioHeaders/FHR-Specification/main/fhr.json",
+  "schemaVersion": 1.0,
+  "genome": "Larus michahellis",
+  "taxon": {
+    "name": "Larus michahellis",
+    "uri": "https://identifiers.org/taxonomy:119627"
+  },
+  "commonName": "yellow-legged gull",
+  "version": "bLarMic1.1",
+  "accessionID": {
+    "name": "GCA_964199755.1",
+    "url": "https://www.ncbi.nlm.nih.gov/datasets/genome/GCA_964199755.1/"
+  },
+  "assemblySource": "GenBank",
+  "documentation": "Larus michahellis assembly bLarMic1.1 (GCA_964199755.1), from VGP.\n"
+}

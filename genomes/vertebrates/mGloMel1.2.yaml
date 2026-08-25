@@ -1,0 +1,23 @@
+name: mGloMel1.2
+description: |
+  Globicephala melas assembly mGloMel1.2 (GCF_963455315.2), from VGP.
+organism:
+  scientific_name: Globicephala melas
+  common_name: long-finned pilot whale
+  taxon_id: 9731
+assembly:
+  source: RefSeq
+  accession: GCF_963455315.2
+fasta:
+  sources:
+  - provider: UCSC
+    url: https://hgdownload.soe.ucsc.edu/hubs/GCF/963/455/315/GCF_963455315.2/GCF_963455315.2.fa.gz
+  checksum:
+    sha256: compute_on_registration
+seqcol:
+  compute: true
+build:
+  store: vgp
+  tier: store_only
+metadata:
+  added_by: sources_to_genomes

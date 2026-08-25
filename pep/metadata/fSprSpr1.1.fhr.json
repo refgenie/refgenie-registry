@@ -1,0 +1,17 @@
+{
+  "schema": "https://raw.githubusercontent.com/FAIR-bioHeaders/FHR-Specification/main/fhr.json",
+  "schemaVersion": 1.0,
+  "genome": "Sprattus sprattus",
+  "taxon": {
+    "name": "Sprattus sprattus",
+    "uri": "https://identifiers.org/taxonomy:196075"
+  },
+  "commonName": "European sprat",
+  "version": "fSprSpr1.1",
+  "accessionID": {
+    "name": "GCA_963457725.1",
+    "url": "https://www.ncbi.nlm.nih.gov/datasets/genome/GCA_963457725.1/"
+  },
+  "assemblySource": "GenBank",
+  "documentation": "Sprattus sprattus assembly fSprSpr1.1 (GCA_963457725.1), from VGP.\n"
+}

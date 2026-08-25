@@ -1,0 +1,17 @@
+{
+  "schema": "https://raw.githubusercontent.com/FAIR-bioHeaders/FHR-Specification/main/fhr.json",
+  "schemaVersion": 1.0,
+  "genome": "Sylvilagus floridanus",
+  "taxon": {
+    "name": "Sylvilagus floridanus",
+    "uri": "https://identifiers.org/taxonomy:9988"
+  },
+  "commonName": "eastern cottontail",
+  "version": "mSylFlo1.10",
+  "accessionID": {
+    "name": "GCA_949820135.1",
+    "url": "https://www.ncbi.nlm.nih.gov/datasets/genome/GCA_949820135.1/"
+  },
+  "assemblySource": "GenBank",
+  "documentation": "Sylvilagus floridanus assembly mSylFlo1.10 (GCA_949820135.1), from VGP.\n"
+}

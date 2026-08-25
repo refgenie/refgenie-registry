@@ -1,0 +1,23 @@
+name: mCynVol1.pri
+description: |
+  Cynocephalus volans assembly mCynVol1.pri (GCF_027409185.1), from VGP.
+organism:
+  scientific_name: Cynocephalus volans
+  common_name: Philippine flying lemur
+  taxon_id: 110931
+assembly:
+  source: RefSeq
+  accession: GCF_027409185.1
+fasta:
+  sources:
+  - provider: UCSC
+    url: https://hgdownload.soe.ucsc.edu/hubs/GCF/027/409/185/GCF_027409185.1/GCF_027409185.1.fa.gz
+  checksum:
+    sha256: compute_on_registration
+seqcol:
+  compute: true
+build:
+  store: vgp
+  tier: store_only
+metadata:
+  added_by: sources_to_genomes

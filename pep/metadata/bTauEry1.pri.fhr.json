@@ -1,0 +1,17 @@
+{
+  "schema": "https://raw.githubusercontent.com/FAIR-bioHeaders/FHR-Specification/main/fhr.json",
+  "schemaVersion": 1.0,
+  "genome": "Tauraco erythrolophus",
+  "taxon": {
+    "name": "Tauraco erythrolophus",
+    "uri": "https://identifiers.org/taxonomy:121530"
+  },
+  "commonName": "red-crested turaco",
+  "version": "bTauEry1.pri",
+  "accessionID": {
+    "name": "GCA_009769465.1",
+    "url": "https://www.ncbi.nlm.nih.gov/datasets/genome/GCA_009769465.1/"
+  },
+  "assemblySource": "GenBank",
+  "documentation": "Tauraco erythrolophus assembly bTauEry1.pri (GCA_009769465.1), from VGP.\n"
+}

@@ -1,0 +1,23 @@
+name: mSacBil1_pri_phased_curated
+description: |
+  Saccopteryx bilineata assembly mSacBil1_pri_phased_curated (GCF_036850765.1), from VGP.
+organism:
+  scientific_name: Saccopteryx bilineata
+  common_name: greater sac-winged bat
+  taxon_id: 59482
+assembly:
+  source: RefSeq
+  accession: GCF_036850765.1
+fasta:
+  sources:
+  - provider: UCSC
+    url: https://hgdownload.soe.ucsc.edu/hubs/GCF/036/850/765/GCF_036850765.1/GCF_036850765.1.fa.gz
+  checksum:
+    sha256: compute_on_registration
+seqcol:
+  compute: true
+build:
+  store: vgp
+  tier: store_only
+metadata:
+  added_by: sources_to_genomes

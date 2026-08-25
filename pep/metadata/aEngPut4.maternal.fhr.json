@@ -1,0 +1,17 @@
+{
+  "schema": "https://raw.githubusercontent.com/FAIR-bioHeaders/FHR-Specification/main/fhr.json",
+  "schemaVersion": 1.0,
+  "genome": "Engystomops pustulosus",
+  "taxon": {
+    "name": "Engystomops pustulosus",
+    "uri": "https://identifiers.org/taxonomy:76066"
+  },
+  "commonName": "Tungara frog",
+  "version": "aEngPut4.maternal",
+  "accessionID": {
+    "name": "GCF_040894005.1",
+    "url": "https://www.ncbi.nlm.nih.gov/datasets/genome/GCF_040894005.1/"
+  },
+  "assemblySource": "RefSeq",
+  "documentation": "Engystomops pustulosus assembly aEngPut4.maternal (GCF_040894005.1), from VGP.\n"
+}

@@ -1,0 +1,22 @@
+name: bPluApr1.pri
+description: |
+  Pluvialis apricaria assembly bPluApr1.pri (GCA_017639485.1), from VGP.
+organism:
+  scientific_name: Pluvialis apricaria
+  taxon_id: 670352
+assembly:
+  source: GenBank
+  accession: GCA_017639485.1
+fasta:
+  sources:
+  - provider: UCSC
+    url: https://hgdownload.soe.ucsc.edu/hubs/GCA/017/639/485/GCA_017639485.1/GCA_017639485.1.fa.gz
+  checksum:
+    sha256: compute_on_registration
+seqcol:
+  compute: true
+build:
+  store: vgp
+  tier: store_only
+metadata:
+  added_by: sources_to_genomes

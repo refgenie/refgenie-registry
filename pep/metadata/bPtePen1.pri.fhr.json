@@ -1,0 +1,17 @@
+{
+  "schema": "https://raw.githubusercontent.com/FAIR-bioHeaders/FHR-Specification/main/fhr.json",
+  "schemaVersion": 1.0,
+  "genome": "Rhea pennata",
+  "taxon": {
+    "name": "Rhea pennata",
+    "uri": "https://identifiers.org/taxonomy:8795"
+  },
+  "commonName": "lesser rhea",
+  "version": "bPtePen1.pri",
+  "accessionID": {
+    "name": "GCF_028389875.1",
+    "url": "https://www.ncbi.nlm.nih.gov/datasets/genome/GCF_028389875.1/"
+  },
+  "assemblySource": "RefSeq",
+  "documentation": "Rhea pennata assembly bPtePen1.pri (GCF_028389875.1), from VGP.\n"
+}

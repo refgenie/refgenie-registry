@@ -1,0 +1,23 @@
+name: ASM4388054v1
+description: |
+  Rhinopoma microphyllum assembly ASM4388054v1 (GCA_043880545.1), from VGP.
+organism:
+  scientific_name: Rhinopoma microphyllum
+  common_name: Greater mouse-tailed bat
+  taxon_id: 173903
+assembly:
+  source: GenBank
+  accession: GCA_043880545.1
+fasta:
+  sources:
+  - provider: UCSC
+    url: https://hgdownload.soe.ucsc.edu/hubs/GCA/043/880/545/GCA_043880545.1/GCA_043880545.1.fa.gz
+  checksum:
+    sha256: compute_on_registration
+seqcol:
+  compute: true
+build:
+  store: vgp
+  tier: store_only
+metadata:
+  added_by: sources_to_genomes

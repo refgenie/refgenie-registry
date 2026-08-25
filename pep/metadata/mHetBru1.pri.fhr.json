@@ -1,0 +1,17 @@
+{
+  "schema": "https://raw.githubusercontent.com/FAIR-bioHeaders/FHR-Specification/main/fhr.json",
+  "schemaVersion": 1.0,
+  "genome": "Heterohyrax brucei",
+  "taxon": {
+    "name": "Heterohyrax brucei",
+    "uri": "https://identifiers.org/taxonomy:77598"
+  },
+  "commonName": "yellow-spotted hyrax",
+  "version": "mHetBru1.pri",
+  "accessionID": {
+    "name": "GCA_028571685.1",
+    "url": "https://www.ncbi.nlm.nih.gov/datasets/genome/GCA_028571685.1/"
+  },
+  "assemblySource": "GenBank",
+  "documentation": "Heterohyrax brucei assembly mHetBru1.pri (GCA_028571685.1), from VGP.\n"
+}

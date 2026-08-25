@@ -1,0 +1,17 @@
+{
+  "schema": "https://raw.githubusercontent.com/FAIR-bioHeaders/FHR-Specification/main/fhr.json",
+  "schemaVersion": 1.0,
+  "genome": "Pipistrellus nathusii",
+  "taxon": {
+    "name": "Pipistrellus nathusii",
+    "uri": "https://identifiers.org/taxonomy:59473"
+  },
+  "commonName": "Nathusius's pipistrelle",
+  "version": "mPipNat1.hap1.1",
+  "accessionID": {
+    "name": "GCA_964656225.1",
+    "url": "https://www.ncbi.nlm.nih.gov/datasets/genome/GCA_964656225.1/"
+  },
+  "assemblySource": "GenBank",
+  "documentation": "Pipistrellus nathusii assembly mPipNat1.hap1.1 (GCA_964656225.1), from VGP.\n"
+}

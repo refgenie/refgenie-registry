@@ -27,6 +27,10 @@ seqcol:
   digest: tkRdBlSp5hewK4OpEJC87J9pw-ac0vOa
   length: 706
 
+build:
+  store: jungle
+  tier: store_only
+
 metadata:
   added: 2026-05-20
   added_by: nsheff

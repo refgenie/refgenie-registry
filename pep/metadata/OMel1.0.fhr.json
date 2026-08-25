@@ -1,0 +1,16 @@
+{
+  "schema": "https://raw.githubusercontent.com/FAIR-bioHeaders/FHR-Specification/main/fhr.json",
+  "schemaVersion": 1.0,
+  "genome": "Oenanthe melanoleuca",
+  "taxon": {
+    "name": "Oenanthe melanoleuca",
+    "uri": "https://identifiers.org/taxonomy:2939378"
+  },
+  "version": "OMel1.0",
+  "accessionID": {
+    "name": "GCF_029582105.1",
+    "url": "https://www.ncbi.nlm.nih.gov/datasets/genome/GCF_029582105.1/"
+  },
+  "assemblySource": "RefSeq",
+  "documentation": "Oenanthe melanoleuca assembly OMel1.0 (GCF_029582105.1), from VGP.\n"
+}

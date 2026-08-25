@@ -1,0 +1,23 @@
+name: mMicMin1.1
+description: |
+  Micromys minutus assembly mMicMin1.1 (GCA_963924665.1), from VGP.
+organism:
+  scientific_name: Micromys minutus
+  common_name: European harvest mouse
+  taxon_id: 13151
+assembly:
+  source: GenBank
+  accession: GCA_963924665.1
+fasta:
+  sources:
+  - provider: UCSC
+    url: https://hgdownload.soe.ucsc.edu/hubs/GCA/963/924/665/GCA_963924665.1/GCA_963924665.1.fa.gz
+  checksum:
+    sha256: compute_on_registration
+seqcol:
+  compute: true
+build:
+  store: vgp
+  tier: store_only
+metadata:
+  added_by: sources_to_genomes

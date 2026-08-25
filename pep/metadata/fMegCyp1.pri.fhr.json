@@ -1,0 +1,17 @@
+{
+  "schema": "https://raw.githubusercontent.com/FAIR-bioHeaders/FHR-Specification/main/fhr.json",
+  "schemaVersion": 1.0,
+  "genome": "Megalops cyprinoides",
+  "taxon": {
+    "name": "Megalops cyprinoides",
+    "uri": "https://identifiers.org/taxonomy:118141"
+  },
+  "commonName": "Indo-Pacific tarpon",
+  "version": "fMegCyp1.pri",
+  "accessionID": {
+    "name": "GCF_013368585.1",
+    "url": "https://www.ncbi.nlm.nih.gov/datasets/genome/GCF_013368585.1/"
+  },
+  "assemblySource": "RefSeq",
+  "documentation": "Megalops cyprinoides assembly fMegCyp1.pri (GCF_013368585.1), from VGP.\n"
+}

@@ -1,0 +1,17 @@
+{
+  "schema": "https://raw.githubusercontent.com/FAIR-bioHeaders/FHR-Specification/main/fhr.json",
+  "schemaVersion": 1.0,
+  "genome": "Jaculus jaculus",
+  "taxon": {
+    "name": "Jaculus jaculus",
+    "uri": "https://identifiers.org/taxonomy:51337"
+  },
+  "commonName": "lesser Egyptian jerboa",
+  "version": "mJacJac1.mat.Y.cur",
+  "accessionID": {
+    "name": "GCF_020740685.1",
+    "url": "https://www.ncbi.nlm.nih.gov/datasets/genome/GCF_020740685.1/"
+  },
+  "assemblySource": "RefSeq",
+  "documentation": "Jaculus jaculus assembly mJacJac1.mat.Y.cur (GCF_020740685.1), from VGP.\n"
+}

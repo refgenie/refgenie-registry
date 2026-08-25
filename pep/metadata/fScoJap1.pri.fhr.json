@@ -1,0 +1,17 @@
+{
+  "schema": "https://raw.githubusercontent.com/FAIR-bioHeaders/FHR-Specification/main/fhr.json",
+  "schemaVersion": 1.0,
+  "genome": "Scomber japonicus",
+  "taxon": {
+    "name": "Scomber japonicus",
+    "uri": "https://identifiers.org/taxonomy:13676"
+  },
+  "commonName": "chub mackerel",
+  "version": "fScoJap1.pri",
+  "accessionID": {
+    "name": "GCF_027409825.1",
+    "url": "https://www.ncbi.nlm.nih.gov/datasets/genome/GCF_027409825.1/"
+  },
+  "assemblySource": "RefSeq",
+  "documentation": "Scomber japonicus assembly fScoJap1.pri (GCF_027409825.1), from VGP.\n"
+}

@@ -1,0 +1,22 @@
+name: ASM4830158v1
+description: |
+  Rhinogobio nasutus assembly ASM4830158v1 (GCA_048301585.1), from VGP.
+organism:
+  scientific_name: Rhinogobio nasutus
+  taxon_id: 2590489
+assembly:
+  source: GenBank
+  accession: GCA_048301585.1
+fasta:
+  sources:
+  - provider: UCSC
+    url: https://hgdownload.soe.ucsc.edu/hubs/GCA/048/301/585/GCA_048301585.1/GCA_048301585.1.fa.gz
+  checksum:
+    sha256: compute_on_registration
+seqcol:
+  compute: true
+build:
+  store: vgp
+  tier: store_only
+metadata:
+  added_by: sources_to_genomes

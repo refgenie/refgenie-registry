@@ -1,0 +1,17 @@
+{
+  "schema": "https://raw.githubusercontent.com/FAIR-bioHeaders/FHR-Specification/main/fhr.json",
+  "schemaVersion": 1.0,
+  "genome": "Acridotheres tristis",
+  "taxon": {
+    "name": "Acridotheres tristis",
+    "uri": "https://identifiers.org/taxonomy:279927"
+  },
+  "commonName": "common myna",
+  "version": "bAcrTri1.pri",
+  "accessionID": {
+    "name": "GCA_027559615.1",
+    "url": "https://www.ncbi.nlm.nih.gov/datasets/genome/GCA_027559615.1/"
+  },
+  "assemblySource": "GenBank",
+  "documentation": "Acridotheres tristis assembly bAcrTri1.pri (GCA_027559615.1), from VGP.\n"
+}

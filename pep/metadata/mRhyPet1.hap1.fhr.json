@@ -1,0 +1,17 @@
+{
+  "schema": "https://raw.githubusercontent.com/FAIR-bioHeaders/FHR-Specification/main/fhr.json",
+  "schemaVersion": 1.0,
+  "genome": "Rhynchocyon petersi",
+  "taxon": {
+    "name": "Rhynchocyon petersi",
+    "uri": "https://identifiers.org/taxonomy:320637"
+  },
+  "commonName": "black and rufous elephant shrew",
+  "version": "mRhyPet1.hap1",
+  "accessionID": {
+    "name": "GCA_043290085.1",
+    "url": "https://www.ncbi.nlm.nih.gov/datasets/genome/GCA_043290085.1/"
+  },
+  "assemblySource": "GenBank",
+  "documentation": "Rhynchocyon petersi assembly mRhyPet1.hap1 (GCA_043290085.1), from VGP.\n"
+}

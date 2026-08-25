@@ -1,0 +1,17 @@
+{
+  "schema": "https://raw.githubusercontent.com/FAIR-bioHeaders/FHR-Specification/main/fhr.json",
+  "schemaVersion": 1.0,
+  "genome": "Dasypus novemcinctus",
+  "taxon": {
+    "name": "Dasypus novemcinctus",
+    "uri": "https://identifiers.org/taxonomy:9361"
+  },
+  "commonName": "nine-banded armadillo",
+  "version": "mDasNov1.1.hap2",
+  "accessionID": {
+    "name": "GCF_030445035.2",
+    "url": "https://www.ncbi.nlm.nih.gov/datasets/genome/GCF_030445035.2/"
+  },
+  "assemblySource": "RefSeq",
+  "documentation": "Dasypus novemcinctus assembly mDasNov1.1.hap2 (GCF_030445035.2), from VGP.\n"
+}

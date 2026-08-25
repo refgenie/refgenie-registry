@@ -1,0 +1,23 @@
+name: fSynAcu1.2
+description: |
+  Syngnathus acus assembly fSynAcu1.2 (GCF_901709675.1), from VGP.
+organism:
+  scientific_name: Syngnathus acus
+  common_name: greater pipefish
+  taxon_id: 161584
+assembly:
+  source: RefSeq
+  accession: GCF_901709675.1
+fasta:
+  sources:
+  - provider: UCSC
+    url: https://hgdownload.soe.ucsc.edu/hubs/GCF/901/709/675/GCF_901709675.1/GCF_901709675.1.fa.gz
+  checksum:
+    sha256: compute_on_registration
+seqcol:
+  compute: true
+build:
+  store: vgp
+  tier: store_only
+metadata:
+  added_by: sources_to_genomes

@@ -1,0 +1,23 @@
+name: fAstCal68.1
+description: |
+  Astatotilapia calliptera assembly fAstCal68.1 (GCA_964374335.1), from VGP.
+organism:
+  scientific_name: Astatotilapia calliptera
+  common_name: eastern happy
+  taxon_id: 8154
+assembly:
+  source: GenBank
+  accession: GCA_964374335.1
+fasta:
+  sources:
+  - provider: UCSC
+    url: https://hgdownload.soe.ucsc.edu/hubs/GCA/964/374/335/GCA_964374335.1/GCA_964374335.1.fa.gz
+  checksum:
+    sha256: compute_on_registration
+seqcol:
+  compute: true
+build:
+  store: vgp
+  tier: store_only
+metadata:
+  added_by: sources_to_genomes

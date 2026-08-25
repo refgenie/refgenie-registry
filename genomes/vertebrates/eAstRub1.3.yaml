@@ -1,0 +1,23 @@
+name: eAstRub1.3
+description: |
+  Asterias rubens assembly eAstRub1.3 (GCF_902459465.1), from VGP.
+organism:
+  scientific_name: Asterias rubens
+  common_name: European starfish
+  taxon_id: 7604
+assembly:
+  source: RefSeq
+  accession: GCF_902459465.1
+fasta:
+  sources:
+  - provider: UCSC
+    url: https://hgdownload.soe.ucsc.edu/hubs/GCF/902/459/465/GCF_902459465.1/GCF_902459465.1.fa.gz
+  checksum:
+    sha256: compute_on_registration
+seqcol:
+  compute: true
+build:
+  store: vgp
+  tier: store_only
+metadata:
+  added_by: sources_to_genomes

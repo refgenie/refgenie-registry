@@ -1,0 +1,17 @@
+{
+  "schema": "https://raw.githubusercontent.com/FAIR-bioHeaders/FHR-Specification/main/fhr.json",
+  "schemaVersion": 1.0,
+  "genome": "Hyperoplus immaculatus",
+  "taxon": {
+    "name": "Hyperoplus immaculatus",
+    "uri": "https://identifiers.org/taxonomy:1484357"
+  },
+  "commonName": "greater sand-eel",
+  "version": "fHypImm3.1",
+  "accessionID": {
+    "name": "GCA_949357725.1",
+    "url": "https://www.ncbi.nlm.nih.gov/datasets/genome/GCA_949357725.1/"
+  },
+  "assemblySource": "GenBank",
+  "documentation": "Hyperoplus immaculatus assembly fHypImm3.1 (GCA_949357725.1), from VGP.\n"
+}

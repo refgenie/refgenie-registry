@@ -1,0 +1,17 @@
+{
+  "schema": "https://raw.githubusercontent.com/FAIR-bioHeaders/FHR-Specification/main/fhr.json",
+  "schemaVersion": 1.0,
+  "genome": "Homo sapiens",
+  "taxon": {
+    "name": "Homo sapiens",
+    "uri": "https://identifiers.org/taxonomy:9606"
+  },
+  "commonName": "human",
+  "version": "hg38_p14_gencode",
+  "genomeSynonym": [
+    "GRCh38-p14-47-gencode",
+    "GRCh38-p14-46-gencode"
+  ],
+  "assemblySource": "GENCODE",
+  "documentation": "release 47 of gencode GRCh38\n"
+}

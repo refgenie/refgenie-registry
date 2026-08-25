@@ -1,0 +1,17 @@
+{
+  "schema": "https://raw.githubusercontent.com/FAIR-bioHeaders/FHR-Specification/main/fhr.json",
+  "schemaVersion": 1.0,
+  "genome": "Rissa tridactyla",
+  "taxon": {
+    "name": "Rissa tridactyla",
+    "uri": "https://identifiers.org/taxonomy:75485"
+  },
+  "commonName": "black-legged kittiwake",
+  "version": "bRisTri1.patW.cur.20221130",
+  "accessionID": {
+    "name": "GCF_028500815.1",
+    "url": "https://www.ncbi.nlm.nih.gov/datasets/genome/GCF_028500815.1/"
+  },
+  "assemblySource": "RefSeq",
+  "documentation": "Rissa tridactyla assembly bRisTri1.patW.cur.20221130 (GCF_028500815.1), from VGP.\n"
+}

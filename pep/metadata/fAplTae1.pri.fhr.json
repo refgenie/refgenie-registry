@@ -1,0 +1,16 @@
+{
+  "schema": "https://raw.githubusercontent.com/FAIR-bioHeaders/FHR-Specification/main/fhr.json",
+  "schemaVersion": 1.0,
+  "genome": "Aplochiton taeniatus",
+  "taxon": {
+    "name": "Aplochiton taeniatus",
+    "uri": "https://identifiers.org/taxonomy:946358"
+  },
+  "version": "fAplTae1.pri",
+  "accessionID": {
+    "name": "GCA_017639675.1",
+    "url": "https://www.ncbi.nlm.nih.gov/datasets/genome/GCA_017639675.1/"
+  },
+  "assemblySource": "GenBank",
+  "documentation": "Aplochiton taeniatus assembly fAplTae1.pri (GCA_017639675.1), from VGP.\n"
+}

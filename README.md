@@ -45,10 +45,11 @@ keys. See [design.md](./design.md) for the full data model.
 
 The repository is organized as:
 
-- **`genomes/`** — YAML definitions of genome assemblies (community-contributed via PR)
+- **`genomes/`** — YAML definitions of genome assemblies, each with a `build:` block naming the store that holds its sequence and how far to build it. **This is the single list of genomes** (community-contributed via PR)
 - **`recipes/`** — refgenie-native YAML build recipes for creating genome assets (community-contributed via PR)
 - **`asset_classes/`** — Typed asset-class definitions: the **source of truth** for an asset's seek keys and serving modes. Recipes reference these by name (community-contributed via PR)
 - **`index/`** — Auto-generated manifest of built assets (CI-only, no human edits — see [`index/README.md`](index/README.md))
+- **`pep/`** — the generated nightly build queue: `tiers.yaml` defines what each build tier means; `samples.csv` and `metadata/` are generated from `genomes/` and must never be hand-edited (see [`pep/README.md`](pep/README.md))
 - **`stores/`** — RefgetStore source manifests: content-addressable sequence collections, one PEP project per store (see [`stores/README.md`](stores/README.md))
 - **`schema/`** — JSON Schemas that genome and recipe entries are validated against (see [`schema/README.md`](schema/README.md))
 - **`tools/`** — Validation scripts and helpers (see [`tools/README.md`](tools/README.md))
@@ -86,7 +87,8 @@ Define a new genome assembly. Fork, branch, and create
 `genomes/<organism>/<assembly>.yaml`, then open a PR titled
 "Add genome: \<organism\> \<assembly\>".
 
-- **Required fields:** `name`, `description`, `organism.scientific_name`, `organism.taxon_id`, `fasta` (a `sources[].url` or a `checksum`), `seqcol` (a `digest` or `compute: true`)
+- **Required fields:** `name`, `description`, `organism.scientific_name`, `organism.taxon_id`, `fasta` (a `sources[].url` or a `checksum`), `seqcol` (a `digest` or `compute: true`), `build` (a `store` and a `tier`)
+- **`build:` is the whole request.** `store` names a directory under [`stores/`](stores/) that holds the sequence; `tier` says how far to take it — `store_only` (registered and browsable, nothing built) through `sequence_only`, `standard`, `full`. `store_only` is the right default. There is no second file to edit and no build request to open.
 - The checksum, when present, is the SHA-256 of the **uncompressed** FASTA (or the `compute_on_registration` sentinel); use NCBI, Ensembl, or UCSC as the source. The schema is [FHR](https://github.com/FAIR-bioHeaders/FHR-Specification)-aligned — see [`schema/README.md`](schema/README.md).
 - See [`genomes/human/hg38.yaml`](genomes/human/hg38.yaml) for a complete reference and [CONTRIBUTING.md § Adding a Genome](./CONTRIBUTING.md#adding-a-genome).
 
@@ -105,9 +107,11 @@ a matching `asset_classes/<name>.yaml`, then open a PR titled
 
 ### Request a build
 
-If a genome and recipe both exist but the asset hasn't been built yet,
-[open a build request issue](../../issues/new?template=build_request.yml) naming
-the genome and recipe. The bot validates both exist and queues the build.
+If a genome and recipe both exist but the asset hasn't been built yet, raise the
+genome's `build.tier` (or add the asset to its `build.add` list) in
+`genomes/<organism>/<assembly>.yaml` and open a PR. The tier **is** the build
+queue: `pep/samples.csv` is generated from the genome list, so the next nightly
+picks the change up. See [Adding a genome](./CONTRIBUTING.md#adding-a-genome).
 
 ### Validate locally before submitting
 
@@ -115,6 +119,11 @@ the genome and recipe. The bot validates both exist and queues the build.
 pip install -r tools/requirements.txt
 python tools/validate_genome.py genomes/<organism>/<assembly>.yaml
 python tools/validate_recipe.py recipes/<asset_name>/recipe.yaml
+
+# If you changed a build: block:
+python build/generate_samples.py --check
+python build/generate_genome_metadata.py --check
+python build/sync_stores.py --check
 ```
 
 ## Review Process

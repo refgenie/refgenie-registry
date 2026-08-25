@@ -1,0 +1,17 @@
+{
+  "schema": "https://raw.githubusercontent.com/FAIR-bioHeaders/FHR-Specification/main/fhr.json",
+  "schemaVersion": 1.0,
+  "genome": "Notolabrus celidotus",
+  "taxon": {
+    "name": "Notolabrus celidotus",
+    "uri": "https://identifiers.org/taxonomy:1203425"
+  },
+  "commonName": "New Zealand spotty",
+  "version": "fNotCel1.pri",
+  "accessionID": {
+    "name": "GCF_009762535.1",
+    "url": "https://www.ncbi.nlm.nih.gov/datasets/genome/GCF_009762535.1/"
+  },
+  "assemblySource": "RefSeq",
+  "documentation": "Notolabrus celidotus assembly fNotCel1.pri (GCF_009762535.1), from VGP.\n"
+}

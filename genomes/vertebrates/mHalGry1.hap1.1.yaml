@@ -1,0 +1,23 @@
+name: mHalGry1.hap1.1
+description: |
+  Halichoerus grypus assembly mHalGry1.hap1.1 (GCA_964656455.1), from VGP.
+organism:
+  scientific_name: Halichoerus grypus
+  common_name: gray seal
+  taxon_id: 9711
+assembly:
+  source: GenBank
+  accession: GCA_964656455.1
+fasta:
+  sources:
+  - provider: UCSC
+    url: https://hgdownload.soe.ucsc.edu/hubs/GCA/964/656/455/GCA_964656455.1/GCA_964656455.1.fa.gz
+  checksum:
+    sha256: compute_on_registration
+seqcol:
+  compute: true
+build:
+  store: vgp
+  tier: store_only
+metadata:
+  added_by: sources_to_genomes

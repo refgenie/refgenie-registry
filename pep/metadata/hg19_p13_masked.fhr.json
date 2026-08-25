@@ -1,0 +1,16 @@
+{
+  "schema": "https://raw.githubusercontent.com/FAIR-bioHeaders/FHR-Specification/main/fhr.json",
+  "schemaVersion": 1.0,
+  "genome": "Homo sapiens",
+  "taxon": {
+    "name": "Homo sapiens",
+    "uri": "https://identifiers.org/taxonomy:9606"
+  },
+  "commonName": "human",
+  "version": "hg19_p13_masked",
+  "genomeSynonym": [
+    "hg19-p13-plusMT-masked-ucsc"
+  ],
+  "assemblySource": "UCSC",
+  "documentation": "hg19 p13 plusMT masked from ucsc\n"
+}

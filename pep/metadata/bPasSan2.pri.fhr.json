@@ -1,0 +1,17 @@
+{
+  "schema": "https://raw.githubusercontent.com/FAIR-bioHeaders/FHR-Specification/main/fhr.json",
+  "schemaVersion": 1.0,
+  "genome": "Passerculus sandwichensis",
+  "taxon": {
+    "name": "Passerculus sandwichensis",
+    "uri": "https://identifiers.org/taxonomy:161624"
+  },
+  "commonName": "Savannah sparrow",
+  "version": "bPasSan2.pri",
+  "accessionID": {
+    "name": "GCA_031885435.1",
+    "url": "https://www.ncbi.nlm.nih.gov/datasets/genome/GCA_031885435.1/"
+  },
+  "assemblySource": "GenBank",
+  "documentation": "Passerculus sandwichensis assembly bPasSan2.pri (GCA_031885435.1), from VGP.\n"
+}

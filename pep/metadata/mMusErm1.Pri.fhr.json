@@ -1,0 +1,17 @@
+{
+  "schema": "https://raw.githubusercontent.com/FAIR-bioHeaders/FHR-Specification/main/fhr.json",
+  "schemaVersion": 1.0,
+  "genome": "Mustela erminea",
+  "taxon": {
+    "name": "Mustela erminea",
+    "uri": "https://identifiers.org/taxonomy:36723"
+  },
+  "commonName": "ermine",
+  "version": "mMusErm1.Pri",
+  "accessionID": {
+    "name": "GCF_009829155.1",
+    "url": "https://www.ncbi.nlm.nih.gov/datasets/genome/GCF_009829155.1/"
+  },
+  "assemblySource": "RefSeq",
+  "documentation": "Mustela erminea assembly mMusErm1.Pri (GCF_009829155.1), from VGP.\n"
+}

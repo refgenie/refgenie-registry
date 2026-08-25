@@ -1,0 +1,17 @@
+{
+  "schema": "https://raw.githubusercontent.com/FAIR-bioHeaders/FHR-Specification/main/fhr.json",
+  "schemaVersion": 1.0,
+  "genome": "Xenopus petersii",
+  "taxon": {
+    "name": "Xenopus petersii",
+    "uri": "https://identifiers.org/taxonomy:288555"
+  },
+  "commonName": "Peter's clawed frog",
+  "version": "aXenPet1.paternal.cur",
+  "accessionID": {
+    "name": "GCA_038501925.1",
+    "url": "https://www.ncbi.nlm.nih.gov/datasets/genome/GCA_038501925.1/"
+  },
+  "assemblySource": "GenBank",
+  "documentation": "Xenopus petersii assembly aXenPet1.paternal.cur (GCA_038501925.1), from VGP.\n"
+}

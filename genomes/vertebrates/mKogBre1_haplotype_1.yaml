@@ -1,0 +1,23 @@
+name: mKogBre1_haplotype_1
+description: |
+  Kogia breviceps assembly mKogBre1 haplotype 1 (GCF_026419965.1), from VGP.
+organism:
+  scientific_name: Kogia breviceps
+  common_name: pygmy sperm whale
+  taxon_id: 27615
+assembly:
+  source: RefSeq
+  accession: GCF_026419965.1
+fasta:
+  sources:
+  - provider: UCSC
+    url: https://hgdownload.soe.ucsc.edu/hubs/GCF/026/419/965/GCF_026419965.1/GCF_026419965.1.fa.gz
+  checksum:
+    sha256: compute_on_registration
+seqcol:
+  compute: true
+build:
+  store: vgp
+  tier: store_only
+metadata:
+  added_by: sources_to_genomes

@@ -1,0 +1,23 @@
+name: bRisTri1.patW.cur.20221130
+description: |
+  Rissa tridactyla assembly bRisTri1.patW.cur.20221130 (GCF_028500815.1), from VGP.
+organism:
+  scientific_name: Rissa tridactyla
+  common_name: black-legged kittiwake
+  taxon_id: 75485
+assembly:
+  source: RefSeq
+  accession: GCF_028500815.1
+fasta:
+  sources:
+  - provider: UCSC
+    url: https://hgdownload.soe.ucsc.edu/hubs/GCF/028/500/815/GCF_028500815.1/GCF_028500815.1.fa.gz
+  checksum:
+    sha256: compute_on_registration
+seqcol:
+  compute: true
+build:
+  store: vgp
+  tier: store_only
+metadata:
+  added_by: sources_to_genomes

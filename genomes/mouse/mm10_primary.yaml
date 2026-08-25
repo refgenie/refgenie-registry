@@ -23,6 +23,11 @@ seqcol:
   digest: dMjpOU7EvpeZVb0gpPoZ7prNaxOu88Ta
   length: 22
 
+build:
+  store: legacy
+  tier: sequence_only
+  add: [bwa_index, bowtie2_index]
+
 metadata:
   added: 2026-05-20
   added_by: nsheff

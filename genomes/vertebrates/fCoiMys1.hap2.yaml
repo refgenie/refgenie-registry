@@ -1,0 +1,23 @@
+name: fCoiMys1.hap2
+description: |
+  Coilia mystus assembly fCoiMys1.hap2 (GCA_048544225.1), from VGP.
+organism:
+  scientific_name: Coilia mystus
+  common_name: Osbeck's grenadier anchovy
+  taxon_id: 286537
+assembly:
+  source: GenBank
+  accession: GCA_048544225.1
+fasta:
+  sources:
+  - provider: UCSC
+    url: https://hgdownload.soe.ucsc.edu/hubs/GCA/048/544/225/GCA_048544225.1/GCA_048544225.1.fa.gz
+  checksum:
+    sha256: compute_on_registration
+seqcol:
+  compute: true
+build:
+  store: vgp
+  tier: store_only
+metadata:
+  added_by: sources_to_genomes

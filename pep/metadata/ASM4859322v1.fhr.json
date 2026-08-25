@@ -1,0 +1,17 @@
+{
+  "schema": "https://raw.githubusercontent.com/FAIR-bioHeaders/FHR-Specification/main/fhr.json",
+  "schemaVersion": 1.0,
+  "genome": "Sarcophilus harrisii",
+  "taxon": {
+    "name": "Sarcophilus harrisii",
+    "uri": "https://identifiers.org/taxonomy:9305"
+  },
+  "commonName": "Tasmanian devil",
+  "version": "ASM4859322v1",
+  "accessionID": {
+    "name": "GCA_048593225.1",
+    "url": "https://www.ncbi.nlm.nih.gov/datasets/genome/GCA_048593225.1/"
+  },
+  "assemblySource": "GenBank",
+  "documentation": "Sarcophilus harrisii assembly ASM4859322v1 (GCA_048593225.1), from VGP.\n"
+}

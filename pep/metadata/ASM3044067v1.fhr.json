@@ -1,0 +1,16 @@
+{
+  "schema": "https://raw.githubusercontent.com/FAIR-bioHeaders/FHR-Specification/main/fhr.json",
+  "schemaVersion": 1.0,
+  "genome": "Furcifer pardalis",
+  "taxon": {
+    "name": "Furcifer pardalis",
+    "uri": "https://identifiers.org/taxonomy:187939"
+  },
+  "version": "ASM3044067v1",
+  "accessionID": {
+    "name": "GCA_030440675.1",
+    "url": "https://www.ncbi.nlm.nih.gov/datasets/genome/GCA_030440675.1/"
+  },
+  "assemblySource": "GenBank",
+  "documentation": "Furcifer pardalis assembly ASM3044067v1 (GCA_030440675.1), from VGP.\n"
+}

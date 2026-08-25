@@ -20,6 +20,10 @@ fhr:
   identifier:
   - bioproject:PRJNA1010472
   - biosample:SAMN37096863
+build:
+  store: vgp
+  tier: store_only
+
 metadata:
   added: '2026-08-20'
   added_by: khoroshevskyi

@@ -1,0 +1,23 @@
+name: mTamTet1.pri
+description: |
+  Tamandua tetradactyla assembly mTamTet1.pri (GCA_023851605.1), from VGP.
+organism:
+  scientific_name: Tamandua tetradactyla
+  common_name: southern tamandua
+  taxon_id: 48850
+assembly:
+  source: GenBank
+  accession: GCA_023851605.1
+fasta:
+  sources:
+  - provider: UCSC
+    url: https://hgdownload.soe.ucsc.edu/hubs/GCA/023/851/605/GCA_023851605.1/GCA_023851605.1.fa.gz
+  checksum:
+    sha256: compute_on_registration
+seqcol:
+  compute: true
+build:
+  store: vgp
+  tier: store_only
+metadata:
+  added_by: sources_to_genomes

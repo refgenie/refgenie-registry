@@ -14,6 +14,27 @@ import yaml
 from pathlib import Path
 
 PEP_CONFIG = "project_config.yaml"
+STORES_DIR = Path(__file__).resolve().parent
+
+
+def get_store_dirs(stores_dir=STORES_DIR) -> list:
+    """Every store directory under stores/ -- i.e. every dir with a PEP config.
+
+    THE definition of "a store exists". stores/build.py re-exports it, and
+    tools/validate_genome.py checks `build.store` against it, so a genome YAML
+    and the build scripts can never disagree about the store list. Lives here
+    (not in build.py) so the check stays importable without peppy/refget.
+    """
+    stores_dir = Path(stores_dir)
+    return sorted(
+        d for d in stores_dir.iterdir()
+        if d.is_dir() and (d / PEP_CONFIG).exists()
+    )
+
+
+def store_slugs(stores_dir=STORES_DIR) -> list:
+    """Sorted slugs of every existing store."""
+    return [d.name for d in get_store_dirs(stores_dir)]
 
 
 def load_pep(store_dir) -> dict:

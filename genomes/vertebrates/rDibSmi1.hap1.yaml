@@ -1,0 +1,22 @@
+name: rDibSmi1.hap1
+description: |
+  Dibamus cf. smithi assembly rDibSmi1.hap1 (GCA_046126795.1), from VGP.
+organism:
+  scientific_name: Dibamus cf. smithi
+  taxon_id: 3379902
+assembly:
+  source: GenBank
+  accession: GCA_046126795.1
+fasta:
+  sources:
+  - provider: UCSC
+    url: https://hgdownload.soe.ucsc.edu/hubs/GCA/046/126/795/GCA_046126795.1/GCA_046126795.1.fa.gz
+  checksum:
+    sha256: compute_on_registration
+seqcol:
+  compute: true
+build:
+  store: vgp
+  tier: store_only
+metadata:
+  added_by: sources_to_genomes

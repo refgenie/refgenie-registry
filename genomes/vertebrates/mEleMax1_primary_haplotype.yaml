@@ -1,0 +1,22 @@
+name: mEleMax1_primary_haplotype
+description: |
+  Elephas maximus indicus assembly mEleMax1 primary haplotype (GCF_024166365.1), from VGP.
+organism:
+  scientific_name: Elephas maximus indicus
+  taxon_id: 99487
+assembly:
+  source: RefSeq
+  accession: GCF_024166365.1
+fasta:
+  sources:
+  - provider: UCSC
+    url: https://hgdownload.soe.ucsc.edu/hubs/GCF/024/166/365/GCF_024166365.1/GCF_024166365.1.fa.gz
+  checksum:
+    sha256: compute_on_registration
+seqcol:
+  compute: true
+build:
+  store: vgp
+  tier: store_only
+metadata:
+  added_by: sources_to_genomes

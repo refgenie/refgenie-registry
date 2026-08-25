@@ -1,0 +1,23 @@
+name: bTheCae1.pri.cur
+description: |
+  Theristicus caerulescens assembly bTheCae1.pri.cur (GCA_020745775.1), from VGP.
+organism:
+  scientific_name: Theristicus caerulescens
+  common_name: plumbeous ibis
+  taxon_id: 1118847
+assembly:
+  source: GenBank
+  accession: GCA_020745775.1
+fasta:
+  sources:
+  - provider: UCSC
+    url: https://hgdownload.soe.ucsc.edu/hubs/GCA/020/745/775/GCA_020745775.1/GCA_020745775.1.fa.gz
+  checksum:
+    sha256: compute_on_registration
+seqcol:
+  compute: true
+build:
+  store: vgp
+  tier: store_only
+metadata:
+  added_by: sources_to_genomes

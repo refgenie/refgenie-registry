@@ -1,0 +1,23 @@
+name: fDirArg3.hap1
+description: |
+  Diretmus argenteus assembly fDirArg3.hap1 (GCA_048569125.1), from VGP.
+organism:
+  scientific_name: Diretmus argenteus
+  common_name: silver spinyfin
+  taxon_id: 88682
+assembly:
+  source: GenBank
+  accession: GCA_048569125.1
+fasta:
+  sources:
+  - provider: UCSC
+    url: https://hgdownload.soe.ucsc.edu/hubs/GCA/048/569/125/GCA_048569125.1/GCA_048569125.1.fa.gz
+  checksum:
+    sha256: compute_on_registration
+seqcol:
+  compute: true
+build:
+  store: vgp
+  tier: store_only
+metadata:
+  added_by: sources_to_genomes

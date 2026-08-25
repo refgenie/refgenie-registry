@@ -1,0 +1,23 @@
+name: mPhoPho1.1
+description: |
+  Phocoena phocoena assembly mPhoPho1.1 (GCF_963924675.1), from VGP.
+organism:
+  scientific_name: Phocoena phocoena
+  common_name: harbor porpoise
+  taxon_id: 9742
+assembly:
+  source: RefSeq
+  accession: GCF_963924675.1
+fasta:
+  sources:
+  - provider: UCSC
+    url: https://hgdownload.soe.ucsc.edu/hubs/GCF/963/924/675/GCF_963924675.1/GCF_963924675.1.fa.gz
+  checksum:
+    sha256: compute_on_registration
+seqcol:
+  compute: true
+build:
+  store: vgp
+  tier: store_only
+metadata:
+  added_by: sources_to_genomes

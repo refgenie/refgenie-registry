@@ -1,0 +1,23 @@
+name: mOrnAna1.pri.v4
+description: |
+  Ornithorhynchus anatinus assembly mOrnAna1.pri.v4 (GCF_004115215.2), from VGP.
+organism:
+  scientific_name: Ornithorhynchus anatinus
+  common_name: platypus
+  taxon_id: 9258
+assembly:
+  source: RefSeq
+  accession: GCF_004115215.2
+fasta:
+  sources:
+  - provider: UCSC
+    url: https://hgdownload.soe.ucsc.edu/hubs/GCF/004/115/215/GCF_004115215.2/GCF_004115215.2.fa.gz
+  checksum:
+    sha256: compute_on_registration
+seqcol:
+  compute: true
+build:
+  store: vgp
+  tier: store_only
+metadata:
+  added_by: sources_to_genomes

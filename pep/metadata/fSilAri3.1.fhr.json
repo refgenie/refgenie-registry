@@ -1,0 +1,17 @@
+{
+  "schema": "https://raw.githubusercontent.com/FAIR-bioHeaders/FHR-Specification/main/fhr.json",
+  "schemaVersion": 1.0,
+  "genome": "Silurus aristotelis",
+  "taxon": {
+    "name": "Silurus aristotelis",
+    "uri": "https://identifiers.org/taxonomy:933932"
+  },
+  "commonName": "Aristotle's catfish",
+  "version": "fSilAri3.1",
+  "accessionID": {
+    "name": "GCA_946808225.1",
+    "url": "https://www.ncbi.nlm.nih.gov/datasets/genome/GCA_946808225.1/"
+  },
+  "assemblySource": "GenBank",
+  "documentation": "Silurus aristotelis assembly fSilAri3.1 (GCA_946808225.1), from VGP.\n"
+}

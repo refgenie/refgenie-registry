@@ -1,0 +1,22 @@
+name: rVipLat1.pri
+description: |
+  Vipera latastei assembly rVipLat1.pri (GCA_024294585.1), from VGP.
+organism:
+  scientific_name: Vipera latastei
+  taxon_id: 246179
+assembly:
+  source: GenBank
+  accession: GCA_024294585.1
+fasta:
+  sources:
+  - provider: UCSC
+    url: https://hgdownload.soe.ucsc.edu/hubs/GCA/024/294/585/GCA_024294585.1/GCA_024294585.1.fa.gz
+  checksum:
+    sha256: compute_on_registration
+seqcol:
+  compute: true
+build:
+  store: vgp
+  tier: store_only
+metadata:
+  added_by: sources_to_genomes

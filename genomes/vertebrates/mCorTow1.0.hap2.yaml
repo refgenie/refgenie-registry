@@ -1,0 +1,23 @@
+name: mCorTow1.0.hap2
+description: |
+  Corynorhinus townsendii assembly mCorTow1.0.hap2 (GCA_026230045.1), from VGP.
+organism:
+  scientific_name: Corynorhinus townsendii
+  common_name: Townsend's big-eared bat
+  taxon_id: 124745
+assembly:
+  source: GenBank
+  accession: GCA_026230045.1
+fasta:
+  sources:
+  - provider: UCSC
+    url: https://hgdownload.soe.ucsc.edu/hubs/GCA/026/230/045/GCA_026230045.1/GCA_026230045.1.fa.gz
+  checksum:
+    sha256: compute_on_registration
+seqcol:
+  compute: true
+build:
+  store: vgp
+  tier: store_only
+metadata:
+  added_by: sources_to_genomes

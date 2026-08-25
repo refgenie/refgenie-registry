@@ -1,0 +1,16 @@
+{
+  "schema": "https://raw.githubusercontent.com/FAIR-bioHeaders/FHR-Specification/main/fhr.json",
+  "schemaVersion": 1.0,
+  "genome": "Thalia democratica",
+  "taxon": {
+    "name": "Thalia democratica",
+    "uri": "https://identifiers.org/taxonomy:34761"
+  },
+  "version": "ktThaDemo2.hap1.1",
+  "accessionID": {
+    "name": "GCA_965202585.1",
+    "url": "https://www.ncbi.nlm.nih.gov/datasets/genome/GCA_965202585.1/"
+  },
+  "assemblySource": "GenBank",
+  "documentation": "Thalia democratica assembly ktThaDemo2.hap1.1 (GCA_965202585.1), from VGP.\n"
+}

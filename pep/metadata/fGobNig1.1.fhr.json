@@ -1,0 +1,17 @@
+{
+  "schema": "https://raw.githubusercontent.com/FAIR-bioHeaders/FHR-Specification/main/fhr.json",
+  "schemaVersion": 1.0,
+  "genome": "Gobius niger",
+  "taxon": {
+    "name": "Gobius niger",
+    "uri": "https://identifiers.org/taxonomy:85417"
+  },
+  "commonName": "black goby",
+  "version": "fGobNig1.1",
+  "accessionID": {
+    "name": "GCA_951799975.1",
+    "url": "https://www.ncbi.nlm.nih.gov/datasets/genome/GCA_951799975.1/"
+  },
+  "assemblySource": "GenBank",
+  "documentation": "Gobius niger assembly fGobNig1.1 (GCA_951799975.1), from VGP.\n"
+}

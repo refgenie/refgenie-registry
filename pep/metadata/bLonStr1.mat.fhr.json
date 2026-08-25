@@ -1,0 +1,17 @@
+{
+  "schema": "https://raw.githubusercontent.com/FAIR-bioHeaders/FHR-Specification/main/fhr.json",
+  "schemaVersion": 1.0,
+  "genome": "Lonchura striata",
+  "taxon": {
+    "name": "Lonchura striata",
+    "uri": "https://identifiers.org/taxonomy:40157"
+  },
+  "commonName": "white-rumped munia",
+  "version": "bLonStr1.mat",
+  "accessionID": {
+    "name": "GCA_046129695.1",
+    "url": "https://www.ncbi.nlm.nih.gov/datasets/genome/GCA_046129695.1/"
+  },
+  "assemblySource": "GenBank",
+  "documentation": "Lonchura striata assembly bLonStr1.mat (GCA_046129695.1), from VGP.\n"
+}

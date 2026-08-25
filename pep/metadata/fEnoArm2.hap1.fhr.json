@@ -1,0 +1,16 @@
+{
+  "schema": "https://raw.githubusercontent.com/FAIR-bioHeaders/FHR-Specification/main/fhr.json",
+  "schemaVersion": 1.0,
+  "genome": "Enoplosus armatus",
+  "taxon": {
+    "name": "Enoplosus armatus",
+    "uri": "https://identifiers.org/taxonomy:215367"
+  },
+  "version": "fEnoArm2.hap1",
+  "accessionID": {
+    "name": "GCF_043641665.1",
+    "url": "https://www.ncbi.nlm.nih.gov/datasets/genome/GCF_043641665.1/"
+  },
+  "assemblySource": "RefSeq",
+  "documentation": "Enoplosus armatus assembly fEnoArm2.hap1 (GCF_043641665.1), from VGP.\n"
+}

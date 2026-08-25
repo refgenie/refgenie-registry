@@ -1,0 +1,17 @@
+{
+  "schema": "https://raw.githubusercontent.com/FAIR-bioHeaders/FHR-Specification/main/fhr.json",
+  "schemaVersion": 1.0,
+  "genome": "Lepidogalaxias salamandroides",
+  "taxon": {
+    "name": "Lepidogalaxias salamandroides",
+    "uri": "https://identifiers.org/taxonomy:89578"
+  },
+  "commonName": "salamanderfish",
+  "version": "fLepSal2.hap1",
+  "accessionID": {
+    "name": "GCA_049190665.1",
+    "url": "https://www.ncbi.nlm.nih.gov/datasets/genome/GCA_049190665.1/"
+  },
+  "assemblySource": "GenBank",
+  "documentation": "Lepidogalaxias salamandroides assembly fLepSal2.hap1 (GCA_049190665.1), from VGP.\n"
+}

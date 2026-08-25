@@ -1,0 +1,23 @@
+name: mMesDen1_primary_haplotype
+description: |
+  Mesoplodon densirostris assembly mMesDen1 primary haplotype (GCF_025265405.1), from VGP.
+organism:
+  scientific_name: Mesoplodon densirostris
+  common_name: Blainville's beaked whale
+  taxon_id: 48708
+assembly:
+  source: RefSeq
+  accession: GCF_025265405.1
+fasta:
+  sources:
+  - provider: UCSC
+    url: https://hgdownload.soe.ucsc.edu/hubs/GCF/025/265/405/GCF_025265405.1/GCF_025265405.1.fa.gz
+  checksum:
+    sha256: compute_on_registration
+seqcol:
+  compute: true
+build:
+  store: vgp
+  tier: store_only
+metadata:
+  added_by: sources_to_genomes

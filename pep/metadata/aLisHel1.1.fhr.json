@@ -1,0 +1,17 @@
+{
+  "schema": "https://raw.githubusercontent.com/FAIR-bioHeaders/FHR-Specification/main/fhr.json",
+  "schemaVersion": 1.0,
+  "genome": "Lissotriton helveticus",
+  "taxon": {
+    "name": "Lissotriton helveticus",
+    "uri": "https://identifiers.org/taxonomy:256425"
+  },
+  "commonName": "palmate newt",
+  "version": "aLisHel1.1",
+  "accessionID": {
+    "name": "GCA_964261635.1",
+    "url": "https://www.ncbi.nlm.nih.gov/datasets/genome/GCA_964261635.1/"
+  },
+  "assemblySource": "GenBank",
+  "documentation": "Lissotriton helveticus assembly aLisHel1.1 (GCA_964261635.1), from VGP.\n"
+}

@@ -1,0 +1,23 @@
+name: bPodStr1.pri
+description: |
+  Podargus strigoides assembly bPodStr1.pri (GCA_028020825.1), from VGP.
+organism:
+  scientific_name: Podargus strigoides
+  common_name: tawny frogmouth
+  taxon_id: 8905
+assembly:
+  source: GenBank
+  accession: GCA_028020825.1
+fasta:
+  sources:
+  - provider: UCSC
+    url: https://hgdownload.soe.ucsc.edu/hubs/GCA/028/020/825/GCA_028020825.1/GCA_028020825.1.fa.gz
+  checksum:
+    sha256: compute_on_registration
+seqcol:
+  compute: true
+build:
+  store: vgp
+  tier: store_only
+metadata:
+  added_by: sources_to_genomes

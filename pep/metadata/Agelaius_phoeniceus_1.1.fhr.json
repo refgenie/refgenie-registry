@@ -1,0 +1,17 @@
+{
+  "schema": "https://raw.githubusercontent.com/FAIR-bioHeaders/FHR-Specification/main/fhr.json",
+  "schemaVersion": 1.0,
+  "genome": "Agelaius phoeniceus",
+  "taxon": {
+    "name": "Agelaius phoeniceus",
+    "uri": "https://identifiers.org/taxonomy:39638"
+  },
+  "commonName": "red-winged blackbird",
+  "version": "Agelaius_phoeniceus_1.1",
+  "accessionID": {
+    "name": "GCF_020745825.1",
+    "url": "https://www.ncbi.nlm.nih.gov/datasets/genome/GCF_020745825.1/"
+  },
+  "assemblySource": "RefSeq",
+  "documentation": "Agelaius phoeniceus assembly Agelaius phoeniceus 1.1 (GCF_020745825.1), from VGP.\n"
+}

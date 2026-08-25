@@ -1,0 +1,17 @@
+{
+  "schema": "https://raw.githubusercontent.com/FAIR-bioHeaders/FHR-Specification/main/fhr.json",
+  "schemaVersion": 1.0,
+  "genome": "Fundulus diaphanus",
+  "taxon": {
+    "name": "Fundulus diaphanus",
+    "uri": "https://identifiers.org/taxonomy:54267"
+  },
+  "commonName": "banded killifish",
+  "version": "fFunDia1.hap1",
+  "accessionID": {
+    "name": "GCA_037039145.1",
+    "url": "https://www.ncbi.nlm.nih.gov/datasets/genome/GCA_037039145.1/"
+  },
+  "assemblySource": "GenBank",
+  "documentation": "Fundulus diaphanus assembly fFunDia1.hap1 (GCA_037039145.1), from VGP.\n"
+}

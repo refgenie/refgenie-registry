@@ -33,6 +33,11 @@ seqcol:
   digest: fXjBOJjw-DYsSnnfDBl5vtZu1N7lbnUl
   length: 61
 
+build:
+  store: jungle
+  tier: full
+  drop: [star_index, tallymer_index]
+
 metadata:
   added: 2026-05-20
   added_by: nsheff

@@ -1,0 +1,23 @@
+name: bMorBas2.hap2
+description: |
+  Morus bassanus assembly bMorBas2.hap2 (GCA_031468815.1), from VGP.
+organism:
+  scientific_name: Morus bassanus
+  common_name: northern gannet
+  taxon_id: 37578
+assembly:
+  source: GenBank
+  accession: GCA_031468815.1
+fasta:
+  sources:
+  - provider: UCSC
+    url: https://hgdownload.soe.ucsc.edu/hubs/GCA/031/468/815/GCA_031468815.1/GCA_031468815.1.fa.gz
+  checksum:
+    sha256: compute_on_registration
+seqcol:
+  compute: true
+build:
+  store: vgp
+  tier: store_only
+metadata:
+  added_by: sources_to_genomes

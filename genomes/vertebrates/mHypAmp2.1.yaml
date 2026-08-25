@@ -1,0 +1,23 @@
+name: mHypAmp2.1
+description: |
+  Hyperoodon ampullatus assembly mHypAmp2.1 (GCA_949752795.1), from VGP.
+organism:
+  scientific_name: Hyperoodon ampullatus
+  common_name: northern bottlenose whale
+  taxon_id: 48744
+assembly:
+  source: GenBank
+  accession: GCA_949752795.1
+fasta:
+  sources:
+  - provider: UCSC
+    url: https://hgdownload.soe.ucsc.edu/hubs/GCA/949/752/795/GCA_949752795.1/GCA_949752795.1.fa.gz
+  checksum:
+    sha256: compute_on_registration
+seqcol:
+  compute: true
+build:
+  store: vgp
+  tier: store_only
+metadata:
+  added_by: sources_to_genomes

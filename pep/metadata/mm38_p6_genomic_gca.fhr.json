@@ -1,0 +1,20 @@
+{
+  "schema": "https://raw.githubusercontent.com/FAIR-bioHeaders/FHR-Specification/main/fhr.json",
+  "schemaVersion": 1.0,
+  "genome": "Mus musculus",
+  "taxon": {
+    "name": "Mus musculus",
+    "uri": "https://identifiers.org/taxonomy:10090"
+  },
+  "commonName": "mouse",
+  "version": "mm38_p6_genomic_gca",
+  "genomeSynonym": [
+    "GRCm38.p6-fasta-genomic-GCA"
+  ],
+  "accessionID": {
+    "name": "GCA_000001635.8",
+    "url": "https://www.ncbi.nlm.nih.gov/datasets/genome/GCA_000001635.8/"
+  },
+  "assemblySource": "NCBI",
+  "documentation": "GCA_000001635.8_GRCm38.p6_genomic.fna.gz from NCIBI\n"
+}

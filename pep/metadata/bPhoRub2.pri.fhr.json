@@ -1,0 +1,21 @@
+{
+  "schema": "https://raw.githubusercontent.com/FAIR-bioHeaders/FHR-Specification/main/fhr.json",
+  "schemaVersion": 1.0,
+  "genome": "Phoenicopterus ruber ruber",
+  "taxon": {
+    "name": "Phoenicopterus ruber ruber",
+    "uri": "https://identifiers.org/taxonomy:9218"
+  },
+  "version": "bPhoRub2.pri",
+  "dateCreated": "2019-12-31",
+  "accessionID": {
+    "name": "GCA_009819775.1",
+    "url": "https://www.ncbi.nlm.nih.gov/datasets/genome/GCA_009819775.1/"
+  },
+  "assemblySource": "GenBank",
+  "documentation": "American flamingo (primary hap 2019)\n",
+  "identifier": [
+    "bioproject:PRJNA561888",
+    "biosample:SAMN12614931"
+  ]
+}

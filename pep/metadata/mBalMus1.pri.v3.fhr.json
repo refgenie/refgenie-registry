@@ -1,0 +1,17 @@
+{
+  "schema": "https://raw.githubusercontent.com/FAIR-bioHeaders/FHR-Specification/main/fhr.json",
+  "schemaVersion": 1.0,
+  "genome": "Balaenoptera musculus",
+  "taxon": {
+    "name": "Balaenoptera musculus",
+    "uri": "https://identifiers.org/taxonomy:9771"
+  },
+  "commonName": "blue whale",
+  "version": "mBalMus1.pri.v3",
+  "accessionID": {
+    "name": "GCF_009873245.2",
+    "url": "https://www.ncbi.nlm.nih.gov/datasets/genome/GCF_009873245.2/"
+  },
+  "assemblySource": "RefSeq",
+  "documentation": "Balaenoptera musculus assembly mBalMus1.pri.v3 (GCF_009873245.2), from VGP.\n"
+}

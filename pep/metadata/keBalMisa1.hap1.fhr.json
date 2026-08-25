@@ -1,0 +1,16 @@
+{
+  "schema": "https://raw.githubusercontent.com/FAIR-bioHeaders/FHR-Specification/main/fhr.json",
+  "schemaVersion": 1.0,
+  "genome": "Balanoglossus misakiensis",
+  "taxon": {
+    "name": "Balanoglossus misakiensis",
+    "uri": "https://identifiers.org/taxonomy:509136"
+  },
+  "version": "keBalMisa1.hap1",
+  "accessionID": {
+    "name": "GCA_040954625.2",
+    "url": "https://www.ncbi.nlm.nih.gov/datasets/genome/GCA_040954625.2/"
+  },
+  "assemblySource": "GenBank",
+  "documentation": "Balanoglossus misakiensis assembly keBalMisa1.hap1 (GCA_040954625.2), from VGP.\n"
+}

@@ -1,0 +1,23 @@
+name: mArvAmp1.2
+description: |
+  Arvicola amphibius assembly mArvAmp1.2 (GCF_903992535.2), from VGP.
+organism:
+  scientific_name: Arvicola amphibius
+  common_name: Eurasian water vole
+  taxon_id: 1047088
+assembly:
+  source: RefSeq
+  accession: GCF_903992535.2
+fasta:
+  sources:
+  - provider: UCSC
+    url: https://hgdownload.soe.ucsc.edu/hubs/GCF/903/992/535/GCF_903992535.2/GCF_903992535.2.fa.gz
+  checksum:
+    sha256: compute_on_registration
+seqcol:
+  compute: true
+build:
+  store: vgp
+  tier: store_only
+metadata:
+  added_by: sources_to_genomes

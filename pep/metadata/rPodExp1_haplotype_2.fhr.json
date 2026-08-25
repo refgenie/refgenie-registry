@@ -1,0 +1,16 @@
+{
+  "schema": "https://raw.githubusercontent.com/FAIR-bioHeaders/FHR-Specification/main/fhr.json",
+  "schemaVersion": 1.0,
+  "genome": "Podocnemis expansa",
+  "taxon": {
+    "name": "Podocnemis expansa",
+    "uri": "https://identifiers.org/taxonomy:44507"
+  },
+  "version": "rPodExp1_haplotype_2",
+  "accessionID": {
+    "name": "GCA_045364815.1",
+    "url": "https://www.ncbi.nlm.nih.gov/datasets/genome/GCA_045364815.1/"
+  },
+  "assemblySource": "GenBank",
+  "documentation": "Podocnemis expansa assembly rPodExp1 haplotype 2 (GCA_045364815.1), from VGP.\n"
+}

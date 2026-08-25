@@ -1,0 +1,17 @@
+{
+  "schema": "https://raw.githubusercontent.com/FAIR-bioHeaders/FHR-Specification/main/fhr.json",
+  "schemaVersion": 1.0,
+  "genome": "Mobula birostris",
+  "taxon": {
+    "name": "Mobula birostris",
+    "uri": "https://identifiers.org/taxonomy:1983395"
+  },
+  "commonName": "giant manta",
+  "version": "sMobBir1.hap1",
+  "accessionID": {
+    "name": "GCF_030028105.1",
+    "url": "https://www.ncbi.nlm.nih.gov/datasets/genome/GCF_030028105.1/"
+  },
+  "assemblySource": "RefSeq",
+  "documentation": "Mobula birostris assembly sMobBir1.hap1 (GCF_030028105.1), from VGP.\n"
+}

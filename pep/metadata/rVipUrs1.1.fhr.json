@@ -1,0 +1,16 @@
+{
+  "schema": "https://raw.githubusercontent.com/FAIR-bioHeaders/FHR-Specification/main/fhr.json",
+  "schemaVersion": 1.0,
+  "genome": "Vipera ursinii",
+  "taxon": {
+    "name": "Vipera ursinii",
+    "uri": "https://identifiers.org/taxonomy:103942"
+  },
+  "version": "rVipUrs1.1",
+  "accessionID": {
+    "name": "GCA_947247035.1",
+    "url": "https://www.ncbi.nlm.nih.gov/datasets/genome/GCA_947247035.1/"
+  },
+  "assemblySource": "GenBank",
+  "documentation": "Vipera ursinii assembly rVipUrs1.1 (GCA_947247035.1), from VGP.\n"
+}

@@ -1,0 +1,17 @@
+{
+  "schema": "https://raw.githubusercontent.com/FAIR-bioHeaders/FHR-Specification/main/fhr.json",
+  "schemaVersion": 1.0,
+  "genome": "Epinephelus lanceolatus",
+  "taxon": {
+    "name": "Epinephelus lanceolatus",
+    "uri": "https://identifiers.org/taxonomy:310571"
+  },
+  "commonName": "giant grouper",
+  "version": "ASM4190304v1",
+  "accessionID": {
+    "name": "GCA_041903045.1",
+    "url": "https://www.ncbi.nlm.nih.gov/datasets/genome/GCA_041903045.1/"
+  },
+  "assemblySource": "GenBank",
+  "documentation": "Epinephelus lanceolatus assembly ASM4190304v1 (GCA_041903045.1), from VGP.\n"
+}

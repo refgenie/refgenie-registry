@@ -1,0 +1,17 @@
+{
+  "schema": "https://raw.githubusercontent.com/FAIR-bioHeaders/FHR-Specification/main/fhr.json",
+  "schemaVersion": 1.0,
+  "genome": "Phyllostomus discolor",
+  "taxon": {
+    "name": "Phyllostomus discolor",
+    "uri": "https://identifiers.org/taxonomy:89673"
+  },
+  "commonName": "pale spear-nosed bat",
+  "version": "mPhyDis1.pri.v3",
+  "accessionID": {
+    "name": "GCF_004126475.2",
+    "url": "https://www.ncbi.nlm.nih.gov/datasets/genome/GCF_004126475.2/"
+  },
+  "assemblySource": "RefSeq",
+  "documentation": "Phyllostomus discolor assembly mPhyDis1.pri.v3 (GCF_004126475.2), from VGP.\n"
+}

@@ -1,0 +1,17 @@
+{
+  "schema": "https://raw.githubusercontent.com/FAIR-bioHeaders/FHR-Specification/main/fhr.json",
+  "schemaVersion": 1.0,
+  "genome": "Dugong dugon",
+  "taxon": {
+    "name": "Dugong dugon",
+    "uri": "https://identifiers.org/taxonomy:29137"
+  },
+  "commonName": "dugong",
+  "version": "mDugDug1.hap1",
+  "accessionID": {
+    "name": "GCA_030035585.1",
+    "url": "https://www.ncbi.nlm.nih.gov/datasets/genome/GCA_030035585.1/"
+  },
+  "assemblySource": "GenBank",
+  "documentation": "Dugong dugon assembly mDugDug1.hap1 (GCA_030035585.1), from VGP.\n"
+}

@@ -1,0 +1,17 @@
+{
+  "schema": "https://raw.githubusercontent.com/FAIR-bioHeaders/FHR-Specification/main/fhr.json",
+  "schemaVersion": 1.0,
+  "genome": "Gypaetus barbatus",
+  "taxon": {
+    "name": "Gypaetus barbatus",
+    "uri": "https://identifiers.org/taxonomy:33610"
+  },
+  "commonName": "lammergeier",
+  "version": "bGypBar2.pri",
+  "accessionID": {
+    "name": "GCA_028022735.1",
+    "url": "https://www.ncbi.nlm.nih.gov/datasets/genome/GCA_028022735.1/"
+  },
+  "assemblySource": "GenBank",
+  "documentation": "Gypaetus barbatus assembly bGypBar2.pri (GCA_028022735.1), from VGP.\n"
+}

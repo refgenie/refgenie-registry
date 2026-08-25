@@ -1,0 +1,23 @@
+name: fNanAch1.1
+description: |
+  Nannobrachium achirus assembly fNanAch1.1 (GCA_963921795.1), from VGP.
+organism:
+  scientific_name: Nannobrachium achirus
+  common_name: lantern fish
+  taxon_id: 473322
+assembly:
+  source: GenBank
+  accession: GCA_963921795.1
+fasta:
+  sources:
+  - provider: UCSC
+    url: https://hgdownload.soe.ucsc.edu/hubs/GCA/963/921/795/GCA_963921795.1/GCA_963921795.1.fa.gz
+  checksum:
+    sha256: compute_on_registration
+seqcol:
+  compute: true
+build:
+  store: vgp
+  tier: store_only
+metadata:
+  added_by: sources_to_genomes

@@ -1,0 +1,17 @@
+{
+  "schema": "https://raw.githubusercontent.com/FAIR-bioHeaders/FHR-Specification/main/fhr.json",
+  "schemaVersion": 1.0,
+  "genome": "Squalius cephalus",
+  "taxon": {
+    "name": "Squalius cephalus",
+    "uri": "https://identifiers.org/taxonomy:8284"
+  },
+  "commonName": "European chub",
+  "version": "fSquCep2.1",
+  "accessionID": {
+    "name": "GCA_949319135.1",
+    "url": "https://www.ncbi.nlm.nih.gov/datasets/genome/GCA_949319135.1/"
+  },
+  "assemblySource": "GenBank",
+  "documentation": "Squalius cephalus assembly fSquCep2.1 (GCA_949319135.1), from VGP.\n"
+}

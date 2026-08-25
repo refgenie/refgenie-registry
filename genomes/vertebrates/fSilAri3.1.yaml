@@ -1,0 +1,23 @@
+name: fSilAri3.1
+description: |
+  Silurus aristotelis assembly fSilAri3.1 (GCA_946808225.1), from VGP.
+organism:
+  scientific_name: Silurus aristotelis
+  common_name: Aristotle's catfish
+  taxon_id: 933932
+assembly:
+  source: GenBank
+  accession: GCA_946808225.1
+fasta:
+  sources:
+  - provider: UCSC
+    url: https://hgdownload.soe.ucsc.edu/hubs/GCA/946/808/225/GCA_946808225.1/GCA_946808225.1.fa.gz
+  checksum:
+    sha256: compute_on_registration
+seqcol:
+  compute: true
+build:
+  store: vgp
+  tier: store_only
+metadata:
+  added_by: sources_to_genomes

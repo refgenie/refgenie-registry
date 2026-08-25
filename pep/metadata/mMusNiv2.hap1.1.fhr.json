@@ -1,0 +1,17 @@
+{
+  "schema": "https://raw.githubusercontent.com/FAIR-bioHeaders/FHR-Specification/main/fhr.json",
+  "schemaVersion": 1.0,
+  "genome": "Mustela nivalis",
+  "taxon": {
+    "name": "Mustela nivalis",
+    "uri": "https://identifiers.org/taxonomy:36239"
+  },
+  "commonName": "least weasel",
+  "version": "mMusNiv2.hap1.1",
+  "accessionID": {
+    "name": "GCA_964662115.1",
+    "url": "https://www.ncbi.nlm.nih.gov/datasets/genome/GCA_964662115.1/"
+  },
+  "assemblySource": "GenBank",
+  "documentation": "Mustela nivalis assembly mMusNiv2.hap1.1 (GCA_964662115.1), from VGP.\n"
+}

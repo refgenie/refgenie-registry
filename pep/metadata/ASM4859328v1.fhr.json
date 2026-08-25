@@ -1,0 +1,17 @@
+{
+  "schema": "https://raw.githubusercontent.com/FAIR-bioHeaders/FHR-Specification/main/fhr.json",
+  "schemaVersion": 1.0,
+  "genome": "Dasyurus maculatus",
+  "taxon": {
+    "name": "Dasyurus maculatus",
+    "uri": "https://identifiers.org/taxonomy:9281"
+  },
+  "commonName": "spotted-tailed quoll",
+  "version": "ASM4859328v1",
+  "accessionID": {
+    "name": "GCA_048593285.1",
+    "url": "https://www.ncbi.nlm.nih.gov/datasets/genome/GCA_048593285.1/"
+  },
+  "assemblySource": "GenBank",
+  "documentation": "Dasyurus maculatus assembly ASM4859328v1 (GCA_048593285.1), from VGP.\n"
+}

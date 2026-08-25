@@ -1,0 +1,17 @@
+{
+  "schema": "https://raw.githubusercontent.com/FAIR-bioHeaders/FHR-Specification/main/fhr.json",
+  "schemaVersion": 1.0,
+  "genome": "Hydrolagus colliei",
+  "taxon": {
+    "name": "Hydrolagus colliei",
+    "uri": "https://identifiers.org/taxonomy:7873"
+  },
+  "commonName": "spotted ratfish",
+  "version": "sHydCol1.hap2",
+  "accessionID": {
+    "name": "GCA_035084275.1",
+    "url": "https://www.ncbi.nlm.nih.gov/datasets/genome/GCA_035084275.1/"
+  },
+  "assemblySource": "GenBank",
+  "documentation": "Hydrolagus colliei assembly sHydCol1.hap2 (GCA_035084275.1), from VGP.\n"
+}

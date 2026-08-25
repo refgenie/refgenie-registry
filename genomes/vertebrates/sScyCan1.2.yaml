@@ -1,0 +1,23 @@
+name: sScyCan1.2
+description: |
+  Scyliorhinus canicula assembly sScyCan1.2 (GCA_902713615.2), from VGP.
+organism:
+  scientific_name: Scyliorhinus canicula
+  common_name: smaller spotted catshark
+  taxon_id: 7830
+assembly:
+  source: GenBank
+  accession: GCA_902713615.2
+fasta:
+  sources:
+  - provider: UCSC
+    url: https://hgdownload.soe.ucsc.edu/hubs/GCA/902/713/615/GCA_902713615.2/GCA_902713615.2.fa.gz
+  checksum:
+    sha256: compute_on_registration
+seqcol:
+  compute: true
+build:
+  store: vgp
+  tier: store_only
+metadata:
+  added_by: sources_to_genomes

@@ -1,0 +1,23 @@
+name: mCteGun2.hap1
+description: |
+  Ctenodactylus gundi assembly mCteGun2.hap1 (GCA_048771875.1), from VGP.
+organism:
+  scientific_name: Ctenodactylus gundi
+  common_name: northern gundi
+  taxon_id: 10166
+assembly:
+  source: GenBank
+  accession: GCA_048771875.1
+fasta:
+  sources:
+  - provider: UCSC
+    url: https://hgdownload.soe.ucsc.edu/hubs/GCA/048/771/875/GCA_048771875.1/GCA_048771875.1.fa.gz
+  checksum:
+    sha256: compute_on_registration
+seqcol:
+  compute: true
+build:
+  store: vgp
+  tier: store_only
+metadata:
+  added_by: sources_to_genomes

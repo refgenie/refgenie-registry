@@ -1,0 +1,17 @@
+{
+  "schema": "https://raw.githubusercontent.com/FAIR-bioHeaders/FHR-Specification/main/fhr.json",
+  "schemaVersion": 1.0,
+  "genome": "Mastacembelus armatus",
+  "taxon": {
+    "name": "Mastacembelus armatus",
+    "uri": "https://identifiers.org/taxonomy:205130"
+  },
+  "commonName": "zig-zag eel",
+  "version": "fMasArm1.3",
+  "accessionID": {
+    "name": "GCA_900324485.3",
+    "url": "https://www.ncbi.nlm.nih.gov/datasets/genome/GCA_900324485.3/"
+  },
+  "assemblySource": "GenBank",
+  "documentation": "Mastacembelus armatus assembly fMasArm1.3 (GCA_900324485.3), from VGP.\n"
+}

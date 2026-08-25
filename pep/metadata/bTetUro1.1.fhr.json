@@ -1,0 +1,17 @@
+{
+  "schema": "https://raw.githubusercontent.com/FAIR-bioHeaders/FHR-Specification/main/fhr.json",
+  "schemaVersion": 1.0,
+  "genome": "Tetrao urogallus",
+  "taxon": {
+    "name": "Tetrao urogallus",
+    "uri": "https://identifiers.org/taxonomy:100830"
+  },
+  "commonName": "western capercaillie",
+  "version": "bTetUro1.1",
+  "accessionID": {
+    "name": "GCA_951394365.1",
+    "url": "https://www.ncbi.nlm.nih.gov/datasets/genome/GCA_951394365.1/"
+  },
+  "assemblySource": "GenBank",
+  "documentation": "Tetrao urogallus assembly bTetUro1.1 (GCA_951394365.1), from VGP.\n"
+}

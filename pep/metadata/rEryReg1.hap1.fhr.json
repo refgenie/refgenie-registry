@@ -1,0 +1,17 @@
+{
+  "schema": "https://raw.githubusercontent.com/FAIR-bioHeaders/FHR-Specification/main/fhr.json",
+  "schemaVersion": 1.0,
+  "genome": "Erythrolamprus reginae",
+  "taxon": {
+    "name": "Erythrolamprus reginae",
+    "uri": "https://identifiers.org/taxonomy:121349"
+  },
+  "commonName": "royal ground snake",
+  "version": "rEryReg1.hap1",
+  "accessionID": {
+    "name": "GCF_031021105.1",
+    "url": "https://www.ncbi.nlm.nih.gov/datasets/genome/GCF_031021105.1/"
+  },
+  "assemblySource": "RefSeq",
+  "documentation": "Erythrolamprus reginae assembly rEryReg1.hap1 (GCF_031021105.1), from VGP.\n"
+}

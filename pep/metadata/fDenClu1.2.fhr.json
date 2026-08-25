@@ -1,0 +1,17 @@
+{
+  "schema": "https://raw.githubusercontent.com/FAIR-bioHeaders/FHR-Specification/main/fhr.json",
+  "schemaVersion": 1.0,
+  "genome": "Denticeps clupeoides",
+  "taxon": {
+    "name": "Denticeps clupeoides",
+    "uri": "https://identifiers.org/taxonomy:299321"
+  },
+  "commonName": "denticle herring",
+  "version": "fDenClu1.2",
+  "accessionID": {
+    "name": "GCA_900700375.2",
+    "url": "https://www.ncbi.nlm.nih.gov/datasets/genome/GCA_900700375.2/"
+  },
+  "assemblySource": "GenBank",
+  "documentation": "Denticeps clupeoides assembly fDenClu1.2 (GCA_900700375.2), from VGP.\n"
+}

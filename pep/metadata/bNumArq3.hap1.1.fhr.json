@@ -1,0 +1,17 @@
+{
+  "schema": "https://raw.githubusercontent.com/FAIR-bioHeaders/FHR-Specification/main/fhr.json",
+  "schemaVersion": 1.0,
+  "genome": "Numenius arquata",
+  "taxon": {
+    "name": "Numenius arquata",
+    "uri": "https://identifiers.org/taxonomy:31919"
+  },
+  "commonName": "Eurasian curlew",
+  "version": "bNumArq3.hap1.1",
+  "accessionID": {
+    "name": "GCA_964106895.1",
+    "url": "https://www.ncbi.nlm.nih.gov/datasets/genome/GCA_964106895.1/"
+  },
+  "assemblySource": "GenBank",
+  "documentation": "Numenius arquata assembly bNumArq3.hap1.1 (GCA_964106895.1), from VGP.\n"
+}

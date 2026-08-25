@@ -1,0 +1,17 @@
+{
+  "schema": "https://raw.githubusercontent.com/FAIR-bioHeaders/FHR-Specification/main/fhr.json",
+  "schemaVersion": 1.0,
+  "genome": "Zeus faber",
+  "taxon": {
+    "name": "Zeus faber",
+    "uri": "https://identifiers.org/taxonomy:64108"
+  },
+  "commonName": "John dory",
+  "version": "fZeuFab8.1",
+  "accessionID": {
+    "name": "GCA_960531495.1",
+    "url": "https://www.ncbi.nlm.nih.gov/datasets/genome/GCA_960531495.1/"
+  },
+  "assemblySource": "GenBank",
+  "documentation": "Zeus faber assembly fZeuFab8.1 (GCA_960531495.1), from VGP.\n"
+}

@@ -1,0 +1,17 @@
+{
+  "schema": "https://raw.githubusercontent.com/FAIR-bioHeaders/FHR-Specification/main/fhr.json",
+  "schemaVersion": 1.0,
+  "genome": "Balearica regulorum gibbericeps",
+  "taxon": {
+    "name": "Balearica regulorum gibbericeps",
+    "uri": "https://identifiers.org/taxonomy:100784"
+  },
+  "commonName": "East African grey crowned-crane",
+  "version": "bBalReg1.pri",
+  "accessionID": {
+    "name": "GCA_011004875.1",
+    "url": "https://www.ncbi.nlm.nih.gov/datasets/genome/GCA_011004875.1/"
+  },
+  "assemblySource": "GenBank",
+  "documentation": "Balearica regulorum gibbericeps assembly bBalReg1.pri (GCA_011004875.1), from VGP.\n"
+}

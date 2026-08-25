@@ -1,0 +1,13 @@
+{
+  "schema": "https://raw.githubusercontent.com/FAIR-bioHeaders/FHR-Specification/main/fhr.json",
+  "schemaVersion": 1.0,
+  "genome": "Homo sapiens",
+  "taxon": {
+    "name": "Homo sapiens",
+    "uri": "https://identifiers.org/taxonomy:9606"
+  },
+  "commonName": "human",
+  "version": "hg18_cdna",
+  "assemblySource": "Ensembl",
+  "documentation": "The NCBI36 cDNA (transcript) reference sequence from Ensembl.\n"
+}

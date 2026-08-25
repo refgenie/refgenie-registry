@@ -1,0 +1,23 @@
+name: mEreDor1.pri
+description: |
+  Erethizon dorsatum assembly mEreDor1.pri (GCA_028451465.1), from VGP.
+organism:
+  scientific_name: Erethizon dorsatum
+  common_name: North American porcupine
+  taxon_id: 34844
+assembly:
+  source: GenBank
+  accession: GCA_028451465.1
+fasta:
+  sources:
+  - provider: UCSC
+    url: https://hgdownload.soe.ucsc.edu/hubs/GCA/028/451/465/GCA_028451465.1/GCA_028451465.1.fa.gz
+  checksum:
+    sha256: compute_on_registration
+seqcol:
+  compute: true
+build:
+  store: vgp
+  tier: store_only
+metadata:
+  added_by: sources_to_genomes

@@ -1,0 +1,23 @@
+name: mDelDel1.2
+description: |
+  Delphinus delphis assembly mDelDel1.2 (GCF_949987515.2), from VGP.
+organism:
+  scientific_name: Delphinus delphis
+  common_name: saddleback dolphin
+  taxon_id: 9728
+assembly:
+  source: RefSeq
+  accession: GCF_949987515.2
+fasta:
+  sources:
+  - provider: UCSC
+    url: https://hgdownload.soe.ucsc.edu/hubs/GCF/949/987/515/GCF_949987515.2/GCF_949987515.2.fa.gz
+  checksum:
+    sha256: compute_on_registration
+seqcol:
+  compute: true
+build:
+  store: vgp
+  tier: store_only
+metadata:
+  added_by: sources_to_genomes

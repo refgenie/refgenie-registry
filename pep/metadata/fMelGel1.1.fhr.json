@@ -1,0 +1,17 @@
+{
+  "schema": "https://raw.githubusercontent.com/FAIR-bioHeaders/FHR-Specification/main/fhr.json",
+  "schemaVersion": 1.0,
+  "genome": "Melanostigma gelatinosum",
+  "taxon": {
+    "name": "Melanostigma gelatinosum",
+    "uri": "https://identifiers.org/taxonomy:1091424"
+  },
+  "commonName": "limp eelpout",
+  "version": "fMelGel1.1",
+  "accessionID": {
+    "name": "GCA_949748355.1",
+    "url": "https://www.ncbi.nlm.nih.gov/datasets/genome/GCA_949748355.1/"
+  },
+  "assemblySource": "GenBank",
+  "documentation": "Melanostigma gelatinosum assembly fMelGel1.1 (GCA_949748355.1), from VGP.\n"
+}

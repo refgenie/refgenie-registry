@@ -1,0 +1,17 @@
+{
+  "schema": "https://raw.githubusercontent.com/FAIR-bioHeaders/FHR-Specification/main/fhr.json",
+  "schemaVersion": 1.0,
+  "genome": "Apus apus",
+  "taxon": {
+    "name": "Apus apus",
+    "uri": "https://identifiers.org/taxonomy:8895"
+  },
+  "commonName": "common swift",
+  "version": "bApuApu2.pri.cur",
+  "accessionID": {
+    "name": "GCF_020740795.1",
+    "url": "https://www.ncbi.nlm.nih.gov/datasets/genome/GCF_020740795.1/"
+  },
+  "assemblySource": "RefSeq",
+  "documentation": "Apus apus assembly bApuApu2.pri.cur (GCF_020740795.1), from VGP.\n"
+}

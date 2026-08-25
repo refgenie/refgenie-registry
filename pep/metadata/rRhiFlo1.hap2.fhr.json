@@ -1,0 +1,17 @@
+{
+  "schema": "https://raw.githubusercontent.com/FAIR-bioHeaders/FHR-Specification/main/fhr.json",
+  "schemaVersion": 1.0,
+  "genome": "Rhineura floridana",
+  "taxon": {
+    "name": "Rhineura floridana",
+    "uri": "https://identifiers.org/taxonomy:261503"
+  },
+  "commonName": "Florida worm lizard",
+  "version": "rRhiFlo1.hap2",
+  "accessionID": {
+    "name": "GCF_030035675.1",
+    "url": "https://www.ncbi.nlm.nih.gov/datasets/genome/GCF_030035675.1/"
+  },
+  "assemblySource": "RefSeq",
+  "documentation": "Rhineura floridana assembly rRhiFlo1.hap2 (GCF_030035675.1), from VGP.\n"
+}

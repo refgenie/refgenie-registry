@@ -1,0 +1,23 @@
+name: fLycPai1.hap2
+description: |
+  Lycodopsis pacificus assembly fLycPai1.hap2 (GCA_028022725.1), from VGP.
+organism:
+  scientific_name: Lycodopsis pacificus
+  common_name: blackbelly eelpout
+  taxon_id: 1772091
+assembly:
+  source: GenBank
+  accession: GCA_028022725.1
+fasta:
+  sources:
+  - provider: UCSC
+    url: https://hgdownload.soe.ucsc.edu/hubs/GCA/028/022/725/GCA_028022725.1/GCA_028022725.1.fa.gz
+  checksum:
+    sha256: compute_on_registration
+seqcol:
+  compute: true
+build:
+  store: vgp
+  tier: store_only
+metadata:
+  added_by: sources_to_genomes

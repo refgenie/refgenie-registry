@@ -1,0 +1,21 @@
+{
+  "schema": "https://raw.githubusercontent.com/FAIR-bioHeaders/FHR-Specification/main/fhr.json",
+  "schemaVersion": 1.0,
+  "genome": "Tapirus indicus",
+  "taxon": {
+    "name": "Tapirus indicus",
+    "uri": "https://identifiers.org/taxonomy:9802"
+  },
+  "version": "mTapInd1.hap2",
+  "dateCreated": "2023-09-25",
+  "accessionID": {
+    "name": "GCA_031878705.1",
+    "url": "https://www.ncbi.nlm.nih.gov/datasets/genome/GCA_031878705.1/"
+  },
+  "assemblySource": "GenBank",
+  "documentation": "Asiatic tapir (hap2 2023)\n",
+  "identifier": [
+    "bioproject:PRJNA1010472",
+    "biosample:SAMN37096863"
+  ]
+}

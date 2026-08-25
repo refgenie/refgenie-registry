@@ -1,0 +1,17 @@
+{
+  "schema": "https://raw.githubusercontent.com/FAIR-bioHeaders/FHR-Specification/main/fhr.json",
+  "schemaVersion": 1.0,
+  "genome": "Esox lucius",
+  "taxon": {
+    "name": "Esox lucius",
+    "uri": "https://identifiers.org/taxonomy:8010"
+  },
+  "commonName": "northern pike",
+  "version": "fEsoLuc1.pri",
+  "accessionID": {
+    "name": "GCF_011004845.1",
+    "url": "https://www.ncbi.nlm.nih.gov/datasets/genome/GCF_011004845.1/"
+  },
+  "assemblySource": "RefSeq",
+  "documentation": "Esox lucius assembly fEsoLuc1.pri (GCF_011004845.1), from VGP.\n"
+}

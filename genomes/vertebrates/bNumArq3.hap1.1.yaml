@@ -1,0 +1,23 @@
+name: bNumArq3.hap1.1
+description: |
+  Numenius arquata assembly bNumArq3.hap1.1 (GCA_964106895.1), from VGP.
+organism:
+  scientific_name: Numenius arquata
+  common_name: Eurasian curlew
+  taxon_id: 31919
+assembly:
+  source: GenBank
+  accession: GCA_964106895.1
+fasta:
+  sources:
+  - provider: UCSC
+    url: https://hgdownload.soe.ucsc.edu/hubs/GCA/964/106/895/GCA_964106895.1/GCA_964106895.1.fa.gz
+  checksum:
+    sha256: compute_on_registration
+seqcol:
+  compute: true
+build:
+  store: vgp
+  tier: store_only
+metadata:
+  added_by: sources_to_genomes

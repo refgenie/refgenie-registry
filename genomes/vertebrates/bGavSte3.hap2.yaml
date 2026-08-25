@@ -1,0 +1,23 @@
+name: bGavSte3.hap2
+description: |
+  Gavia stellata assembly bGavSte3.hap2 (GCF_030936135.1), from VGP.
+organism:
+  scientific_name: Gavia stellata
+  common_name: red-throated loon
+  taxon_id: 37040
+assembly:
+  source: RefSeq
+  accession: GCF_030936135.1
+fasta:
+  sources:
+  - provider: UCSC
+    url: https://hgdownload.soe.ucsc.edu/hubs/GCF/030/936/135/GCF_030936135.1/GCF_030936135.1.fa.gz
+  checksum:
+    sha256: compute_on_registration
+seqcol:
+  compute: true
+build:
+  store: vgp
+  tier: store_only
+metadata:
+  added_by: sources_to_genomes

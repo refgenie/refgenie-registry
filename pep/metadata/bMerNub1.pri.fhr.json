@@ -1,0 +1,17 @@
+{
+  "schema": "https://raw.githubusercontent.com/FAIR-bioHeaders/FHR-Specification/main/fhr.json",
+  "schemaVersion": 1.0,
+  "genome": "Merops nubicus",
+  "taxon": {
+    "name": "Merops nubicus",
+    "uri": "https://identifiers.org/taxonomy:57421"
+  },
+  "commonName": "carmine bee-eater",
+  "version": "bMerNub1.pri",
+  "accessionID": {
+    "name": "GCA_009819595.1",
+    "url": "https://www.ncbi.nlm.nih.gov/datasets/genome/GCA_009819595.1/"
+  },
+  "assemblySource": "GenBank",
+  "documentation": "Merops nubicus assembly bMerNub1.pri (GCA_009819595.1), from VGP.\n"
+}

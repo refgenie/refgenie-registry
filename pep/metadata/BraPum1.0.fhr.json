@@ -1,0 +1,16 @@
+{
+  "schema": "https://raw.githubusercontent.com/FAIR-bioHeaders/FHR-Specification/main/fhr.json",
+  "schemaVersion": 1.0,
+  "genome": "Bradypodion pumilum",
+  "taxon": {
+    "name": "Bradypodion pumilum",
+    "uri": "https://identifiers.org/taxonomy:179887"
+  },
+  "version": "BraPum1.0",
+  "accessionID": {
+    "name": "GCA_035047305.1",
+    "url": "https://www.ncbi.nlm.nih.gov/datasets/genome/GCA_035047305.1/"
+  },
+  "assemblySource": "GenBank",
+  "documentation": "Bradypodion pumilum assembly BraPum1.0 (GCA_035047305.1), from VGP.\n"
+}

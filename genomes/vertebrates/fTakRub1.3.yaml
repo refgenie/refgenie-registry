@@ -1,0 +1,23 @@
+name: fTakRub1.3
+description: |
+  Takifugu rubripes assembly fTakRub1.3 (GCA_901000725.3), from VGP.
+organism:
+  scientific_name: Takifugu rubripes
+  common_name: torafugu
+  taxon_id: 31033
+assembly:
+  source: GenBank
+  accession: GCA_901000725.3
+fasta:
+  sources:
+  - provider: UCSC
+    url: https://hgdownload.soe.ucsc.edu/hubs/GCA/901/000/725/GCA_901000725.3/GCA_901000725.3.fa.gz
+  checksum:
+    sha256: compute_on_registration
+seqcol:
+  compute: true
+build:
+  store: vgp
+  tier: store_only
+metadata:
+  added_by: sources_to_genomes

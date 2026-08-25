@@ -1,0 +1,16 @@
+{
+  "schema": "https://raw.githubusercontent.com/FAIR-bioHeaders/FHR-Specification/main/fhr.json",
+  "schemaVersion": 1.0,
+  "genome": "Dibamus cf. smithi",
+  "taxon": {
+    "name": "Dibamus cf. smithi",
+    "uri": "https://identifiers.org/taxonomy:3379902"
+  },
+  "version": "rDibSmi1.hap1",
+  "accessionID": {
+    "name": "GCA_046126795.1",
+    "url": "https://www.ncbi.nlm.nih.gov/datasets/genome/GCA_046126795.1/"
+  },
+  "assemblySource": "GenBank",
+  "documentation": "Dibamus cf. smithi assembly rDibSmi1.hap1 (GCA_046126795.1), from VGP.\n"
+}

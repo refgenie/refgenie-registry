@@ -1,0 +1,23 @@
+name: fSebFas1.pri
+description: |
+  Sebastes fasciatus assembly fSebFas1.pri (GCA_043250625.1), from VGP.
+organism:
+  scientific_name: Sebastes fasciatus
+  common_name: Acadian redfish
+  taxon_id: 394691
+assembly:
+  source: GenBank
+  accession: GCA_043250625.1
+fasta:
+  sources:
+  - provider: UCSC
+    url: https://hgdownload.soe.ucsc.edu/hubs/GCA/043/250/625/GCA_043250625.1/GCA_043250625.1.fa.gz
+  checksum:
+    sha256: compute_on_registration
+seqcol:
+  compute: true
+build:
+  store: vgp
+  tier: store_only
+metadata:
+  added_by: sources_to_genomes

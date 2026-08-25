@@ -1,0 +1,17 @@
+{
+  "schema": "https://raw.githubusercontent.com/FAIR-bioHeaders/FHR-Specification/main/fhr.json",
+  "schemaVersion": 1.0,
+  "genome": "Leucopleurus acutus",
+  "taxon": {
+    "name": "Leucopleurus acutus",
+    "uri": "https://identifiers.org/taxonomy:3371109"
+  },
+  "commonName": "Atlantic white-sided dolphin",
+  "version": "mLagAcu1.hap1.1",
+  "accessionID": {
+    "name": "GCA_964270905.1",
+    "url": "https://www.ncbi.nlm.nih.gov/datasets/genome/GCA_964270905.1/"
+  },
+  "assemblySource": "GenBank",
+  "documentation": "Leucopleurus acutus assembly mLagAcu1.hap1.1 (GCA_964270905.1), from VGP.\n"
+}

@@ -1,0 +1,21 @@
+{
+  "schema": "https://raw.githubusercontent.com/FAIR-bioHeaders/FHR-Specification/main/fhr.json",
+  "schemaVersion": 1.0,
+  "genome": "Podarcis raffonei",
+  "taxon": {
+    "name": "Podarcis raffonei",
+    "uri": "https://identifiers.org/taxonomy:65483"
+  },
+  "version": "rPodRaf1.pri",
+  "dateCreated": "2022-12-27",
+  "accessionID": {
+    "name": "GCF_027172205.1",
+    "url": "https://www.ncbi.nlm.nih.gov/datasets/genome/GCF_027172205.1/"
+  },
+  "assemblySource": "RefSeq",
+  "documentation": "Aeolian wall lizard (La Canna islet primary hap 2022 refseq)\n",
+  "identifier": [
+    "bioproject:PRJNA839511",
+    "biosample:SAMN28455423"
+  ]
+}

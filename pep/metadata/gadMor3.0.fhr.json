@@ -1,0 +1,17 @@
+{
+  "schema": "https://raw.githubusercontent.com/FAIR-bioHeaders/FHR-Specification/main/fhr.json",
+  "schemaVersion": 1.0,
+  "genome": "Gadus morhua",
+  "taxon": {
+    "name": "Gadus morhua",
+    "uri": "https://identifiers.org/taxonomy:8049"
+  },
+  "commonName": "Atlantic cod",
+  "version": "gadMor3.0",
+  "accessionID": {
+    "name": "GCF_902167405.1",
+    "url": "https://www.ncbi.nlm.nih.gov/datasets/genome/GCF_902167405.1/"
+  },
+  "assemblySource": "RefSeq",
+  "documentation": "Gadus morhua assembly gadMor3.0 (GCF_902167405.1), from VGP.\n"
+}

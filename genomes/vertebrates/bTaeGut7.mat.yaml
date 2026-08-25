@@ -1,0 +1,23 @@
+name: bTaeGut7.mat
+description: |
+  Taeniopygia guttata assembly bTaeGut7.mat (GCA_048771995.1), from VGP.
+organism:
+  scientific_name: Taeniopygia guttata
+  common_name: zebra finch
+  taxon_id: 59729
+assembly:
+  source: GenBank
+  accession: GCA_048771995.1
+fasta:
+  sources:
+  - provider: UCSC
+    url: https://hgdownload.soe.ucsc.edu/hubs/GCA/048/771/995/GCA_048771995.1/GCA_048771995.1.fa.gz
+  checksum:
+    sha256: compute_on_registration
+seqcol:
+  compute: true
+build:
+  store: vgp
+  tier: store_only
+metadata:
+  added_by: sources_to_genomes

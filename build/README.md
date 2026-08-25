@@ -20,6 +20,10 @@ recipe's container.
 | `run_builds.sh` | Entry point. Imports recipes + renders the Snakefile, then dispatches builds via snakemake. |
 | `profiles/rivanna/config.yaml` | Snakemake SLURM profile (shefflab allocation). One SLURM job per asset; resources live here, not in recipes. |
 | `config.yaml` | Snakemake `configfile:` (placeholder — rules don't read it; satisfies the directive). |
+| `generate_samples.py` | **Generates `pep/samples.csv`** from every genome YAML's `build:` block plus `pep/tiers.yaml`. Never hand-edit the CSV. |
+| `generate_genome_metadata.py` | **Generates `pep/metadata/<genome>.fhr.json`** for every genome (not just queued ones). Never hand-edit. |
+| `sync_stores.py` | Reports which genomes their declared store cannot actually load, and (`--changed`) which stores' sources changed since they were built. It reconciles `genomes/` against `stores/*/sources.csv`; it never rewrites either (see [`stores/README.md`](../stores/README.md#sourcescsv-is-not-generated-from-the-genome-list)). |
+| `check_registration.py` | Reports which genomes in `genomes/` do not resolve in the catalog. The companion to `check_coverage.py`, which can only see the build queue. |
 | `update_index.py` | After builds, writes `index/<genome>/<recipe>.yaml` entries from the refgenie DB. |
 | `Snakefile` | **Generated** each run (gitignored). |
 
@@ -44,6 +48,13 @@ recipe's container.
 [`pep/samples.csv`](../pep/samples.csv) — **one row per `(genome, asset)`**.
 Rows sharing a `sample_name` are collated by peppy, so each genome's
 `asset_group_name` becomes the list of assets to build for it.
+
+It is a **generated artifact**. The queue itself lives in each genome YAML's
+`build:` block (`store` + `tier`); `generate_samples.py` turns those plus
+`pep/tiers.yaml` into this CSV, and `run_builds.sh` regenerates it at startup and
+fails the nightly on any diff. Genomes at `tier: store_only` produce no rows at
+all — they are loaded into a store and browsable, and nothing is built for them.
+See [`pep/README.md`](../pep/README.md).
 
 | Column | Meaning |
 |--------|---------|

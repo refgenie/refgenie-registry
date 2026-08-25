@@ -1,0 +1,16 @@
+{
+  "schema": "https://raw.githubusercontent.com/FAIR-bioHeaders/FHR-Specification/main/fhr.json",
+  "schemaVersion": 1.0,
+  "genome": "Cottoperca gobio",
+  "taxon": {
+    "name": "Cottoperca gobio",
+    "uri": "https://identifiers.org/taxonomy:56716"
+  },
+  "version": "fCotGob3.1",
+  "accessionID": {
+    "name": "GCF_900634415.1",
+    "url": "https://www.ncbi.nlm.nih.gov/datasets/genome/GCF_900634415.1/"
+  },
+  "assemblySource": "RefSeq",
+  "documentation": "Cottoperca gobio assembly fCotGob3.1 (GCF_900634415.1), from VGP.\n"
+}

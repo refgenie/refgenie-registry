@@ -1,0 +1,23 @@
+name: mMyoMys1.hap1.1
+description: |
+  Myotis mystacinus assembly mMyoMys1.hap1.1 (GCA_964094495.2), from VGP.
+organism:
+  scientific_name: Myotis mystacinus
+  common_name: whiskered bat
+  taxon_id: 109479
+assembly:
+  source: GenBank
+  accession: GCA_964094495.2
+fasta:
+  sources:
+  - provider: UCSC
+    url: https://hgdownload.soe.ucsc.edu/hubs/GCA/964/094/495/GCA_964094495.2/GCA_964094495.2.fa.gz
+  checksum:
+    sha256: compute_on_registration
+seqcol:
+  compute: true
+build:
+  store: vgp
+  tier: store_only
+metadata:
+  added_by: sources_to_genomes

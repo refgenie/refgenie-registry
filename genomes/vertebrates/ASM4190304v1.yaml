@@ -1,0 +1,23 @@
+name: ASM4190304v1
+description: |
+  Epinephelus lanceolatus assembly ASM4190304v1 (GCA_041903045.1), from VGP.
+organism:
+  scientific_name: Epinephelus lanceolatus
+  common_name: giant grouper
+  taxon_id: 310571
+assembly:
+  source: GenBank
+  accession: GCA_041903045.1
+fasta:
+  sources:
+  - provider: UCSC
+    url: https://hgdownload.soe.ucsc.edu/hubs/GCA/041/903/045/GCA_041903045.1/GCA_041903045.1.fa.gz
+  checksum:
+    sha256: compute_on_registration
+seqcol:
+  compute: true
+build:
+  store: vgp
+  tier: store_only
+metadata:
+  added_by: sources_to_genomes

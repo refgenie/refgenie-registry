@@ -1,0 +1,23 @@
+name: aGasCar1.pri
+description: |
+  Gastrophryne carolinensis assembly aGasCar1.pri (GCA_027917425.1), from VGP.
+organism:
+  scientific_name: Gastrophryne carolinensis
+  common_name: eastern narrow-mouthed toad
+  taxon_id: 8429
+assembly:
+  source: GenBank
+  accession: GCA_027917425.1
+fasta:
+  sources:
+  - provider: UCSC
+    url: https://hgdownload.soe.ucsc.edu/hubs/GCA/027/917/425/GCA_027917425.1/GCA_027917425.1.fa.gz
+  checksum:
+    sha256: compute_on_registration
+seqcol:
+  compute: true
+build:
+  store: vgp
+  tier: store_only
+metadata:
+  added_by: sources_to_genomes

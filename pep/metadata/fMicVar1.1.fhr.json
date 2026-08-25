@@ -1,0 +1,17 @@
+{
+  "schema": "https://raw.githubusercontent.com/FAIR-bioHeaders/FHR-Specification/main/fhr.json",
+  "schemaVersion": 1.0,
+  "genome": "Microchirus variegatus",
+  "taxon": {
+    "name": "Microchirus variegatus",
+    "uri": "https://identifiers.org/taxonomy:90074"
+  },
+  "commonName": "thickback sole",
+  "version": "fMicVar1.1",
+  "accessionID": {
+    "name": "GCA_963457635.1",
+    "url": "https://www.ncbi.nlm.nih.gov/datasets/genome/GCA_963457635.1/"
+  },
+  "assemblySource": "GenBank",
+  "documentation": "Microchirus variegatus assembly fMicVar1.1 (GCA_963457635.1), from VGP.\n"
+}

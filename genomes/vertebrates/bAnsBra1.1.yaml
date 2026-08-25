@@ -1,0 +1,23 @@
+name: bAnsBra1.1
+description: |
+  Anser brachyrhynchus assembly bAnsBra1.1 (GCA_964034855.1), from VGP.
+organism:
+  scientific_name: Anser brachyrhynchus
+  common_name: Pink-footed goose
+  taxon_id: 132585
+assembly:
+  source: GenBank
+  accession: GCA_964034855.1
+fasta:
+  sources:
+  - provider: UCSC
+    url: https://hgdownload.soe.ucsc.edu/hubs/GCA/964/034/855/GCA_964034855.1/GCA_964034855.1.fa.gz
+  checksum:
+    sha256: compute_on_registration
+seqcol:
+  compute: true
+build:
+  store: vgp
+  tier: store_only
+metadata:
+  added_by: sources_to_genomes

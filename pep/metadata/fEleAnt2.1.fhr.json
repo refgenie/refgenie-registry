@@ -1,0 +1,16 @@
+{
+  "schema": "https://raw.githubusercontent.com/FAIR-bioHeaders/FHR-Specification/main/fhr.json",
+  "schemaVersion": 1.0,
+  "genome": "Electrona antarctica",
+  "taxon": {
+    "name": "Electrona antarctica",
+    "uri": "https://identifiers.org/taxonomy:206093"
+  },
+  "version": "fEleAnt2.1",
+  "accessionID": {
+    "name": "GCA_951216825.1",
+    "url": "https://www.ncbi.nlm.nih.gov/datasets/genome/GCA_951216825.1/"
+  },
+  "assemblySource": "GenBank",
+  "documentation": "Electrona antarctica assembly fEleAnt2.1 (GCA_951216825.1), from VGP.\n"
+}

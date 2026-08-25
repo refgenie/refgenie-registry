@@ -1,0 +1,23 @@
+name: fPriTyp1.hap1
+description: |
+  Pristipomoides typus assembly fPriTyp1.hap1 (GCA_045363895.1), from VGP.
+organism:
+  scientific_name: Pristipomoides typus
+  common_name: sharptooth jobfish
+  taxon_id: 264210
+assembly:
+  source: GenBank
+  accession: GCA_045363895.1
+fasta:
+  sources:
+  - provider: UCSC
+    url: https://hgdownload.soe.ucsc.edu/hubs/GCA/045/363/895/GCA_045363895.1/GCA_045363895.1.fa.gz
+  checksum:
+    sha256: compute_on_registration
+seqcol:
+  compute: true
+build:
+  store: vgp
+  tier: store_only
+metadata:
+  added_by: sources_to_genomes

@@ -1,0 +1,17 @@
+{
+  "schema": "https://raw.githubusercontent.com/FAIR-bioHeaders/FHR-Specification/main/fhr.json",
+  "schemaVersion": 1.0,
+  "genome": "Eudromia elegans",
+  "taxon": {
+    "name": "Eudromia elegans",
+    "uri": "https://identifiers.org/taxonomy:8805"
+  },
+  "commonName": "elegant crested-tinamou",
+  "version": "bEudEle1_v1.hap1",
+  "accessionID": {
+    "name": "GCA_047922985.1",
+    "url": "https://www.ncbi.nlm.nih.gov/datasets/genome/GCA_047922985.1/"
+  },
+  "assemblySource": "GenBank",
+  "documentation": "Eudromia elegans assembly bEudEle1_v1.hap1 (GCA_047922985.1), from VGP.\n"
+}

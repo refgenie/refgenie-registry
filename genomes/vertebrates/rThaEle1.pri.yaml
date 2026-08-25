@@ -1,0 +1,23 @@
+name: rThaEle1.pri
+description: |
+  Thamnophis elegans assembly rThaEle1.pri (GCF_009769535.1), from VGP.
+organism:
+  scientific_name: Thamnophis elegans
+  common_name: Western terrestrial garter snake
+  taxon_id: 35005
+assembly:
+  source: RefSeq
+  accession: GCF_009769535.1
+fasta:
+  sources:
+  - provider: UCSC
+    url: https://hgdownload.soe.ucsc.edu/hubs/GCF/009/769/535/GCF_009769535.1/GCF_009769535.1.fa.gz
+  checksum:
+    sha256: compute_on_registration
+seqcol:
+  compute: true
+build:
+  store: vgp
+  tier: store_only
+metadata:
+  added_by: sources_to_genomes

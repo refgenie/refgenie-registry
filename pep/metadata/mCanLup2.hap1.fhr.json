@@ -1,0 +1,17 @@
+{
+  "schema": "https://raw.githubusercontent.com/FAIR-bioHeaders/FHR-Specification/main/fhr.json",
+  "schemaVersion": 1.0,
+  "genome": "Canis lupus baileyi",
+  "taxon": {
+    "name": "Canis lupus baileyi",
+    "uri": "https://identifiers.org/taxonomy:143281"
+  },
+  "commonName": "Mexican gray wolf",
+  "version": "mCanLup2.hap1",
+  "accessionID": {
+    "name": "GCF_048164855.1",
+    "url": "https://www.ncbi.nlm.nih.gov/datasets/genome/GCF_048164855.1/"
+  },
+  "assemblySource": "RefSeq",
+  "documentation": "Canis lupus baileyi assembly mCanLup2.hap1 (GCF_048164855.1), from VGP.\n"
+}

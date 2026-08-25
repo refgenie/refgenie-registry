@@ -1,0 +1,21 @@
+{
+  "schema": "https://raw.githubusercontent.com/FAIR-bioHeaders/FHR-Specification/main/fhr.json",
+  "schemaVersion": 1.0,
+  "genome": "Mops condylurus",
+  "taxon": {
+    "name": "Mops condylurus",
+    "uri": "https://identifiers.org/taxonomy:258863"
+  },
+  "version": "ASM4374864v1",
+  "dateCreated": "2024-10-24",
+  "accessionID": {
+    "name": "GCA_043748645.1",
+    "url": "https://www.ncbi.nlm.nih.gov/datasets/genome/GCA_043748645.1/"
+  },
+  "assemblySource": "GenBank",
+  "documentation": "Angolan free-tailed bat (Cote dIvoire 20210831_DDa 2024)\n",
+  "identifier": [
+    "bioproject:PRJNA940057",
+    "biosample:SAMN33550911"
+  ]
+}

@@ -1,0 +1,23 @@
+name: rPodFil1.hap1.1
+description: |
+  Podarcis filfolensis assembly rPodFil1.hap1.1 (GCA_964270895.1), from VGP.
+organism:
+  scientific_name: Podarcis filfolensis
+  common_name: Filfola wall lizard
+  taxon_id: 65481
+assembly:
+  source: GenBank
+  accession: GCA_964270895.1
+fasta:
+  sources:
+  - provider: UCSC
+    url: https://hgdownload.soe.ucsc.edu/hubs/GCA/964/270/895/GCA_964270895.1/GCA_964270895.1.fa.gz
+  checksum:
+    sha256: compute_on_registration
+seqcol:
+  compute: true
+build:
+  store: vgp
+  tier: store_only
+metadata:
+  added_by: sources_to_genomes

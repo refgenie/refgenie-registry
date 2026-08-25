@@ -1,0 +1,17 @@
+{
+  "schema": "https://raw.githubusercontent.com/FAIR-bioHeaders/FHR-Specification/main/fhr.json",
+  "schemaVersion": 1.0,
+  "genome": "Hemiscyllium ocellatum",
+  "taxon": {
+    "name": "Hemiscyllium ocellatum",
+    "uri": "https://identifiers.org/taxonomy:170820"
+  },
+  "commonName": "epaulette shark",
+  "version": "sHemOce1.pat.X.cur",
+  "accessionID": {
+    "name": "GCF_020745735.1",
+    "url": "https://www.ncbi.nlm.nih.gov/datasets/genome/GCF_020745735.1/"
+  },
+  "assemblySource": "RefSeq",
+  "documentation": "Hemiscyllium ocellatum assembly sHemOce1.pat.X.cur. (GCF_020745735.1), from VGP.\n"
+}

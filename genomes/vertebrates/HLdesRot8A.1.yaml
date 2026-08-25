@@ -1,0 +1,23 @@
+name: HLdesRot8A.1
+description: |
+  Desmodus rotundus assembly HLdesRot8A.1 (GCA_022682495.2), from VGP.
+organism:
+  scientific_name: Desmodus rotundus
+  common_name: common vampire bat
+  taxon_id: 9430
+assembly:
+  source: GenBank
+  accession: GCA_022682495.2
+fasta:
+  sources:
+  - provider: UCSC
+    url: https://hgdownload.soe.ucsc.edu/hubs/GCA/022/682/495/GCA_022682495.2/GCA_022682495.2.fa.gz
+  checksum:
+    sha256: compute_on_registration
+seqcol:
+  compute: true
+build:
+  store: vgp
+  tier: store_only
+metadata:
+  added_by: sources_to_genomes

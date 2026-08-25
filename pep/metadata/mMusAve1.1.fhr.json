@@ -1,0 +1,17 @@
+{
+  "schema": "https://raw.githubusercontent.com/FAIR-bioHeaders/FHR-Specification/main/fhr.json",
+  "schemaVersion": 1.0,
+  "genome": "Muscardinus avellanarius",
+  "taxon": {
+    "name": "Muscardinus avellanarius",
+    "uri": "https://identifiers.org/taxonomy:39082"
+  },
+  "commonName": "hazel dormouse",
+  "version": "mMusAve1.1",
+  "accessionID": {
+    "name": "GCA_963383645.1",
+    "url": "https://www.ncbi.nlm.nih.gov/datasets/genome/GCA_963383645.1/"
+  },
+  "assemblySource": "GenBank",
+  "documentation": "Muscardinus avellanarius assembly mMusAve1.1 (GCA_963383645.1), from VGP.\n"
+}

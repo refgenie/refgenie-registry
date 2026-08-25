@@ -1,0 +1,17 @@
+{
+  "schema": "https://raw.githubusercontent.com/FAIR-bioHeaders/FHR-Specification/main/fhr.json",
+  "schemaVersion": 1.0,
+  "genome": "Rhynchonycteris naso",
+  "taxon": {
+    "name": "Rhynchonycteris naso",
+    "uri": "https://identifiers.org/taxonomy:249017"
+  },
+  "commonName": "proboscis bat",
+  "version": "mRhyNas2.hap1",
+  "accessionID": {
+    "name": "GCA_037038545.1",
+    "url": "https://www.ncbi.nlm.nih.gov/datasets/genome/GCA_037038545.1/"
+  },
+  "assemblySource": "GenBank",
+  "documentation": "Rhynchonycteris naso assembly mRhyNas2.hap1 (GCA_037038545.1), from VGP.\n"
+}

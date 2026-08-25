@@ -1,0 +1,17 @@
+{
+  "schema": "https://raw.githubusercontent.com/FAIR-bioHeaders/FHR-Specification/main/fhr.json",
+  "schemaVersion": 1.0,
+  "genome": "Trogon surrucura",
+  "taxon": {
+    "name": "Trogon surrucura",
+    "uri": "https://identifiers.org/taxonomy:297711"
+  },
+  "commonName": "Suruca trogon",
+  "version": "bTroSur1.pri.cur",
+  "accessionID": {
+    "name": "GCA_020746105.1",
+    "url": "https://www.ncbi.nlm.nih.gov/datasets/genome/GCA_020746105.1/"
+  },
+  "assemblySource": "GenBank",
+  "documentation": "Trogon surrucura assembly bTroSur1.pri.cur (GCA_020746105.1), from VGP.\n"
+}

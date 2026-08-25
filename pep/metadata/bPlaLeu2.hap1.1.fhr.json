@@ -1,0 +1,17 @@
+{
+  "schema": "https://raw.githubusercontent.com/FAIR-bioHeaders/FHR-Specification/main/fhr.json",
+  "schemaVersion": 1.0,
+  "genome": "Platalea leucorodia",
+  "taxon": {
+    "name": "Platalea leucorodia",
+    "uri": "https://identifiers.org/taxonomy:257867"
+  },
+  "commonName": "Eurasian spoonbill",
+  "version": "bPlaLeu2.hap1.1",
+  "accessionID": {
+    "name": "GCA_965183815.1",
+    "url": "https://www.ncbi.nlm.nih.gov/datasets/genome/GCA_965183815.1/"
+  },
+  "assemblySource": "GenBank",
+  "documentation": "Platalea leucorodia assembly bPlaLeu2.hap1.1 (GCA_965183815.1), from VGP.\n"
+}

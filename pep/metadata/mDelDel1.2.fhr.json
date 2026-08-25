@@ -1,0 +1,17 @@
+{
+  "schema": "https://raw.githubusercontent.com/FAIR-bioHeaders/FHR-Specification/main/fhr.json",
+  "schemaVersion": 1.0,
+  "genome": "Delphinus delphis",
+  "taxon": {
+    "name": "Delphinus delphis",
+    "uri": "https://identifiers.org/taxonomy:9728"
+  },
+  "commonName": "saddleback dolphin",
+  "version": "mDelDel1.2",
+  "accessionID": {
+    "name": "GCF_949987515.2",
+    "url": "https://www.ncbi.nlm.nih.gov/datasets/genome/GCF_949987515.2/"
+  },
+  "assemblySource": "RefSeq",
+  "documentation": "Delphinus delphis assembly mDelDel1.2 (GCF_949987515.2), from VGP.\n"
+}

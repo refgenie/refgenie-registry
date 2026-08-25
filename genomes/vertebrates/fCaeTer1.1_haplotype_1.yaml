@@ -1,0 +1,23 @@
+name: fCaeTer1.1_haplotype_1
+description: |
+  Caesio teres assembly fCaeTer1.1_haplotype_1 (GCA_048129055.1), from VGP.
+organism:
+  scientific_name: Caesio teres
+  common_name: yellow and blueback fusilier
+  taxon_id: 1311420
+assembly:
+  source: GenBank
+  accession: GCA_048129055.1
+fasta:
+  sources:
+  - provider: UCSC
+    url: https://hgdownload.soe.ucsc.edu/hubs/GCA/048/129/055/GCA_048129055.1/GCA_048129055.1.fa.gz
+  checksum:
+    sha256: compute_on_registration
+seqcol:
+  compute: true
+build:
+  store: vgp
+  tier: store_only
+metadata:
+  added_by: sources_to_genomes

@@ -1,0 +1,17 @@
+{
+  "schema": "https://raw.githubusercontent.com/FAIR-bioHeaders/FHR-Specification/main/fhr.json",
+  "schemaVersion": 1.0,
+  "genome": "Arvicanthis niloticus",
+  "taxon": {
+    "name": "Arvicanthis niloticus",
+    "uri": "https://identifiers.org/taxonomy:61156"
+  },
+  "commonName": "Nile rat",
+  "version": "mArvNil1.pat.X",
+  "accessionID": {
+    "name": "GCA_011762505.3",
+    "url": "https://www.ncbi.nlm.nih.gov/datasets/genome/GCA_011762505.3/"
+  },
+  "assemblySource": "GenBank",
+  "documentation": "Arvicanthis niloticus assembly mArvNil1.pat.X (GCA_011762505.3), from VGP.\n"
+}

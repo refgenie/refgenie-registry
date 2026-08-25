@@ -1,0 +1,17 @@
+{
+  "schema": "https://raw.githubusercontent.com/FAIR-bioHeaders/FHR-Specification/main/fhr.json",
+  "schemaVersion": 1.0,
+  "genome": "Eleutherodactylus coqui",
+  "taxon": {
+    "name": "Eleutherodactylus coqui",
+    "uri": "https://identifiers.org/taxonomy:57060"
+  },
+  "commonName": "Puerto Rican coqui",
+  "version": "aEleCoq1.hap1",
+  "accessionID": {
+    "name": "GCF_035609145.1",
+    "url": "https://www.ncbi.nlm.nih.gov/datasets/genome/GCF_035609145.1/"
+  },
+  "assemblySource": "RefSeq",
+  "documentation": "Eleutherodactylus coqui assembly aEleCoq1.hap1 (GCF_035609145.1), from VGP.\n"
+}

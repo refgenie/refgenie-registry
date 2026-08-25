@@ -1,0 +1,21 @@
+{
+  "schema": "https://raw.githubusercontent.com/FAIR-bioHeaders/FHR-Specification/main/fhr.json",
+  "schemaVersion": 1.0,
+  "genome": "Acanthopagrus schlegelii",
+  "taxon": {
+    "name": "Acanthopagrus schlegelii",
+    "uri": "https://identifiers.org/taxonomy:72011"
+  },
+  "version": "ASM4175387v1",
+  "dateCreated": "2024-09-05",
+  "accessionID": {
+    "name": "GCA_041753875.1",
+    "url": "https://www.ncbi.nlm.nih.gov/datasets/genome/GCA_041753875.1/"
+  },
+  "assemblySource": "GenBank",
+  "documentation": "black porgy (SG-2024 2024)\n",
+  "identifier": [
+    "bioproject:PRJNA1146169",
+    "biosample:SAMN43087228"
+  ]
+}

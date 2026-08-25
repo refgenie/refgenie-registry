@@ -1,0 +1,17 @@
+{
+  "schema": "https://raw.githubusercontent.com/FAIR-bioHeaders/FHR-Specification/main/fhr.json",
+  "schemaVersion": 1.0,
+  "genome": "Grus grus",
+  "taxon": {
+    "name": "Grus grus",
+    "uri": "https://identifiers.org/taxonomy:40816"
+  },
+  "commonName": "Eurasian crane",
+  "version": "bGruGru1.hap1.1",
+  "accessionID": {
+    "name": "GCA_964106855.1",
+    "url": "https://www.ncbi.nlm.nih.gov/datasets/genome/GCA_964106855.1/"
+  },
+  "assemblySource": "GenBank",
+  "documentation": "Grus grus assembly bGruGru1.hap1.1 (GCA_964106855.1), from VGP.\n"
+}

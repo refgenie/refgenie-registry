@@ -1,0 +1,17 @@
+{
+  "schema": "https://raw.githubusercontent.com/FAIR-bioHeaders/FHR-Specification/main/fhr.json",
+  "schemaVersion": 1.0,
+  "genome": "Acipenser ruthenus",
+  "taxon": {
+    "name": "Acipenser ruthenus",
+    "uri": "https://identifiers.org/taxonomy:7906"
+  },
+  "commonName": "sterlet",
+  "version": "fAciRut3.2_maternal_haplotype",
+  "accessionID": {
+    "name": "GCF_902713425.1",
+    "url": "https://www.ncbi.nlm.nih.gov/datasets/genome/GCF_902713425.1/"
+  },
+  "assemblySource": "RefSeq",
+  "documentation": "Acipenser ruthenus assembly fAciRut3.2 maternal haplotype (GCF_902713425.1), from VGP.\n"
+}

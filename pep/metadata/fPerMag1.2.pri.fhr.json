@@ -1,0 +1,16 @@
+{
+  "schema": "https://raw.githubusercontent.com/FAIR-bioHeaders/FHR-Specification/main/fhr.json",
+  "schemaVersion": 1.0,
+  "genome": "Periophthalmus magnuspinnatus",
+  "taxon": {
+    "name": "Periophthalmus magnuspinnatus",
+    "uri": "https://identifiers.org/taxonomy:409849"
+  },
+  "version": "fPerMag1.2.pri",
+  "accessionID": {
+    "name": "GCF_009829125.3",
+    "url": "https://www.ncbi.nlm.nih.gov/datasets/genome/GCF_009829125.3/"
+  },
+  "assemblySource": "RefSeq",
+  "documentation": "Periophthalmus magnuspinnatus assembly fPerMag1.2.pri (GCF_009829125.3), from VGP.\n"
+}

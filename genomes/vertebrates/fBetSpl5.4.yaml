@@ -1,0 +1,23 @@
+name: fBetSpl5.4
+description: |
+  Betta splendens assembly fBetSpl5.4 (GCF_900634795.4), from VGP.
+organism:
+  scientific_name: Betta splendens
+  common_name: Siamese fighting fish
+  taxon_id: 158456
+assembly:
+  source: RefSeq
+  accession: GCF_900634795.4
+fasta:
+  sources:
+  - provider: UCSC
+    url: https://hgdownload.soe.ucsc.edu/hubs/GCF/900/634/795/GCF_900634795.4/GCF_900634795.4.fa.gz
+  checksum:
+    sha256: compute_on_registration
+seqcol:
+  compute: true
+build:
+  store: vgp
+  tier: store_only
+metadata:
+  added_by: sources_to_genomes

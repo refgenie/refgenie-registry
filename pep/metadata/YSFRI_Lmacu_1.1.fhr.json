@@ -1,0 +1,17 @@
+{
+  "schema": "https://raw.githubusercontent.com/FAIR-bioHeaders/FHR-Specification/main/fhr.json",
+  "schemaVersion": 1.0,
+  "genome": "Lateolabrax maculatus",
+  "taxon": {
+    "name": "Lateolabrax maculatus",
+    "uri": "https://identifiers.org/taxonomy:315492"
+  },
+  "commonName": "spotted sea bass",
+  "version": "YSFRI_Lmacu_1.1",
+  "accessionID": {
+    "name": "GCA_031216445.1",
+    "url": "https://www.ncbi.nlm.nih.gov/datasets/genome/GCA_031216445.1/"
+  },
+  "assemblySource": "GenBank",
+  "documentation": "Lateolabrax maculatus assembly YSFRI_Lmacu_1.1 (GCA_031216445.1), from VGP.\n"
+}

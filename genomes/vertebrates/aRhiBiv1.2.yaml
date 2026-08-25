@@ -1,0 +1,23 @@
+name: aRhiBiv1.2
+description: |
+  Rhinatrema bivittatum assembly aRhiBiv1.2 (GCA_901001135.2), from VGP.
+organism:
+  scientific_name: Rhinatrema bivittatum
+  common_name: two-lined caecilian
+  taxon_id: 194408
+assembly:
+  source: GenBank
+  accession: GCA_901001135.2
+fasta:
+  sources:
+  - provider: UCSC
+    url: https://hgdownload.soe.ucsc.edu/hubs/GCA/901/001/135/GCA_901001135.2/GCA_901001135.2.fa.gz
+  checksum:
+    sha256: compute_on_registration
+seqcol:
+  compute: true
+build:
+  store: vgp
+  tier: store_only
+metadata:
+  added_by: sources_to_genomes

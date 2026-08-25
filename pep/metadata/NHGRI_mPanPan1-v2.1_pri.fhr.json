@@ -1,0 +1,17 @@
+{
+  "schema": "https://raw.githubusercontent.com/FAIR-bioHeaders/FHR-Specification/main/fhr.json",
+  "schemaVersion": 1.0,
+  "genome": "Pan paniscus",
+  "taxon": {
+    "name": "Pan paniscus",
+    "uri": "https://identifiers.org/taxonomy:9597"
+  },
+  "commonName": "pygmy chimpanzee",
+  "version": "NHGRI_mPanPan1-v2.1_pri",
+  "accessionID": {
+    "name": "GCF_029289425.2",
+    "url": "https://www.ncbi.nlm.nih.gov/datasets/genome/GCF_029289425.2/"
+  },
+  "assemblySource": "RefSeq",
+  "documentation": "Pan paniscus assembly NHGRI_mPanPan1-v2.1_pri (GCF_029289425.2), from VGP.\n"
+}

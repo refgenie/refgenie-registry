@@ -1,0 +1,23 @@
+name: ASM4190279v1
+description: |
+  Electrophorus electricus assembly ASM4190279v1 (GCA_041902795.1), from VGP.
+organism:
+  scientific_name: Electrophorus electricus
+  common_name: electric eel
+  taxon_id: 8005
+assembly:
+  source: GenBank
+  accession: GCA_041902795.1
+fasta:
+  sources:
+  - provider: UCSC
+    url: https://hgdownload.soe.ucsc.edu/hubs/GCA/041/902/795/GCA_041902795.1/GCA_041902795.1.fa.gz
+  checksum:
+    sha256: compute_on_registration
+seqcol:
+  compute: true
+build:
+  store: vgp
+  tier: store_only
+metadata:
+  added_by: sources_to_genomes

@@ -1,0 +1,23 @@
+name: ASM4388028v1
+description: |
+  Doryrhina cyclops assembly ASM4388028v1 (GCA_043880285.1), from VGP.
+organism:
+  scientific_name: Doryrhina cyclops
+  common_name: cyclops roundleaf bat
+  taxon_id: 249021
+assembly:
+  source: GenBank
+  accession: GCA_043880285.1
+fasta:
+  sources:
+  - provider: UCSC
+    url: https://hgdownload.soe.ucsc.edu/hubs/GCA/043/880/285/GCA_043880285.1/GCA_043880285.1.fa.gz
+  checksum:
+    sha256: compute_on_registration
+seqcol:
+  compute: true
+build:
+  store: vgp
+  tier: store_only
+metadata:
+  added_by: sources_to_genomes

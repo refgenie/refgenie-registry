@@ -1,0 +1,23 @@
+name: fZeuFab8.1
+description: |
+  Zeus faber assembly fZeuFab8.1 (GCA_960531495.1), from VGP.
+organism:
+  scientific_name: Zeus faber
+  common_name: John dory
+  taxon_id: 64108
+assembly:
+  source: GenBank
+  accession: GCA_960531495.1
+fasta:
+  sources:
+  - provider: UCSC
+    url: https://hgdownload.soe.ucsc.edu/hubs/GCA/960/531/495/GCA_960531495.1/GCA_960531495.1.fa.gz
+  checksum:
+    sha256: compute_on_registration
+seqcol:
+  compute: true
+build:
+  store: vgp
+  tier: store_only
+metadata:
+  added_by: sources_to_genomes

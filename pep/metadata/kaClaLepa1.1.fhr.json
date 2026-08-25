@@ -1,0 +1,17 @@
+{
+  "schema": "https://raw.githubusercontent.com/FAIR-bioHeaders/FHR-Specification/main/fhr.json",
+  "schemaVersion": 1.0,
+  "genome": "Clavelina lepadiformis",
+  "taxon": {
+    "name": "Clavelina lepadiformis",
+    "uri": "https://identifiers.org/taxonomy:159417"
+  },
+  "commonName": "light-bulb sea squirt",
+  "version": "kaClaLepa1.1",
+  "accessionID": {
+    "name": "GCA_947623445.1",
+    "url": "https://www.ncbi.nlm.nih.gov/datasets/genome/GCA_947623445.1/"
+  },
+  "assemblySource": "GenBank",
+  "documentation": "Clavelina lepadiformis assembly kaClaLepa1.1 (GCA_947623445.1), from VGP.\n"
+}

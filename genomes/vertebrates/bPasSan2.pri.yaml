@@ -1,0 +1,23 @@
+name: bPasSan2.pri
+description: |
+  Passerculus sandwichensis assembly bPasSan2.pri (GCA_031885435.1), from VGP.
+organism:
+  scientific_name: Passerculus sandwichensis
+  common_name: Savannah sparrow
+  taxon_id: 161624
+assembly:
+  source: GenBank
+  accession: GCA_031885435.1
+fasta:
+  sources:
+  - provider: UCSC
+    url: https://hgdownload.soe.ucsc.edu/hubs/GCA/031/885/435/GCA_031885435.1/GCA_031885435.1.fa.gz
+  checksum:
+    sha256: compute_on_registration
+seqcol:
+  compute: true
+build:
+  store: vgp
+  tier: store_only
+metadata:
+  added_by: sources_to_genomes

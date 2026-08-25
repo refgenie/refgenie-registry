@@ -1,0 +1,17 @@
+{
+  "schema": "https://raw.githubusercontent.com/FAIR-bioHeaders/FHR-Specification/main/fhr.json",
+  "schemaVersion": 1.0,
+  "genome": "Pipistrellus hanaki",
+  "taxon": {
+    "name": "Pipistrellus hanaki",
+    "uri": "https://identifiers.org/taxonomy:412090"
+  },
+  "commonName": "Hanaki's dwarf bat",
+  "version": "mPipHan1.1",
+  "accessionID": {
+    "name": "GCA_964339955.1",
+    "url": "https://www.ncbi.nlm.nih.gov/datasets/genome/GCA_964339955.1/"
+  },
+  "assemblySource": "GenBank",
+  "documentation": "Pipistrellus hanaki assembly mPipHan1.1 (GCA_964339955.1), from VGP.\n"
+}

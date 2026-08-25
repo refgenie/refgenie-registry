@@ -1,0 +1,23 @@
+name: bTroSur1.pri.cur
+description: |
+  Trogon surrucura assembly bTroSur1.pri.cur (GCA_020746105.1), from VGP.
+organism:
+  scientific_name: Trogon surrucura
+  common_name: Suruca trogon
+  taxon_id: 297711
+assembly:
+  source: GenBank
+  accession: GCA_020746105.1
+fasta:
+  sources:
+  - provider: UCSC
+    url: https://hgdownload.soe.ucsc.edu/hubs/GCA/020/746/105/GCA_020746105.1/GCA_020746105.1.fa.gz
+  checksum:
+    sha256: compute_on_registration
+seqcol:
+  compute: true
+build:
+  store: vgp
+  tier: store_only
+metadata:
+  added_by: sources_to_genomes

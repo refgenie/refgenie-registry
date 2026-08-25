@@ -1,0 +1,23 @@
+name: fScoMax1.1
+description: |
+  Scophthalmus maximus assembly fScoMax1.1 (GCA_963854745.1), from VGP.
+organism:
+  scientific_name: Scophthalmus maximus
+  common_name: turbot
+  taxon_id: 52904
+assembly:
+  source: GenBank
+  accession: GCA_963854745.1
+fasta:
+  sources:
+  - provider: UCSC
+    url: https://hgdownload.soe.ucsc.edu/hubs/GCA/963/854/745/GCA_963854745.1/GCA_963854745.1.fa.gz
+  checksum:
+    sha256: compute_on_registration
+seqcol:
+  compute: true
+build:
+  store: vgp
+  tier: store_only
+metadata:
+  added_by: sources_to_genomes

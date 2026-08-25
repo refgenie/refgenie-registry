@@ -1,0 +1,23 @@
+name: mSaiBol1.pri
+description: |
+  Saimiri boliviensis assembly mSaiBol1.pri (GCA_048565385.1), from VGP.
+organism:
+  scientific_name: Saimiri boliviensis
+  common_name: Bolivian squirrel monkey
+  taxon_id: 27679
+assembly:
+  source: GenBank
+  accession: GCA_048565385.1
+fasta:
+  sources:
+  - provider: UCSC
+    url: https://hgdownload.soe.ucsc.edu/hubs/GCA/048/565/385/GCA_048565385.1/GCA_048565385.1.fa.gz
+  checksum:
+    sha256: compute_on_registration
+seqcol:
+  compute: true
+build:
+  store: vgp
+  tier: store_only
+metadata:
+  added_by: sources_to_genomes

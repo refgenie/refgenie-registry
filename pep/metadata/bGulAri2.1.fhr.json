@@ -1,0 +1,17 @@
+{
+  "schema": "https://raw.githubusercontent.com/FAIR-bioHeaders/FHR-Specification/main/fhr.json",
+  "schemaVersion": 1.0,
+  "genome": "Phalacrocorax aristotelis",
+  "taxon": {
+    "name": "Phalacrocorax aristotelis",
+    "uri": "https://identifiers.org/taxonomy:126867"
+  },
+  "commonName": "European shag",
+  "version": "bGulAri2.1",
+  "accessionID": {
+    "name": "GCA_949628215.1",
+    "url": "https://www.ncbi.nlm.nih.gov/datasets/genome/GCA_949628215.1/"
+  },
+  "assemblySource": "GenBank",
+  "documentation": "Phalacrocorax aristotelis assembly bGulAri2.1 (GCA_949628215.1), from VGP.\n"
+}

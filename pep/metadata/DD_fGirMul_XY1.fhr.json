@@ -1,0 +1,16 @@
+{
+  "schema": "https://raw.githubusercontent.com/FAIR-bioHeaders/FHR-Specification/main/fhr.json",
+  "schemaVersion": 1.0,
+  "genome": "Girardinichthys multiradiatus",
+  "taxon": {
+    "name": "Girardinichthys multiradiatus",
+    "uri": "https://identifiers.org/taxonomy:208333"
+  },
+  "version": "DD_fGirMul_XY1",
+  "accessionID": {
+    "name": "GCF_021462225.1",
+    "url": "https://www.ncbi.nlm.nih.gov/datasets/genome/GCF_021462225.1/"
+  },
+  "assemblySource": "RefSeq",
+  "documentation": "Girardinichthys multiradiatus assembly DD_fGirMul_XY1 (GCF_021462225.1), from VGP.\n"
+}

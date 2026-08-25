@@ -1,0 +1,17 @@
+{
+  "schema": "https://raw.githubusercontent.com/FAIR-bioHeaders/FHR-Specification/main/fhr.json",
+  "schemaVersion": 1.0,
+  "genome": "Synchiropus picturatus",
+  "taxon": {
+    "name": "Synchiropus picturatus",
+    "uri": "https://identifiers.org/taxonomy:586865"
+  },
+  "commonName": "picturesque dragonet",
+  "version": "ASM4423167v1",
+  "accessionID": {
+    "name": "GCA_044231675.1",
+    "url": "https://www.ncbi.nlm.nih.gov/datasets/genome/GCA_044231675.1/"
+  },
+  "assemblySource": "GenBank",
+  "documentation": "Synchiropus picturatus assembly ASM4423167v1 (GCA_044231675.1), from VGP.\n"
+}

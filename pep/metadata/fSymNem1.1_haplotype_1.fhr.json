@@ -1,0 +1,17 @@
+{
+  "schema": "https://raw.githubusercontent.com/FAIR-bioHeaders/FHR-Specification/main/fhr.json",
+  "schemaVersion": 1.0,
+  "genome": "Symphorus nematophorus",
+  "taxon": {
+    "name": "Symphorus nematophorus",
+    "uri": "https://identifiers.org/taxonomy:396798"
+  },
+  "commonName": "chinamanfish",
+  "version": "fSymNem1.1_haplotype_1",
+  "accessionID": {
+    "name": "GCA_048128725.1",
+    "url": "https://www.ncbi.nlm.nih.gov/datasets/genome/GCA_048128725.1/"
+  },
+  "assemblySource": "GenBank",
+  "documentation": "Symphorus nematophorus assembly fSymNem1.1_haplotype_1 (GCA_048128725.1), from VGP.\n"
+}

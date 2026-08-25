@@ -1,0 +1,17 @@
+{
+  "schema": "https://raw.githubusercontent.com/FAIR-bioHeaders/FHR-Specification/main/fhr.json",
+  "schemaVersion": 1.0,
+  "genome": "Syngnathus acus",
+  "taxon": {
+    "name": "Syngnathus acus",
+    "uri": "https://identifiers.org/taxonomy:161584"
+  },
+  "commonName": "greater pipefish",
+  "version": "fSynAcu1.2",
+  "accessionID": {
+    "name": "GCF_901709675.1",
+    "url": "https://www.ncbi.nlm.nih.gov/datasets/genome/GCF_901709675.1/"
+  },
+  "assemblySource": "RefSeq",
+  "documentation": "Syngnathus acus assembly fSynAcu1.2 (GCF_901709675.1), from VGP.\n"
+}

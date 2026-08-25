@@ -1,0 +1,23 @@
+name: fScaEry2.hap1.1
+description: |
+  Scardinius erythrophthalmus assembly fScaEry2.hap1.1 (GCA_964197995.1), from VGP.
+organism:
+  scientific_name: Scardinius erythrophthalmus
+  common_name: rudd
+  taxon_id: 58319
+assembly:
+  source: GenBank
+  accession: GCA_964197995.1
+fasta:
+  sources:
+  - provider: UCSC
+    url: https://hgdownload.soe.ucsc.edu/hubs/GCA/964/197/995/GCA_964197995.1/GCA_964197995.1.fa.gz
+  checksum:
+    sha256: compute_on_registration
+seqcol:
+  compute: true
+build:
+  store: vgp
+  tier: store_only
+metadata:
+  added_by: sources_to_genomes

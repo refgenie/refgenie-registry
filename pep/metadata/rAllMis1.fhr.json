@@ -1,0 +1,21 @@
+{
+  "schema": "https://raw.githubusercontent.com/FAIR-bioHeaders/FHR-Specification/main/fhr.json",
+  "schemaVersion": 1.0,
+  "genome": "Alligator mississippiensis",
+  "taxon": {
+    "name": "Alligator mississippiensis",
+    "uri": "https://identifiers.org/taxonomy:8496"
+  },
+  "version": "rAllMis1",
+  "dateCreated": "2023-08-24",
+  "accessionID": {
+    "name": "GCF_030867095.1",
+    "url": "https://www.ncbi.nlm.nih.gov/datasets/genome/GCF_030867095.1/"
+  },
+  "assemblySource": "RefSeq",
+  "documentation": "American alligator (2023 refseq)\n",
+  "identifier": [
+    "bioproject:PRJNA1006701",
+    "biosample:SAMN37045233"
+  ]
+}

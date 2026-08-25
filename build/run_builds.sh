@@ -81,36 +81,40 @@ else
     exit 1
 fi
 
-# --- guard: pep/samples.csv must be generated from pep/build_matrix.yaml ---------
-# samples.csv is a GENERATED artifact: build/generate_samples.py reads
-# pep/build_matrix.yaml (the single source of truth for the per-genome asset queue) and
-# emits samples.csv. Committing samples.csv IS launching the builds, so a
-# hand-edit of the CSV -- or a build_matrix.yaml change whose samples.csv was never
-# regenerated -- must never reach dispatch. Regenerate here and fail the nightly
-# loudly on ANY diff. This runs in DRY_RUN too: a stale/hand-edited queue is
-# exactly what a dry run should surface, and regenerating an already-correct file
-# is a byte no-op (nothing to destroy). generate_samples.py also runs the source
-# and dependency-closure validations, so an invalid build_matrix.yaml aborts here.
-echo "$(date) | run_builds: regenerating pep/samples.csv from pep/build_matrix.yaml"
+# --- guard: pep/samples.csv must be generated from the genome list ---------------
+# samples.csv is a GENERATED artifact: build/generate_samples.py reads every
+# genomes/**/*.yaml `build:` block (the single source of truth for the per-genome
+# asset queue) plus pep/tiers.yaml, and emits samples.csv. Committing samples.csv
+# IS launching the builds, so a hand-edit of the CSV -- or a genome YAML change
+# whose samples.csv was never regenerated -- must never reach dispatch.
+# Regenerate here and fail the nightly loudly on ANY diff. This runs in DRY_RUN
+# too: a stale/hand-edited queue is exactly what a dry run should surface, and
+# regenerating an already-correct file is a byte no-op (nothing to destroy).
+# generate_samples.py also runs the FASTA-source, external-source and
+# dependency-closure validations, so an invalid `build:` block aborts here, naming
+# the genome.
+echo "$(date) | run_builds: regenerating pep/samples.csv from genomes/**/*.yaml"
 if ! python3 build/generate_samples.py; then
-    echo "$(date) | run_builds: FATAL generate_samples.py failed -- pep/build_matrix.yaml is invalid." >&2
-    echo "  Fix build_matrix.yaml (see the error above); refusing to build." >&2
+    echo "$(date) | run_builds: FATAL generate_samples.py failed -- a genome's build: block is invalid." >&2
+    echo "  Fix the genome YAML named above; refusing to build." >&2
     exit 1
 fi
 if ! git diff --exit-code pep/samples.csv; then
-    echo "$(date) | run_builds: FATAL pep/samples.csv is out of sync with pep/build_matrix.yaml." >&2
+    echo "$(date) | run_builds: FATAL pep/samples.csv is out of sync with genomes/**/*.yaml." >&2
     echo "  samples.csv is GENERATED -- never hand-edit it. Either the CSV was edited" >&2
-    echo "  directly, or build_matrix.yaml changed without regenerating. Run" >&2
+    echo "  directly, or a genome's build: block changed without regenerating. Run" >&2
     echo "    python build/generate_samples.py" >&2
     echo "  review the samples.csv diff (it IS the go/no-go build gate), and commit both." >&2
     exit 1
 fi
-echo "$(date) | run_builds: pep/samples.csv is in sync with pep/build_matrix.yaml"
+echo "$(date) | run_builds: pep/samples.csv is in sync with genomes/**/*.yaml"
 
 # --- guard: pep/metadata/*.fhr.json must be generated from genomes/*.yaml ---------
 # The per-genome FHR sidecars are a GENERATED artifact -- the metadata companion to
 # samples.csv. build/generate_genome_metadata.py reads genomes/*/*.yaml and emits
-# pep/metadata/<genome>.fhr.json for every queued genome; these are what the
+# pep/metadata/<genome>.fhr.json for EVERY genome (not only queued ones -- a
+# store_only genome has no PEP row, and its sidecar is exactly what gives it
+# organism and taxonomy in its store); these are what the
 # post-build apply step reads (genome_init deliberately does NOT -- metadata in a
 # rule's `input:` is a rebuild trigger). Regenerate here and
 # fail loudly on ANY drift, exactly like samples.csv. Runs in DRY_RUN too: a stale
@@ -133,6 +137,60 @@ if [[ -n "$(git status --porcelain -- pep/metadata/)" ]]; then
     exit 1
 fi
 echo "$(date) | run_builds: pep/metadata/ is in sync with genomes/*.yaml"
+
+# --- guard: every genome must be loadable from the store it names ------------
+# A genome YAML's `build.store` claims a store holds its sequence. Reported, not
+# enforced: a genome whose store has no row for it is registered but unloadable,
+# and until 2026-08-25 nothing anywhere noticed. It is not fatal because the fix
+# is a data change in a store's sources.csv, and a pending one must not stop the
+# night's builds.
+echo "$(date) | run_builds: checking genome -> store coverage"
+python3 build/sync_stores.py \
+    || echo "$(date) | run_builds: store coverage check reported gaps (non-fatal)" >&2
+
+# --- load the stores whose sources changed ----------------------------------
+# Store building was removed from the nightly on 2026-07-18 because re-syncing
+# plantref's ~476k objects every night is wasteful. That reasoning still holds --
+# so the fix is not to rebuild unconditionally, it is to rebuild ONLY the stores
+# whose sources.csv changed since they were last built. sync_stores.py --changed
+# answers that from a .sources.sha256 stamp inside each built store, and a store
+# that has never been built always counts as changed.
+#
+# This is what makes `build.tier: store_only` mean something: a genome added at
+# that tier is a row in some store's sources.csv, and this is the step that loads
+# its sequence. Per store: ingest, register aliases, then write the curated FHR
+# sidecars (build_fhr.py reads pep/metadata/<genome>.fhr.json, so a store of
+# non-model organisms gets real species and taxonomy instead of nulls), and only
+# then sync to S3 so the sidecars and the refreshed rgstore.json ride along.
+#
+# Non-fatal throughout: a store that fails to load must not stop the asset builds
+# for genomes that are already loaded. The stamp is recorded only on success, so
+# a failed store is retried next run.
+if [[ "${DRY_RUN:-0}" == "1" ]]; then
+    echo "$(date) | run_builds: DRY RUN — WOULD load stores:"
+    python3 build/sync_stores.py --changed | sed 's/^/  /' \
+        || echo "  (could not determine changed stores)" >&2
+elif [[ "${REFGENIE_SKIP_STORE_BUILD:-0}" == "1" ]]; then
+    echo "$(date) | run_builds: REFGENIE_SKIP_STORE_BUILD=1; skipping store loading"
+else
+    _changed_stores="$(python3 build/sync_stores.py --changed || true)"
+    if [[ -z "$_changed_stores" ]]; then
+        echo "$(date) | run_builds: no store sources changed; skipping store loading"
+    else
+        for _store in $_changed_stores; do
+            echo "$(date) | run_builds: loading store $_store (sources.csv changed)"
+            if ( cd stores && python3 build.py "$_store" \
+                    && python3 build_aliases.py "$_store" \
+                    && python3 build_fhr.py "$_store" \
+                    && python3 build.py "$_store" --sync ); then
+                python3 build/sync_stores.py --record "$_store" \
+                    || echo "$(date) | run_builds: could not stamp $_store (it will rebuild next run)" >&2
+            else
+                echo "$(date) | run_builds: store $_store FAILED to load (non-fatal); retried next run" >&2
+            fi
+        done
+    fi
+fi
 
 # Put a working `aws` ahead of the broken host ~/.local/bin/aws (dead-anaconda
 # shebang) so the folder_sync push_command resolves a real CLI. The bin dir
@@ -555,25 +613,44 @@ echo "$(date) | run_builds: applying per-genome FHR metadata to the catalog..."
 python3 build/apply_metadata.py --db-config "$REFGENIE_DB_CONFIG_PATH" \
     || echo "$(date) | run_builds: metadata apply reported problems (non-fatal); catches up next run" >&2
 
-# --- overlay: register every store collection as a browse genome ------------
-# Refgenie is an OVERLAY on a RefgetStore: the store defines which genomes
-# exist, and a genome either has assets attached (built by the fan-out above)
-# or is a zero-asset browse overlay. `genome sync` registers every collection
-# in each REFGENIE_OVERLAY_STORES store (space-separated URLs; unset = off)
-# into the build catalog, carrying the store's curated `name` aliases and any
-# FHR sidecars. Idempotent, never repoints an alias owned by a built genome.
+# --- federation: ingest every registered store into the catalog -------------
+# Refgenie is an OVERLAY on a RefgetStore: the store defines which genomes exist,
+# and a genome either has assets attached (built by the fan-out above) or is a
+# zero-asset browse genome. `store sync` walks the federation registry (the
+# `store` table, managed by `refgenie store add/list/remove`) and ingests each
+# enabled store's collections and curated `name` aliases into the catalog,
+# applying the priority-based alias collision policy. Idempotent, and it never
+# repoints an alias owned by a built genome.
+#
+# This REPLACES the old REFGENIE_OVERLAY_STORES loop, which did the same job
+# worse: `genome sync --server-url` opened a fresh remote store PER COLLECTION
+# (GenomeManager._import_remote_collection) and copied each into the local store,
+# every single night. `store sync` opens each store once.
+#
 # Ordering is load-bearing: AFTER apply_metadata (built genomes' metadata is
 # authoritative), BEFORE the store publish + catalog-export below so synced
-# aliases ride the store S3 sync and genome rows ride the export. Non-fatal:
-# an unreachable store must not abort publishing the built assets.
-if [[ -n "${REFGENIE_OVERLAY_STORES:-}" ]]; then
-    for _overlay_store in $REFGENIE_OVERLAY_STORES; do
-        echo "$(date) | run_builds: overlay sync from $_overlay_store"
-        "$REFGENIE_BIN" genome sync --server-url "$_overlay_store" \
-            || echo "$(date) | run_builds: overlay sync from $_overlay_store reported failures (non-fatal); catches up next run" >&2
-    done
+# aliases ride the store S3 sync and genome rows ride the export. Non-fatal: an
+# unreachable store must not abort publishing the built assets.
+#
+# REQUIRES a refgenie1 with the `store` command group (the federation registry,
+# landed 2026-08-25). The build venv was on 1.0.0a1, which does not have it, so
+# the capability is checked explicitly: a missing `store` command is a
+# provisioning gap that needs an upgrade, not a transient failure, and it must
+# not read like one in the log.
+if ! "$REFGENIE_BIN" store --help >/dev/null 2>&1; then
+    echo "$(date) | run_builds: FATAL-ADJACENT this refgenie has no 'store' command group," >&2
+    echo "  so NO store collections are being overlaid into the catalog tonight." >&2
+    echo "  Upgrade the build venv: bash infra/rivanna/setup_env.sh" >&2
+    echo "  Then register the stores once: refgenie store add <name> --url <url> --priority <n>" >&2
+    echo "  (installed: $("$REFGENIE_BIN" --version 2>&1 | head -1))" >&2
 else
-    echo "$(date) | run_builds: REFGENIE_OVERLAY_STORES unset; skipping store overlay sync"
+    echo "$(date) | run_builds: syncing the federated store registry into the catalog..."
+    if [[ -z "$("$REFGENIE_BIN" store list 2>/dev/null | grep -v '^$' | tail -n +2)" ]]; then
+        echo "$(date) | run_builds: WARNING the federation registry is EMPTY; no stores will be" >&2
+        echo "  overlaid. Register them once with 'refgenie store add <name> --url <url>'." >&2
+    fi
+    "$REFGENIE_BIN" store sync \
+        || echo "$(date) | run_builds: store sync reported failures (non-fatal); catches up next run" >&2
 fi
 
 # --- publish the sequence store -------------------------------------------
@@ -649,6 +726,21 @@ echo "$(date) | run_builds: checking asset coverage against the PEP..."
 python3 build/check_coverage.py --db-config "$REFGENIE_DB_CONFIG_PATH" \
     --build-status "$snakemake_rc" \
     || echo "$(date) | run_builds: coverage check failed to run (non-fatal)"
+
+# --- registration report ---------------------------------------------------
+# Coverage answers "did every REQUESTED asset get built?", which is scoped to the
+# build queue and so cannot see a genome that was never requested. On 2026-08-18
+# twenty-six vertebrate genomes merged and existed nowhere -- no store, no
+# catalog, no index -- and coverage reported "145/145 ... no gaps" every morning
+# after, correctly, because none of them was in pep/samples.csv.
+#
+# This is the other question: does every genome in genomes/**/*.yaml, whatever
+# its tier, actually resolve in the catalog? A store_only genome builds no assets
+# by design, but it must still exist. Reported, not enforced, for the same reason
+# coverage is: the build/push exit codes stay the thing that fails the run.
+echo "$(date) | run_builds: checking genome registration against the catalog..."
+python3 build/check_registration.py --db-config "$REFGENIE_DB_CONFIG_PATH" \
+    || echo "$(date) | run_builds: registration check failed to run (non-fatal)"
 
 # Re-raise a build failure now that the successful assets have been pushed and
 # the index refreshed, so the nightly still surfaces as failed for monitoring.

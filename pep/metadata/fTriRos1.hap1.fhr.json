@@ -1,0 +1,16 @@
+{
+  "schema": "https://raw.githubusercontent.com/FAIR-bioHeaders/FHR-Specification/main/fhr.json",
+  "schemaVersion": 1.0,
+  "genome": "Trichomycterus rosablanca",
+  "taxon": {
+    "name": "Trichomycterus rosablanca",
+    "uri": "https://identifiers.org/taxonomy:2290929"
+  },
+  "version": "fTriRos1.hap1",
+  "accessionID": {
+    "name": "GCF_030014385.1",
+    "url": "https://www.ncbi.nlm.nih.gov/datasets/genome/GCF_030014385.1/"
+  },
+  "assemblySource": "RefSeq",
+  "documentation": "Trichomycterus rosablanca assembly fTriRos1.hap1 (GCF_030014385.1), from VGP.\n"
+}

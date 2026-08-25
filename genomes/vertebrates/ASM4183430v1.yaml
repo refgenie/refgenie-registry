@@ -1,0 +1,23 @@
+name: ASM4183430v1
+description: |
+  Megaptera novaeangliae assembly ASM4183430v1 (GCA_041834305.1), from VGP.
+organism:
+  scientific_name: Megaptera novaeangliae
+  common_name: humpback whale
+  taxon_id: 9773
+assembly:
+  source: GenBank
+  accession: GCA_041834305.1
+fasta:
+  sources:
+  - provider: UCSC
+    url: https://hgdownload.soe.ucsc.edu/hubs/GCA/041/834/305/GCA_041834305.1/GCA_041834305.1.fa.gz
+  checksum:
+    sha256: compute_on_registration
+seqcol:
+  compute: true
+build:
+  store: vgp
+  tier: store_only
+metadata:
+  added_by: sources_to_genomes

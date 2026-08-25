@@ -1,0 +1,23 @@
+name: fEleEle1.pri
+description: |
+  Electrophorus electricus assembly fEleEle1.pri (GCF_013358815.1), from VGP.
+organism:
+  scientific_name: Electrophorus electricus
+  common_name: electric eel
+  taxon_id: 8005
+assembly:
+  source: RefSeq
+  accession: GCF_013358815.1
+fasta:
+  sources:
+  - provider: UCSC
+    url: https://hgdownload.soe.ucsc.edu/hubs/GCF/013/358/815/GCF_013358815.1/GCF_013358815.1.fa.gz
+  checksum:
+    sha256: compute_on_registration
+seqcol:
+  compute: true
+build:
+  store: vgp
+  tier: store_only
+metadata:
+  added_by: sources_to_genomes

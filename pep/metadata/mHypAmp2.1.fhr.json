@@ -1,0 +1,17 @@
+{
+  "schema": "https://raw.githubusercontent.com/FAIR-bioHeaders/FHR-Specification/main/fhr.json",
+  "schemaVersion": 1.0,
+  "genome": "Hyperoodon ampullatus",
+  "taxon": {
+    "name": "Hyperoodon ampullatus",
+    "uri": "https://identifiers.org/taxonomy:48744"
+  },
+  "commonName": "northern bottlenose whale",
+  "version": "mHypAmp2.1",
+  "accessionID": {
+    "name": "GCA_949752795.1",
+    "url": "https://www.ncbi.nlm.nih.gov/datasets/genome/GCA_949752795.1/"
+  },
+  "assemblySource": "GenBank",
+  "documentation": "Hyperoodon ampullatus assembly mHypAmp2.1 (GCA_949752795.1), from VGP.\n"
+}

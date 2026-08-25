@@ -1,0 +1,17 @@
+{
+  "schema": "https://raw.githubusercontent.com/FAIR-bioHeaders/FHR-Specification/main/fhr.json",
+  "schemaVersion": 1.0,
+  "genome": "Salmo trutta",
+  "taxon": {
+    "name": "Salmo trutta",
+    "uri": "https://identifiers.org/taxonomy:8032"
+  },
+  "commonName": "river trout",
+  "version": "fSalTru1.2",
+  "accessionID": {
+    "name": "GCA_901001165.2",
+    "url": "https://www.ncbi.nlm.nih.gov/datasets/genome/GCA_901001165.2/"
+  },
+  "assemblySource": "GenBank",
+  "documentation": "Salmo trutta assembly fSalTru1.2 (GCA_901001165.2), from VGP.\n"
+}

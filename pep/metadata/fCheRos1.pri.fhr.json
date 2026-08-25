@@ -1,0 +1,17 @@
+{
+  "schema": "https://raw.githubusercontent.com/FAIR-bioHeaders/FHR-Specification/main/fhr.json",
+  "schemaVersion": 1.0,
+  "genome": "Chelmon rostratus",
+  "taxon": {
+    "name": "Chelmon rostratus",
+    "uri": "https://identifiers.org/taxonomy:109905"
+  },
+  "commonName": "copperband butterflyfish",
+  "version": "fCheRos1.pri",
+  "accessionID": {
+    "name": "GCF_017976325.1",
+    "url": "https://www.ncbi.nlm.nih.gov/datasets/genome/GCF_017976325.1/"
+  },
+  "assemblySource": "RefSeq",
+  "documentation": "Chelmon rostratus assembly fCheRos1.pri (GCF_017976325.1), from VGP.\n"
+}

@@ -1,0 +1,22 @@
+name: fRhaChi2.1
+description: |
+  Rhamphochromis sp. 'chilingali' assembly fRhaChi2.1 (GCA_963969265.1), from VGP.
+organism:
+  scientific_name: Rhamphochromis sp. 'chilingali'
+  taxon_id: 454631
+assembly:
+  source: GenBank
+  accession: GCA_963969265.1
+fasta:
+  sources:
+  - provider: UCSC
+    url: https://hgdownload.soe.ucsc.edu/hubs/GCA/963/969/265/GCA_963969265.1/GCA_963969265.1.fa.gz
+  checksum:
+    sha256: compute_on_registration
+seqcol:
+  compute: true
+build:
+  store: vgp
+  tier: store_only
+metadata:
+  added_by: sources_to_genomes

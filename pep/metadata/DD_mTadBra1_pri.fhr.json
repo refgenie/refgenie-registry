@@ -1,0 +1,17 @@
+{
+  "schema": "https://raw.githubusercontent.com/FAIR-bioHeaders/FHR-Specification/main/fhr.json",
+  "schemaVersion": 1.0,
+  "genome": "Tadarida brasiliensis",
+  "taxon": {
+    "name": "Tadarida brasiliensis",
+    "uri": "https://identifiers.org/taxonomy:9438"
+  },
+  "commonName": "Brazilian free-tailed bat",
+  "version": "DD_mTadBra1_pri",
+  "accessionID": {
+    "name": "GCA_030848825.1",
+    "url": "https://www.ncbi.nlm.nih.gov/datasets/genome/GCA_030848825.1/"
+  },
+  "assemblySource": "GenBank",
+  "documentation": "Tadarida brasiliensis assembly DD_mTadBra1_pri (GCA_030848825.1), from VGP.\n"
+}

@@ -1,0 +1,23 @@
+name: ASM3395843v1
+description: |
+  Carettochelys insculpta assembly ASM3395843v1 (GCA_033958435.1), from VGP.
+organism:
+  scientific_name: Carettochelys insculpta
+  common_name: pitted-shelled turtle
+  taxon_id: 44489
+assembly:
+  source: GenBank
+  accession: GCA_033958435.1
+fasta:
+  sources:
+  - provider: UCSC
+    url: https://hgdownload.soe.ucsc.edu/hubs/GCA/033/958/435/GCA_033958435.1/GCA_033958435.1.fa.gz
+  checksum:
+    sha256: compute_on_registration
+seqcol:
+  compute: true
+build:
+  store: vgp
+  tier: store_only
+metadata:
+  added_by: sources_to_genomes

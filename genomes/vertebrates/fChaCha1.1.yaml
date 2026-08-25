@@ -1,0 +1,23 @@
+name: fChaCha1.1
+description: |
+  Chanos chanos assembly fChaCha1.1 (GCF_902362185.1), from VGP.
+organism:
+  scientific_name: Chanos chanos
+  common_name: milkfish
+  taxon_id: 29144
+assembly:
+  source: RefSeq
+  accession: GCF_902362185.1
+fasta:
+  sources:
+  - provider: UCSC
+    url: https://hgdownload.soe.ucsc.edu/hubs/GCF/902/362/185/GCF_902362185.1/GCF_902362185.1.fa.gz
+  checksum:
+    sha256: compute_on_registration
+seqcol:
+  compute: true
+build:
+  store: vgp
+  tier: store_only
+metadata:
+  added_by: sources_to_genomes

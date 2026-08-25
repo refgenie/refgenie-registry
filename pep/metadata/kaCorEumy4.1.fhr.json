@@ -1,0 +1,16 @@
+{
+  "schema": "https://raw.githubusercontent.com/FAIR-bioHeaders/FHR-Specification/main/fhr.json",
+  "schemaVersion": 1.0,
+  "genome": "Corella eumyota",
+  "taxon": {
+    "name": "Corella eumyota",
+    "uri": "https://identifiers.org/taxonomy:431183"
+  },
+  "version": "kaCorEumy4.1",
+  "accessionID": {
+    "name": "GCA_963082875.1",
+    "url": "https://www.ncbi.nlm.nih.gov/datasets/genome/GCA_963082875.1/"
+  },
+  "assemblySource": "GenBank",
+  "documentation": "Corella eumyota assembly kaCorEumy4.1 (GCA_963082875.1), from VGP.\n"
+}

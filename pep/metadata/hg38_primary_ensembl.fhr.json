@@ -1,0 +1,17 @@
+{
+  "schema": "https://raw.githubusercontent.com/FAIR-bioHeaders/FHR-Specification/main/fhr.json",
+  "schemaVersion": 1.0,
+  "genome": "Homo sapiens",
+  "taxon": {
+    "name": "Homo sapiens",
+    "uri": "https://identifiers.org/taxonomy:9606"
+  },
+  "commonName": "human",
+  "version": "hg38_primary_ensembl",
+  "genomeSynonym": [
+    "hg38-primary-113-ensembl",
+    "hg38-primary-sm-113-ensembl"
+  ],
+  "assemblySource": "Ensembl",
+  "documentation": "primary fasta of GRCh38 release 113\n"
+}

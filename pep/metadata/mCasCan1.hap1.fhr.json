@@ -1,0 +1,17 @@
+{
+  "schema": "https://raw.githubusercontent.com/FAIR-bioHeaders/FHR-Specification/main/fhr.json",
+  "schemaVersion": 1.0,
+  "genome": "Castor canadensis",
+  "taxon": {
+    "name": "Castor canadensis",
+    "uri": "https://identifiers.org/taxonomy:51338"
+  },
+  "commonName": "American beaver",
+  "version": "mCasCan1.hap1",
+  "accessionID": {
+    "name": "GCA_047511655.1",
+    "url": "https://www.ncbi.nlm.nih.gov/datasets/genome/GCA_047511655.1/"
+  },
+  "assemblySource": "GenBank",
+  "documentation": "Castor canadensis assembly mCasCan1.hap1 (GCA_047511655.1), from VGP.\n"
+}

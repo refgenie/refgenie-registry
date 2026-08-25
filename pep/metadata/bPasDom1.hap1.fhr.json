@@ -1,0 +1,17 @@
+{
+  "schema": "https://raw.githubusercontent.com/FAIR-bioHeaders/FHR-Specification/main/fhr.json",
+  "schemaVersion": 1.0,
+  "genome": "Passer domesticus",
+  "taxon": {
+    "name": "Passer domesticus",
+    "uri": "https://identifiers.org/taxonomy:48849"
+  },
+  "commonName": "house sparrow",
+  "version": "bPasDom1.hap1",
+  "accessionID": {
+    "name": "GCF_036417665.1",
+    "url": "https://www.ncbi.nlm.nih.gov/datasets/genome/GCF_036417665.1/"
+  },
+  "assemblySource": "RefSeq",
+  "documentation": "Passer domesticus assembly bPasDom1.hap1 (GCF_036417665.1), from VGP.\n"
+}

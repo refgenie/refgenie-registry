@@ -1,0 +1,17 @@
+{
+  "schema": "https://raw.githubusercontent.com/FAIR-bioHeaders/FHR-Specification/main/fhr.json",
+  "schemaVersion": 1.0,
+  "genome": "Sylvia atricapilla",
+  "taxon": {
+    "name": "Sylvia atricapilla",
+    "uri": "https://identifiers.org/taxonomy:48155"
+  },
+  "commonName": "blackcap",
+  "version": "bSylAtr1.pri",
+  "accessionID": {
+    "name": "GCF_009819655.1",
+    "url": "https://www.ncbi.nlm.nih.gov/datasets/genome/GCF_009819655.1/"
+  },
+  "assemblySource": "RefSeq",
+  "documentation": "Sylvia atricapilla assembly bSylAtr1.pri (GCF_009819655.1), from VGP.\n"
+}

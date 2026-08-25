@@ -1,0 +1,17 @@
+{
+  "schema": "https://raw.githubusercontent.com/FAIR-bioHeaders/FHR-Specification/main/fhr.json",
+  "schemaVersion": 1.0,
+  "genome": "Lissotriton vulgaris",
+  "taxon": {
+    "name": "Lissotriton vulgaris",
+    "uri": "https://identifiers.org/taxonomy:8324"
+  },
+  "commonName": "common newt",
+  "version": "aLisVul1.1",
+  "accessionID": {
+    "name": "GCA_964263255.1",
+    "url": "https://www.ncbi.nlm.nih.gov/datasets/genome/GCA_964263255.1/"
+  },
+  "assemblySource": "GenBank",
+  "documentation": "Lissotriton vulgaris assembly aLisVul1.1 (GCA_964263255.1), from VGP.\n"
+}

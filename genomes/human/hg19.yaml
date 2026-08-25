@@ -29,6 +29,11 @@ seqcol:
   digest: ThZcNYiLuWWL86NdJ8dvvJG15K9mW3Fo
   length: 93
 
+build:
+  store: legacy
+  tier: full
+  drop: [star_index, tallymer_index]
+
 metadata:
   added: 2026-05-20
   added_by: nsheff

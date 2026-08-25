@@ -21,6 +21,12 @@ fasta:
 seqcol:
   compute: true
 
+build:
+  store: plantref
+  tier: standard
+  add: [suffixerator_index]
+  drop: [star_index]
+
 metadata:
   added: 2026-08-11
   added_by: nsheff

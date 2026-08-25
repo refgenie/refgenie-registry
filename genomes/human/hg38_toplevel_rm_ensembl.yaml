@@ -24,6 +24,10 @@ seqcol:
   digest: F9zeFn6M4EN4KGAJush7rZEU3GROoeNP
   length: 706
 
+build:
+  store: jungle
+  tier: store_only
+
 metadata:
   added: 2026-05-20
   added_by: nsheff

@@ -1,0 +1,17 @@
+{
+  "schema": "https://raw.githubusercontent.com/FAIR-bioHeaders/FHR-Specification/main/fhr.json",
+  "schemaVersion": 1.0,
+  "genome": "Microtus pennsylvanicus",
+  "taxon": {
+    "name": "Microtus pennsylvanicus",
+    "uri": "https://identifiers.org/taxonomy:10058"
+  },
+  "commonName": "meadow vole",
+  "version": "mMicPen1.hap1",
+  "accessionID": {
+    "name": "GCA_037038515.1",
+    "url": "https://www.ncbi.nlm.nih.gov/datasets/genome/GCA_037038515.1/"
+  },
+  "assemblySource": "GenBank",
+  "documentation": "Microtus pennsylvanicus assembly mMicPen1.hap1 (GCA_037038515.1), from VGP.\n"
+}

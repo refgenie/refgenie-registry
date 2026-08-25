@@ -1,0 +1,17 @@
+{
+  "schema": "https://raw.githubusercontent.com/FAIR-bioHeaders/FHR-Specification/main/fhr.json",
+  "schemaVersion": 1.0,
+  "genome": "Electrophorus electricus",
+  "taxon": {
+    "name": "Electrophorus electricus",
+    "uri": "https://identifiers.org/taxonomy:8005"
+  },
+  "commonName": "electric eel",
+  "version": "ASM4190279v1",
+  "accessionID": {
+    "name": "GCA_041902795.1",
+    "url": "https://www.ncbi.nlm.nih.gov/datasets/genome/GCA_041902795.1/"
+  },
+  "assemblySource": "GenBank",
+  "documentation": "Electrophorus electricus assembly ASM4190279v1 (GCA_041902795.1), from VGP.\n"
+}

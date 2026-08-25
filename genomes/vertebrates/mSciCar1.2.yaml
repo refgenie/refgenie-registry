@@ -1,0 +1,23 @@
+name: mSciCar1.2
+description: |
+  Sciurus carolinensis assembly mSciCar1.2 (GCF_902686445.1), from VGP.
+organism:
+  scientific_name: Sciurus carolinensis
+  common_name: gray squirrel
+  taxon_id: 30640
+assembly:
+  source: RefSeq
+  accession: GCF_902686445.1
+fasta:
+  sources:
+  - provider: UCSC
+    url: https://hgdownload.soe.ucsc.edu/hubs/GCF/902/686/445/GCF_902686445.1/GCF_902686445.1.fa.gz
+  checksum:
+    sha256: compute_on_registration
+seqcol:
+  compute: true
+build:
+  store: vgp
+  tier: store_only
+metadata:
+  added_by: sources_to_genomes

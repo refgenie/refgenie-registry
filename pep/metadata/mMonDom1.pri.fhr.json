@@ -1,0 +1,17 @@
+{
+  "schema": "https://raw.githubusercontent.com/FAIR-bioHeaders/FHR-Specification/main/fhr.json",
+  "schemaVersion": 1.0,
+  "genome": "Monodelphis domestica",
+  "taxon": {
+    "name": "Monodelphis domestica",
+    "uri": "https://identifiers.org/taxonomy:13616"
+  },
+  "commonName": "gray short-tailed opossum",
+  "version": "mMonDom1.pri",
+  "accessionID": {
+    "name": "GCF_027887165.1",
+    "url": "https://www.ncbi.nlm.nih.gov/datasets/genome/GCF_027887165.1/"
+  },
+  "assemblySource": "RefSeq",
+  "documentation": "Monodelphis domestica assembly mMonDom1.pri (GCF_027887165.1), from VGP.\n"
+}

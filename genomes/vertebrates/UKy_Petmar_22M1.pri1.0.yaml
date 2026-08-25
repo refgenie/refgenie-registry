@@ -1,0 +1,23 @@
+name: UKy_Petmar_22M1.pri1.0
+description: |
+  Petromyzon marinus assembly UKy_Petmar_22M1.pri1.0 (GCA_048934315.1), from VGP.
+organism:
+  scientific_name: Petromyzon marinus
+  common_name: sea lamprey
+  taxon_id: 7757
+assembly:
+  source: GenBank
+  accession: GCA_048934315.1
+fasta:
+  sources:
+  - provider: UCSC
+    url: https://hgdownload.soe.ucsc.edu/hubs/GCA/048/934/315/GCA_048934315.1/GCA_048934315.1.fa.gz
+  checksum:
+    sha256: compute_on_registration
+seqcol:
+  compute: true
+build:
+  store: vgp
+  tier: store_only
+metadata:
+  added_by: sources_to_genomes

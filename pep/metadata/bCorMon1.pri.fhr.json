@@ -1,0 +1,17 @@
+{
+  "schema": "https://raw.githubusercontent.com/FAIR-bioHeaders/FHR-Specification/main/fhr.json",
+  "schemaVersion": 1.0,
+  "genome": "Corvus moneduloides",
+  "taxon": {
+    "name": "Corvus moneduloides",
+    "uri": "https://identifiers.org/taxonomy:1196302"
+  },
+  "commonName": "New Caledonian crow",
+  "version": "bCorMon1.pri",
+  "accessionID": {
+    "name": "GCF_009650955.1",
+    "url": "https://www.ncbi.nlm.nih.gov/datasets/genome/GCF_009650955.1/"
+  },
+  "assemblySource": "RefSeq",
+  "documentation": "Corvus moneduloides assembly bCorMon1.pri (GCF_009650955.1), from VGP.\n"
+}
