@@ -24,7 +24,7 @@ command_templates:
   - gunzip {{values.genome_folder}}/{{values.assets["gencode_gtf"].seek_keys_dict["gtf"]}} -c > {{values.output_folder}}/{{values.genome_digest}}.gtf
   - cellranger mkgtf {{values.output_folder}}/{{values.genome_digest}}.gtf {{values.output_folder}}/{{values.genome_digest}}_filtered.gtf
   - rm {{values.output_folder}}/{{values.genome_digest}}.gtf
-  - cd {{values.output_folder}}; cellranger mkref --genome=ref --fasta={{values.genome_folder}}/{{values.assets["fasta"].seek_keys_dict["fasta"]}} --genes={{values.output_folder}}/{{values.genome_digest}}_filtered.gtf
+  - cd {{values.output_folder}} || exit 1; cellranger mkref --genome=ref --fasta={{values.genome_folder}}/{{values.assets["fasta"].seek_keys_dict["fasta"]}} --genes={{values.output_folder}}/{{values.genome_digest}}_filtered.gtf
     --nthreads={{values.params["threads"]}}
 custom_seek_keys:
   version: "cellranger --version | awk -F- '{print $2}'"

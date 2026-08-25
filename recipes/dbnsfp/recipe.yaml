@@ -23,8 +23,8 @@ command_templates:
   - rm {{values.output_folder}}/dbNSFP*_variant.chr*
   - bgzip -@ {{values.params["threads"]}} {{values.output_folder}}/{{values.genome_digest}}_dbNSFP.txt
   - tabix -s 1 -b 2 -e 2 {{values.output_folder}}/{{values.genome_digest}}_dbNSFP.txt.gz
-  - rm `find {{values.output_folder}} -type f -not -path '{{values.output_folder}}/_refgenie_build*'
-    -not -path '{{values.output_folder}}/{{values.genome_digest}}_dbNSFP.txt.*'`
+  - find {{values.output_folder}} -type f -not -path '{{values.output_folder}}/_refgenie_build*'
+    -not -path '{{values.output_folder}}/{{values.genome_digest}}_dbNSFP.txt.*' -exec rm -f {} +
 custom_seek_keys:
   version: tabix --version 2>/dev/null | grep -aoP '^tabix \(htslib\) \K[0-9][^ ]*' | head -1
 default_asset: "{{values.custom_seek_keys.version}}"
