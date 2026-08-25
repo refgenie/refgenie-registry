@@ -1,11 +1,16 @@
 #!/usr/bin/env python3
 """Generate pep/metadata/<genome_name>.fhr.json from genomes/**/*.yaml.
 
-The per-genome FHR sidecars are a GENERATED artifact -- the metadata companion to
-pep/samples.csv. build/run_builds.sh regenerates them and fails the nightly on any
-drift, exactly like samples.csv, so the committed pep/metadata/ tree is the go/no-go
-metadata gate. Editing these files by hand is forbidden; edit the source
-genomes/*/*.yaml and regenerate.
+The per-genome FHR sidecars are BUILD OUTPUT, not source. pep/metadata/ is a
+gitignored STAGING folder: build/run_builds.sh re-derives every file in it before
+anything downstream reads it. Editing these files by hand is pointless -- the next
+run overwrites them. Edit the source genomes/*/*.yaml instead.
+
+They are deliberately NOT committed, unlike pep/samples.csv. samples.csv is
+committed because its diff is the go/no-go gate -- committing it launches builds.
+These sidecars gate nothing: they are a deterministic projection of the genome
+YAMLs through tools/genome_to_fhr.py, so reviewing them means reviewing the same
+facts twice, in a format nobody authors.
 
 One file is written per genome YAML -- EVERY genome, not just the ones the PEP
 queues. Most of the corpus sits at ``build.tier: store_only``: no PEP row, no
@@ -22,7 +27,8 @@ WARNING: metadata is non-blocking, and a build must never fail because a
 description is absent.
 
 Deterministic key order (tools/genome_to_fhr emits a fixed field order; this writer
-does not sort) so the committed diff is stable.
+does not sort) so repeated runs are byte-stable and --check stays meaningful for
+local use.
 
 Usage:
     python build/generate_genome_metadata.py            # write pep/metadata/*.fhr.json

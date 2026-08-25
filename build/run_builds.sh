@@ -109,34 +109,28 @@ if ! git diff --exit-code pep/samples.csv; then
 fi
 echo "$(date) | run_builds: pep/samples.csv is in sync with genomes/**/*.yaml"
 
-# --- guard: pep/metadata/*.fhr.json must be generated from genomes/*.yaml ---------
-# The per-genome FHR sidecars are a GENERATED artifact -- the metadata companion to
-# samples.csv. build/generate_genome_metadata.py reads genomes/*/*.yaml and emits
-# pep/metadata/<genome>.fhr.json for EVERY genome (not only queued ones -- a
-# store_only genome has no PEP row, and its sidecar is exactly what gives it
-# organism and taxonomy in its store); these are what the
-# post-build apply step reads (genome_init deliberately does NOT -- metadata in a
-# rule's `input:` is a rebuild trigger). Regenerate here and
-# fail loudly on ANY drift, exactly like samples.csv. Runs in DRY_RUN too: a stale
-# metadata set is what a dry run should surface, and regenerating already-correct
-# files is a byte no-op. Metadata CONTENT is non-blocking (a missing description
-# only WARNs), but the committed files being IN SYNC is a hard gate. git status
-# (not git diff) is used so a brand-new genome's untracked sidecar is caught too.
-echo "$(date) | run_builds: regenerating pep/metadata/*.fhr.json from genomes/*.yaml"
+# --- stage pep/metadata/*.fhr.json from genomes/*.yaml ---------------------------
+# The per-genome FHR sidecars are BUILD OUTPUT, not source. pep/metadata/ is a
+# staging folder (gitignored): generate_genome_metadata.py reads genomes/*/*.yaml
+# and writes pep/metadata/<genome>.fhr.json for EVERY genome (not only queued ones
+# -- a store_only genome has no PEP row, and its sidecar is exactly what gives it
+# organism and taxonomy in its store). Downstream consumers are all below this
+# point: stores/build_fhr.py copies them into each store, apply_metadata.py applies
+# them to the catalog, and the PEP's fhr_file_path derives from them. (genome_init
+# deliberately does NOT read them -- metadata in a rule's `input:` is a rebuild
+# trigger.)
+#
+# There is no drift guard here, unlike samples.csv, and that asymmetry is
+# deliberate. samples.csv is committed because its diff IS the go/no-go gate --
+# committing it launches builds. These sidecars gate nothing: they are a
+# deterministic projection of the genome YAMLs through tools/genome_to_fhr.py, so
+# reviewing them means reviewing the same facts twice, once in a format nobody
+# authors. The YAML is the source of truth; this step just re-derives it.
+echo "$(date) | run_builds: staging pep/metadata/*.fhr.json from genomes/*.yaml"
 if ! python3 build/generate_genome_metadata.py; then
     echo "$(date) | run_builds: FATAL generate_genome_metadata.py failed." >&2
     exit 1
 fi
-if [[ -n "$(git status --porcelain -- pep/metadata/)" ]]; then
-    echo "$(date) | run_builds: FATAL pep/metadata/ is out of sync with genomes/*.yaml." >&2
-    echo "  These sidecars are GENERATED -- never hand-edit them. Either a file was" >&2
-    echo "  edited directly, or a genome YAML changed without regenerating. Run" >&2
-    echo "    python build/generate_genome_metadata.py" >&2
-    echo "  review the pep/metadata/ diff, and commit it alongside samples.csv." >&2
-    git status --porcelain -- pep/metadata/ >&2
-    exit 1
-fi
-echo "$(date) | run_builds: pep/metadata/ is in sync with genomes/*.yaml"
 
 # --- guard: every genome must be loadable from the store it names ------------
 # A genome YAML's `build.store` claims a store holds its sequence. Reported, not
