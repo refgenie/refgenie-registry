@@ -97,20 +97,32 @@ Define a new genome assembly. Fork, branch, and create
 To add many assemblies at once, convert a [PEP](https://pep.databio.org/) (one
 sample per assembly) into genome YAML files with
 [`tools/pep_to_genome_yaml.py`](tools/pep_to_genome_yaml.py). It accepts a local
-PEP config or a PEPHub path, validates the input against the eido schema, and
-writes one `genomes/<pep-name>/<sample>.yaml` per sample.
+PEP config or a PEPHub path, validates the input against
+[`schema/pep_genome_input.schema.json`](schema/pep_genome_input.schema.json),
+and writes one `genomes/<pep-name>/<sample>.yaml` per sample.
+
+`--store` is required: it names the store that holds the sequence and must match
+a directory under [`stores/`](stores/). `--tier` defaults to `store_only`, which
+loads the sequence and builds no assets. That is what a bulk import wants;
+building assets is a separate decision, made later by raising the tier.
 
 ```bash
-# Preview without writing (validates input PEP and each generated file)
+# Preview without writing
 tools/pep_to_genome_yaml.py convert <local_cfg.yaml | namespace/name:tag> \
-    --added-by <github_user> --dry-run
+    --store vgp --added-by <github_user> --dry-run
 
 # Write the files, then open a PR
-tools/pep_to_genome_yaml.py convert <pep> --added-by <github_user>
+tools/pep_to_genome_yaml.py convert <pep> --store vgp --added-by <github_user>
 ```
 
-Use `inspect <pep>` to preview a PEP's columns/rows, `--folder` to override the
-output subfolder, and `--only a,b` to restrict to specific samples.
+The script runs itself through [uv](https://docs.astral.sh/uv/), which installs
+its dependencies into a throwaway environment, so no setup is needed.
+
+Nothing is written until every sample has been mapped and validated, so a failed
+run leaves the working tree untouched. Use `inspect <pep>` to preview a PEP's
+columns and rows, `--folder` to override the output subfolder, `--only a,b` to
+restrict to specific samples, and `--added` to pin `metadata.added` so a re-run
+reproduces the same bytes.
 
 ### Add a recipe
 

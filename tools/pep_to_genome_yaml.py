@@ -1,3 +1,4 @@
+#!/usr/bin/env -S uv run --script
 # /// script
 # requires-python = ">=3.10"
 # dependencies = ["peprs>=0.2.4", "typer>=0.12", "pyyaml>=6", "jsonschema>=4.20", "requests>=2.31"]
@@ -6,18 +7,26 @@
 
 One PEP sample == one genome assembly. This reads a PEP (from PEPHub or a local
 config), validates it against the eido input schema, and writes one
-``genomes/<organism>/<assembly>.yaml`` per sample in the shape defined by
-``schema/genome.schema.yaml`` (reference: ``genomes/human/hg38.yaml``).
+``genomes/<folder>/<sample_name>.yaml`` per sample in the shape defined by
+``schema/genome.schema.yaml`` (reference: ``genomes/human/hg38.yaml``). All
+samples land in a single folder, named after the PEP unless ``--folder`` says
+otherwise.
 
-Run it with uv (peprs needs Python >=3.10; the deps above auto-install):
+Every emitted genome carries a ``build:`` block, which the registry requires:
+``store`` says which store holds the sequence and must name a real directory
+under ``stores/``; ``tier`` says how far to take the genome. Bulk imports are
+``store_only`` (loaded into the store, browsable, no assets built), so that is
+the default.
 
-    uv run tools/pep_to_genome_yaml.py convert databio/refgenie_new_registry_vertebrates:default \
-        --added-by <github_user> --dry-run
-    uv run tools/pep_to_genome_yaml.py inspect databio/refgenie_new_registry_vertebrates:default
+The shebang runs this through ``uv``, which installs the dependencies above into
+a throwaway environment, so it works without setting anything up:
 
-`convert` validates the input PEP against the eido schema (via peprs.eido) before
-writing anything, so a separate validate command isn't needed. See
-pep_to_ref_yaml.md for the full design.
+    tools/pep_to_genome_yaml.py convert <pep> --store vgp --added-by <user> --dry-run
+    tools/pep_to_genome_yaml.py inspect <pep>
+
+`convert` validates the input PEP against the eido schema (via peprs.eido) and
+validates every generated document BEFORE writing anything, so a failed run
+leaves no files behind and a separate validate command isn't needed.
 """
 from __future__ import annotations
 
@@ -88,17 +97,18 @@ def load_input_schema(schema_arg: str):
 NAME_RE = re.compile(r"^[A-Za-z0-9_.-]+$")
 ISO_DATE_RE = re.compile(r"^\d{4}-\d{2}-\d{2}$")
 
-# Coarse common-name folders already used by the registry, so well-known species
-# land next to existing files. Everything else falls back to slug(species_name).
-COMMON_NAME_FOLDER = {
-    "homo sapiens": "human",
-    "mus musculus": "mouse",
-    "rattus norvegicus": "rat",
-    "drosophila melanogaster": "fly",
-    "caenorhabditis elegans": "worm",
-    "saccharomyces cerevisiae": "yeast",
-    "schizosaccharomyces pombe": "yeast",
-}
+# Tiers a bulk import may assign, from pep/tiers.yaml. store_only is the default:
+# an imported assembly gets its sequence loaded and becomes browsable, and
+# building assets for it is a separate, deliberate decision.
+TIERS = ("store_only", "sequence_only", "standard", "full")
+
+
+def store_slugs() -> list[str]:
+    """Names of the stores this repo defines, i.e. the legal build.store values."""
+    return sorted(
+        d.name for d in (_REPO / "stores").iterdir()
+        if d.is_dir() and (d / "project_config.yaml").is_file()
+    )
 
 
 def slug(s: str) -> str:
@@ -149,22 +159,6 @@ def infer_source(accession: Optional[str], explicit: Optional[str]) -> Optional[
     return None
 
 
-def resolve_folder(row: dict) -> str:
-    """genomes/<folder>: explicit override -> common name -> map -> species slug."""
-    gf = val(row, "genome_folder")
-    if gf:
-        return slug(gf)
-    cn = val(row, "common_name")
-    if cn:
-        return slug(cn)
-    sp = val(row, "species_name")
-    if sp and sp.lower() in COMMON_NAME_FOLDER:
-        return COMMON_NAME_FOLDER[sp.lower()]
-    if sp:
-        return slug(sp)
-    raise ValueError("cannot resolve folder: no genome_folder/common_name/species_name")
-
-
 # --------------------------------------------------------------------------- #
 # YAML dumper: ordered keys + literal block for `description`
 # --------------------------------------------------------------------------- #
@@ -197,8 +191,19 @@ def dump_yaml(doc: dict) -> str:
 # The mapping: sample row -> (folder, name, genome doc). Pure, no I/O.
 # --------------------------------------------------------------------------- #
 def sample_to_genome(
-    row: dict, added_by: Optional[str] = None, folder: Optional[str] = None
+    row: dict,
+    store: str,
+    tier: str = "store_only",
+    added_by: Optional[str] = None,
+    folder: Optional[str] = None,
+    added: Optional[str] = None,
 ) -> tuple[str, str, dict]:
+    """Map one PEP sample row to (folder, name, genome document).
+
+    Pure: no I/O, no clock unless ``added`` is omitted. ``store`` and ``tier``
+    become the required ``build:`` block. ``added`` overrides the date stamped
+    into ``metadata.added``, which is what makes re-running byte-reproducible.
+    """
     name = val(row, "sample_name")
     if not name:
         raise ValueError("missing sample_name")
@@ -218,9 +223,19 @@ def sample_to_genome(
     if not fasta_url:
         raise ValueError("missing fasta_url")
 
-    # A single output folder (e.g. the PEP name) when given; otherwise fall back
-    # to per-organism resolution.
-    folder = slug(folder) if folder else resolve_folder(row)
+    # Every sample from one PEP lands in one folder: the PEP name by default,
+    # or whatever --folder says.
+    if not folder:
+        raise ValueError("no output folder given")
+    folder = slug(folder)
+
+    if store not in store_slugs():
+        raise ValueError(
+            f"build.store {store!r} is not a store in this repo "
+            f"(choose one of: {', '.join(store_slugs())})"
+        )
+    if tier not in TIERS:
+        raise ValueError(f"build.tier {tier!r} is not a tier (choose one of: {', '.join(TIERS)})")
 
     doc: dict = {"name": name}
 
@@ -286,7 +301,9 @@ def sample_to_genome(
     if fhr:
         doc["fhr"] = fhr
 
-    metadata = {"added": date.today().isoformat()}
+    doc["build"] = {"store": store, "tier": tier}
+
+    metadata = {"added": added or date.today().isoformat()}
     if added_by:
         metadata["added_by"] = added_by
     doc["metadata"] = metadata
@@ -326,17 +343,34 @@ def validate_file(path: Path, check_urls: bool) -> list[str]:
 @app.command()
 def convert(
     pep: str = typer.Argument(..., help="PEPHub registry path or local PEP config path"),
+    store: str = typer.Option(..., help="build.store for every genome; must name a stores/ directory"),
+    tier: str = typer.Option("store_only", help=f"build.tier for every genome ({'|'.join(TIERS)})"),
     out: Path = typer.Option(DEFAULT_OUT, help="Output root for genomes/<folder>/<name>.yaml"),
     schema: str = typer.Option(str(DEFAULT_SCHEMA), help="eido input schema: path, URL, or namespace/name:version"),
     only: Optional[str] = typer.Option(None, help="Comma-separated sample names to restrict to"),
     folder: Optional[str] = typer.Option(None, help="Single output folder for ALL genomes (default: the PEP name)"),
     added_by: Optional[str] = typer.Option(None, help="Value for metadata.added_by"),
+    added: Optional[str] = typer.Option(None, help="Value for metadata.added (YYYY-MM-DD; default today). Set it to make a run reproducible."),
     overwrite: bool = typer.Option(False, help="Overwrite existing files (default: skip)"),
     dry_run: bool = typer.Option(False, "--dry-run", help="Print target path + YAML, write nothing"),
-    validate: bool = typer.Option(True, help="Validate the input PEP (eido) and each output file"),
+    validate: bool = typer.Option(True, help="Validate the input PEP (eido) and every generated document"),
     url_check: bool = typer.Option(False, help="Also verify FASTA URLs when validating output (slow)"),
 ):
-    """Convert every PEP sample into a genome YAML file."""
+    """Convert every PEP sample into a genome YAML file.
+
+    Nothing is written until every sample has been mapped AND validated. A run
+    that fails validation leaves the working tree untouched, so a partial import
+    can never be committed by accident.
+    """
+    if store not in store_slugs():
+        raise typer.BadParameter(
+            f"{store!r} is not a store in this repo. Choose one of: {', '.join(store_slugs())}"
+        )
+    if tier not in TIERS:
+        raise typer.BadParameter(f"{tier!r} is not a tier. Choose one of: {', '.join(TIERS)}")
+    if added and not ISO_DATE_RE.match(added):
+        raise typer.BadParameter(f"--added must be YYYY-MM-DD, got {added!r}")
+
     project = load_pep(pep)
     typer.echo(f"Loaded PEP: {project.name}  ({len(project)} samples)")
 
@@ -355,62 +389,76 @@ def convert(
 
     # All genomes go into ONE folder named after the PEP (override with --folder).
     target_folder = slug(folder) if folder else slug(project.name or "pep")
-    typer.echo(f"Writing all genomes into: {out}/{target_folder}/")
+    typer.echo(f"Writing all genomes into: {out}/{target_folder}/  (store={store}, tier={tier})")
 
     wanted = {s.strip() for s in only.split(",")} if only else None
-    written = skipped = failed = 0
+
+    # --- pass 1: map and validate everything, writing nothing ----------------
+    planned: list[tuple[Path, str, str]] = []  # (dest, name, text)
+    failed = 0
     for s in project.samples:
         row = s.to_dict()
         name0 = row.get("sample_name", "?")
         if wanted is not None and name0 not in wanted:
             continue
         try:
-            _, name, doc = sample_to_genome(row, added_by=added_by, folder=target_folder)
-        except Exception as exc:  # noqa: BLE001 — isolate one bad sample
+            _, name, doc = sample_to_genome(
+                row, store=store, tier=tier, added_by=added_by,
+                folder=target_folder, added=added,
+            )
+        except Exception as exc:  # noqa: BLE001 - isolate one bad sample
             failed += 1
             typer.secho(f"  FAIL  {name0}: {exc}", fg="red")
             continue
 
-        dest = out / target_folder / f"{name}.yaml"
-        text = dump_yaml(doc)
+        if validate:
+            verrs = validate_doc_inmemory(doc)
+            if verrs:
+                failed += 1
+                typer.secho(f"  INVALID {name}:", fg="red")
+                for e in verrs:
+                    typer.echo(f"    - {e}")
+                continue
 
-        if dry_run:
-            typer.echo(f"\n# --- {dest.relative_to(out.parent) if out.parent in dest.parents else dest} ---")
+        planned.append((out / target_folder / f"{name}.yaml", name, dump_yaml(doc)))
+
+    if failed:
+        typer.secho(
+            f"\n{failed} sample(s) failed; nothing was written. Fix the PEP and re-run.",
+            fg="red",
+        )
+        raise typer.Exit(1)
+
+    if dry_run:
+        for dest, name, text in planned:
+            typer.echo(f"\n# --- {dest} ---")
             typer.echo(text.rstrip())
-            if validate:
-                verrs = validate_doc_inmemory(doc)
-                if verrs:
-                    failed += 1
-                    typer.secho(f"  INVALID {name}:", fg="red")
-                    for e in verrs:
-                        typer.echo(f"    - {e}")
-                else:
-                    written += 1
-            else:
-                written += 1
-            continue
+        typer.echo(f"\nSummary: {len(planned)} ok, 0 skipped, 0 failed (dry run, nothing written)")
+        return
 
+    # --- pass 2: write ------------------------------------------------------
+    written = skipped = 0
+    for dest, name, text in planned:
         if dest.exists() and not overwrite:
             skipped += 1
             typer.echo(f"  skip  {dest} (exists)")
             continue
-
         dest.parent.mkdir(parents=True, exist_ok=True)
         dest.write_text(text)
-        if validate:
-            verrs = validate_file(dest, check_urls=url_check)
-            if verrs:
-                failed += 1
-                typer.secho(f"  INVALID {dest}:", fg="red")
-                for e in verrs:
-                    typer.echo(f"    - {e}")
-                continue
         written += 1
         typer.echo(f"  write {dest}")
 
-    typer.echo(f"\nSummary: {written} {'ok' if dry_run else 'written'}, {skipped} skipped, {failed} failed")
+    if validate and url_check:
+        for dest, name, _ in planned:
+            if dest.exists():
+                for e in validate_file(dest, check_urls=True):
+                    typer.secho(f"  URL  {dest}: {e}", fg="red")
+                    failed += 1
+
+    typer.echo(f"\nSummary: {written} written, {skipped} skipped, {failed} failed")
     if failed:
         raise typer.Exit(1)
+
 
 
 @app.command()
