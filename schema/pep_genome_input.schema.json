@@ -1,0 +1,97 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "description": "Input schema for a PEP being converted into refgenie-registry genome YAML files by tools/pep_to_genome_yaml.py. One sample per genome assembly. Validated with eido before anything is written, so a PEP missing a required column fails immediately rather than after half an import.",
+  "properties": {
+    "samples": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "sample_name",
+          "species_name",
+          "taxon_id",
+          "description",
+          "fasta_url"
+        ],
+        "properties": {
+          "sample_name": {
+            "type": "string",
+            "pattern": "^[A-Za-z0-9_.-]+$",
+            "description": "Becomes the genome `name` and the YAML filename stem."
+          },
+          "species_name": {
+            "type": "string",
+            "description": "Binomial name. Becomes organism.scientific_name."
+          },
+          "common_name": {
+            "type": "string",
+            "description": "Optional. Becomes organism.common_name."
+          },
+          "taxon_id": {
+            "type": ["integer", "string"],
+            "description": "NCBI Taxonomy ID. Becomes organism.taxon_id."
+          },
+          "description": {
+            "type": "string",
+            "description": "One-line description of the assembly."
+          },
+          "fasta_url": {
+            "type": "string",
+            "description": "Download URL for the FASTA. Becomes fasta.sources[0].url."
+          },
+          "fasta_provider": {
+            "type": "string",
+            "description": "Optional. Overrides the provider inferred from the URL host."
+          },
+          "ncbi_id": {
+            "type": "string",
+            "description": "Optional assembly accession (GCA_/GCF_). Becomes assembly.accession, and its prefix decides assembly.source."
+          },
+          "assembly_source": {
+            "type": "string",
+            "description": "Optional. Overrides the source inferred from the accession prefix."
+          },
+          "assembly_level": {
+            "type": "string",
+            "enum": ["chromosome", "scaffold", "contig"],
+            "description": "Optional. Becomes assembly.level."
+          },
+          "assembly_date": {
+            "type": "string",
+            "description": "Optional ISO date (YYYY-MM-DD). Becomes fhr.date_created; other formats are ignored."
+          },
+          "masking": {
+            "type": "string",
+            "enum": ["soft-masked", "hard-masked", "not-masked", "unknown"],
+            "description": "Optional. Becomes the top-level masking field."
+          },
+          "genome_name": {
+            "type": "string",
+            "description": "Optional. Becomes an alias when it differs from sample_name."
+          },
+          "md5": {
+            "type": "string",
+            "description": "Optional MD5 of the compressed FASTA."
+          },
+          "sha256": {
+            "type": "string",
+            "description": "Optional SHA-256 of the uncompressed FASTA. Defaults to the compute_on_registration sentinel."
+          },
+          "seqcol_digest": {
+            "type": "string",
+            "description": "Optional. When absent the genome is emitted with seqcol.compute: true."
+          },
+          "BioProject": {
+            "type": "string",
+            "description": "Optional. Emitted as fhr.identifier bioproject:<value>."
+          },
+          "id_id": {
+            "type": "string",
+            "description": "Optional BioSample accession. Emitted as fhr.identifier biosample:<value> when it starts with SAM."
+          }
+        }
+      }
+    }
+  },
+  "required": ["samples"]
+}
