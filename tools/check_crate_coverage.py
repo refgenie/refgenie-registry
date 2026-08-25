@@ -67,7 +67,8 @@ DEFAULT_CRATE = "databio/refgenie:1.1.1"
 SHELL_BUILTINS = {
     "cd", "if", "then", "else", "elif", "fi", "for", "while", "do", "done",
     "case", "esac", "export", "set", "unset", "echo", "test", "[", "eval",
-    "exec", "source", ".", "return", "true", "false", "env", "LC_COLLATE=C",
+    "exec", "exit", "source", ".", "return", "true", "false", "env",
+    "LC_COLLATE=C",
 }
 
 # Commands deliberately NOT in the crate, with the reason. These resolve from
