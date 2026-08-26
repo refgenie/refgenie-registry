@@ -132,6 +132,23 @@ if ! python3 build/generate_genome_metadata.py; then
     exit 1
 fi
 
+# Put a working `aws` ahead of the broken host ~/.local/bin/aws (dead-anaconda
+# shebang) so the folder_sync push_command resolves a real CLI. The bin dir
+# comes from env.sh ($REFGENIE_AWS_BINDIR) but the PATH prepend lives HERE, in
+# plain bash, because a `PATH="...:$PATH"` line inside env.sh gets mangled by
+# yoke's env_files parser. This runs in the mobot nightly AND the canaries.
+# Placed BEFORE the store loading block because stores/build.py --sync calls
+# `aws s3 sync` and needs the binary on PATH.
+if [[ -n "${REFGENIE_AWS_BINDIR:-}" && -x "$REFGENIE_AWS_BINDIR/aws" ]]; then
+    case ":$PATH:" in
+        *":$REFGENIE_AWS_BINDIR:"*) ;;
+        *) export PATH="$REFGENIE_AWS_BINDIR:$PATH" ;;
+    esac
+    echo "$(date) | run_builds: prepended aws bindir $REFGENIE_AWS_BINDIR to PATH"
+else
+    echo "$(date) | run_builds: WARNING no working aws at \$REFGENIE_AWS_BINDIR (${REFGENIE_AWS_BINDIR:-unset}); push may fail" >&2
+fi
+
 # --- guard: every genome must be loadable from the store it names ------------
 # A genome YAML's `build.store` claims a store holds its sequence. Reported, not
 # enforced: a genome whose store has no row for it is registered but unloadable,
@@ -183,21 +200,6 @@ else
             fi
         done
     fi
-fi
-
-# Put a working `aws` ahead of the broken host ~/.local/bin/aws (dead-anaconda
-# shebang) so the folder_sync push_command resolves a real CLI. The bin dir
-# comes from env.sh ($REFGENIE_AWS_BINDIR) but the PATH prepend lives HERE, in
-# plain bash, because a `PATH="...:$PATH"` line inside env.sh gets mangled by
-# yoke's env_files parser. This runs in the mobot nightly AND the canaries.
-if [[ -n "${REFGENIE_AWS_BINDIR:-}" && -x "$REFGENIE_AWS_BINDIR/aws" ]]; then
-    case ":$PATH:" in
-        *":$REFGENIE_AWS_BINDIR:"*) ;;
-        *) export PATH="$REFGENIE_AWS_BINDIR:$PATH" ;;
-    esac
-    echo "$(date) | run_builds: prepended aws bindir $REFGENIE_AWS_BINDIR to PATH"
-else
-    echo "$(date) | run_builds: WARNING no working aws at \$REFGENIE_AWS_BINDIR (${REFGENIE_AWS_BINDIR:-unset}); push may fail" >&2
 fi
 
 # REFGENIE_INPUTS is required by the generated Snakefile (envvars: stanza) and
