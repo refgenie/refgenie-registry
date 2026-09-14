@@ -1,5 +1,5 @@
 name: tgMap
-version: 0.0.1
+version: 0.0.2
 output_asset_class: tgMap
 description:
   Transcript to gene map file, containing two columns mapping of each transcript
@@ -11,7 +11,7 @@ input_assets:
     asset_class: salmon_partial_sa_index
     default: salmon_partial_sa_index
     description: partial salmon index asset
-docker_image: databio/refgenie
+docker_image: null
 command_templates:
   - grep '^>' {{values.genome_folder}}/{{values.assets["salmon_partial_sa_index"].seek_keys_dict["salmon_partial_sa_index"]}}/gentrome.fa | cut -d ' ' -f 1,7 | tr -s ' ' '\t' | sed 's/[>'gene_symbol:']//g' > {{values.output_folder}}/{{values.genome_digest}}_txp2gene.tsv
 default_asset: "default"

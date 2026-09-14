@@ -80,7 +80,6 @@ HOST_PROVIDED = {
     # POSIX file plumbing not carried by bulker/coreutils.
     "mv": "not in bulker/coreutils; trivial file plumbing, no versioned output",
     "find": "not in bulker/coreutils; selects files for deletion only",
-    "file": "single `file ... | grep -q compressed` type probe in fasta_txome",
     # Compression. Not in bulker/coreutils (they are separate upstream
     # packages), and output is byte-identical across implementations.
     "gzip": "not in bulker/coreutils; output format is standardized",

@@ -1,5 +1,5 @@
 name: bwa_index
-version: 0.2.0
+version: 0.2.1
 output_asset_class: bwa_index
 description: |
   Genome index for Burrows-Wheeler Alignment Tool, produced with bwa index.
@@ -12,7 +12,7 @@ input_assets:
     asset_class: fasta
     description: fasta asset for genome
     default: fasta
-docker_image: databio/refgenie
+docker_image: quay.io/biocontainers/bwa:0.7.19--h577a1d6_1
 command_templates:
   # Read the fasta directly from the genome folder and write the index with an
   # explicit output prefix (-p) into the output folder. Do NOT colocate the
@@ -22,7 +22,9 @@ command_templates:
   # empty. -p makes the output location explicit and symlink-proof.
   - bwa index -p {{values.output_folder}}/{{values.genome_digest}} {{values.genome_folder}}/{{values.assets["fasta"].seek_keys_dict["fasta"]}}
 custom_seek_keys:
-  version: bwa 2>&1 | grep -aoP '^Version:\s*\K[0-9]+\.[0-9]+\.[0-9]+' | head -1 # uses stderr; monitor https://github.com/lh3/bwa/issues/202
+  # sed -E, not grep -P: the biocontainers image's grep is BusyBox (no -P),
+  # and the whole pipeline runs inside that one image now.
+  version: bwa 2>&1 | sed -nE 's/^Version:[[:space:]]*([0-9]+\.[0-9]+\.[0-9]+).*/\1/p' | head -1 # uses stderr; monitor https://github.com/lh3/bwa/issues/202
 default_asset: "{{values.custom_seek_keys.version}}"
 
 tags:

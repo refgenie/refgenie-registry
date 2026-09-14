@@ -1,5 +1,5 @@
 name: ensembl_gtf
-version: 0.0.1
+version: 0.0.2
 output_asset_class: gtf
 description: Ensembl GTF, TSS, and gene body annotation
 input_files:
@@ -7,7 +7,7 @@ input_files:
     description: Annotation file in Gene Transfer Format (GTF) from Ensembl
 input_params: {}
 input_assets: {}
-docker_image: databio/refgenie
+docker_image: null
 command_templates:
   - cp {{values.files["ensembl_gtf"]}} {{values.output_folder}}/{{values.genome_digest}}.gtf.gz
   - gzip -dcf {{values.output_folder}}/{{values.genome_digest}}.gtf.gz | grep 'exon_number "1";' | sed 's/^/chr/' | awk -v OFS='\t' '{print $1, $4, $5, $20, $14, $7}' | sed 's/";//g' | sed 's/"//g' | awk '{if($6=="+"){print $1"\t"$2+20"\t"$2+120"\t"$4"\t"$5"\t"$6}else{print $1"\t"$3-120"\t"$3-20"\t"$4"\t"$5"\t"$6}}' | LC_COLLATE=C sort -k1,1 -k2,2n -k4,4 -u > {{values.output_folder}}/{{values.genome_digest}}_ensembl_TSS.bed

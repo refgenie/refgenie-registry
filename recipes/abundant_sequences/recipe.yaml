@@ -1,5 +1,5 @@
 name: abundant_sequences
-version: 0.0.1
+version: 0.0.2
 output_asset_class: abundant_sequences
 description: |
   Abundant sequences in the FASTA format -- PhiX spike-in, Poly(A),
@@ -16,7 +16,7 @@ input_files:
     description: Adapter sequences in FASTA format
 input_params: null
 input_assets: null
-docker_image: databio/refgenie
+docker_image: null
 command_templates:
   - cp {{values.files["phix"]}} {{values.output_folder}}/{{values.genome_digest}}_phix.fa
   - cp {{values.files["polyA"]}} {{values.output_folder}}/{{values.genome_digest}}_polyA.fa

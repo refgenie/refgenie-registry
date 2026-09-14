@@ -1,0 +1,42 @@
+name: Lint Recipe Images
+
+# Fails if a recipe's `docker_image` doesn't match the bulker crate's pin for
+# the recipe's tool. refgenie1 runs a recipe's custom_seek_keys probes and its
+# --docker builds entirely inside that one image, so a stale or wrong pin
+# breaks builds even though nothing else about the recipe changed. This check
+# makes a crate version bump that moves a pin, or a recipe naming the wrong
+# image, fail here, on the PR, instead of at build time.
+
+on:
+  pull_request:
+    paths:
+      - "recipes/**"
+      - "tools/check_crate_coverage.py"
+      - "tools/check_recipe_images.py"
+      - ".github/workflows/lint-recipe-images.yaml"
+  push:
+    branches: [master]
+    paths:
+      - "recipes/**"
+      - "tools/check_crate_coverage.py"
+      - "tools/check_recipe_images.py"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  recipe-images:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: actions/setup-python@v7
+        with:
+          python-version: "3.12"
+
+      - name: Install dependencies
+        run: pip install pyyaml
+
+      - name: Check recipe docker_image pins match the crate
+        run: python tools/check_recipe_images.py

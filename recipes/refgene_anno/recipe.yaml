@@ -1,5 +1,5 @@
 name: refgene_anno
-version: 0.0.1
+version: 0.0.2
 output_asset_class: refgene_anno
 description: gene, TSS, exon, intron, and premature mRNA annotation files
 input_files:
@@ -7,7 +7,7 @@ input_files:
     description: gzipped RefGene database annotation file
 input_params: {}
 input_assets: {}
-docker_image: databio/refgenie
+docker_image: null
 command_templates:
   - cp {{values.files["refgene"]}} {{values.output_folder}}/{{values.genome_digest}}_refGene.txt.gz
   - gzip -dcf {{values.output_folder}}/{{values.genome_digest}}_refGene.txt.gz | awk '{if($4=="+"){print $3"\\t"$5"\\t"$5"\\t"$13"\\t.\\t"$4}else{print $3"\\t"$6"\\t"$6"\\t"$13"\\t.\\t"$4}}' | LC_COLLATE=C sort -k1,1 -k2,2n -k4,4 -u > {{values.output_folder}}/{{values.genome_digest}}_TSS.bed

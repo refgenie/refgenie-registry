@@ -1,5 +1,5 @@
 name: suffixerator_index
-version: 0.0.1
+version: 0.0.2
 output_asset_class: suffixerator_index
 description:
   Enhanced suffix array index for genomes using gt (GenomeTools) suffixerator
@@ -15,11 +15,13 @@ input_assets:
     asset_class: fasta
     default: fasta
     description: fasta asset for genome
-docker_image: databio/refgenie
+docker_image: quay.io/biocontainers/genometools-genometools:1.6.6--py311h21ec246_1
 command_templates:
   - gt suffixerator -dna -pl -tis -suf -lcp -v -showprogress -memlimit {{values.params["memlimit"]}}GB -db {{values.genome_folder}}/{{values.assets["fasta"].seek_keys_dict["fasta"]}} -indexname {{values.output_folder}}/{{values.genome_digest}}.sft
 custom_seek_keys:
-  version: gt suffixerator --version 2>/dev/null | grep -aoP '\(GenomeTools\) \K[0-9][^ ]*' | head -1
+  # sed -E, not grep -P: the biocontainers image's grep is BusyBox (no -P),
+  # and the whole pipeline runs inside that one image now.
+  version: gt suffixerator --version 2>/dev/null | sed -nE 's/^.*\(GenomeTools\) ([0-9][^ ]*).*/\1/p' | head -1
 default_asset: "{{values.custom_seek_keys.version}}"
 tags:
 - index

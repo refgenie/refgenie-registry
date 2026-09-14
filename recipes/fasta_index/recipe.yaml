@@ -1,5 +1,5 @@
 name: fasta_index
-version: 1.1.0
+version: 1.1.1
 output_asset_class: fasta_index
 description:
   Creates a FASTA index (.fa.fai) and chromosome sizes file using samtools faidx.
@@ -13,7 +13,7 @@ input_assets:
     asset_class: fasta
     description: fasta asset for genome
     default: fasta
-docker_image: databio/refgenie
+docker_image: quay.io/biocontainers/samtools:1.24--h9dcdb79_1
 command_templates:
   # Read the fasta from the genome folder and write the .fai explicitly into the
   # output folder via --fai-idx. Do NOT colocate the fasta as a symlink and run

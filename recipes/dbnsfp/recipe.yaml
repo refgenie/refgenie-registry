@@ -1,5 +1,5 @@
 name: dbnsfp
-version: 0.0.1
+version: 0.0.2
 output_asset_class: dbnsfp
 description: |
   A database developed for functional prediction and annotation of all
@@ -13,7 +13,7 @@ input_params:
     default: "8"
     description: Number of threads to use for parallel computing
 input_assets: {}
-docker_image: databio/refgenie
+docker_image: quay.io/biocontainers/htslib:1.24--ha79157c_0
 command_templates:
   - cp {{values.files["dbnsfp"]}} {{values.output_folder}}/{{values.genome_digest}}.zip
   - unzip {{values.output_folder}}/{{values.genome_digest}}.zip -d {{values.output_folder}}
@@ -26,7 +26,9 @@ command_templates:
   - find {{values.output_folder}} -type f -not -path '{{values.output_folder}}/_refgenie_build*'
     -not -path '{{values.output_folder}}/{{values.genome_digest}}_dbNSFP.txt.*' -exec rm -f {} +
 custom_seek_keys:
-  version: tabix --version 2>/dev/null | grep -aoP '^tabix \(htslib\) \K[0-9][^ ]*' | head -1
+  # sed -E, not grep -P: the biocontainers image's grep is BusyBox (no -P),
+  # and the whole pipeline runs inside that one image now.
+  version: tabix --version 2>/dev/null | sed -nE 's/^tabix \(htslib\) ([0-9][^ ]*).*/\1/p' | head -1
 default_asset: "{{values.custom_seek_keys.version}}"
 
 tags:

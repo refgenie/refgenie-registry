@@ -1,5 +1,5 @@
 name: fasta_txome
-version: 0.0.1
+version: 0.0.2
 output_asset_class: fasta
 description:
   cDNA sequences in the FASTA format, indexed FASTA (produced with samtools
@@ -9,10 +9,12 @@ input_files:
     description: A taxome FASTA file. Gzipped or not.
 input_params: {}
 input_assets: {}
-docker_image: databio/refgenie
+docker_image: quay.io/biocontainers/samtools:1.24--h9dcdb79_1
 command_templates:
   - cp {{values.files["fasta_txome"]}} {{values.output_folder}}/{{values.genome_digest}}.fa.gz
-  - if (file {{values.output_folder}}/{{values.genome_digest}}.fa.gz | grep -q compressed ) ; then gzip -df {{values.output_folder}}/{{values.genome_digest}}.fa.gz ; else mv {{values.output_folder}}/{{values.genome_digest}}.fa.gz {{values.output_folder}}/{{values.genome_digest}}.fa ; fi
+  # `file` isn't in the samtools biocontainers image; `gzip -t` detects a real
+  # gzip stream without it.
+  - if gzip -t {{values.output_folder}}/{{values.genome_digest}}.fa.gz >/dev/null 2>&1 ; then gzip -df {{values.output_folder}}/{{values.genome_digest}}.fa.gz ; else mv {{values.output_folder}}/{{values.genome_digest}}.fa.gz {{values.output_folder}}/{{values.genome_digest}}.fa ; fi
   - samtools faidx {{values.output_folder}}/{{values.genome_digest}}.fa
   - cut -f 1,2 {{values.output_folder}}/{{values.genome_digest}}.fa.fai > {{values.output_folder}}/{{values.genome_digest}}.chrom.sizes
   - cat {{values.output_folder}}/{{values.genome_digest}}.fa | samtools dict -o {{values.output_folder}}/{{values.genome_digest}}.dict

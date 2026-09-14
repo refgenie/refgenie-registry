@@ -1,5 +1,5 @@
 name: bed12
-version: 0.0.1
+version: 0.0.2
 output_asset_class: bed
 description: |
   Genomic feature annotations in BED12 format.
@@ -8,7 +8,7 @@ input_files:
     description: Genomic feature annotations in gzipped Browser Extensible Data (BED12) format
 input_assets: {}
 input_params: {}
-docker_image: databio/refgenie
+docker_image: null
 command_templates:
   - cp {{values.files["bedgz"]}} {{values.output_folder}}/{{values.genome_digest}}.bed.gz
 default_asset: "default"

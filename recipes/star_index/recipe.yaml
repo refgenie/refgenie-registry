@@ -1,5 +1,5 @@
 name: star_index
-version: 0.0.1
+version: 0.0.2
 output_asset_class: star_index
 description: Genome index for STAR RNA-seq aligner, produced with STAR --runMode genomeGenerate
 input_files: {}
@@ -12,7 +12,7 @@ input_assets:
     asset_class: fasta
     default: fasta
     description: fasta asset for genome
-docker_image: databio/refgenie
+docker_image: quay.io/biocontainers/star:2.7.11b--h5ca1c30_8
 command_templates:
   - mkdir -p {{values.output_folder}}
   - STAR --runThreadN {{values.params["threads"]}} --runMode genomeGenerate --genomeDir {{values.output_folder}} --genomeFastaFiles {{values.genome_folder}}/{{values.assets["fasta"].seek_keys_dict["fasta"]}}

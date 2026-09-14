@@ -1,5 +1,5 @@
 name: salmon_index
-version: 0.0.1
+version: 0.0.2
 output_asset_class: salmon_index
 description: Transcriptome index for salmon, produced with salmon index
 input_files: {}
@@ -15,7 +15,7 @@ input_assets:
     asset_class: fasta
     default: fasta_txome
     description: fasta asset for transcriptome
-docker_image: combinelab/salmon
+docker_image: quay.io/biocontainers/salmon:2.3.4--hfa8f182_0
 command_templates:
   - salmon index -t {{values.genome_folder}}/{{values.assets["fasta_txome"].seek_keys_dict["fasta"]}} -i {{values.output_folder}} -k {{values.params["kmer"]}} -p {{values.params["threads"]}}
 custom_seek_keys:

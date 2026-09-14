@@ -1,5 +1,5 @@
 name: hisat2_index
-version: 0.0.2
+version: 0.0.3
 output_asset_class: hisat2_index
 description: Genome index for HISAT2, produced with hisat2-build
 input_files: {}
@@ -9,11 +9,13 @@ input_assets:
     asset_class: fasta
     default: fasta
     description: fasta asset for genome
-docker_image: databio/refgenie
+docker_image: quay.io/biocontainers/hisat2:2.2.2--h503566f_0
 command_templates:
   - hisat2-build {{values.genome_folder}}/{{values.assets["fasta"].seek_keys_dict["fasta"]}} {{values.output_folder}}/{{values.genome_digest}}
 custom_seek_keys:
-  version: hisat2-build --version 2>/dev/null | grep -aoP '^hisat2-build version \K[0-9][^ ]*' | head -1
+  # sed -E, not grep -P: the biocontainers image's grep is BusyBox (no -P),
+  # and the whole pipeline runs inside that one image now.
+  version: hisat2-build --version 2>/dev/null | sed -nE 's/^hisat2-build version ([0-9][^ ]*).*/\1/p' | head -1
 default_asset: "{{values.custom_seek_keys.version}}"
 
 # --- Additive non-runtime metadata (ignored by the builder) ---

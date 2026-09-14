@@ -1,5 +1,5 @@
 name: bowtie2_index
-version: 0.0.1
+version: 0.0.2
 output_asset_class: bowtie2_index
 description: |
   Genome index for bowtie2, produced with bowtie2-build.
@@ -15,11 +15,13 @@ input_assets:
     asset_class: fasta
     description: fasta asset for genome
     default: fasta
-docker_image: databio/refgenie
+docker_image: quay.io/biocontainers/bowtie2:2.5.5--ha27dd3b_0
 command_templates:
   - bowtie2-build --threads {{values.params["threads"]}} {{values.genome_folder}}/{{values.assets["fasta"].seek_keys_dict["fasta"]}} {{values.output_folder}}/{{values.genome_digest}}
 custom_seek_keys:
-  version: bowtie2-build --version 2>/dev/null | grep -aoP '(?:bowtie2-build-[sl] version |bowtie2-)\K[0-9]+\.[0-9]+(\.[0-9]+)?' | head -1
+  # sed -E, not grep -P: the biocontainers image's grep is BusyBox (no -P),
+  # and the whole pipeline runs inside that one image now.
+  version: bowtie2-build --version 2>/dev/null | sed -nE 's/^.*bowtie2-build-[sl] version ([0-9]+\.[0-9]+(\.[0-9]+)?).*/\1/p;s/^.*bowtie2-([0-9]+\.[0-9]+(\.[0-9]+)?) .*/\1/p' | head -1
 default_asset: "{{values.custom_seek_keys.version}}"
 
 tags:

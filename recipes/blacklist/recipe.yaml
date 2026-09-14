@@ -1,5 +1,5 @@
 name: blacklist
-version: 0.0.1
+version: 0.0.2
 output_asset_class: blacklist
 description: |
   Atypical, unstructured, or high signal genomic regions present in
@@ -10,7 +10,7 @@ input_files:
     description: gzipped blacklist file
 input_params: {}
 input_assets: {}
-docker_image: databio/refgenie
+docker_image: null
 command_templates:
   - cp {{values.files["blacklist"]}} {{values.output_folder}}/{{values.genome_digest}}_blacklist.bed.gz
 default_asset: "default"

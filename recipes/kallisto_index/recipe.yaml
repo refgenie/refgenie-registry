@@ -1,5 +1,5 @@
 name: kallisto_index
-version: 0.0.1
+version: 0.0.2
 output_asset_class: kallisto_index
 description: Genome index for kallisto, produced with kallisto index
 input_files: {}
@@ -9,7 +9,7 @@ input_assets:
     asset_class: fasta
     default: fasta_txome
     description: fasta asset for transcriptome
-docker_image: databio/refgenie
+docker_image: quay.io/biocontainers/kallisto:0.52.0--h13ff97a_0
 command_templates:
   - kallisto index -i {{values.output_folder}}/{{values.genome_digest}}_kallisto_index.idx {{values.genome_folder}}/{{values.assets["fasta_txome"].seek_keys_dict["fasta"]}}
 custom_seek_keys:

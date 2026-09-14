@@ -1,5 +1,5 @@
 name: ensembl_rb
-version: 0.0.1
+version: 0.0.2
 output_asset_class: ensembl_rb
 description: A regulatory annotation file
 input_files:
@@ -9,7 +9,7 @@ input_files:
       Ensembl
 input_params: {}
 input_assets: {}
-docker_image: databio/refgenie
+docker_image: null
 command_templates:
   - cp {{values.files["gff"]}} {{values.output_folder}}/{{values.genome_digest}}.gff.gz
 default_asset: "default"
