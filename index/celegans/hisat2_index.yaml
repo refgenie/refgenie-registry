@@ -1,7 +1,7 @@
 genome: celegans
 genome_digest: iT3SWdnGndTXiDZrQoirIsBOdOgTMZzd
 recipe: hisat2_index
-recipe_version: 0.0.2
+recipe_version: 0.0.3
 asset_name: 2.2.2
 asset_digest: 4497053eece369bd6b8efc53c5adab1099e257b6290b7f080b1d5b97ad2bcec1
 build:

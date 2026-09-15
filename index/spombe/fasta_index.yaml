@@ -1,7 +1,7 @@
 genome: spombe
 genome_digest: vEsFJ8XMkzwm1TzsHjzwRx7zCxc_HZC_
 recipe: fasta_index
-recipe_version: 1.1.0
+recipe_version: 1.1.1
 asset_name: default
 asset_digest: 6a4b7da1e178aa6dc9298a9cd0fbcc05afe49b42534eb2f7b72500fd874a68fd
 build:

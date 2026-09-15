@@ -1,7 +1,7 @@
 genome: rn6
 genome_digest: yGaojvlgReD5Gd7T630C30BK5DVaHedb
 recipe: bowtie2_index
-recipe_version: 0.0.1
+recipe_version: 0.0.2
 asset_name: 2.5.5
 asset_digest: e0da4adba6224a1600833952d1bd22deced58cb03c2e9313a5953f6a3a02fa4a
 build:

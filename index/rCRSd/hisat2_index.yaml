@@ -1,7 +1,7 @@
 genome: rCRSd
 genome_digest: jthDpfNIgzM5AGJlOkRtfnky4rXMBIUP
 recipe: hisat2_index
-recipe_version: 0.0.2
+recipe_version: 0.0.3
 asset_name: 2.2.2
 asset_digest: 91442334a7c55ee7b1a199d5340b7bdf597016fbb1a43861ae2aa2272dc686c4
 build:

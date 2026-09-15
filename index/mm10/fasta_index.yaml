@@ -1,7 +1,7 @@
 genome: mm10
 genome_digest: wsDErYxgCXiPnb2FWZ4sXtx3B0YyruRu
 recipe: fasta_index
-recipe_version: 1.1.0
+recipe_version: 1.1.1
 asset_name: default
 asset_digest: 1e956bf38e6e95881bd566cf8d076c1385a03c248ec645eb6e09901e415de5bd
 build:

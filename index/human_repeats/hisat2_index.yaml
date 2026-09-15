@@ -1,7 +1,7 @@
 genome: human_repeats
 genome_digest: fuCzP-ywaGoywO5-loqNpuC18a8SEZ4X
 recipe: hisat2_index
-recipe_version: 0.0.2
+recipe_version: 0.0.3
 asset_name: 2.2.2
 asset_digest: 18b2878e1d446306ff3218fc7733561e05dffd30d0faa3fd97c4d430cd443aa8
 build:

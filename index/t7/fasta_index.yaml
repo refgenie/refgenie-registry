@@ -1,7 +1,7 @@
 genome: t7
 genome_digest: kN9XHLKLS_u7ei2GH87H-qpQrkz8moPB
 recipe: fasta_index
-recipe_version: 1.1.0
+recipe_version: 1.1.1
 asset_name: default
 asset_digest: 43afb9d6cdf001ed72434c3d693801523fc81b7345c3d3edde539286beeb9e1b
 build:

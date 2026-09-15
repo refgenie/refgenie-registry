@@ -1,7 +1,7 @@
 genome: human_alphasat
 genome_digest: P_oMW_QVpJuKvLZ3377J3MXXAsud9G8B
 recipe: fasta_index
-recipe_version: 1.1.0
+recipe_version: 1.1.1
 asset_name: default
 asset_digest: d9fcecf7b8631fc46f85eb2d651a68570b523aa692eee3181b1578f258e8a2ba
 build:

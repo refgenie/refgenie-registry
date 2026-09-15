@@ -1,7 +1,7 @@
 genome: yeast_s288c
 genome_digest: ia9g4Myony-xxLsSc7eQOC_NdClGgPGu
 recipe: fasta_index
-recipe_version: 1.1.0
+recipe_version: 1.1.1
 asset_name: default
 asset_digest: ffa0e13f0d3344033c7e9fe690274c742b34cf8e7a79d88684dd520cbaf78300
 build:

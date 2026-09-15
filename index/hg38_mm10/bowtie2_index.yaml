@@ -1,7 +1,7 @@
 genome: hg38_mm10
 genome_digest: Cmv0aU0aNVBw1skKIJGyvR5i49b67t84
 recipe: bowtie2_index
-recipe_version: 0.0.1
+recipe_version: 0.0.2
 asset_name: 2.5.5
 asset_digest: 6a46d0969afe5fc56b80612cc5d87edebf608a0b09152490b50321f8104c1126
 build:

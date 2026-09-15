@@ -1,7 +1,7 @@
 genome: rn6
 genome_digest: yGaojvlgReD5Gd7T630C30BK5DVaHedb
 recipe: suffixerator_index
-recipe_version: 0.0.1
+recipe_version: 0.0.2
 asset_name: 1.6.6
 asset_digest: 35a853749ce7f96d80f76a23aa1dbd5841cde2098c42fb17653215866e9e4ae5
 build:

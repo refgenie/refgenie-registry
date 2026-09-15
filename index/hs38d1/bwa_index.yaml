@@ -1,7 +1,7 @@
 genome: hs38d1
 genome_digest: zEaiCVTg-NXkKpeU17O5uFcudmA7SEYr
 recipe: bwa_index
-recipe_version: 0.2.0
+recipe_version: 0.2.1
 asset_name: 0.7.19
 asset_digest: d8f65112075b75cfff2520b441cb3c4665ab9fa66cfcb7e01bb001f84bcb0e44
 build:

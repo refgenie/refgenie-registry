@@ -1,7 +1,7 @@
 genome: human_alphasat
 genome_digest: P_oMW_QVpJuKvLZ3377J3MXXAsud9G8B
 recipe: bowtie2_index
-recipe_version: 0.0.1
+recipe_version: 0.0.2
 asset_name: 2.5.5
 asset_digest: 29721f1a3a373fcd84e5d24ed8cebcb02b592105e479edc5f79d965d10121ca8
 build:

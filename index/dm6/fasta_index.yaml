@@ -1,7 +1,7 @@
 genome: dm6
 genome_digest: hFwVeJXKpWP3X-g4wmJGT-eZTa1r3Y1l
 recipe: fasta_index
-recipe_version: 1.1.0
+recipe_version: 1.1.1
 asset_name: default
 asset_digest: bc8016d281180cff469617fd695eaa515bc049c710789705bb2161b90c7cbe90
 build:

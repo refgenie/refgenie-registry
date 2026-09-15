@@ -1,7 +1,7 @@
 genome: dmelanogaster
 genome_digest: TSJSrC0E3MMXRtQzW_lF_aJ08ehU1E-Q
 recipe: fasta_index
-recipe_version: 1.1.0
+recipe_version: 1.1.1
 asset_name: default
 asset_digest: cdcf1e3a9b0f1aaaa4891e636f8046311ba3c14def5221378537f8c37ada4b87
 build:

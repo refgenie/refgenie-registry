@@ -1,7 +1,7 @@
 genome: human_alu
 genome_digest: 4r7J6aCMjoUTsnEHxHQMTFrNl6h1ZqgP
 recipe: bwa_index
-recipe_version: 0.2.0
+recipe_version: 0.2.1
 asset_name: 0.7.19
 asset_digest: 9cb1d55ab2dc4aebd675e88efeb2c4b348e05184ab03056c838fed681b06bc40
 build:

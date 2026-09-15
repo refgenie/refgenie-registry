@@ -1,7 +1,7 @@
 genome: human_repeats
 genome_digest: fuCzP-ywaGoywO5-loqNpuC18a8SEZ4X
 recipe: bowtie2_index
-recipe_version: 0.0.1
+recipe_version: 0.0.2
 asset_name: 2.5.5
 asset_digest: 5c8c12f41f5841c17837992a43f23a4dc223e9138850a64cfc2ce54334150536
 build:

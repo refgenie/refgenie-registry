@@ -1,7 +1,7 @@
 genome: t7
 genome_digest: kN9XHLKLS_u7ei2GH87H-qpQrkz8moPB
 recipe: bowtie2_index
-recipe_version: 0.0.1
+recipe_version: 0.0.2
 asset_name: 2.5.5
 asset_digest: 2b4c1900ec5a2b9fce39e45a71e6bed38ca234d394b8af28c2a3b0e09548d51e
 build:

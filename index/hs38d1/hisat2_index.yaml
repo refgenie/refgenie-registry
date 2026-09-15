@@ -1,7 +1,7 @@
 genome: hs38d1
 genome_digest: zEaiCVTg-NXkKpeU17O5uFcudmA7SEYr
 recipe: hisat2_index
-recipe_version: 0.0.2
+recipe_version: 0.0.3
 asset_name: 2.2.2
 asset_digest: e9ca084f9edfc4768e02d15326d332e32ff8312194b89cf96673ca2721b0b9e6
 build:

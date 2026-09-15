@@ -1,7 +1,7 @@
 genome: celegans
 genome_digest: iT3SWdnGndTXiDZrQoirIsBOdOgTMZzd
 recipe: fasta_index
-recipe_version: 1.1.0
+recipe_version: 1.1.1
 asset_name: default
 asset_digest: 7765a5b5177f6762f91767a250ef87d898897ddbb1857ba7e6da7e2e9f84a4e0
 build:

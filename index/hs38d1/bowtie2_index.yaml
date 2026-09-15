@@ -1,7 +1,7 @@
 genome: hs38d1
 genome_digest: zEaiCVTg-NXkKpeU17O5uFcudmA7SEYr
 recipe: bowtie2_index
-recipe_version: 0.0.1
+recipe_version: 0.0.2
 asset_name: 2.5.5
 asset_digest: 26d6f52dee2579083879767efcc2b1067ba263f1a95578f384d36c13147b76a6
 build:

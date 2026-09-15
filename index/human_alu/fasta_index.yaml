@@ -1,7 +1,7 @@
 genome: human_alu
 genome_digest: 4r7J6aCMjoUTsnEHxHQMTFrNl6h1ZqgP
 recipe: fasta_index
-recipe_version: 1.1.0
+recipe_version: 1.1.1
 asset_name: default
 asset_digest: 7a9093c9ff71910be93b35b1e2801515721d7e40a24332398889af07b363db71
 build:

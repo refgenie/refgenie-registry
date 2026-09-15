@@ -1,7 +1,7 @@
 genome: mouse_chrM2x
 genome_digest: k1DiUF4K3GOEyfBV6kMtnSFAGVrkMixo
 recipe: bowtie2_index
-recipe_version: 0.0.1
+recipe_version: 0.0.2
 asset_name: 2.5.5
 asset_digest: 5650aded974b6b35fa4736a7a5453c28e9492fd653cbc8946a53949a240ec025
 build:

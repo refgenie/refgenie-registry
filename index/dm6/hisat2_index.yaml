@@ -1,7 +1,7 @@
 genome: dm6
 genome_digest: hFwVeJXKpWP3X-g4wmJGT-eZTa1r3Y1l
 recipe: hisat2_index
-recipe_version: 0.0.2
+recipe_version: 0.0.3
 asset_name: 2.2.2
 asset_digest: 524ce9629d538e6f2d97a0d0885b8336f2bfcc257eb7bafffade47af701ea86c
 build:

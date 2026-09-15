@@ -1,7 +1,7 @@
 genome: hg19
 genome_digest: ThZcNYiLuWWL86NdJ8dvvJG15K9mW3Fo
 recipe: hisat2_index
-recipe_version: 0.0.2
+recipe_version: 0.0.3
 asset_name: 2.2.2
 asset_digest: ae1e62ea7d19892dbdc1f46443704e204d33539c03bdeefd08594b22b4d9130b
 build:

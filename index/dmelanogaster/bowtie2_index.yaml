@@ -1,7 +1,7 @@
 genome: dmelanogaster
 genome_digest: TSJSrC0E3MMXRtQzW_lF_aJ08ehU1E-Q
 recipe: bowtie2_index
-recipe_version: 0.0.1
+recipe_version: 0.0.2
 asset_name: 2.5.5
 asset_digest: 91128034a979727d11a17408e4c737e10475719a48bb679e247c576453ae8292
 build:

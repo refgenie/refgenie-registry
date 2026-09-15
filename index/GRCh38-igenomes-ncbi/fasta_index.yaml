@@ -1,7 +1,7 @@
 genome: GRCh38-igenomes-ncbi
 genome_digest: EiFob05aCWgVU_B_Ae0cypnQut3cxUP1
 recipe: fasta_index
-recipe_version: 1.1.0
+recipe_version: 1.1.1
 asset_name: default
 asset_digest: 6f70affa2409331fc6d2ea1a5d660028fd21a9cbbcc16c032b4f94eb3ab635ce
 build:

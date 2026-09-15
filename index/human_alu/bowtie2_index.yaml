@@ -1,7 +1,7 @@
 genome: human_alu
 genome_digest: 4r7J6aCMjoUTsnEHxHQMTFrNl6h1ZqgP
 recipe: bowtie2_index
-recipe_version: 0.0.1
+recipe_version: 0.0.2
 asset_name: 2.5.5
 asset_digest: 4ccd00f9d116e997fbca239093466a0ee527fe73b77839ea5da1bbf07b631662
 build:

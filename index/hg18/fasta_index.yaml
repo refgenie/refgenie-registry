@@ -1,7 +1,7 @@
 genome: hg18
 genome_digest: YfZ0rklv8KY9DCtqG0iIX16zsgbuBgmM
 recipe: fasta_index
-recipe_version: 1.1.0
+recipe_version: 1.1.1
 asset_name: default
 asset_digest: 5dc9c3bba28176b41c41876396d87cf8ac36f8fed7f40d5a27ce454402efbb7a
 build:

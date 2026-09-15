@@ -1,7 +1,7 @@
 genome: GRCh38-igenomes-ncbi
 genome_digest: EiFob05aCWgVU_B_Ae0cypnQut3cxUP1
 recipe: bwa_index
-recipe_version: 0.2.0
+recipe_version: 0.2.1
 asset_name: 0.7.19
 asset_digest: 094e86409b8508ab4cd0c88e45deb08a4755485a0bbd35d7f9706e41f551bac5
 build:

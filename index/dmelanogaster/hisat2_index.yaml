@@ -1,7 +1,7 @@
 genome: dmelanogaster
 genome_digest: TSJSrC0E3MMXRtQzW_lF_aJ08ehU1E-Q
 recipe: hisat2_index
-recipe_version: 0.0.2
+recipe_version: 0.0.3
 asset_name: 2.2.2
 asset_digest: b1db4ef9d277670b2dd7c493f7aebd12efddb831027fc788a1bcf0a7a4a4d6b1
 build:

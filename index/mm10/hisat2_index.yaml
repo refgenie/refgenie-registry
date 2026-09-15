@@ -1,7 +1,7 @@
 genome: mm10
 genome_digest: wsDErYxgCXiPnb2FWZ4sXtx3B0YyruRu
 recipe: hisat2_index
-recipe_version: 0.0.2
+recipe_version: 0.0.3
 asset_name: 2.2.2
 asset_digest: afda00adc304f83eae011ea4bcbcf501058e39fce2f4229bcdebe26ffc1bfbcc
 build:

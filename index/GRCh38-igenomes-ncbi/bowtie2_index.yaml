@@ -1,7 +1,7 @@
 genome: GRCh38-igenomes-ncbi
 genome_digest: EiFob05aCWgVU_B_Ae0cypnQut3cxUP1
 recipe: bowtie2_index
-recipe_version: 0.0.1
+recipe_version: 0.0.2
 asset_name: 2.5.5
 asset_digest: dc3ebb8b3869c3a6af93143f361e743de3f106ac3c4165dcbd5ba31a36f9d4b1
 build:
