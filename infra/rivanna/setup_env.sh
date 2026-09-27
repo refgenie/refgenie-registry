@@ -42,7 +42,6 @@ MINIFORGE_MODULE="miniforge/24.3.0-py3.11"
 VENV="${REFGENIE_VENV:-$HOME/envs/refgenie-build}"
 REFGENIE_SRC="${REFGENIE_SRC:-$HOME/deploy/refgenie1}"
 REFGET_SRC="${REFGET_SRC:-$HOME/deploy/refget}"
-GTARS_SRC="${GTARS_SRC:-$HOME/code/gtars}"
 
 REBUILD=0
 [[ "${1:-}" == "--rebuild" ]] && REBUILD=1
@@ -51,7 +50,6 @@ echo "===== refgenie build env  $(date) ====="
 echo "  venv:    $VENV"
 echo "  refgenie1: $REFGENIE_SRC"
 echo "  refget:    $REFGET_SRC"
-echo "  gtars:     $GTARS_SRC"
 
 # shellcheck disable=SC1091
 source /etc/profile.d/modules.sh
@@ -59,7 +57,7 @@ module load "$MINIFORGE_MODULE"
 BASE_PY="$(command -v python3)"
 echo "  base python: $BASE_PY ($($BASE_PY --version 2>&1))"
 
-for d in "$REFGENIE_SRC" "$REFGET_SRC" "$GTARS_SRC/gtars-python"; do
+for d in "$REFGENIE_SRC" "$REFGET_SRC"; do
     [[ -d "$d" ]] || { echo "MISSING source dir: $d" >&2; exit 1; }
 done
 
@@ -82,24 +80,20 @@ python -m pip install --quiet --upgrade pip wheel
 
 # ORDER MATTERS.
 #
-# refgenie1's pyproject declares `gtars>=0.9.2` and `refget>=0.11.0` as ordinary
-# PyPI dependencies, so installing it pulls published wheels of both. We want
-# the LOCAL checkouts instead: refget from its local source (currently the dev
-# branch) so the build tracks unreleased changes, and gtars built from source so
-# the store write lock is present. So: refgenie1 first, then overwrite both with
-# local installs.
-echo "  [1/4] refgenie1 (editable, with snakemake extra) ..."
+# refgenie1's pyproject declares gtars and refget as ordinary PyPI dependencies,
+# so installing it pulls published wheels of both. gtars stays the published
+# wheel (0.10.0+ has the store write lock; the check below confirms it). refget
+# is overwritten with its local checkout so the build tracks unreleased changes.
+# So: refgenie1 first, then refget.
+echo "  [1/3] refgenie1 (editable, with snakemake extra) ..."
 python -m pip install --quiet -e "${REFGENIE_SRC}[snakemake]"
 
-echo "  [2/4] snakemake SLURM executor plugin ..."
+echo "  [2/3] snakemake SLURM executor plugin ..."
 python -m pip install --quiet 'snakemake-executor-plugin-slurm'
 
-echo "  [3/4] refget (editable, local branch, overrides the PyPI wheel) ..."
+echo "  [3/3] refget (editable, local branch, overrides the PyPI wheel) ..."
 python -m pip install --quiet --force-reinstall --no-deps -e "$REFGET_SRC"
 
-echo "  [4/4] gtars (built from source, overrides the PyPI wheel) ..."
-python -m pip install --quiet --upgrade 'maturin>=1.8.1'
-python -m pip install --quiet --force-reinstall --no-deps "$GTARS_SRC/gtars-python"
 
 echo
 echo "===== verification ====="
