@@ -200,7 +200,7 @@ so refgenie loads them directly (any "import" is a thin loader, not a
 translator). Builds run entirely through refgenie:
 
 1. `refgenie generate snakefile` iterates the recipes and renders a Snakemake
-   workflow (`refgenie1/refgenie/snakefile/generate.py`).
+   workflow (`refgenie1/refgenie/integrations/snakemake/generate.py`).
 2. Each generated rule runs `refgenie1 build <genome>/<asset>:<tag>`.
 3. `refgenie1 build` executes the recipe's `command_templates` inside its
    `docker_image`, colocating any `input_assets[].colocate` files first.

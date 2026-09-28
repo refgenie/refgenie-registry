@@ -17,7 +17,7 @@ jobs: 20                       # max concurrent SLURM jobs
 # refget_store_writer: a STAGED-ROLLOUT cap, no longer a correctness measure.
 #
 # genome_init declares `refget_store_writer = 1` in refgenie1's Snakefile template
-# (refgenie/snakefile/template/template.smk), so whatever budget appears here IS
+# (refgenie/integrations/snakemake/template/template.smk), so whatever budget appears here IS
 # the number of concurrent genome_inits. Snakemake treats an undeclared custom
 # resource as UNLIMITED, so omitting this key means unbounded, verify the
 # template still declares it before assuming this key does anything.
@@ -77,7 +77,6 @@ rerun-incomplete: true
 rerun-triggers: mtime
 keep-going: true               # one failed asset must not abort the batch
 printshellcmds: true
-use-singularity: false         # recipes run in containers via refgenie/bulker, not snakemake
 
 # Default SLURM resources for every rule (shefflab standard partition).
 # Override per-rule below for memory-hungry indexers.
