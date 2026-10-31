@@ -14,7 +14,7 @@ This helper makes the pipeline self-correcting WITHOUT hand-editing anything:
 for every genome the PEP queues (``pep/samples.csv``, column ``genome_name``) it
 checks whether the persistent catalog actually holds that genome as a DB row. If
 NOT, it deletes the stale sentinel (computed from
-``Refgenie.get_genome_init_target_template()``), forcing snakemake to re-run
+``Refgenie.build.genome_init_target_template()``), forcing snakemake to re-run
 ``refgenie genome init ... --force`` (idempotent, it adds the missing genome +
 alias rows) BEFORE any ``build_*`` rule stages. Registered genomes keep their
 sentinels so ``genome_init`` is skipped (no wasted work).
@@ -55,7 +55,7 @@ that unlinks.
 READ-ONLY IS BEST-EFFORT, NOT ABSOLUTE
 --------------------------------------
 ``--no-prune``/``--check-dispatch-safe``/``--count-genomes-only`` skip
-``rg.init()`` (which mkdir -p's genome_folder + genome_stage_folder and can
+``rg.database.init()`` (which mkdir -p's genome_folder + genome_stage_folder and can
 insert the ``Configuration`` row) and refuse to run at all unless the catalog
 SQLite file already exists, see ``_assert_catalog_present``. That closes the
 practical hole, but it is not a guarantee refgenie itself offers: the
@@ -140,7 +140,7 @@ def _open_refgenie(db_config: str | None, read_only: bool = False):
     """Construct a Refgenie instance the SAME way build/update_index.py does, so
     its alias_folder matches the folder the SLURM genome_init jobs write to.
 
-    ``read_only=True`` skips ``rg.init()``. On a healthy catalog init() is
+    ``read_only=True`` skips ``rg.database.init()``. On a healthy catalog init() is
     already a near no-op (its mkdirs and its Configuration insert are both
     guarded by existence checks), so skipping it costs nothing and removes the
     only mutation this script performs by construction. See the module
@@ -154,7 +154,7 @@ def _open_refgenie(db_config: str | None, read_only: bool = False):
     else:
         rg = Refgenie()
     if not read_only:
-        rg.init()
+        rg.database.init()
     return rg
 
 
@@ -192,7 +192,7 @@ def is_registered(rg, genome_name: str) -> bool:
 
 def sentinel_path(rg, genome_name: str) -> Path:
     """The genome_init sentinel path for ``genome_name`` (persistent alias folder)."""
-    template = rg.get_genome_init_target_template()
+    template = rg.build.genome_init_target_template()
     return Path(str(template).format(genome_name=genome_name))
 
 

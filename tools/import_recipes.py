@@ -230,18 +230,20 @@ def register_asset_remote(
     """Register (upsert) the S3 asset-push remote in the build DB.
 
     The remote MUST exist before any SLURM build child stages an asset: at
-    stage time ``refgenie build ... --push-to <prefix>`` resolves ``<prefix>``
-    against ``Remote.prefix`` to write the ``RemoteAssetLink(pushed=False)``
-    push-intent record. ``prefix`` here MUST therefore equal the ``--push-to``
-    token injected into the generated Snakefile.
+    stage time ``refgenie build ... --push-to <name>`` resolves ``<name>``
+    against ``Remote.name`` (or id) to write the ``RemoteAssetLink(pushed=False)``
+    push-intent record. ``name`` here MUST therefore equal the ``--push-to``
+    token injected into the generated Snakefile (run_builds.sh: REFGENIE_ASSET_REMOTE).
+    An unknown name is only a warning in refgenie, so a mismatch stages assets
+    that are never pushed.
 
-    Idempotent: ``upsert_remote`` matches on the ``description`` (``name``)
-    field, so re-running against the persistent catalog updates in place rather
+    Idempotent: ``remote.upsert`` matches on the remote's unique ``name``,
+    so re-running against the persistent catalog updates in place rather
     than creating a duplicate remote.
     """
     from refgenie.db.tables import RemoteType
 
-    refgenie.configuration.upsert_remote(
+    refgenie.remote.upsert(
         name=name,
         type=RemoteType.s3,
         prefix=prefix,
@@ -272,9 +274,9 @@ def open_refgenie(db_config: str | None, genome_folder: Path | None = None) -> A
         refgenie = Refgenie(database_engine=engine, suppress_migrations=True)
 
     if genome_folder is not None:
-        refgenie.init(genome_folder=genome_folder, genome_stage_folder=genome_folder)
+        refgenie.database.init(genome_folder=genome_folder, genome_stage_folder=genome_folder)
     else:
-        refgenie.init()
+        refgenie.database.init()
     return refgenie
 
 
@@ -317,9 +319,8 @@ def main(argv: list[str] | None = None) -> int:
         default=os.environ.get("REFGENIE_ASSET_S3"),
         help=(
             "S3 prefix for the built-asset push remote (default: "
-            "$REFGENIE_ASSET_S3). MUST equal the --push-to token injected into "
-            "the Snakefile. If unset, no asset remote is registered (staging "
-            "records no push intent)."
+            "$REFGENIE_ASSET_S3). If unset, no asset remote is registered "
+            "(staging records no push intent)."
         ),
     )
     parser.add_argument(
@@ -333,8 +334,11 @@ def main(argv: list[str] | None = None) -> int:
     )
     parser.add_argument(
         "--asset-remote-name",
-        default="asset-s3",
-        help="Description/name used to upsert the asset remote (default: asset-s3).",
+        default=os.environ.get("REFGENIE_ASSET_REMOTE", "asset-s3"),
+        help=(
+            "Name of the asset remote (default: $REFGENIE_ASSET_REMOTE or "
+            "asset-s3). MUST equal the --push-to token injected into the Snakefile."
+        ),
     )
     args = parser.parse_args(argv)
 
@@ -372,7 +376,7 @@ def main(argv: list[str] | None = None) -> int:
         return 1
 
     if args.snakefile is not None:
-        from refgenie.snakefile.generate import populate_snakefile_template
+        from refgenie.integrations.snakemake.generate import populate_snakefile_template
 
         populate_snakefile_template(refgenie, args.snakefile)
         size = args.snakefile.stat().st_size

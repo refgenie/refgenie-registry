@@ -50,7 +50,7 @@ def refgenie(tmp_path):
         echo=False,
     )
     r = Refgenie(database_engine=engine, suppress_migrations=True)
-    r.init(genome_folder=tmp_path, genome_stage_folder=tmp_path)
+    r.database.init(genome_folder=tmp_path, genome_stage_folder=tmp_path)
     return r
 
 
@@ -177,7 +177,7 @@ def test_registry_drives_snakefile_generation(imported, tmp_path):
     (populate_snakefile_template) produces a non-empty Snakefile with a
     `rule build_<name>` for several recipes. This proves the registry drives
     the actual builder, not a parallel format."""
-    from refgenie.snakefile.generate import populate_snakefile_template
+    from refgenie.integrations.snakemake.generate import populate_snakefile_template
 
     refgenie, _ = imported
     snakefile = tmp_path / "Snakefile"
@@ -186,7 +186,7 @@ def test_registry_drives_snakefile_generation(imported, tmp_path):
     assert snakefile.exists()
     content = snakefile.read_text()
     assert content.strip(), "generated Snakefile is empty"
-    assert "refgenie1 build" in content, "Snakefile does not invoke 'refgenie1 build'"
+    assert '"refgenie build ' in content, "Snakefile does not invoke 'refgenie build'"
 
     # The generated workflow contains a build rule for several recipes, named
     # `rule build_<recipe_name>` (see refgenie1 snakefile template).

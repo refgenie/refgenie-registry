@@ -68,7 +68,7 @@ def read_pep_genomes(registry_root: Path) -> list[str]:
 def _open_refgenie(db_config: str | None):
     """Construct a Refgenie the SAME way build/reconcile_genomes.py does.
 
-    No ``rg.init()``: applying metadata needs only the engine and the store, both
+    No ``rg.database.init()``: applying metadata needs only the engine and the store, both
     of which read the persistent catalog's Configuration row (genome_folder etc.),
     so init's mkdirs/Configuration-insert are unnecessary here.
     """

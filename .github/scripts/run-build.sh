@@ -99,11 +99,11 @@ cmd_snakefile() {
 
     [[ -s "$output" ]] || err "snakefile: generated Snakefile is empty"
     grep -q "^rule build_" "$output" || err "snakefile: no 'rule build_*' rules generated"
-    grep -q "refgenie1 build" "$output" || err "snakefile: rules do not invoke 'refgenie1 build'"
+    grep -q '"refgenie build ' "$output" || err "snakefile: rules do not invoke 'refgenie build'"
 
     local rule_count
     rule_count=$(grep -c "^rule build_" "$output")
-    log "Snakefile OK: $rule_count build rules, invokes 'refgenie1 build'."
+    log "Snakefile OK: $rule_count build rules, invokes 'refgenie build'."
 }
 
 # ---------------------------------------------------------------------------

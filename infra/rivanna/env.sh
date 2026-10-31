@@ -17,11 +17,11 @@ export REFGETSTORE_S3=s3://refgenie/refget-store
 
 # Built-asset publish target for `refgenie push`, DISTINCT from REFGETSTORE_S3.
 # This is where the nightly registry build uploads STAGED refgenie assets (the
-# <genome_digest>/<group>/<asset> tree), NOT the sequence store. It MUST equal
-# the asset Remote.prefix registered by tools/import_recipes.py and the
-# `--push-to <prefix>` token injected into the generated Snakefile, so
-# ArchiveManager.create resolves the remote at stage time and refgenie push
-# substitutes it for {prefix} in the push_command.
+# <genome_digest>/<group>/<asset> tree), NOT the sequence store.
+# tools/import_recipes.py registers it as the prefix of the asset remote named
+# $REFGENIE_ASSET_REMOTE (default asset-s3); build rules get `--push-to <that
+# name>` (refgenie matches --push-to on a remote's name, not its prefix), and
+# refgenie push substitutes this prefix for {prefix} in the push_command.
 export REFGENIE_ASSET_S3="${REFGENIE_ASSET_S3:-s3://refgenie/assets}"
 
 # Publish-catalog artifact (metadata for api.refgenie.org). The nightly runs
@@ -160,7 +160,7 @@ export REFGENIE_DB_CONFIG_PATH="${REFGENIE_DB_CONFIG_PATH:-/project/shefflab/bri
 # (the Refgenie.genome_folder / .genome_stage_folder properties), and
 # init_backend SKIPS its insert when a Configuration row already exists, so
 # these env vars do NOT steer where assets actually stage. What they do steer is
-# refgenie.init(), which mkdir -p's whatever the env-derived config says before
+# refgenie.database.init(), which mkdir -p's whatever the env-derived config says before
 # handing off to init_backend. Left unset that default is
 # $HOME/.refgenie/{genomes,archives}, so every nightly logged "Genome stage
 # folder ready: /home/ns5bc/.refgenie/archives" while actually staging to

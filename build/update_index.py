@@ -55,7 +55,7 @@ def _open_refgenie(db_config: str | None):
         rg = Refgenie(database_config_path=db_config, suppress_migrations=False)
     else:
         rg = Refgenie()
-    rg.init()
+    rg.database.init()
     return rg
 
 
@@ -116,7 +116,7 @@ def write_index(rg, index_dir: Path) -> int:
             defaults = {}
             for group in group_names:
                 try:
-                    defaults[group] = rg.asset.get_default(
+                    defaults[group] = rg.asset.group.get_default(
                         asset_group_name=group, genome_digest=genome_digest
                     )
                 except Exception as e:

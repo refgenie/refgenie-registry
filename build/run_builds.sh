@@ -15,7 +15,7 @@
 #      Rivanna the entry point is `refgenie`). Override with $REFGENIE_BIN.
 #   3. Run snakemake against the Rivanna SLURM profile to fan out one SLURM job
 #      per (genome, asset) in pep/samples.csv. Each rule runs
-#      `refgenie build <genome>/<asset> --stage --push-to <asset S3 prefix>`
+#      `refgenie build <genome>/<asset> --stage --push-to <asset remote name>`
 #      inside the recipe's container; staging records a RemoteAssetLink push
 #      intent (pushed=False) for each asset.
 #   4. Push staged assets to S3 with `refgenie push` (once, on the driver host):
@@ -46,7 +46,9 @@
 #   SNAKEMAKE_BIN     workflow-driver binary; pin to the HOST snakemake so the
 #                     driver isn't a bulker shim missing the slurm executor.
 #   REFGENIE_ASSET_S3 S3 prefix for built-asset push (e.g. s3://refgenie/assets).
-#                     When set, build rules get --push-to and a `refgenie push`
+#                     When set, build rules get --push-to $REFGENIE_ASSET_REMOTE
+#                     (default asset-s3, the remote import_recipes.py registers
+#                     with this prefix) and a `refgenie push`
 #                     step runs after the fan-out. Unset => stage-only (no push).
 #   DRY_RUN=1         snakemake dry-run only (no jobs submitted).
 #   SNAKEMAKE_PROFILE override the profile dir (default: build/profiles/rivanna).
@@ -402,19 +404,24 @@ echo "$(date) | run_builds: using persistent build DB at $REFGENIE_BUILD_DB"
 # Import into the build DB AND render the Snakefile from that same instance.
 # Recipe/asset-class import is idempotent (sync): anything already present is
 # skipped, so re-importing into the populated persistent catalog is safe.
+# The asset remote's name: import_recipes.py registers the remote under it and
+# step 2(d) passes it to every build rule as --push-to. Exported so both agree.
+export REFGENIE_ASSET_REMOTE="${REFGENIE_ASSET_REMOTE:-asset-s3}"
 echo "$(date) | run_builds: importing asset_classes + recipes and generating Snakefile..."
 python3 tools/import_recipes.py --db-config "$REFGENIE_DB_CONFIG_PATH" --snakefile "$SNAKEFILE"
 
 # --- 2. patch the generated Snakefile -------------------------------------
-# (a) refgenie1's template hardcodes `refgenie1` in shell rules; the installed
-#     entry point is `refgenie`. Rewrite only the leading command token.
+# (a) The template's shell rules call a bare `refgenie` (older templates said
+#     `refgenie1`). Rewrite the leading command token to $REFGENIE_BIN.
 if [[ "$REFGENIE_BIN" != "refgenie1" ]]; then
-    # Build rules emit `refgenie1 ...`; the genome_init sentinel rule emits a
-    # literal `refgenie genome init ...`. Rewrite BOTH leading command tokens to
-    # $REFGENIE_BIN (absolute path) so every rule is PATH-immune in SLURM children.
+    # Build rules emit `refgenie build ...` (`refgenie1 ...` before refgenie1
+    # 458364b); the genome_init sentinel rule emits `refgenie genome init ...`.
+    # Rewrite every leading command token to $REFGENIE_BIN (absolute path) so
+    # every rule is PATH-immune in SLURM children.
     # Use '#' delimiter because $REFGENIE_BIN may contain '/'.
     sed -i \
         -e "s#refgenie1 #$REFGENIE_BIN #g" \
+        -e "s#\"refgenie build #\"$REFGENIE_BIN build #g" \
         -e "s#\"refgenie genome init #\"$REFGENIE_BIN genome init #g" \
         "$SNAKEFILE"
     echo "$(date) | run_builds: patched Snakefile shell rules -> '$REFGENIE_BIN'"
@@ -435,16 +442,18 @@ echo "$(date) | run_builds: pinned configfile/pepfile paths in Snakefile"
 #     Trailing space anchors the match so an already-plural `--params ` is untouched.
 sed -i "s/--param /--params /g" "$SNAKEFILE"
 echo "$(date) | run_builds: patched Snakefile build flag --param -> --params"
-# (d) Inject `--push-to <asset prefix>` into every staged build rule so staging
-#     records a RemoteAssetLink(pushed=False) push-intent for each asset. Every
-#     build_* rule's shell contains `--stage ` (trailing space); genome_init and
-#     `rule all` do not, so this anchors only on build rules. The token MUST
-#     equal the asset Remote.prefix registered by import_recipes.py. The single
-#     quotes are literal inside the Snakefile's double-quoted Python shell
-#     string, so snakemake hands the shell one clean `--push-to 's3://...'` arg.
+# (d) Inject `--push-to <asset remote name>` into every staged build rule so
+#     staging records a RemoteAssetLink(pushed=False) push-intent for each asset.
+#     Every build_* rule's shell contains `--stage ` (trailing space); genome_init
+#     and `rule all` do not, so this anchors only on build rules. The token MUST
+#     be the NAME of the asset remote import_recipes.py registers (both read
+#     $REFGENIE_ASSET_REMOTE). Since refgenie1 a89dd33 `--push-to` matches a
+#     remote's name or id, not its prefix, and an unknown remote is only a
+#     warning: passing the S3 prefix here stages every asset with no push intent,
+#     so `refgenie push` uploads nothing and the run still looks clean.
 if [[ -n "${REFGENIE_ASSET_S3:-}" ]]; then
-    sed -i "s#--stage #--stage --push-to '$REFGENIE_ASSET_S3' #g" "$SNAKEFILE"
-    echo "$(date) | run_builds: injected --push-to '$REFGENIE_ASSET_S3' into build rules"
+    sed -i "s#--stage #--stage --push-to '$REFGENIE_ASSET_REMOTE' #g" "$SNAKEFILE"
+    echo "$(date) | run_builds: injected --push-to '$REFGENIE_ASSET_REMOTE' ($REFGENIE_ASSET_S3) into build rules"
 else
     echo "$(date) | run_builds: REFGENIE_ASSET_S3 unset; builds will stage without push intent"
 fi
