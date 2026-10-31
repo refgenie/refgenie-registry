@@ -152,8 +152,8 @@ Species names, such as the other common names people search for ("brown rat"
 for *Rattus norvegicus*), live in one list,
 [`tools/taxon_ids.json`](tools/taxon_ids.json). To add or fix one, edit that
 species' entry and open a PR; it gets the same checks and review as a genome.
-Each store ships its species from this list, as `species.json`, when it is
-published. See [CONTRIBUTING.md § Species names](./CONTRIBUTING.md#species-names).
+Each store ships its species from this list, as `species.json`, refreshed by
+the nightly build. See [CONTRIBUTING.md § Species names](./CONTRIBUTING.md#species-names).
 
 ### Validate locally before submitting
 

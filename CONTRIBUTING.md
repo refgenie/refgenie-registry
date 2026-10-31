@@ -303,8 +303,8 @@ name:
 
 **What the list feeds.** Store rows that have no genome YAML get their FHR
 species fields (scientific name, common name, taxon) from it, and every store
-ships its own species from it, as `species.json`, when it is published. So a
-change reaches a store on that store's next publish.
+ships its own species from it, as `species.json`. The nightly refreshes every
+published store's `species.json`, so a merged change reaches the stores the next night.
 
 **To propose a change**, edit the entry (or add one), run
 `python tools/species_list.py check`, and open a PR titled

@@ -206,6 +206,32 @@ else
     fi
 fi
 
+# --- refresh species.json in every published store ----------------------------
+# The loop above rewrites species.json only for stores whose sources.csv changed,
+# so an edit to tools/taxon_ids.json alone (a new synonym, a fixed common name)
+# would never reach a store that is already published. Re-derive each built
+# store's species.json from its FHR sidecars here: species_list.py rewrites the
+# file only when its text changed, and only a changed file is uploaded. This runs
+# before `store sync` below, which reads species.json, so the new names ride
+# tonight's catalog export. Non-fatal; a failed upload deletes the local copy so
+# the next run writes and uploads it again.
+if [[ "${DRY_RUN:-0}" != "1" && -n "${REFGETSTORE_BASE:-}" && -n "${REFGETSTORE_S3:-}" ]]; then
+    for _fhr in "$REFGETSTORE_BASE"/*/fhr; do
+        _dir="$(dirname "$_fhr")"; _store="$(basename "$_dir")"
+        [[ -d "$_fhr" && -f "stores/$_store/sources.csv" ]] || continue
+        if ! _out="$(python3 tools/species_list.py store-file "$_dir")"; then
+            echo "$(date) | run_builds: species.json not refreshed for $_store (non-fatal)" >&2
+            continue
+        fi
+        if [[ "$_out" == *"(written)"* ]]; then
+            echo "$(date) | run_builds: species.json changed for $_store; uploading"
+            aws s3 cp "$_dir/species.json" "$REFGETSTORE_S3/$_store/species.json" --no-progress \
+                || { rm -f "$_dir/species.json"
+                     echo "$(date) | run_builds: species.json upload failed for $_store (non-fatal); retried next run" >&2; }
+        fi
+    done
+fi
+
 # REFGENIE_INPUTS is required by the generated Snakefile (envvars: stanza) and
 # by the PEP sample modifier that derives fasta_file_path. Default it to the
 # registry's own genomes input root if the operator did not set one.

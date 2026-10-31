@@ -281,9 +281,10 @@ catalog's own sequence store (`refgenie-main`) gets its copy from
 `python tools/species_list.py store-file "$REFGENIE_GENOME_FOLDER/.refget_store"`,
 which the nightly runs just before syncing that store.
 
-**Refreshing after a list edit.** A list edit reaches a store the next time the store
-is published; the nightly republishes only stores whose `sources.csv` changed. To push
-it sooner, rerun `build_fhr.py <store>` and sync the store (see below).
+**Refreshing after a list edit.** The nightly republishes only stores whose
+`sources.csv` changed, so it also reruns `species_list.py store-file` on every built
+store and uploads each `species.json` whose text changed. A merged list edit reaches
+every published store the next night, before `refgenie store sync` reads the files.
 
 **Checking a published copy:**
 
