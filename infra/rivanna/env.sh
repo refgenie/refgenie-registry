@@ -78,6 +78,14 @@ export REFGENIE_BUILD_WORKDIR=/project/shefflab/brickyard/results_pipeline/refge
 # Literal path (no $VAR) so yoke's env_files parser does not mangle it.
 export APPTAINER_CACHEDIR=/scratch/ns5bc/refgenie_apptainer_cache
 
+# Where Apptainer unpacks an image while converting it on first use. The default
+# is $TMPDIR, /scratch/ns5bc/tmp here, and unpacking thousands of small files onto
+# networked scratch is slow: converting the genometools image took 210 s on one
+# core, past refgenie's 120 s name-probe limit, so suffixerator_index could never
+# be named from a cold cache. Local /tmp on a compute node (189 GB) did it in 80 s.
+# Only the scratch copy is local; the finished image lands in the shared cache.
+export APPTAINER_TMPDIR=/tmp
+
 # Local home for per-store build reports (stores/build.py). These are operator
 # provenance (hostname, absolute paths, tool versions, counts) that nothing
 # consumes; they MUST stay out of the store dir, which is aws s3 sync'd to the
