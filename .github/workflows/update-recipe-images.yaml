@@ -1,0 +1,64 @@
+name: Update Recipe Images
+
+# Monthly: move each recipe's biocontainers pin to the newest tag
+# (tools/update_recipe_images.py) and open a pull request.
+#
+# A recipe's docker_image is what the nightly build runs, so these pins are
+# what keeps the published assets current. A pin that moves to a new tool
+# version renames the assets that tool builds (the asset name is the tool
+# version) and forces a rebuild, so this only ever OPENS a pull request. A
+# person merges it; it is never merged automatically.
+
+on:
+  schedule:
+    - cron: "0 6 1 * *" # 06:00 UTC on the 1st of each month
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  update-recipe-images:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: actions/setup-python@v7
+        with:
+          python-version: "3.12"
+
+      - name: Install dependencies
+        run: pip install pyyaml
+
+      - name: Move pins to the newest tags
+        id: update
+        run: |
+          {
+            echo 'report<<REPORT_EOF'
+            python tools/update_recipe_images.py --write
+            echo 'REPORT_EOF'
+          } >> "$GITHUB_OUTPUT"
+
+      - name: Open pull request
+        uses: peter-evans/create-pull-request@v7
+        with:
+          branch: recipe-image-update
+          commit-message: Update recipe container images
+          title: Update recipe container images
+          body: |
+            Monthly update of recipe container pins, from
+            `tools/update_recipe_images.py`. Each changed recipe also gets a new
+            recipe version, so the nightly imports it.
+
+            Before merging, check which changed recipes are queued in
+            `pep/samples.csv`. A pin that moves to a new tool version renames
+            the assets that tool builds and rebuilds them on the next nightly; a
+            pin that only moves to a new build of the same version does not.
+
+            ```
+            ${{ steps.update.outputs.report }}
+            ```
+          labels: |
+            recipe-images
+            needs-review

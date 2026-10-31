@@ -14,6 +14,7 @@ Validation scripts and helpers used by CI and by contributors before opening a P
 | `taxon_ids.json` | The species list: NCBI scientific name -> `{taxon_id, common_name, synonyms}`. The one place species names are edited (by PR). Every store's `species.json` and the CSV-derived FHR `taxon` (`stores/build_fhr.py`) come from it. Every genome's `organism.taxon_id` must be on it |
 | `species_list.py` | The one module for the species list: load/save, organism lookup (key, then synonym), the name rules, the list check (`check`), and writing (`store-file`) and checking (`check-file`) a store's `species.json`. Standard library only |
 | `fetch_species_names.py` | Refreshes the species list from NCBI Taxonomy by hand (common names, other names, missing store species); `--dry-run` previews. Builds never call NCBI |
+| `update_recipe_images.py` | Moves each recipe's `quay.io/biocontainers` pin to the newest tag and bumps the recipe version (`--write`); recipes with other images are listed in `HOLD`. Run monthly by `.github/workflows/update-recipe-images.yaml`, which opens a PR |
 | `changed_files.sh` | List changed genome/recipe YAML files in the current branch vs. a base ref (used by CI to scope validation) |
 | `requirements.txt` | Python dependencies for the validators |
 
