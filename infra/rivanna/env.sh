@@ -74,6 +74,14 @@ export REFGENIE_AWS_BINDIR=/apps/software/standard/core/awscli/2.35.13/bin
 # not mangle it. run_builds.sh mkdir -p's it.
 export REFGENIE_BUILD_WORKDIR=/project/shefflab/brickyard/results_pipeline/refgenie/build_workdir
 
+# Apptainer's image cache. refgenie runs each recipe's container image with
+# `apptainer exec docker://<image>`, which pulls and converts the image on first
+# use and caches it. The default cache is ~/.apptainer/cache, and $HOME is too
+# small for a few GB of images, so the cache lives on scratch. /scratch is shared
+# by every compute node, so the driver's name probes warm it for the build jobs.
+# Literal path (no $VAR) so yoke's env_files parser does not mangle it.
+export APPTAINER_CACHEDIR=/scratch/ns5bc/refgenie_apptainer_cache
+
 # Local home for per-store build reports (stores/build.py). These are operator
 # provenance (hostname, absolute paths, tool versions, counts) that nothing
 # consumes; they MUST stay out of the store dir, which is aws s3 sync'd to the
