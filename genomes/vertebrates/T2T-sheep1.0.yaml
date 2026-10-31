@@ -3,7 +3,6 @@ description: |
   Ovis aries assembly T2T-sheep1.0 (GCA_040805955.1), from VGP.
 organism:
   scientific_name: Ovis aries
-  common_name: sheep
   taxon_id: 9940
 assembly:
   source: GenBank

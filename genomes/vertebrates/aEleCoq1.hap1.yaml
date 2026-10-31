@@ -3,7 +3,6 @@ description: |
   Eleutherodactylus coqui assembly aEleCoq1.hap1 (GCF_035609145.1), from VGP.
 organism:
   scientific_name: Eleutherodactylus coqui
-  common_name: Puerto Rican coqui
   taxon_id: 57060
 assembly:
   source: RefSeq

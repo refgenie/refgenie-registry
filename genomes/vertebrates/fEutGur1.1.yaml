@@ -3,7 +3,6 @@ description: |
   Eutrigla gurnardus assembly fEutGur1.1 (GCA_963514095.1), from VGP.
 organism:
   scientific_name: Eutrigla gurnardus
-  common_name: grey gurnard
   taxon_id: 426098
 assembly:
   source: GenBank

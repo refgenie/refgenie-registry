@@ -3,7 +3,6 @@ description: |
   Sarcoramphus papa assembly bSarPap1.hap1 (GCA_037962945.1), from VGP.
 organism:
   scientific_name: Sarcoramphus papa
-  common_name: king vulture
   taxon_id: 43583
 assembly:
   source: GenBank

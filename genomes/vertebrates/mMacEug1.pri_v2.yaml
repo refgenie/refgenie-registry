@@ -3,7 +3,6 @@ description: |
   Notamacropus eugenii assembly mMacEug1.pri_v2 (GCF_028372415.1), from VGP.
 organism:
   scientific_name: Notamacropus eugenii
-  common_name: tammar wallaby
   taxon_id: 9315
 assembly:
   source: RefSeq

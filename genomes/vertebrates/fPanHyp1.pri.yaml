@@ -3,7 +3,6 @@ description: |
   Pangasianodon hypophthalmus assembly fPanHyp1.pri (GCF_027358585.1), from VGP.
 organism:
   scientific_name: Pangasianodon hypophthalmus
-  common_name: striped catfish
   taxon_id: 310915
 assembly:
   source: RefSeq

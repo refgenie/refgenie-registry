@@ -3,7 +3,6 @@ description: |
   Astur gentilis assembly bAccGen1.2 (GCA_929443795.2), from VGP.
 organism:
   scientific_name: Astur gentilis
-  common_name: Northern goshawk
   taxon_id: 8957
 assembly:
   source: GenBank

@@ -3,7 +3,6 @@ description: |
   Onychomys torridus assembly mOncTor1.1 (GCF_903995425.1), from VGP.
 organism:
   scientific_name: Onychomys torridus
-  common_name: southern grasshopper mouse
   taxon_id: 38674
 assembly:
   source: RefSeq

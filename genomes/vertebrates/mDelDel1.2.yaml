@@ -3,7 +3,6 @@ description: |
   Delphinus delphis assembly mDelDel1.2 (GCF_949987515.2), from VGP.
 organism:
   scientific_name: Delphinus delphis
-  common_name: saddleback dolphin
   taxon_id: 9728
 assembly:
   source: RefSeq

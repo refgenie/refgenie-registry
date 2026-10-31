@@ -3,7 +3,6 @@ description: |
   Lemur catta assembly mLemCat1.pri (GCF_020740605.2), from VGP.
 organism:
   scientific_name: Lemur catta
-  common_name: Ring-tailed lemur
   taxon_id: 9447
 assembly:
   source: RefSeq

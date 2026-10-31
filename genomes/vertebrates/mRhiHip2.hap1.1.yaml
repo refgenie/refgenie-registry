@@ -3,7 +3,6 @@ description: |
   Rhinolophus hipposideros assembly mRhiHip2.hap1.1 (GCA_964194185.1), from VGP.
 organism:
   scientific_name: Rhinolophus hipposideros
-  common_name: lesser horseshoe bat
   taxon_id: 77218
 assembly:
   source: GenBank

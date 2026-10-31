@@ -3,7 +3,6 @@ description: |
   Rhineura floridana assembly rRhiFlo1.hap2 (GCF_030035675.1), from VGP.
 organism:
   scientific_name: Rhineura floridana
-  common_name: Florida worm lizard
   taxon_id: 261503
 assembly:
   source: RefSeq

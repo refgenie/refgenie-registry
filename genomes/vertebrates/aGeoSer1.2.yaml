@@ -3,7 +3,6 @@ description: |
   Geotrypetes seraphini assembly aGeoSer1.2 (GCA_902459505.2), from VGP.
 organism:
   scientific_name: Geotrypetes seraphini
-  common_name: Gabon caecilian
   taxon_id: 260995
 assembly:
   source: GenBank

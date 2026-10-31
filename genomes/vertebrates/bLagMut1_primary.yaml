@@ -3,7 +3,6 @@ description: |
   Lagopus muta assembly bLagMut1 primary (GCF_023343835.1), from VGP.
 organism:
   scientific_name: Lagopus muta
-  common_name: rock ptarmigan
   taxon_id: 64668
 assembly:
   source: RefSeq

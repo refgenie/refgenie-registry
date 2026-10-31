@@ -3,7 +3,6 @@ description: |
   Tautogolabrus adspersus assembly fTauAds1.pri.cur (GCA_020745685.1), from VGP.
 organism:
   scientific_name: Tautogolabrus adspersus
-  common_name: cunner
   taxon_id: 34787
 assembly:
   source: GenBank

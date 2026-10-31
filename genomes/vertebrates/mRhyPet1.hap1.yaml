@@ -3,7 +3,6 @@ description: |
   Rhynchocyon petersi assembly mRhyPet1.hap1 (GCA_043290085.1), from VGP.
 organism:
   scientific_name: Rhynchocyon petersi
-  common_name: black and rufous elephant shrew
   taxon_id: 320637
 assembly:
   source: GenBank

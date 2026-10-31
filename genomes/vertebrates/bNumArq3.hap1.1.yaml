@@ -3,7 +3,6 @@ description: |
   Numenius arquata assembly bNumArq3.hap1.1 (GCA_964106895.1), from VGP.
 organism:
   scientific_name: Numenius arquata
-  common_name: Eurasian curlew
   taxon_id: 31919
 assembly:
   source: GenBank

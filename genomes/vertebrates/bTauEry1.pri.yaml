@@ -3,7 +3,6 @@ description: |
   Tauraco erythrolophus assembly bTauEry1.pri (GCA_009769465.1), from VGP.
 organism:
   scientific_name: Tauraco erythrolophus
-  common_name: red-crested turaco
   taxon_id: 121530
 assembly:
   source: GenBank

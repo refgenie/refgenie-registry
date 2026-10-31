@@ -3,7 +3,6 @@ description: |
   Saimiri boliviensis assembly mSaiBol1.pri (GCA_048565385.1), from VGP.
 organism:
   scientific_name: Saimiri boliviensis
-  common_name: Bolivian squirrel monkey
   taxon_id: 27679
 assembly:
   source: GenBank

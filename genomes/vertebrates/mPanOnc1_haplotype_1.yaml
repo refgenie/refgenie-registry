@@ -3,7 +3,6 @@ description: |
   Panthera onca assembly mPanOnc1_haplotype_1 (GCA_046562885.1), from VGP.
 organism:
   scientific_name: Panthera onca
-  common_name: jaguar
   taxon_id: 9690
 assembly:
   source: GenBank

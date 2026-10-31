@@ -3,7 +3,6 @@ description: |
   Gypaetus barbatus assembly bGypBar2.pri (GCA_028022735.1), from VGP.
 organism:
   scientific_name: Gypaetus barbatus
-  common_name: lammergeier
   taxon_id: 33610
 assembly:
   source: GenBank

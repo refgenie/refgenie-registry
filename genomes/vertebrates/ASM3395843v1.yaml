@@ -3,7 +3,6 @@ description: |
   Carettochelys insculpta assembly ASM3395843v1 (GCA_033958435.1), from VGP.
 organism:
   scientific_name: Carettochelys insculpta
-  common_name: pitted-shelled turtle
   taxon_id: 44489
 assembly:
   source: GenBank

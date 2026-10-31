@@ -3,7 +3,6 @@ description: |
   Pygocentrus nattereri assembly fPygNat1.pri (GCF_015220715.1), from VGP.
 organism:
   scientific_name: Pygocentrus nattereri
-  common_name: red-bellied piranha
   taxon_id: 42514
 assembly:
   source: RefSeq

@@ -3,7 +3,6 @@ description: |
   Fundulus diaphanus assembly fFunDia1.hap1 (GCA_037039145.1), from VGP.
 organism:
   scientific_name: Fundulus diaphanus
-  common_name: banded killifish
   taxon_id: 54267
 assembly:
   source: GenBank

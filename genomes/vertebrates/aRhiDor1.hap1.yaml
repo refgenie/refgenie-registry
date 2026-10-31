@@ -3,7 +3,6 @@ description: |
   Rhinophrynus dorsalis assembly aRhiDor1.hap1 (GCA_037306005.1), from VGP.
 organism:
   scientific_name: Rhinophrynus dorsalis
-  common_name: Mexican burrowing toad
   taxon_id: 43566
 assembly:
   source: GenBank

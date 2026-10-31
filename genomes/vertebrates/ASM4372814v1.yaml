@@ -3,7 +3,6 @@ description: |
   Rhinolophus trifoliatus assembly ASM4372814v1 (GCA_043728145.1), from VGP.
 organism:
   scientific_name: Rhinolophus trifoliatus
-  common_name: Trefoil horseshoe bat
   taxon_id: 430492
 assembly:
   source: GenBank

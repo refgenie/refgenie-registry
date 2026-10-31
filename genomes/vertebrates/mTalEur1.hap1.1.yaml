@@ -3,7 +3,6 @@ description: |
   Talpa europaea assembly mTalEur1.hap1.1 (GCA_964194135.1), from VGP.
 organism:
   scientific_name: Talpa europaea
-  common_name: European mole
   taxon_id: 9375
 assembly:
   source: GenBank

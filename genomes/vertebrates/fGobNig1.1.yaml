@@ -3,7 +3,6 @@ description: |
   Gobius niger assembly fGobNig1.1 (GCA_951799975.1), from VGP.
 organism:
   scientific_name: Gobius niger
-  common_name: black goby
   taxon_id: 85417
 assembly:
   source: GenBank

@@ -3,7 +3,6 @@ description: |
   Microstomus kitt assembly fMicKit1.1 (GCA_964266715.1), from VGP.
 organism:
   scientific_name: Microstomus kitt
-  common_name: lemon sole
   taxon_id: 106175
 assembly:
   source: GenBank

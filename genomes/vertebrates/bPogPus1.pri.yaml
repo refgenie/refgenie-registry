@@ -3,7 +3,6 @@ description: |
   Pogoniulus pusillus assembly bPogPus1.pri (GCF_015220805.1), from VGP.
 organism:
   scientific_name: Pogoniulus pusillus
-  common_name: Red-fronted tinkerbird
   taxon_id: 488313
 assembly:
   source: RefSeq

@@ -3,7 +3,6 @@ description: |
   Notothenia rossii assembly fNotRos5.1 (GCA_949606895.1), from VGP.
 organism:
   scientific_name: Notothenia rossii
-  common_name: marbled rockcod
   taxon_id: 101497
 assembly:
   source: GenBank

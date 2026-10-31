@@ -3,7 +3,6 @@ description: |
   Arripis georgiana assembly fArrGeo1.hap2 (GCA_042242135.1), from VGP.
 organism:
   scientific_name: Arripis georgiana
-  common_name: Australian ruff
   taxon_id: 3352246
 assembly:
   source: GenBank

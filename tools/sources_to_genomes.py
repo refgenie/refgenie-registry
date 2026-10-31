@@ -238,8 +238,6 @@ def render_genome(row: dict, slug: str, store: str, scientific_name: str, entry:
     lines.append(f"  {detail}.")
     lines.append("organism:")
     lines.append(f"  scientific_name: {scientific_name}")
-    if entry.get("common_name"):
-        lines.append(f"  common_name: {entry['common_name']}")
     lines.append(f"  taxon_id: {entry['taxon_id']}")
 
     if accession:

@@ -3,7 +3,6 @@ description: |
   Meles meles assembly mMelMel3.1 paternal haplotype (GCF_922984935.1), from VGP.
 organism:
   scientific_name: Meles meles
-  common_name: Eurasian badger
   taxon_id: 9662
 assembly:
   source: RefSeq

@@ -3,7 +3,6 @@ description: |
   Plecotus auritus assembly mPleAur1.1 (GCA_963455305.1), from VGP.
 organism:
   scientific_name: Plecotus auritus
-  common_name: brown big-eared bat
   taxon_id: 61862
 assembly:
   source: GenBank

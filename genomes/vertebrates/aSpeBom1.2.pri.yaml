@@ -3,7 +3,6 @@ description: |
   Spea bombifrons assembly aSpeBom1.2.pri (GCF_027358695.1), from VGP.
 organism:
   scientific_name: Spea bombifrons
-  common_name: plains spadefoot toad
   taxon_id: 233779
 assembly:
   source: RefSeq

@@ -3,7 +3,6 @@ description: |
   Pseudophryne corroboree assembly aPseCor3.hap2 (GCF_028390025.1), from VGP.
 organism:
   scientific_name: Pseudophryne corroboree
-  common_name: corroboree frog
   taxon_id: 495146
 assembly:
   source: RefSeq

@@ -3,7 +3,6 @@ description: |
   Bucephala clangula assembly bBucCla1.1 (GCA_964059595.1), from VGP.
 organism:
   scientific_name: Bucephala clangula
-  common_name: common goldeneye
   taxon_id: 107022
 assembly:
   source: GenBank

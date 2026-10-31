@@ -3,7 +3,6 @@ description: |
   Gastrophryne carolinensis assembly aGasCar1.pri (GCA_027917425.1), from VGP.
 organism:
   scientific_name: Gastrophryne carolinensis
-  common_name: eastern narrow-mouthed toad
   taxon_id: 8429
 assembly:
   source: GenBank

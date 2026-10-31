@@ -3,7 +3,6 @@ description: |
   Catharus ustulatus assembly bCatUst1.pri.v2 (GCF_009819885.2), from VGP.
 organism:
   scientific_name: Catharus ustulatus
-  common_name: Swainson's thrush
   taxon_id: 91951
 assembly:
   source: RefSeq

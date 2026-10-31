@@ -3,7 +3,6 @@ description: |
   Heterodontus francisci assembly sHetFra1.hap2 (GCA_036365495.1), from VGP.
 organism:
   scientific_name: Heterodontus francisci
-  common_name: horn shark
   taxon_id: 7792
 assembly:
   source: GenBank

@@ -3,7 +3,6 @@ description: |
   Sciurus vulgaris assembly mSciVul1.2 (GCA_902686455.2), from VGP.
 organism:
   scientific_name: Sciurus vulgaris
-  common_name: Eurasian red squirrel
   taxon_id: 55149
 assembly:
   source: GenBank

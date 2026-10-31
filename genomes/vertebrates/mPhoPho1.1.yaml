@@ -3,7 +3,6 @@ description: |
   Phocoena phocoena assembly mPhoPho1.1 (GCF_963924675.1), from VGP.
 organism:
   scientific_name: Phocoena phocoena
-  common_name: harbor porpoise
   taxon_id: 9742
 assembly:
   source: RefSeq

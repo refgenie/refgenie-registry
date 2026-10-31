@@ -3,7 +3,6 @@ description: |
   Erethizon dorsatum assembly mEreDor1.pri (GCA_028451465.1), from VGP.
 organism:
   scientific_name: Erethizon dorsatum
-  common_name: North American porcupine
   taxon_id: 34844
 assembly:
   source: GenBank

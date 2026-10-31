@@ -3,7 +3,6 @@ description: |
   Gavia stellata assembly bGavSte3.hap2 (GCF_030936135.1), from VGP.
 organism:
   scientific_name: Gavia stellata
-  common_name: red-throated loon
   taxon_id: 37040
 assembly:
   source: RefSeq

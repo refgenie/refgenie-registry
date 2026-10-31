@@ -3,7 +3,6 @@ description: |
   Thamnophis elegans assembly rThaEle1.pri (GCF_009769535.1), from VGP.
 organism:
   scientific_name: Thamnophis elegans
-  common_name: Western terrestrial garter snake
   taxon_id: 35005
 assembly:
   source: RefSeq

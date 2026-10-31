@@ -3,7 +3,6 @@ description: |
   Barbatula barbatula assembly fBarBar1.1 (GCA_947034865.1), from VGP.
 organism:
   scientific_name: Barbatula barbatula
-  common_name: stone loach
   taxon_id: 135647
 assembly:
   source: GenBank

@@ -3,7 +3,6 @@ description: |
   Monodon monoceros assembly NGI_Narwhal_2 (GCA_005190385.3), from VGP.
 organism:
   scientific_name: Monodon monoceros
-  common_name: narwhal
   taxon_id: 40151
 assembly:
   source: GenBank

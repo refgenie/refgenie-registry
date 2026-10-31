@@ -3,7 +3,6 @@ description: |
   Silurus aristotelis assembly fSilAri3.1 (GCA_946808225.1), from VGP.
 organism:
   scientific_name: Silurus aristotelis
-  common_name: Aristotle's catfish
   taxon_id: 933932
 assembly:
   source: GenBank

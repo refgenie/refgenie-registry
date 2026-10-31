@@ -3,7 +3,6 @@ description: |
   Sprattus sprattus assembly fSprSpr1.1 (GCA_963457725.1), from VGP.
 organism:
   scientific_name: Sprattus sprattus
-  common_name: European sprat
   taxon_id: 196075
 assembly:
   source: GenBank

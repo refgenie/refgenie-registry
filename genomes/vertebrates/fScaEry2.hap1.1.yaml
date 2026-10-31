@@ -3,7 +3,6 @@ description: |
   Scardinius erythrophthalmus assembly fScaEry2.hap1.1 (GCA_964197995.1), from VGP.
 organism:
   scientific_name: Scardinius erythrophthalmus
-  common_name: rudd
   taxon_id: 58319
 assembly:
   source: GenBank

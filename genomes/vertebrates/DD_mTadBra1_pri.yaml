@@ -3,7 +3,6 @@ description: |
   Tadarida brasiliensis assembly DD_mTadBra1_pri (GCA_030848825.1), from VGP.
 organism:
   scientific_name: Tadarida brasiliensis
-  common_name: Brazilian free-tailed bat
   taxon_id: 9438
 assembly:
   source: GenBank

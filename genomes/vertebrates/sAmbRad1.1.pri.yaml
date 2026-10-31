@@ -3,7 +3,6 @@ description: |
   Amblyraja radiata assembly sAmbRad1.1.pri (GCF_010909765.2), from VGP.
 organism:
   scientific_name: Amblyraja radiata
-  common_name: thorny skate
   taxon_id: 386614
 assembly:
   source: RefSeq

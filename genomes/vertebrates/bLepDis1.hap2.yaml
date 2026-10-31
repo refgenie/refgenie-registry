@@ -3,7 +3,6 @@ description: |
   Leptosomus discolor assembly bLepDis1.hap2 (GCA_034619465.1), from VGP.
 organism:
   scientific_name: Leptosomus discolor
-  common_name: cuckoo roller
   taxon_id: 188344
 assembly:
   source: GenBank

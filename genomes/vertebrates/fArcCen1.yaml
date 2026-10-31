@@ -3,7 +3,6 @@ description: |
   Archocentrus centrarchus assembly fArcCen1 (GCF_007364275.1), from VGP.
 organism:
   scientific_name: Archocentrus centrarchus
-  common_name: flier cichlid
   taxon_id: 63155
 assembly:
   source: RefSeq

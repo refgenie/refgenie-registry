@@ -3,7 +3,6 @@ description: |
   Myuchelys georgesi assembly rMyuGeo1.pri (GCA_040894355.2), from VGP.
 organism:
   scientific_name: Myuchelys georgesi
-  common_name: Bellinger river turtle
   taxon_id: 1041117
 assembly:
   source: GenBank

@@ -6,7 +6,6 @@ description: |
 
 organism:
   scientific_name: Saccharomyces cerevisiae
-  common_name: budding yeast
   taxon_id: 4932
 
 assembly:

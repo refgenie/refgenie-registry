@@ -3,7 +3,6 @@ description: |
   Rattus norvegicus assembly mRatBN7.2 (GCF_015227675.2), from VGP.
 organism:
   scientific_name: Rattus norvegicus
-  common_name: Norway rat
   taxon_id: 10116
 assembly:
   source: RefSeq

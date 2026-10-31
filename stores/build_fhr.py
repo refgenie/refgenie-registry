@@ -8,16 +8,22 @@ already-built collection digest (via the collection aliases build.py wrote)
 and given an FHR (FAIR Headers Reference genome) sidecar --
 ``fhr/<digest>.fhr.json``, built from the row's columns:
 
-    genome         <- the species list key the organism resolves to (the NCBI
-                      scientific name; see below)
-    commonName     <- the species list's common_name for it, when it has one
-    taxon          <- {name: that scientific name, uri: identifiers.org taxonomy
-                      URI of the list's taxon_id}
+    schema,
+    schemaVersion  <- the same constants as YAML-derived records
+                      (tools/genome_to_fhr.py)
+    genome         <- name (the genome's own name; left out when empty)
+    taxon          <- {name: the species list key the organism resolves to
+                      (the NCBI scientific name; see below), uri: identifiers.org
+                      taxonomy URI of the list's taxon_id}
     documentation  <- one deterministic sentence from name/genome_assembly/source
     assemblySource <- source
     accessionID    <- {name: accession}   (only when the column is non-empty)
+    version        <- the accession's version number, GCA_000001405.15 -> "15"
+                      (only for a GCA_/GCF_ accession, never guessed)
     assemblyLevel  <- static per-accession map (ASSEMBLY_LEVELS, from NCBI
                       Datasets; only for accession-backed records, never guessed)
+
+Species common names are not FHR fields; they ship in ``species.json`` (below).
 
 Curated registry records (the PRIMARY source)
 ---------------------------------------------
@@ -38,7 +44,7 @@ The CSV derivation looks each row's ``organism`` up in the species list,
 scientific name), then by key ignoring case, then by synonym, so an old name or
 a store's own spelling ("Canis familiaris") still finds its species. An
 organism the list cannot resolve is a hard failure, before anything is written:
-guessing a common name or taxon id would write wrong metadata that then
+guessing a taxon id would write wrong metadata that then
 propagates into every refgenie catalog. The fix is a pull request to the list.
 
 species.json
@@ -61,15 +67,15 @@ nested values like ``accessionID`` or list values like ``relatedLink``); fields
 absent from the YAML keep their CSV derivation. Multi-row semantics: an
 override applies to the row it is named for, and the merged fields then flow
 through the normal pipeline, the last row sharing a digest still wins, the
-accession carry-forward still applies, and the post-dedup assemblyLevel is
-only filled in when the winning record does not already carry one (so an
-override's explicit assemblyLevel beats the ASSEMBLY_LEVELS map). Overrides on
+accession carry-forward still applies, and the post-dedup assemblyLevel and
+version are only filled in when the winning record does not already carry them
+(so an override's explicit assemblyLevel beats the ASSEMBLY_LEVELS map). Overrides on
 digest-losing rows are legal (used as reorder-safety mirrors) but inert.
 
-These are exactly the fields refgenie's ``GenomeManager.apply_fhr`` consumes,
-so a store with these sidecars gives `refgenie genome sync` overlay genomes
-their description, species/common-name/taxon, and assembly
-source/accession/level columns.
+refgenie's ``GenomeManager.apply_fhr`` reads these sidecars, so a store with
+them gives `refgenie genome sync` overlay genomes their description, species
+and taxon, and assembly source/accession/level columns. It does not read
+``genome`` (the name already arrives as an alias) or ``version``.
 
 Idempotent: re-running overwrites sidecars with identical content. After
 writing, the store manifest (rgstore.json) is re-committed so its
@@ -103,6 +109,7 @@ sys.path.insert(0, str(REPO / "tools"))  # for the species list
 
 import species_list
 from build_aliases import read_sources, resolve_collection_digest
+from genome_to_fhr import FHR_SCHEMA_URL, FHR_SCHEMA_VERSION, accession_version
 
 # NCBI assembly level per accession, lowercased to match the registry's
 # committed pep/metadata/*.fhr.json convention ("chromosome"). Static so this
@@ -153,9 +160,10 @@ def fhr_fields_for_row(row, species):
     """
     organism = (row.get("organism") or "").strip()
     sci, entry = species_list.resolve_organism(organism, species)
-    fields = {"genome": sci}
-    if entry.get("common_name"):
-        fields["commonName"] = entry["common_name"]
+    fields = {"schema": FHR_SCHEMA_URL, "schemaVersion": FHR_SCHEMA_VERSION}
+    name = (row.get("name") or "").strip()
+    if name:
+        fields["genome"] = name
     fields["taxon"] = {
         "name": sci,
         "uri": f"https://identifiers.org/taxonomy:{entry['taxon_id']}",
@@ -310,6 +318,29 @@ def load_overrides(overrides_dir):
     return overrides
 
 
+def fill_from_accession(fields):
+    """Fill ``assemblyLevel`` and ``version`` from a record's accession, in place.
+
+    Each is set only when the record does not already carry it, so a curated
+    record or an override keeps its own. Returns the accession when it has no
+    ASSEMBLY_LEVELS entry (and the record no assemblyLevel), else None.
+    """
+    accession = (fields.get("accessionID") or {}).get("name")
+    if not accession:
+        return None
+    if "version" not in fields:
+        version = accession_version(accession)
+        if version is not None:
+            fields["version"] = version
+    if "assemblyLevel" in fields:
+        return None
+    level = ASSEMBLY_LEVELS.get(accession)
+    if level:
+        fields["assemblyLevel"] = level
+        return None
+    return accession
+
+
 def merge_override(fields, override):
     """Field-level merge: override values win wholesale, CSV fills the rest."""
     merged = dict(fields)
@@ -321,8 +352,8 @@ def validate_organisms(rows, species, records=None):
     """Fail loudly (before writing anything) on any CSV-derived row whose
     organism the species list cannot resolve.
 
-    Rows covered by a curated registry record are exempt: their organism, common
-    name and taxon come from the genome YAML, not from the CSV. A row with an
+    Rows covered by a curated registry record are exempt: their taxon comes
+    from the genome YAML, not from the CSV. A row with an
     empty organism column gets its own message, because the fix is in
     sources.csv, not in the list.
     """
@@ -411,21 +442,14 @@ def build_fhr(store, rows, *, species, store_dir, dry_run=False, overrides=None,
             file=sys.stderr,
         )
 
-    # assemblyLevel is applied AFTER dedup, keyed on whichever accession each
-    # record ended up with (including one carried forward from an earlier row).
-    # A record that already carries assemblyLevel (only possible via an
-    # override) keeps it, the override beats the static map.
+    # assemblyLevel and version are applied AFTER dedup, keyed on whichever
+    # accession each record ended up with (including one carried forward from
+    # an earlier row). A record that already carries one (a curated record or
+    # an override) keeps it.
     unknown_levels = set()
     for _digest, (_label, fields) in planned.items():
-        if "assemblyLevel" in fields:
-            continue
-        accession = (fields.get("accessionID") or {}).get("name")
-        if not accession:
-            continue
-        level = ASSEMBLY_LEVELS.get(accession)
-        if level:
-            fields["assemblyLevel"] = level
-        else:
+        accession = fill_from_accession(fields)
+        if accession:
             unknown_levels.add(accession)
     if unknown_levels:
         print(

@@ -3,7 +3,6 @@ description: |
   Strigops habroptila assembly bStrHab1.2.pri (GCF_004027225.2), from VGP.
 organism:
   scientific_name: Strigops habroptila
-  common_name: Kakapo
   taxon_id: 2489341
 assembly:
   source: RefSeq

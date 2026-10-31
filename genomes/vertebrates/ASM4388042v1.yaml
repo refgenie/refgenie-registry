@@ -3,7 +3,6 @@ description: |
   Rhinolophus yonghoiseni assembly ASM4388042v1 (GCA_043880425.1), from VGP.
 organism:
   scientific_name: Rhinolophus yonghoiseni
-  common_name: Yong Hoi Sen's woolly horseshoe bat
   taxon_id: 2952509
 assembly:
   source: GenBank

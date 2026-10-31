@@ -3,7 +3,6 @@ description: |
   Kogia breviceps assembly mKogBre1 haplotype 1 (GCF_026419965.1), from VGP.
 organism:
   scientific_name: Kogia breviceps
-  common_name: pygmy sperm whale
   taxon_id: 27615
 assembly:
   source: RefSeq

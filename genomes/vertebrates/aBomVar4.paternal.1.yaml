@@ -3,7 +3,6 @@ description: |
   Bombina variegata assembly aBomVar4.paternal.1 (GCA_964205295.1), from VGP.
 organism:
   scientific_name: Bombina variegata
-  common_name: yellow-bellied toad
   taxon_id: 8348
 assembly:
   source: GenBank

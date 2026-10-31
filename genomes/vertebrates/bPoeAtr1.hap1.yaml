@@ -3,7 +3,6 @@ description: |
   Poecile atricapillus assembly bPoeAtr1.hap1 (GCF_030490865.1), from VGP.
 organism:
   scientific_name: Poecile atricapillus
-  common_name: Black-capped chickadee
   taxon_id: 48891
 assembly:
   source: RefSeq

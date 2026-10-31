@@ -3,7 +3,6 @@ description: |
   Podargus strigoides assembly bPodStr1.pri (GCA_028020825.1), from VGP.
 organism:
   scientific_name: Podargus strigoides
-  common_name: tawny frogmouth
   taxon_id: 8905
 assembly:
   source: GenBank

@@ -3,7 +3,6 @@ description: |
   Labrus mixtus assembly fLabMix1.1 (GCF_963584025.1), from VGP.
 organism:
   scientific_name: Labrus mixtus
-  common_name: cuckoo wrasse
   taxon_id: 508554
 assembly:
   source: RefSeq

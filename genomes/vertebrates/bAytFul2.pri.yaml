@@ -3,7 +3,6 @@ description: |
   Aythya fuligula assembly bAytFul2.pri (GCF_009819795.1), from VGP.
 organism:
   scientific_name: Aythya fuligula
-  common_name: tufted duck
   taxon_id: 219594
 assembly:
   source: RefSeq

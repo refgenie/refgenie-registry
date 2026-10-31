@@ -3,7 +3,6 @@ description: |
   Stenella coeruleoalba assembly mSteCoe1.1 (GCA_951394435.1), from VGP.
 organism:
   scientific_name: Stenella coeruleoalba
-  common_name: striped dolphin
   taxon_id: 9737
 assembly:
   source: GenBank

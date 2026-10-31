@@ -3,7 +3,6 @@ description: |
   Lethrinus nebulosus assembly fLetNeb1.hap1 (GCA_045362495.1), from VGP.
 organism:
   scientific_name: Lethrinus nebulosus
-  common_name: spangled emperor
   taxon_id: 182658
 assembly:
   source: GenBank

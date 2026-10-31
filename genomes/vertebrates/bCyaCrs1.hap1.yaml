@@ -3,7 +3,6 @@ description: |
   Cyanocitta cristata assembly bCyaCrs1.hap1 (GCA_046129655.1), from VGP.
 organism:
   scientific_name: Cyanocitta cristata
-  common_name: blue jay
   taxon_id: 28727
 assembly:
   source: GenBank

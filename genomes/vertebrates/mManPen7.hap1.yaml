@@ -3,7 +3,6 @@ description: |
   Manis pentadactyla assembly mManPen7.hap1 (GCF_030020395.1), from VGP.
 organism:
   scientific_name: Manis pentadactyla
-  common_name: Chinese pangolin
   taxon_id: 143292
 assembly:
   source: RefSeq

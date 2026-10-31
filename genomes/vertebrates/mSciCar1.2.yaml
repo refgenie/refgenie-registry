@@ -3,7 +3,6 @@ description: |
   Sciurus carolinensis assembly mSciCar1.2 (GCF_902686445.1), from VGP.
 organism:
   scientific_name: Sciurus carolinensis
-  common_name: gray squirrel
   taxon_id: 30640
 assembly:
   source: RefSeq

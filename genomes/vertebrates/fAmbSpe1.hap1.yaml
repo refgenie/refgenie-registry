@@ -3,7 +3,6 @@ description: |
   Amblyopsis spelaea assembly fAmbSpe1.hap1 (GCA_046255685.1), from VGP.
 organism:
   scientific_name: Amblyopsis spelaea
-  common_name: northern cavefish
   taxon_id: 1195602
 assembly:
   source: GenBank

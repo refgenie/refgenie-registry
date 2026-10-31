@@ -3,7 +3,6 @@ description: |
   Marmota flaviventris assembly mMarFla1.hap1 (GCF_047511675.1), from VGP.
 organism:
   scientific_name: Marmota flaviventris
-  common_name: yellow-bellied marmot
   taxon_id: 93162
 assembly:
   source: RefSeq

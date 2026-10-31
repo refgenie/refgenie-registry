@@ -3,7 +3,6 @@ description: |
   Podarcis siculus assembly rPodSic1.hap1.1 (GCA_964188175.1), from VGP.
 organism:
   scientific_name: Podarcis siculus
-  common_name: Italian wall lizard
   taxon_id: 65484
 assembly:
   source: GenBank

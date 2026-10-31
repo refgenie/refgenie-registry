@@ -3,7 +3,6 @@ description: |
   Ambystoma mexicanum assembly UKY_AmexF1_1 (GCF_040938575.1), from VGP.
 organism:
   scientific_name: Ambystoma mexicanum
-  common_name: axolotl
   taxon_id: 8296
 assembly:
   source: RefSeq

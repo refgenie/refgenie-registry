@@ -3,7 +3,6 @@ description: |
   Callithrix jacchus assembly calJac240_pri (GCA_049354715.1), from VGP.
 organism:
   scientific_name: Callithrix jacchus
-  common_name: white-tufted-ear marmoset
   taxon_id: 9483
 assembly:
   source: GenBank

@@ -3,7 +3,6 @@ description: |
   Phalacrocorax carbo assembly bPhaCar2.1 (GCF_963921805.1), from VGP.
 organism:
   scientific_name: Phalacrocorax carbo
-  common_name: great cormorant
   taxon_id: 9209
 assembly:
   source: RefSeq

@@ -3,7 +3,6 @@ description: |
   Cnephaeus nilssonii assembly mEptNil1.1 (GCA_951640355.1), from VGP.
 organism:
   scientific_name: Cnephaeus nilssonii
-  common_name: northern bat
   taxon_id: 3371016
 assembly:
   source: GenBank

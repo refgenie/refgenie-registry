@@ -3,7 +3,6 @@ description: |
   Tetrao urogallus assembly bTetUro1.1 (GCA_951394365.1), from VGP.
 organism:
   scientific_name: Tetrao urogallus
-  common_name: western capercaillie
   taxon_id: 100830
 assembly:
   source: GenBank

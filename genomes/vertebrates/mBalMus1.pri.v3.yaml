@@ -3,7 +3,6 @@ description: |
   Balaenoptera musculus assembly mBalMus1.pri.v3 (GCF_009873245.2), from VGP.
 organism:
   scientific_name: Balaenoptera musculus
-  common_name: blue whale
   taxon_id: 9771
 assembly:
   source: RefSeq

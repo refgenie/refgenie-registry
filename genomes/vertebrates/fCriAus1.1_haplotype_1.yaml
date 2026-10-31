@@ -3,7 +3,6 @@ description: |
   Cristiceps australis assembly fCriAus1.1_haplotype_1 (GCA_049082185.1), from VGP.
 organism:
   scientific_name: Cristiceps australis
-  common_name: crested weedfish
   taxon_id: 879810
 assembly:
   source: GenBank

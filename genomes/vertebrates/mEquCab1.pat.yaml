@@ -3,7 +3,6 @@ description: |
   Equus caballus assembly mEquCab1.pat (GCA_036426135.1), from VGP.
 organism:
   scientific_name: Equus caballus
-  common_name: horse
   taxon_id: 9796
 assembly:
   source: GenBank

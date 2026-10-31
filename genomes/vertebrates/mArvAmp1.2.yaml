@@ -3,7 +3,6 @@ description: |
   Arvicola amphibius assembly mArvAmp1.2 (GCF_903992535.2), from VGP.
 organism:
   scientific_name: Arvicola amphibius
-  common_name: Eurasian water vole
   taxon_id: 1047088
 assembly:
   source: RefSeq

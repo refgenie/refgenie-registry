@@ -3,7 +3,6 @@ description: |
   Hyperoplus immaculatus assembly fHypImm3.1 (GCA_949357725.1), from VGP.
 organism:
   scientific_name: Hyperoplus immaculatus
-  common_name: greater sand-eel
   taxon_id: 1484357
 assembly:
   source: GenBank

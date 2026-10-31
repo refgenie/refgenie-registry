@@ -3,7 +3,6 @@ description: |
   Anabas testudineus assembly fAnaTes1.3 (GCA_900324465.3), from VGP.
 organism:
   scientific_name: Anabas testudineus
-  common_name: climbing perch
   taxon_id: 64144
 assembly:
   source: GenBank

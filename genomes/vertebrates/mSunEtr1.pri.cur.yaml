@@ -3,7 +3,6 @@ description: |
   Suncus etruscus assembly mSunEtr1.pri.cur (GCF_024139225.1), from VGP.
 organism:
   scientific_name: Suncus etruscus
-  common_name: white-toothed pygmy shrew
   taxon_id: 109475
 assembly:
   source: RefSeq

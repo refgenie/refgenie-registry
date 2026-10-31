@@ -3,7 +3,6 @@ description: |
   Dermochelys coriacea assembly rDerCor1.pri.v4 (GCF_009764565.3), from VGP.
 organism:
   scientific_name: Dermochelys coriacea
-  common_name: leatherback sea turtle
   taxon_id: 27794
 assembly:
   source: RefSeq

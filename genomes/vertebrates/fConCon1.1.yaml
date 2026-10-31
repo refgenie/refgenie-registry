@@ -3,7 +3,6 @@ description: |
   Conger conger assembly fConCon1.1 (GCF_963514075.1), from VGP.
 organism:
   scientific_name: Conger conger
-  common_name: European conger
   taxon_id: 82655
 assembly:
   source: RefSeq

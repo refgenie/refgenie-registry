@@ -3,7 +3,6 @@ description: |
   Anser brachyrhynchus assembly bAnsBra1.1 (GCA_964034855.1), from VGP.
 organism:
   scientific_name: Anser brachyrhynchus
-  common_name: Pink-footed goose
   taxon_id: 132585
 assembly:
   source: GenBank

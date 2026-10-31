@@ -3,7 +3,6 @@ description: |
   Symphorus nematophorus assembly fSymNem1.1_haplotype_1 (GCA_048128725.1), from VGP.
 organism:
   scientific_name: Symphorus nematophorus
-  common_name: chinamanfish
   taxon_id: 396798
 assembly:
   source: GenBank

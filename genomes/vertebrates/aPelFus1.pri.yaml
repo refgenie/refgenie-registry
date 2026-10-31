@@ -3,7 +3,6 @@ description: |
   Pelobates fuscus assembly aPelFus1.pri (GCF_036172605.1), from VGP.
 organism:
   scientific_name: Pelobates fuscus
-  common_name: common spadefoot toad
   taxon_id: 191477
 assembly:
   source: RefSeq

@@ -3,7 +3,6 @@ description: |
   Gouania willdenowi assembly fGouWil2.2 (GCA_900634775.2), from VGP.
 organism:
   scientific_name: Gouania willdenowi
-  common_name: blunt-snouted clingfish
   taxon_id: 441366
 assembly:
   source: GenBank

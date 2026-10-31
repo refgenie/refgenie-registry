@@ -3,7 +3,6 @@ description: |
   Myotis daubentonii assembly mMyoDau2.1 (GCF_963259705.1), from VGP.
 organism:
   scientific_name: Myotis daubentonii
-  common_name: Daubenton's bat
   taxon_id: 98922
 assembly:
   source: RefSeq

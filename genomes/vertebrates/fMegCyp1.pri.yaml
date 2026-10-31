@@ -3,7 +3,6 @@ description: |
   Megalops cyprinoides assembly fMegCyp1.pri (GCF_013368585.1), from VGP.
 organism:
   scientific_name: Megalops cyprinoides
-  common_name: Indo-Pacific tarpon
   taxon_id: 118141
 assembly:
   source: RefSeq

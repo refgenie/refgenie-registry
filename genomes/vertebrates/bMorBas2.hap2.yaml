@@ -3,7 +3,6 @@ description: |
   Morus bassanus assembly bMorBas2.hap2 (GCA_031468815.1), from VGP.
 organism:
   scientific_name: Morus bassanus
-  common_name: northern gannet
   taxon_id: 37578
 assembly:
   source: GenBank

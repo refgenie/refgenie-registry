@@ -3,7 +3,6 @@ description: |
   Rousettus aegyptiacus assembly mRouAeg1.p (GCF_014176215.1), from VGP.
 organism:
   scientific_name: Rousettus aegyptiacus
-  common_name: Egyptian rousette
   taxon_id: 9407
 assembly:
   source: RefSeq

@@ -3,7 +3,6 @@ description: |
   Syngnathus acus assembly fSynAcu1.2 (GCF_901709675.1), from VGP.
 organism:
   scientific_name: Syngnathus acus
-  common_name: greater pipefish
   taxon_id: 161584
 assembly:
   source: RefSeq

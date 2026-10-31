@@ -3,7 +3,6 @@ description: |
   Lacerta agilis assembly rLacAgi1.pri (GCF_009819535.1), from VGP.
 organism:
   scientific_name: Lacerta agilis
-  common_name: Sand lizard
   taxon_id: 80427
 assembly:
   source: RefSeq

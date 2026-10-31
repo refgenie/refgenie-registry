@@ -1,4 +1,5 @@
-"""Tests for the genome-YAML validator: `build:` block checks and species-list checks.
+"""Tests for the genome-YAML validator (`build:` block and species-list checks)
+and the YAML -> FHR mapping it checks.
 
 Run: pytest tools/test_validate_genome.py
 """
@@ -111,7 +112,6 @@ def test_every_committed_genome_exports_no_build_key(path):
 
 def test_genome_synonym_is_exactly_the_aliases():
     data = copy.deepcopy(MINIMAL)
-    data["organism"]["common_name"] = "human"
     data["aliases"] = ["GRCh38", "hg38-test"]
     assert genome_to_fhr.genome_yaml_to_fhr(data)["genomeSynonym"] == ["GRCh38", "hg38-test"]
 
@@ -120,12 +120,13 @@ def test_no_aliases_means_no_genome_synonym():
     assert "genomeSynonym" not in genome_to_fhr.genome_yaml_to_fhr(copy.deepcopy(MINIMAL))
 
 
-def test_organism_synonyms_fail_the_schema():
+@pytest.mark.parametrize("key, value", [("synonyms", ["man"]), ("common_name", "human")])
+def test_species_names_in_the_organism_block_fail_the_schema(key, value):
     data = copy.deepcopy(MINIMAL)
-    data["organism"]["synonyms"] = ["man"]
+    data["organism"][key] = value
     errors = vg.validate_schema(data, vg.load_schema())
     assert errors
-    assert any("synonyms" in e for e in errors)
+    assert any(key in e for e in errors)
 
 
 def test_listed_species_passes():
@@ -139,3 +140,38 @@ def test_unlisted_species_fails_naming_the_list():
     assert len(errors) == 1
     assert "999999999" in errors[0]
     assert "tools/taxon_ids.json" in errors[0]
+
+
+# --------------------------------------------------------------------------
+# FHR genome, taxon and version mean what the FHR spec says
+# --------------------------------------------------------------------------
+
+def test_fhr_genome_is_the_genome_name_and_taxon_the_species():
+    fhr = genome_to_fhr.genome_yaml_to_fhr(copy.deepcopy(MINIMAL))
+    assert fhr["genome"] == "testgenome"
+    assert fhr["taxon"] == {
+        "name": "Homo sapiens",
+        "uri": "https://identifiers.org/taxonomy:9606",
+    }
+    assert "commonName" not in fhr
+
+
+@pytest.mark.parametrize(
+    "accession, version",
+    [("GCA_000001405.15", "15"), ("GCF_000001405.40", "40"), (None, None), ("hg38", None)],
+)
+def test_fhr_version_is_the_accession_version(accession, version):
+    data = copy.deepcopy(MINIMAL)
+    if accession:
+        data["assembly"]["accession"] = accession
+    else:
+        del data["assembly"]["accession"]
+    assert genome_to_fhr.genome_yaml_to_fhr(data).get("version") == version
+
+
+def test_fhr_export_check_rejects_common_name():
+    fhr = dict(genome_to_fhr.genome_yaml_to_fhr(copy.deepcopy(MINIMAL)), commonName="human")
+    validator = vg.Draft202012Validator(genome_to_fhr.load_fhr_export_schema())
+    errors = [e.message for e in validator.iter_errors(fhr)]
+    assert any("commonName" in e for e in errors)
+    assert vg.check_fhr_export(copy.deepcopy(MINIMAL)) == []

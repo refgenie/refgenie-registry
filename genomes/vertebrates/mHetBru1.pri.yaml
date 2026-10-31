@@ -3,7 +3,6 @@ description: |
   Heterohyrax brucei assembly mHetBru1.pri (GCA_028571685.1), from VGP.
 organism:
   scientific_name: Heterohyrax brucei
-  common_name: yellow-spotted hyrax
   taxon_id: 77598
 assembly:
   source: GenBank

@@ -3,7 +3,6 @@ description: |
   Cygnus olor assembly bCygOlo1.pri.v2 (GCF_009769625.2), from VGP.
 organism:
   scientific_name: Cygnus olor
-  common_name: mute swan
   taxon_id: 8869
 assembly:
   source: RefSeq

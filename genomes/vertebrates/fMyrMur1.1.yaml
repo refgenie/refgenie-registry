@@ -3,7 +3,6 @@ description: |
   Myripristis murdjan assembly fMyrMur1.1 (GCF_902150065.1), from VGP.
 organism:
   scientific_name: Myripristis murdjan
-  common_name: pinecone soldierfish
   taxon_id: 586833
 assembly:
   source: RefSeq

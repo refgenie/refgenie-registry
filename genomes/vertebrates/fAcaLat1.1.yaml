@@ -3,7 +3,6 @@ description: |
   Acanthopagrus latus assembly fAcaLat1.1 (GCF_904848185.1), from VGP.
 organism:
   scientific_name: Acanthopagrus latus
-  common_name: yellowfin seabream
   taxon_id: 8177
 assembly:
   source: RefSeq

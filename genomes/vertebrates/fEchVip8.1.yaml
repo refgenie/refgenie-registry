@@ -3,7 +3,6 @@ description: |
   Echiichthys vipera assembly fEchVip8.1 (GCA_963691815.1), from VGP.
 organism:
   scientific_name: Echiichthys vipera
-  common_name: lesser weever
   taxon_id: 94984
 assembly:
   source: GenBank

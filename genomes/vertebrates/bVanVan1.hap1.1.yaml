@@ -3,7 +3,6 @@ description: |
   Vanellus vanellus assembly bVanVan1.hap1.1 (GCA_965231255.1), from VGP.
 organism:
   scientific_name: Vanellus vanellus
-  common_name: northern lapwing
   taxon_id: 100859
 assembly:
   source: GenBank

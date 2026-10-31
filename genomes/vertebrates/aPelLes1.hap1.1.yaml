@@ -3,7 +3,6 @@ description: |
   Pelophylax lessonae assembly aPelLes1.hap1.1 (GCA_965119305.1), from VGP.
 organism:
   scientific_name: Pelophylax lessonae
-  common_name: pool frog
   taxon_id: 45623
 assembly:
   source: GenBank

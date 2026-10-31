@@ -3,7 +3,6 @@ description: |
   Eschrichtius robustus assembly mEscRob2.pri (GCF_028021215.1), from VGP.
 organism:
   scientific_name: Eschrichtius robustus
-  common_name: grey whale
   taxon_id: 9764
 assembly:
   source: RefSeq

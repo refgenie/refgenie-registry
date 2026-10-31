@@ -3,7 +3,6 @@ description: |
   Neosynchiropus ocellatus assembly SynOce1_v1.hap1 (GCA_044231665.1), from VGP.
 organism:
   scientific_name: Neosynchiropus ocellatus
-  common_name: ocellated dragonet
   taxon_id: 390378
 assembly:
   source: GenBank

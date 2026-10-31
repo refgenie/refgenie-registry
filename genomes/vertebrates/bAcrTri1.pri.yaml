@@ -3,7 +3,6 @@ description: |
   Acridotheres tristis assembly bAcrTri1.pri (GCA_027559615.1), from VGP.
 organism:
   scientific_name: Acridotheres tristis
-  common_name: common myna
   taxon_id: 279927
 assembly:
   source: GenBank

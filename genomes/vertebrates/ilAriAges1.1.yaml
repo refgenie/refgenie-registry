@@ -3,7 +3,6 @@ description: |
   Aricia agestis assembly ilAriAges1.1 (GCF_905147365.1), from VGP.
 organism:
   scientific_name: Aricia agestis
-  common_name: brown argus
   taxon_id: 91739
 assembly:
   source: RefSeq

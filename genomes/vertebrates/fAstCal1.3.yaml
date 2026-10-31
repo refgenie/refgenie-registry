@@ -3,7 +3,6 @@ description: |
   Astatotilapia calliptera assembly fAstCal1.3 (GCA_900246225.5), from VGP.
 organism:
   scientific_name: Astatotilapia calliptera
-  common_name: eastern happy
   taxon_id: 8154
 assembly:
   source: GenBank

@@ -3,7 +3,6 @@ description: |
   Amazona ochrocephala assembly bAmaOch1.hap1 (GCA_039720435.1), from VGP.
 organism:
   scientific_name: Amazona ochrocephala
-  common_name: yellow-crowned parrot
   taxon_id: 151761
 assembly:
   source: GenBank

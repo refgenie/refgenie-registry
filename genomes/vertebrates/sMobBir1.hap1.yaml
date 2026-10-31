@@ -3,7 +3,6 @@ description: |
   Mobula birostris assembly sMobBir1.hap1 (GCF_030028105.1), from VGP.
 organism:
   scientific_name: Mobula birostris
-  common_name: giant manta
   taxon_id: 1983395
 assembly:
   source: RefSeq

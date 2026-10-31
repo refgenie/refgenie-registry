@@ -3,7 +3,6 @@ description: |
   Chiroxiphia lanceolata assembly bChiLan1.pri (GCF_009829145.1), from VGP.
 organism:
   scientific_name: Chiroxiphia lanceolata
-  common_name: lance-tailed manakin
   taxon_id: 296741
 assembly:
   source: RefSeq

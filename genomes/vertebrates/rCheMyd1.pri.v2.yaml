@@ -3,7 +3,6 @@ description: |
   Chelonia mydas assembly rCheMyd1.pri.v2 (GCF_015237465.2), from VGP.
 organism:
   scientific_name: Chelonia mydas
-  common_name: Green sea turtle
   taxon_id: 8469
 assembly:
   source: RefSeq

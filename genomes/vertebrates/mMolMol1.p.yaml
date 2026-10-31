@@ -3,7 +3,6 @@ description: |
   Molossus molossus assembly mMolMol1.p (GCF_014108415.1), from VGP.
 organism:
   scientific_name: Molossus molossus
-  common_name: Pallas's mastiff bat
   taxon_id: 27622
 assembly:
   source: RefSeq

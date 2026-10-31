@@ -3,7 +3,6 @@ description: |
   Strix aluco assembly bStrAlu1.hap1 (GCA_031877795.1), from VGP.
 organism:
   scientific_name: Strix aluco
-  common_name: Tawny owl
   taxon_id: 111821
 assembly:
   source: GenBank

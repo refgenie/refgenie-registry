@@ -3,7 +3,6 @@ description: |
   Vespertilio murinus assembly mVesMur1.1 (GCA_963924515.1), from VGP.
 organism:
   scientific_name: Vespertilio murinus
-  common_name: particolored bat
   taxon_id: 59485
 assembly:
   source: GenBank

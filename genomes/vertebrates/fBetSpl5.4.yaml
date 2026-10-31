@@ -3,7 +3,6 @@ description: |
   Betta splendens assembly fBetSpl5.4 (GCF_900634795.4), from VGP.
 organism:
   scientific_name: Betta splendens
-  common_name: Siamese fighting fish
   taxon_id: 158456
 assembly:
   source: RefSeq

@@ -3,7 +3,6 @@ description: |
   Ascaphus truei assembly aAscTru1.hap1 (GCA_040206685.1), from VGP.
 organism:
   scientific_name: Ascaphus truei
-  common_name: coastal tailed frog
   taxon_id: 8439
 assembly:
   source: GenBank

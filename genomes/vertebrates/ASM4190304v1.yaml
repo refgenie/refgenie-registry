@@ -3,7 +3,6 @@ description: |
   Epinephelus lanceolatus assembly ASM4190304v1 (GCA_041903045.1), from VGP.
 organism:
   scientific_name: Epinephelus lanceolatus
-  common_name: giant grouper
   taxon_id: 310571
 assembly:
   source: GenBank

@@ -246,12 +246,7 @@ def sample_to_genome(
 
     doc["description"] = LiteralStr(description + "\n")
 
-    organism = {"scientific_name": species}
-    common = val(row, "common_name")
-    if common:
-        organism["common_name"] = common
-    organism["taxon_id"] = taxon_id
-    doc["organism"] = organism
+    doc["organism"] = {"scientific_name": species, "taxon_id": taxon_id}
 
     accession = val(row, "ncbi_id")
     assembly = {}

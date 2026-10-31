@@ -3,7 +3,6 @@ description: |
   Trichosurus vulpecula assembly mTriVul1.pri (GCF_011100635.1), from VGP.
 organism:
   scientific_name: Trichosurus vulpecula
-  common_name: common brushtail
   taxon_id: 9337
 assembly:
   source: RefSeq

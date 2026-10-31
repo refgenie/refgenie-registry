@@ -3,7 +3,6 @@ description: |
   Porphyrio hochstetteri assembly bPorHoc1.mat.Z.cur (GCA_020800305.1), from VGP.
 organism:
   scientific_name: Porphyrio hochstetteri
-  common_name: South Island takahe
   taxon_id: 439704
 assembly:
   source: GenBank

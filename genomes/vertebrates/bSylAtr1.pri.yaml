@@ -3,7 +3,6 @@ description: |
   Sylvia atricapilla assembly bSylAtr1.pri (GCF_009819655.1), from VGP.
 organism:
   scientific_name: Sylvia atricapilla
-  common_name: blackcap
   taxon_id: 48155
 assembly:
   source: RefSeq

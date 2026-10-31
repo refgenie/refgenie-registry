@@ -3,7 +3,6 @@ description: |
   Phocoena sinus assembly mPhoSin1.pri (GCF_008692025.1), from VGP.
 organism:
   scientific_name: Phocoena sinus
-  common_name: vaquita
   taxon_id: 42100
 assembly:
   source: RefSeq

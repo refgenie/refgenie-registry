@@ -3,7 +3,6 @@ description: |
   Scophthalmus maximus assembly fScoMax1.1 (GCA_963854745.1), from VGP.
 organism:
   scientific_name: Scophthalmus maximus
-  common_name: turbot
   taxon_id: 52904
 assembly:
   source: GenBank

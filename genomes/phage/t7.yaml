@@ -5,7 +5,6 @@ description: |
 
 organism:
   scientific_name: Enterobacteria phage T7
-  common_name: T7 phage
   taxon_id: 10760
 
 assembly:

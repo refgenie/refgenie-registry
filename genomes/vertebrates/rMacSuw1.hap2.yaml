@@ -3,7 +3,6 @@ description: |
   Macrochelys suwanniensis assembly rMacSuw1.hap2 (GCA_033349115.1), from VGP.
 organism:
   scientific_name: Macrochelys suwanniensis
-  common_name: Suwannee snapping turtle
   taxon_id: 3026461
 assembly:
   source: GenBank

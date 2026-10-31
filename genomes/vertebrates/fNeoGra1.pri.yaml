@@ -3,7 +3,6 @@ description: |
   Neoarius graeffei assembly fNeoGra1.pri (GCF_027579695.1), from VGP.
 organism:
   scientific_name: Neoarius graeffei
-  common_name: lesser salmon catfish
   taxon_id: 443677
 assembly:
   source: RefSeq

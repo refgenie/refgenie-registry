@@ -3,7 +3,6 @@ description: |
   Saccopteryx bilineata assembly mSacBil1_pri_phased_curated (GCF_036850765.1), from VGP.
 organism:
   scientific_name: Saccopteryx bilineata
-  common_name: greater sac-winged bat
   taxon_id: 59482
 assembly:
   source: RefSeq

@@ -3,7 +3,6 @@ description: |
   Phaethon aethereus assembly bPhaAeh10.maternal.1 (GCA_964289735.1), from VGP.
 organism:
   scientific_name: Phaethon aethereus
-  common_name: red-billed tropicbird
   taxon_id: 37045
 assembly:
   source: GenBank

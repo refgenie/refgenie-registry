@@ -3,7 +3,6 @@ description: |
   Latimeria chalumnae assembly fLatCha1.pri (GCF_037176945.1), from VGP.
 organism:
   scientific_name: Latimeria chalumnae
-  common_name: coelacanth
   taxon_id: 7897
 assembly:
   source: RefSeq

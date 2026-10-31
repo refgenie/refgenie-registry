@@ -3,7 +3,6 @@ description: |
   Larus argentatus assembly bLarArg3.hap1.1 (GCA_964417175.1), from VGP.
 organism:
   scientific_name: Larus argentatus
-  common_name: herring gull
   taxon_id: 35669
 assembly:
   source: GenBank

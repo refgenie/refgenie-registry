@@ -6,7 +6,6 @@ description: |
 
 organism:
   scientific_name: Homo sapiens
-  common_name: human
   taxon_id: 9606
 
 assembly:

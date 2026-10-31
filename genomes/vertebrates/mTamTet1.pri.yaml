@@ -3,7 +3,6 @@ description: |
   Tamandua tetradactyla assembly mTamTet1.pri (GCA_023851605.1), from VGP.
 organism:
   scientific_name: Tamandua tetradactyla
-  common_name: southern tamandua
   taxon_id: 48850
 assembly:
   source: GenBank

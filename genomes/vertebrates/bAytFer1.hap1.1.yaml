@@ -3,7 +3,6 @@ description: |
   Aythya ferina assembly bAytFer1.hap1.1 (GCA_964211825.1), from VGP.
 organism:
   scientific_name: Aythya ferina
-  common_name: common pochard
   taxon_id: 219593
 assembly:
   source: GenBank

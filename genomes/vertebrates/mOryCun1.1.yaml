@@ -3,7 +3,6 @@ description: |
   Oryctolagus cuniculus assembly mOryCun1.1 (GCF_964237555.1), from VGP.
 organism:
   scientific_name: Oryctolagus cuniculus
-  common_name: rabbit
   taxon_id: 9986
 assembly:
   source: RefSeq

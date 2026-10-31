@@ -3,7 +3,6 @@ description: |
   Hyperolius riggenbachi assembly aHypRig1.pri (GCF_040937935.1), from VGP.
 organism:
   scientific_name: Hyperolius riggenbachi
-  common_name: Riggenbach's reed frog
   taxon_id: 752182
 assembly:
   source: RefSeq

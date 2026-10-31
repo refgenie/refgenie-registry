@@ -3,7 +3,6 @@ description: |
   Dama dama assembly DamDam1_v1.mat (GCA_048126745.1), from VGP.
 organism:
   scientific_name: Dama dama
-  common_name: fallow deer
   taxon_id: 30532
 assembly:
   source: GenBank

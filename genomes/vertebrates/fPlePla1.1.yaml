@@ -3,7 +3,6 @@ description: |
   Pleuronectes platessa assembly fPlePla1.1 (GCF_947347685.1), from VGP.
 organism:
   scientific_name: Pleuronectes platessa
-  common_name: European plaice
   taxon_id: 8262
 assembly:
   source: RefSeq

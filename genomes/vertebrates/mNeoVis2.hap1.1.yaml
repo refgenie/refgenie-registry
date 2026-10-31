@@ -3,7 +3,6 @@ description: |
   Neogale vison assembly mNeoVis2.hap1.1 (GCA_964106545.1), from VGP.
 organism:
   scientific_name: Neogale vison
-  common_name: American mink
   taxon_id: 452646
 assembly:
   source: GenBank

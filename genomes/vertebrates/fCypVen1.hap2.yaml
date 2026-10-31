@@ -3,7 +3,6 @@ description: |
   Cyprinella venusta assembly fCypVen1.hap2 (GCA_038024135.1), from VGP.
 organism:
   scientific_name: Cyprinella venusta
-  common_name: blacktail shiner
   taxon_id: 28792
 assembly:
   source: GenBank

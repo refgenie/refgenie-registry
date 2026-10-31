@@ -3,7 +3,6 @@ description: |
   Anableps anableps assembly fAnaAna1.pri (GCA_014839685.1), from VGP.
 organism:
   scientific_name: Anableps anableps
-  common_name: largescale foureyes
   taxon_id: 195821
 assembly:
   source: GenBank

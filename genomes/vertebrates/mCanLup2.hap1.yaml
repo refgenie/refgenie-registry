@@ -3,7 +3,6 @@ description: |
   Canis lupus baileyi assembly mCanLup2.hap1 (GCF_048164855.1), from VGP.
 organism:
   scientific_name: Canis lupus baileyi
-  common_name: Mexican gray wolf
   taxon_id: 143281
 assembly:
   source: RefSeq

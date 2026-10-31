@@ -3,7 +3,6 @@ description: |
   Sminthopsis crassicaudata assembly ASM4859323v1 (GCA_048593235.1), from VGP.
 organism:
   scientific_name: Sminthopsis crassicaudata
-  common_name: fat-tailed dunnart
   taxon_id: 9301
 assembly:
   source: GenBank

@@ -3,7 +3,6 @@ description: |
   Canis lupus familiaris assembly UU_Cfam_GSD_1.0 (GCF_011100685.1), from VGP.
 organism:
   scientific_name: Canis lupus familiaris
-  common_name: dog
   taxon_id: 9615
 assembly:
   source: RefSeq

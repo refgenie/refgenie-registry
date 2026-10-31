@@ -3,7 +3,6 @@ description: |
   Petromyzon marinus assembly UKy_Petmar_22M1.pri1.0 (GCA_048934315.1), from VGP.
 organism:
   scientific_name: Petromyzon marinus
-  common_name: sea lamprey
   taxon_id: 7757
 assembly:
   source: GenBank

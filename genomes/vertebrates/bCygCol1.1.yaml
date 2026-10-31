@@ -3,7 +3,6 @@ description: |
   Cygnus columbianus assembly bCygCol1.1 (GCA_965151615.1), from VGP.
 organism:
   scientific_name: Cygnus columbianus
-  common_name: tundra swan
   taxon_id: 110926
 assembly:
   source: GenBank

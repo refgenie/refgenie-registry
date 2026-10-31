@@ -3,7 +3,6 @@ description: |
   Bombina bombina assembly aBomBom1.pri (GCF_027579735.1), from VGP.
 organism:
   scientific_name: Bombina bombina
-  common_name: fire-bellied toad
   taxon_id: 8345
 assembly:
   source: RefSeq

@@ -3,7 +3,6 @@ description: |
   Myotis emarginatus assembly mMyoEma1.hap1.1 (GCA_965115925.1), from VGP.
 organism:
   scientific_name: Myotis emarginatus
-  common_name: Geoffroy's bat
   taxon_id: 109480
 assembly:
   source: GenBank

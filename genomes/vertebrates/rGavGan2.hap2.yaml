@@ -3,7 +3,6 @@ description: |
   Gavialis gangeticus assembly rGavGan2.hap2 (GCA_030020295.1), from VGP.
 organism:
   scientific_name: Gavialis gangeticus
-  common_name: Gharial
   taxon_id: 94835
 assembly:
   source: GenBank

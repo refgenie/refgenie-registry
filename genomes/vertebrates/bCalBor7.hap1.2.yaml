@@ -3,7 +3,6 @@ description: |
   Calonectris borealis assembly bCalBor7.hap1.2 (GCA_964195595.2), from VGP.
 organism:
   scientific_name: Calonectris borealis
-  common_name: Cory's shearwater
   taxon_id: 1323832
 assembly:
   source: GenBank

@@ -22,9 +22,10 @@ Each record is normalized to the FHR shape by the single mapping module
 tools/genome_to_fhr.py, so this generator and the store loader agree on the
 mapping. Queued genomes are a subset, so the derived PEP ``fhr_file_path``
 attribute and the post-build apply step always have their file. A queued genome
-with no YAML at all gets a minimal ``{"name": <genome_name>}`` record and a
-WARNING: metadata is non-blocking, and a build must never fail because a
-description is absent.
+with no YAML at all gets a minimal ``{"genome": <genome_name>}`` record (FHR
+``genome`` is the genome's own name; refgenie does not read it, so the record
+changes no column) and a WARNING: metadata is non-blocking, and a build must
+never fail because a description is absent.
 
 Deterministic key order (tools/genome_to_fhr emits a fixed field order; this writer
 does not sort) so repeated runs are byte-stable and --check stays meaningful for
@@ -119,7 +120,7 @@ def generate(
     for genome in read_pep_genomes(samples_csv):
         if genome not in out:
             missing.append(genome)
-            out[genome] = _render({"name": genome})
+            out[genome] = _render({"genome": genome})
     return out, missing
 
 

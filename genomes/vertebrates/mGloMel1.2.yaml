@@ -3,7 +3,6 @@ description: |
   Globicephala melas assembly mGloMel1.2 (GCF_963455315.2), from VGP.
 organism:
   scientific_name: Globicephala melas
-  common_name: long-finned pilot whale
   taxon_id: 9731
 assembly:
   source: RefSeq

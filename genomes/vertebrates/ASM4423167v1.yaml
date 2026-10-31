@@ -3,7 +3,6 @@ description: |
   Synchiropus picturatus assembly ASM4423167v1 (GCA_044231675.1), from VGP.
 organism:
   scientific_name: Synchiropus picturatus
-  common_name: picturesque dragonet
   taxon_id: 586865
 assembly:
   source: GenBank

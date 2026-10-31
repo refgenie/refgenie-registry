@@ -3,7 +3,6 @@ description: |
   Lonchura striata assembly bLonStr1.mat (GCA_046129695.1), from VGP.
 organism:
   scientific_name: Lonchura striata
-  common_name: white-rumped munia
   taxon_id: 40157
 assembly:
   source: GenBank

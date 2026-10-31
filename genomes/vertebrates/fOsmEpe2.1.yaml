@@ -3,7 +3,6 @@ description: |
   Osmerus eperlanus assembly fOsmEpe2.1 (GCF_963692335.1), from VGP.
 organism:
   scientific_name: Osmerus eperlanus
-  common_name: European smelt
   taxon_id: 29151
 assembly:
   source: RefSeq

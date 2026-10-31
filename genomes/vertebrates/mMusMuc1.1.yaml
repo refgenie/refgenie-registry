@@ -3,7 +3,6 @@ description: |
   Mus musculus assembly mMusMuc1.1 (GCA_949316315.1), from VGP.
 organism:
   scientific_name: Mus musculus
-  common_name: house mouse
   taxon_id: 10090
 assembly:
   source: GenBank

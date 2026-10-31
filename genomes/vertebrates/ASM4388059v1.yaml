@@ -3,7 +3,6 @@ description: |
   Megaderma spasma assembly ASM4388059v1 (GCA_043880595.1), from VGP.
 organism:
   scientific_name: Megaderma spasma
-  common_name: lesser false vampire bat
   taxon_id: 9414
 assembly:
   source: GenBank

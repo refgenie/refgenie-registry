@@ -3,7 +3,6 @@ description: |
   Thomomys bottae assembly mThoBot2.hap1 (GCA_031878675.1), from VGP.
 organism:
   scientific_name: Thomomys bottae
-  common_name: Botta's pocket gopher
   taxon_id: 3774380
 assembly:
   source: GenBank

@@ -3,7 +3,6 @@ description: |
   Gobio gobio assembly fGobGob1.1 (GCA_949357685.1), from VGP.
 organism:
   scientific_name: Gobio gobio
-  common_name: gudgeon
   taxon_id: 27704
 assembly:
   source: GenBank

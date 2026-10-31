@@ -3,7 +3,6 @@ description: |
   Willisornis vidua assembly bWilVid1 haplotype 1 (GCA_045364795.1), from VGP.
 organism:
   scientific_name: Willisornis vidua
-  common_name: Xingu scale-backed antbird
   taxon_id: 1566151
 assembly:
   source: GenBank

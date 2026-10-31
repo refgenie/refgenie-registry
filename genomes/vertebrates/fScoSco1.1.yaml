@@ -3,7 +3,6 @@ description: |
   Scomber scombrus assembly fScoSco1.1 (GCF_963691925.1), from VGP.
 organism:
   scientific_name: Scomber scombrus
-  common_name: Atlantic mackerel
   taxon_id: 13677
 assembly:
   source: RefSeq

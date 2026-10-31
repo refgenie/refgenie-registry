@@ -3,7 +3,6 @@ description: |
   Xenentodon cancila assembly fXenCan1.pri (GCA_014839995.1), from VGP.
 organism:
   scientific_name: Xenentodon cancila
-  common_name: freshwater garfish
   taxon_id: 129108
 assembly:
   source: GenBank

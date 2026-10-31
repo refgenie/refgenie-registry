@@ -3,7 +3,6 @@ description: |
   Heptranchias perlo assembly sHepPer1.hap1 (GCA_035084215.1), from VGP.
 organism:
   scientific_name: Heptranchias perlo
-  common_name: sharpnose sevengill shark
   taxon_id: 212740
 assembly:
   source: GenBank

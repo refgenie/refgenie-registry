@@ -12,6 +12,11 @@ representation exactly (gtars-refget/src/store/fhr_metadata.rs), so
 it unchanged. The seqcol digest is NEVER a JSON body field, it is the sidecar
 *filename* (`<seqcol.digest>.fhr.json`), matching `SIDECAR_EXTENSION` in gtars.
 
+The FHR fields mean what the spec says: `genome` is the genome's own name (the
+YAML `name`), `taxon` is its species, and `version` is the assembly's version,
+the number after the dot in its NCBI accession (left out without one). Species
+common names are not FHR fields; they ship in each store's `species.json`.
+
 Usage:
     python tools/genome_to_fhr.py genomes/human/hg38.yaml            # print JSON
     python tools/genome_to_fhr.py genomes/human/hg38.yaml --out-dir fhr/
@@ -23,6 +28,7 @@ import argparse
 import copy
 import datetime
 import json
+import re
 import sys
 from collections import OrderedDict
 from pathlib import Path
@@ -61,6 +67,15 @@ def normalize_dates(obj):
 def _taxon_uri(taxon_id: int) -> str:
     """Derive the identifiers.org taxonomy URI from an NCBI taxon id."""
     return f"https://identifiers.org/taxonomy:{taxon_id}"
+
+
+_ACCESSION_VERSION = re.compile(r"^GC[AF]_\d{9}\.(\d+)$")
+
+
+def accession_version(accession: str | None) -> str | None:
+    """The version NCBI gives an assembly: the number after the dot in its accession."""
+    match = _ACCESSION_VERSION.match(accession or "")
+    return match.group(1) if match else None
 
 
 def _accession_url(accession: str) -> str | None:
@@ -117,10 +132,10 @@ def genome_yaml_to_fhr(data: dict) -> "OrderedDict[str, object]":
     out["schema"] = FHR_SCHEMA_URL
     out["schemaVersion"] = FHR_SCHEMA_VERSION
 
-    scientific_name = organism.get("scientific_name")
-    if scientific_name is not None:
-        out["genome"] = scientific_name
+    if data.get("name") is not None:
+        out["genome"] = data["name"]
 
+    scientific_name = organism.get("scientific_name")
     taxon_id = organism.get("taxon_id")
     if scientific_name is not None or taxon_id is not None:
         taxon: "OrderedDict[str, object]" = OrderedDict()
@@ -130,15 +145,9 @@ def genome_yaml_to_fhr(data: dict) -> "OrderedDict[str, object]":
             taxon["uri"] = _taxon_uri(taxon_id)
         out["taxon"] = taxon
 
-    # Promoted-to-column extension fields (gtars FhrMetadata carries these in its
-    # `extra` catch-all; refgenie1's apply_fhr reads them into real `genome`
-    # columns). Not part of upstream FHR 1.0, see load_fhr_export_schema.
-    common_name = organism.get("common_name")
-    if common_name is not None:
-        out["commonName"] = common_name
-
-    if data.get("name") is not None:
-        out["version"] = data["name"]
+    version = accession_version(assembly.get("accession"))
+    if version is not None:
+        out["version"] = version
 
     metadata_author = _authors(fhr.get("metadata_author"))
     if metadata_author:
@@ -174,8 +183,9 @@ def genome_yaml_to_fhr(data: dict) -> "OrderedDict[str, object]":
             acc["url"] = url
         out["accessionID"] = acc
 
-    # Promoted-to-column assembly facets (gtars `extra`; read into `genome`
-    # columns by refgenie1's apply_fhr). Not part of upstream FHR 1.0.
+    # Extension fields (gtars carries them in its `extra` catch-all; refgenie
+    # reads them into `genome` columns). Not part of upstream FHR, see
+    # load_fhr_export_schema.
     assembly_source = assembly.get("source")
     if assembly_source is not None:
         out["assemblySource"] = assembly_source
@@ -220,7 +230,7 @@ def load_fhr_export_schema() -> dict:
     """Return a JSON Schema for validating a registry FHR *export*.
 
     Derived from the vendored upstream FHR schema (schema/fhr.schema.json) with
-    three documented relaxations, because a registry export is intentionally a
+    four documented relaxations, because a registry export is intentionally a
     *partial* FHR record whose real round-trip target is the permissive gtars
     `FhrMetadata` type, not a complete publishable FHR 1.0 record:
 
@@ -234,6 +244,9 @@ def load_fhr_export_schema() -> dict:
       3. Relax `checksum` to the `algo:value` form the exporter and gtars use
          (e.g. `sha256:<64 hex>`), rather than the upstream sha2-512/256 base64
          form.
+      4. Allow the `assemblySource` and `assemblyLevel` extension fields, which
+         refgenie reads into `genome` columns. Upstream FHR has no field for
+         them.
 
     Every other property type/pattern/enum and `additionalProperties: false`
     are preserved, so typos and malformed provenance are still caught.
@@ -254,14 +267,9 @@ def load_fhr_export_schema() -> dict:
         "pattern": "^[a-z0-9]+:.+$",
         "description": "Algorithm-prefixed checksum, e.g. sha256:<64 hex>.",
     }
-    # (4) promoted-to-column extension fields: common name and assembly
-    # source/level ride the FHR sidecar (gtars `extra`) so refgenie1's apply_fhr
-    # can land them in real `genome` columns. Not in upstream FHR; allowed here
-    # so the export self-check accepts a sidecar carrying them.
-    profile["properties"]["commonName"] = {
-        "type": "string",
-        "description": "Common organism name (gtars extension; promoted to a genome column).",
-    }
+    # (4) extension fields: assembly source/level ride the FHR sidecar (gtars
+    # `extra`) so refgenie can land them in `genome` columns. Not in upstream
+    # FHR; allowed here so the export self-check accepts a sidecar carrying them.
     profile["properties"]["assemblySource"] = {
         "type": "string",
         "description": "Assembly provider, e.g. UCSC/NCBI (gtars extension; genome column).",

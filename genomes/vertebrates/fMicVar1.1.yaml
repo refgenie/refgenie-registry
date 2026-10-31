@@ -3,7 +3,6 @@ description: |
   Microchirus variegatus assembly fMicVar1.1 (GCA_963457635.1), from VGP.
 organism:
   scientific_name: Microchirus variegatus
-  common_name: thickback sole
   taxon_id: 90074
 assembly:
   source: GenBank

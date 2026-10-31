@@ -3,7 +3,6 @@ description: |
   Balaenoptera ricei assembly mBalRic1.hap2 (GCF_028023285.1), from VGP.
 organism:
   scientific_name: Balaenoptera ricei
-  common_name: Rice's whale
   taxon_id: 2746895
 assembly:
   source: RefSeq

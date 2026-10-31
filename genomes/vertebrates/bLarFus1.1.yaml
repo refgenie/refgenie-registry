@@ -3,7 +3,6 @@ description: |
   Larus fuscus assembly bLarFus1.1 (GCA_963932225.1), from VGP.
 organism:
   scientific_name: Larus fuscus
-  common_name: lesser black-backed gull
   taxon_id: 8915
 assembly:
   source: GenBank

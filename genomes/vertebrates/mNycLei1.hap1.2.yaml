@@ -3,7 +3,6 @@ description: |
   Nyctalus leisleri assembly mNycLei1.hap1.2 (GCA_964264875.2), from VGP.
 organism:
   scientific_name: Nyctalus leisleri
-  common_name: lesser noctule
   taxon_id: 59465
 assembly:
   source: GenBank

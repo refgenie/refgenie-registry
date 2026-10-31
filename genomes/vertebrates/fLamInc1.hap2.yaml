@@ -3,7 +3,6 @@ description: |
   Lampris incognitus assembly fLamInc1.hap2 (GCF_029633865.1), from VGP.
 organism:
   scientific_name: Lampris incognitus
-  common_name: smalleye Pacific opah
   taxon_id: 2546036
 assembly:
   source: RefSeq

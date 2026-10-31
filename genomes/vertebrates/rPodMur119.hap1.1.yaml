@@ -3,7 +3,6 @@ description: |
   Podarcis muralis assembly rPodMur119.hap1.1 (GCA_964188315.1), from VGP.
 organism:
   scientific_name: Podarcis muralis
-  common_name: Common wall lizard
   taxon_id: 64176
 assembly:
   source: GenBank

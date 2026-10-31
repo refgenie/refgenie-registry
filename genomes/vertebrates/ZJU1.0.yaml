@@ -3,7 +3,6 @@ description: |
   Anas platyrhynchos assembly ZJU1.0 (GCF_015476345.1), from VGP.
 organism:
   scientific_name: Anas platyrhynchos
-  common_name: mallard
   taxon_id: 8839
 assembly:
   source: RefSeq

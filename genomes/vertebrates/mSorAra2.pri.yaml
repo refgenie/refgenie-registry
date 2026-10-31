@@ -3,7 +3,6 @@ description: |
   Sorex araneus assembly mSorAra2.pri (GCF_027595985.1), from VGP.
 organism:
   scientific_name: Sorex araneus
-  common_name: European shrew
   taxon_id: 42254
 assembly:
   source: RefSeq

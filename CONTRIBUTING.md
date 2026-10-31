@@ -107,7 +107,6 @@ description: |                  # required
 
 organism:
   scientific_name: Genus species  # required
-  common_name: common name        # optional
   taxon_id: 12345                 # required NCBI Taxonomy ID (integer)
 
 assembly:                       # optional but recommended
@@ -302,16 +301,16 @@ name:
   would be empty.
 
 **What the list feeds.** Store rows that have no genome YAML get their FHR
-species fields (scientific name, common name, taxon) from it, and every store
-ships its own species from it, as `species.json`. The nightly refreshes every
-published store's `species.json`, so a merged change reaches the stores the next night.
+`taxon` (scientific name and taxon id) from it, and every store ships its own
+species from it, as `species.json`. The nightly refreshes every published
+store's `species.json`, so a merged change reaches the stores the next night.
 
 **To propose a change**, edit the entry (or add one), run
 `python tools/species_list.py check`, and open a PR titled
 "Species names: \<scientific name\>".
 
-Species names never go in genome YAMLs. A genome's `organism.common_name` is that
-genome's own display name, not a list of the species' names.
+Species names never go in genome YAMLs: a genome's `organism` block holds only
+its `scientific_name` and `taxon_id`. Common names are edited here.
 
 ## Local Validation
 

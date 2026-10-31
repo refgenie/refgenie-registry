@@ -3,7 +3,6 @@ description: |
   Triturus cristatus assembly aTriCri1.1 (GCA_964204655.1), from VGP.
 organism:
   scientific_name: Triturus cristatus
-  common_name: warty newt
   taxon_id: 8323
 assembly:
   source: GenBank

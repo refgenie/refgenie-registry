@@ -3,7 +3,6 @@ description: |
   Lissotriton helveticus assembly aLisHel1.1 (GCA_964261635.1), from VGP.
 organism:
   scientific_name: Lissotriton helveticus
-  common_name: palmate newt
   taxon_id: 256425
 assembly:
   source: GenBank

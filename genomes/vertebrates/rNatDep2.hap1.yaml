@@ -3,7 +3,6 @@ description: |
   Natator depressus assembly rNatDep2.hap1 (GCA_965152275.1), from VGP.
 organism:
   scientific_name: Natator depressus
-  common_name: flatback sea turtle
   taxon_id: 27790
 assembly:
   source: GenBank

@@ -3,7 +3,6 @@ description: |
   Parambassis ranga assembly fParRan2.2 (GCA_900634625.2), from VGP.
 organism:
   scientific_name: Parambassis ranga
-  common_name: Indian glassy fish
   taxon_id: 210632
 assembly:
   source: GenBank

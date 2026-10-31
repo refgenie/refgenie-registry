@@ -3,7 +3,6 @@ description: |
   Phascolarctos cinereus assembly phaCin_HiC (GCA_003287225.2), from VGP.
 organism:
   scientific_name: Phascolarctos cinereus
-  common_name: koala
   taxon_id: 38626
 assembly:
   source: GenBank

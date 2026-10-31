@@ -3,7 +3,6 @@ description: |
   Saccopteryx leptura assembly mSacLep1_pri_phased_curated (GCF_036850995.1), from VGP.
 organism:
   scientific_name: Saccopteryx leptura
-  common_name: lesser sac-winged bat
   taxon_id: 249018
 assembly:
   source: RefSeq

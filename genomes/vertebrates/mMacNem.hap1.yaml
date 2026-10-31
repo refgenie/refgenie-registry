@@ -3,7 +3,6 @@ description: |
   Macaca nemestrina assembly mMacNem.hap1 (GCF_043159975.1), from VGP.
 organism:
   scientific_name: Macaca nemestrina
-  common_name: pig-tailed macaque
   taxon_id: 9545
 assembly:
   source: RefSeq

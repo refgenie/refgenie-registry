@@ -3,7 +3,6 @@ description: |
   Miniopterus schreibersii assembly mMinSch1.hap1.2 (GCA_964146895.2), from VGP.
 organism:
   scientific_name: Miniopterus schreibersii
-  common_name: Schreibers' long-fingered bat
   taxon_id: 9433
 assembly:
   source: GenBank

@@ -3,7 +3,6 @@ description: |
   Rhinolophus affinis assembly ASM4372806v1 (GCA_043728065.1), from VGP.
 organism:
   scientific_name: Rhinolophus affinis
-  common_name: intermediate horseshoe bat
   taxon_id: 59477
 assembly:
   source: GenBank

@@ -3,7 +3,6 @@ description: |
   Squalius cephalus assembly fSquCep2.1 (GCA_949319135.1), from VGP.
 organism:
   scientific_name: Squalius cephalus
-  common_name: European chub
   taxon_id: 8284
 assembly:
   source: GenBank

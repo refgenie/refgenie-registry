@@ -3,7 +3,6 @@ description: |
   Trogon surrucura assembly bTroSur1.pri.cur (GCA_020746105.1), from VGP.
 organism:
   scientific_name: Trogon surrucura
-  common_name: Suruca trogon
   taxon_id: 297711
 assembly:
   source: GenBank

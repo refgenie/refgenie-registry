@@ -3,7 +3,6 @@ description: |
   Loxodonta africana assembly mLoxAfr1.hap2 (GCF_030014295.1), from VGP.
 organism:
   scientific_name: Loxodonta africana
-  common_name: African savanna elephant
   taxon_id: 9785
 assembly:
   source: RefSeq

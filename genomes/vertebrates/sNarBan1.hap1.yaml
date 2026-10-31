@@ -3,7 +3,6 @@ description: |
   Narcine bancroftii assembly sNarBan1.hap1 (GCF_036971445.1), from VGP.
 organism:
   scientific_name: Narcine bancroftii
-  common_name: Caribbean electric ray
   taxon_id: 1343680
 assembly:
   source: RefSeq

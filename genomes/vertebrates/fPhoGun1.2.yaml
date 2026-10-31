@@ -3,7 +3,6 @@ description: |
   Pholis gunnellus assembly fPhoGun1.2 (GCA_910591455.2), from VGP.
 organism:
   scientific_name: Pholis gunnellus
-  common_name: rock gunnel
   taxon_id: 56726
 assembly:
   source: GenBank

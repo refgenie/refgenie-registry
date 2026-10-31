@@ -3,7 +3,6 @@ description: |
   Phalacrocorax aristotelis assembly bGulAri2.1 (GCA_949628215.1), from VGP.
 organism:
   scientific_name: Phalacrocorax aristotelis
-  common_name: European shag
   taxon_id: 126867
 assembly:
   source: GenBank

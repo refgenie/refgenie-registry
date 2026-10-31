@@ -3,7 +3,6 @@ description: |
   Canis lupus assembly mCanLor1.2 (GCA_905319855.2), from VGP.
 organism:
   scientific_name: Canis lupus
-  common_name: wolf
   taxon_id: 9612
 assembly:
   source: GenBank

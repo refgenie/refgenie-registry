@@ -3,7 +3,6 @@ description: |
   Dugong dugon assembly mDugDug1.hap1 (GCA_030035585.1), from VGP.
 organism:
   scientific_name: Dugong dugon
-  common_name: dugong
   taxon_id: 29137
 assembly:
   source: GenBank

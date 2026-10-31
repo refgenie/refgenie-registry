@@ -3,7 +3,6 @@ description: |
   Sylvia borin assembly bSylBor1.pri (GCA_014839755.1), from VGP.
 organism:
   scientific_name: Sylvia borin
-  common_name: garden warbler
   taxon_id: 73324
 assembly:
   source: GenBank

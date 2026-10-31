@@ -3,7 +3,6 @@ description: |
   Zootoca vivipara assembly rZooViv1.1 (GCF_963506605.1), from VGP.
 organism:
   scientific_name: Zootoca vivipara
-  common_name: common lizard
   taxon_id: 8524
 assembly:
   source: RefSeq

@@ -6,7 +6,6 @@ description: |
 
 organism:
   scientific_name: Caenorhabditis elegans
-  common_name: roundworm
   taxon_id: 6239
 
 assembly:

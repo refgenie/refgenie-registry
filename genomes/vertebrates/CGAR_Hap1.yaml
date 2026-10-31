@@ -3,7 +3,6 @@ description: |
   Clarias gariepinus assembly CGAR_Hap1 (GCA_024256435.1), from VGP.
 organism:
   scientific_name: Clarias gariepinus
-  common_name: North African catfish
   taxon_id: 13013
 assembly:
   source: GenBank

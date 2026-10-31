@@ -3,7 +3,6 @@ description: |
   Astyanax mexicanus assembly AstMex3_surface (GCF_023375975.1), from VGP.
 organism:
   scientific_name: Astyanax mexicanus
-  common_name: Mexican tetra
   taxon_id: 7994
 assembly:
   source: RefSeq

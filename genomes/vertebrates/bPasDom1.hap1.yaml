@@ -3,7 +3,6 @@ description: |
   Passer domesticus assembly bPasDom1.hap1 (GCF_036417665.1), from VGP.
 organism:
   scientific_name: Passer domesticus
-  common_name: house sparrow
   taxon_id: 48849
 assembly:
   source: RefSeq

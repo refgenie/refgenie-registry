@@ -3,7 +3,6 @@ description: |
   Molossus alvarezi assembly mMolAlv2.hap1 (GCA_037157525.1), from VGP.
 organism:
   scientific_name: Molossus alvarezi
-  common_name: Alvarez's mastiff bat
   taxon_id: 1552295
 assembly:
   source: GenBank

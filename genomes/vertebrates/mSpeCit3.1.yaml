@@ -3,7 +3,6 @@ description: |
   Spermophilus citellus assembly mSpeCit3.1 (GCA_964194105.1), from VGP.
 organism:
   scientific_name: Spermophilus citellus
-  common_name: European ground squirrel
   taxon_id: 9997
 assembly:
   source: GenBank

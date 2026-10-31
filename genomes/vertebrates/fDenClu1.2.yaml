@@ -3,7 +3,6 @@ description: |
   Denticeps clupeoides assembly fDenClu1.2 (GCA_900700375.2), from VGP.
 organism:
   scientific_name: Denticeps clupeoides
-  common_name: denticle herring
   taxon_id: 299321
 assembly:
   source: GenBank

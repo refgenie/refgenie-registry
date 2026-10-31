@@ -3,7 +3,6 @@ description: |
   Acomys minous assembly mAcoMin1 (GCA_964271855.1), from VGP.
 organism:
   scientific_name: Acomys minous
-  common_name: Crete spiny mouse
   taxon_id: 83528
 assembly:
   source: GenBank

@@ -3,7 +3,6 @@ description: |
   Rutilus rutilus assembly fRutRut2.1 (GCA_951802725.1), from VGP.
 organism:
   scientific_name: Rutilus rutilus
-  common_name: roach minnow
   taxon_id: 48668
 assembly:
   source: GenBank

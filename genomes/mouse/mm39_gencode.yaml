@@ -8,7 +8,6 @@ description: |
 
 organism:
   scientific_name: Mus musculus
-  common_name: mouse
   taxon_id: 10090
 
 assembly:

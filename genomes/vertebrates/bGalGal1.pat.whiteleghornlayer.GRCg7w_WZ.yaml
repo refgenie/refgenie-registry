@@ -3,7 +3,6 @@ description: |
   Gallus gallus assembly bGalGal1.pat.whiteleghornlayer.GRCg7w_WZ (GCF_016700215.2), from VGP.
 organism:
   scientific_name: Gallus gallus
-  common_name: chicken
   taxon_id: 9031
 assembly:
   source: RefSeq

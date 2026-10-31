@@ -3,7 +3,6 @@ description: |
   Camelus dromedarius assembly mCamDro1.pat (GCF_036321535.1), from VGP.
 organism:
   scientific_name: Camelus dromedarius
-  common_name: Arabian camel
   taxon_id: 9838
 assembly:
   source: RefSeq

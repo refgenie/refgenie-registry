@@ -3,7 +3,6 @@ description: |
   Harpia harpyja assembly bHarHar1 primary haplotype (GCF_026419915.1), from VGP.
 organism:
   scientific_name: Harpia harpyja
-  common_name: harpy eagle
   taxon_id: 202280
 assembly:
   source: RefSeq

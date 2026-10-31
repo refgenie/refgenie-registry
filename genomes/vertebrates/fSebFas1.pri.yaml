@@ -3,7 +3,6 @@ description: |
   Sebastes fasciatus assembly fSebFas1.pri (GCA_043250625.1), from VGP.
 organism:
   scientific_name: Sebastes fasciatus
-  common_name: Acadian redfish
   taxon_id: 394691
 assembly:
   source: GenBank

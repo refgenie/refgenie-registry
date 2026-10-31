@@ -3,7 +3,6 @@ description: |
   Alosa sapidissima assembly fAloSap1.pri (GCF_018492685.1), from VGP.
 organism:
   scientific_name: Alosa sapidissima
-  common_name: American shad
   taxon_id: 34773
 assembly:
   source: RefSeq

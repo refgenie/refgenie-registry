@@ -42,13 +42,13 @@ round-trips it. The **seqcol digest is the sidecar filename**
 
 | Registry YAML | FHR JSON (camelCase) | Notes |
 |---|---|---|
-| `organism.scientific_name` | `genome`, `taxon.name` | species name |
-| `organism.common_name` | `commonName` | gtars extension; promoted to a `genome` column |
+| `name` | `genome` | the genome's own name (e.g. `hg38`) |
+| `organism.scientific_name` | `taxon.name` | species name |
 | `organism.taxon_id` | `taxon.uri` | derived: `https://identifiers.org/taxonomy:{id}` |
-| `name` | `version` | assembly identifier (e.g. `hg38`) |
-| `aliases` | `genomeSynonym` | array |
+| `aliases` | `genomeSynonym` | array; genome aliases only (e.g. `GRCh38`) |
 | `description` | `documentation` | unless `fhr.documentation` overrides |
 | `assembly.accession` | `accessionID` | `{name, url}`; url derived for `GCA_`/`GCF_` |
+| `assembly.accession` version number | `version` | the number after the dot of a `GCA_`/`GCF_` accession (`GCA_000001405.15` → `"15"`); left out without one |
 | `assembly.source` | `assemblySource` | gtars extension; promoted to a `genome` column |
 | `assembly.level` | `assemblyLevel` | gtars extension; promoted to a `genome` column |
 | `masking` | `masking` | enum passthrough |
@@ -95,12 +95,24 @@ asserts it anyway, `check_build_not_in_fhr` runs the export and fails if any
 `build` key appears, so a future exporter that starts forwarding unknown keys
 fails here rather than publishing pipeline state as metadata.
 
-`commonName`, `assemblySource`, and `assemblyLevel` are gtars-native extension
-fields (they ride the sidecar's `extra` catch-all, not upstream FHR 1.0). They
-carry `organism.common_name`, `assembly.source`, and `assembly.level` to
-refgenie1's `apply_fhr`, which lands them in dedicated, queryable `genome`
-columns. `taxon_id` and `assembly.accession` reach those columns too, parsed
-from `taxon.uri` and `accessionID.name` respectively.
+`assemblySource` and `assemblyLevel` (plus `license`) are extension fields: they
+ride the sidecar's `extra` catch-all in gtars and are not in upstream FHR. They
+carry `assembly.source` and `assembly.level` to refgenie's `apply_fhr`, which
+lands them in queryable `genome` columns. refgenie also reads `taxon.name` (the
+species), `taxon.uri` (the taxon id), `genomeSynonym`, `documentation` and
+`accessionID.name`. It does not read `genome` (the name already reaches it as an
+alias) or `version`.
+
+### Known FHR v2.0 gaps
+
+The exports do not yet pass the current upstream schema (v2.0). Every record
+lacks `metadataAuthor`, `assemblyAuthor`, `masking` and `checksum` (most also
+lack `dateCreated`); `schemaVersion` is the number `1.0` where v2.0 wants the
+string `"2.0"` (gtars still types it as a number, so it cannot change first);
+genomes without an NCBI accession have no `version`; and `assemblySource` and
+`assemblyLevel` are extensions the spec does not allow. These are left for a
+separate "FHR v2.0 conformance" change (gtars first, then the registry, then
+refgenie).
 
 ### Vendored `fhr.schema.json`
 
@@ -117,7 +129,8 @@ fields for a *complete publishable record* and forbids extras; a registry export
 is intentionally partial and its true round-trip target is the permissive gtars
 `FhrMetadata`. The profile therefore (1) drops upstream's top-level `required`,
 (2) allows the gtars-native `license` field (upstream uses `reuseConditions`),
-and (3) accepts the `algo:value` checksum form, while keeping every property
+(3) accepts the `algo:value` checksum form, and (4) allows the `assemblySource`
+and `assemblyLevel` extension fields, while keeping every property
 type/pattern/enum and `additionalProperties: false` so typos are still caught.
 
 To update the vendored copy, re-download from the source URL and update the

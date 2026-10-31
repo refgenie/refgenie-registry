@@ -3,7 +3,6 @@ description: |
   Melopsittacus undulatus assembly bMelUnd1.mat.Z (GCF_012275295.1), from VGP.
 organism:
   scientific_name: Melopsittacus undulatus
-  common_name: budgerigar
   taxon_id: 13146
 assembly:
   source: RefSeq

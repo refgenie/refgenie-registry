@@ -3,7 +3,6 @@ description: |
   Megaptera novaeangliae assembly ASM4183430v1 (GCA_041834305.1), from VGP.
 organism:
   scientific_name: Megaptera novaeangliae
-  common_name: humpback whale
   taxon_id: 9773
 assembly:
   source: GenBank

@@ -3,7 +3,6 @@ description: |
   Falco cherrug assembly bFalChe1.pri (GCF_023634085.1), from VGP.
 organism:
   scientific_name: Falco cherrug
-  common_name: Saker falcon
   taxon_id: 345164
 assembly:
   source: RefSeq

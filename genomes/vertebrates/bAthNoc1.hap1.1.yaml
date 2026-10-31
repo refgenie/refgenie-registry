@@ -3,7 +3,6 @@ description: |
   Athene noctua assembly bAthNoc1.hap1.1 (GCA_965140245.1), from VGP.
 organism:
   scientific_name: Athene noctua
-  common_name: little owl
   taxon_id: 126797
 assembly:
   source: GenBank

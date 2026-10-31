@@ -3,7 +3,6 @@ description: |
   Antennarius maculatus assembly fAntMac1.pri (GCA_013358685.1), from VGP.
 organism:
   scientific_name: Antennarius maculatus
-  common_name: warty frogfish
   taxon_id: 882753
 assembly:
   source: GenBank

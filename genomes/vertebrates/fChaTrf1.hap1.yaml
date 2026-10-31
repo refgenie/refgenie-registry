@@ -3,7 +3,6 @@ description: |
   Chaetodon trifascialis assembly fChaTrf1.hap1 (GCF_039877785.1), from VGP.
 organism:
   scientific_name: Chaetodon trifascialis
-  common_name: chevron butterflyfish
   taxon_id: 109706
 assembly:
   source: RefSeq

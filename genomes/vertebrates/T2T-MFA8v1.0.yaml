@@ -3,7 +3,6 @@ description: |
   Macaca fascicularis assembly T2T-MFA8v1.0 (GCF_037993035.1), from VGP.
 organism:
   scientific_name: Macaca fascicularis
-  common_name: crab-eating macaque
   taxon_id: 9541
 assembly:
   source: RefSeq

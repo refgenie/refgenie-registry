@@ -3,7 +3,6 @@ description: |
   Euleptes europaea assembly rEulEur1.hap1 (GCF_029931775.1), from VGP.
 organism:
   scientific_name: Euleptes europaea
-  common_name: tarantolino
   taxon_id: 460621
 assembly:
   source: RefSeq

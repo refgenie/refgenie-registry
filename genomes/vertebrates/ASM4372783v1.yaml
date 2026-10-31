@@ -3,7 +3,6 @@ description: |
   Aselliscus stoliczkanus assembly ASM4372783v1 (GCA_043727835.1), from VGP.
 organism:
   scientific_name: Aselliscus stoliczkanus
-  common_name: Stoliczka's trident bat
   taxon_id: 188568
 assembly:
   source: GenBank

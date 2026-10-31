@@ -3,7 +3,6 @@ description: |
   Takifugu rubripes assembly fTakRub1.3 (GCA_901000725.3), from VGP.
 organism:
   scientific_name: Takifugu rubripes
-  common_name: torafugu
   taxon_id: 31033
 assembly:
   source: GenBank

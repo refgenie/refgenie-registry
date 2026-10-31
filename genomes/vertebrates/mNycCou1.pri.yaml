@@ -3,7 +3,6 @@ description: |
   Nycticebus coucang assembly mNycCou1.pri (GCF_027406575.1), from VGP.
 organism:
   scientific_name: Nycticebus coucang
-  common_name: slow loris
   taxon_id: 9470
 assembly:
   source: RefSeq

@@ -3,7 +3,6 @@ description: |
   Halichoerus grypus assembly mHalGry1.hap1.1 (GCA_964656455.1), from VGP.
 organism:
   scientific_name: Halichoerus grypus
-  common_name: gray seal
   taxon_id: 9711
 assembly:
   source: GenBank

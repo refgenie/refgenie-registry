@@ -3,7 +3,6 @@ description: |
   Ara ararauna assembly bAraAra1.hap1 (GCA_028858755.1), from VGP.
 organism:
   scientific_name: Ara ararauna
-  common_name: blue-and-yellow macaw
   taxon_id: 9226
 assembly:
   source: GenBank

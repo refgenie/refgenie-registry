@@ -3,7 +3,6 @@ description: |
   Lateolabrax maculatus assembly YSFRI_Lmacu_1.1 (GCA_031216445.1), from VGP.
 organism:
   scientific_name: Lateolabrax maculatus
-  common_name: spotted sea bass
   taxon_id: 315492
 assembly:
   source: GenBank

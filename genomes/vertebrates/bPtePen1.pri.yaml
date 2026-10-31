@@ -3,7 +3,6 @@ description: |
   Rhea pennata assembly bPtePen1.pri (GCF_028389875.1), from VGP.
 organism:
   scientific_name: Rhea pennata
-  common_name: lesser rhea
   taxon_id: 8795
 assembly:
   source: RefSeq

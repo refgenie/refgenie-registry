@@ -3,7 +3,6 @@ description: |
   Diretmus argenteus assembly fDirArg3.hap1 (GCA_048569125.1), from VGP.
 organism:
   scientific_name: Diretmus argenteus
-  common_name: silver spinyfin
   taxon_id: 88682
 assembly:
   source: GenBank

@@ -3,7 +3,6 @@ description: |
   Falco rusticolus assembly bFalRus1.pri (GCF_015220075.1), from VGP.
 organism:
   scientific_name: Falco rusticolus
-  common_name: gyrfalcon
   taxon_id: 120794
 assembly:
   source: RefSeq

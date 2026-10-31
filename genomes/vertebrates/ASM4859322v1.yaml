@@ -3,7 +3,6 @@ description: |
   Sarcophilus harrisii assembly ASM4859322v1 (GCA_048593225.1), from VGP.
 organism:
   scientific_name: Sarcophilus harrisii
-  common_name: Tasmanian devil
   taxon_id: 9305
 assembly:
   source: GenBank

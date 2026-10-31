@@ -3,7 +3,6 @@ description: |
   Bufo bufo assembly aBufBuf1.1 (GCF_905171765.1), from VGP.
 organism:
   scientific_name: Bufo bufo
-  common_name: common toad
   taxon_id: 8384
 assembly:
   source: RefSeq

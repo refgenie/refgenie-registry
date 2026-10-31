@@ -3,7 +3,6 @@ description: |
   Gopherus evgoodei assembly rGopEvg1_v1.p (GCF_007399415.2), from VGP.
 organism:
   scientific_name: Gopherus evgoodei
-  common_name: Goodes thornscrub tortoise
   taxon_id: 1825980
 assembly:
   source: RefSeq

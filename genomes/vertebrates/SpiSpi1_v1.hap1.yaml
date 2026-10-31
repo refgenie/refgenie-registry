@@ -3,7 +3,6 @@ description: |
   Spinachia spinachia assembly SpiSpi1_v1.hap1 (GCA_048126635.1), from VGP.
 organism:
   scientific_name: Spinachia spinachia
-  common_name: sea stickleback
   taxon_id: 206126
 assembly:
   source: GenBank

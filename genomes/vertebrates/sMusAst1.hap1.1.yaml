@@ -3,7 +3,6 @@ description: |
   Mustelus asterias assembly sMusAst1.hap1.1 (GCA_964213995.1), from VGP.
 organism:
   scientific_name: Mustelus asterias
-  common_name: starry smooth-hound
   taxon_id: 112232
 assembly:
   source: GenBank

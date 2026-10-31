@@ -3,7 +3,6 @@ description: |
   Corynorhinus townsendii assembly mCorTow1.0.hap1 (GCA_026230055.1), from VGP.
 organism:
   scientific_name: Corynorhinus townsendii
-  common_name: Townsend's big-eared bat
   taxon_id: 124745
 assembly:
   source: GenBank

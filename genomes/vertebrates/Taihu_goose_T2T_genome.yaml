@@ -3,7 +3,6 @@ description: |
   Anser cygnoides assembly Taihu_goose_T2T_genome (GCF_040182565.1), from VGP.
 organism:
   scientific_name: Anser cygnoides
-  common_name: Swan goose
   taxon_id: 8845
 assembly:
   source: RefSeq

@@ -3,7 +3,6 @@ description: |
   Sebastes umbrosus assembly fSebUmb1.pri (GCF_015220745.1), from VGP.
 organism:
   scientific_name: Sebastes umbrosus
-  common_name: honeycomb rockfish
   taxon_id: 72105
 assembly:
   source: RefSeq

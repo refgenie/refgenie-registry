@@ -3,7 +3,6 @@ description: |
   Capra hircus assembly T2T-goat2.0 (GCA_041735815.1), from VGP.
 organism:
   scientific_name: Capra hircus
-  common_name: goat
   taxon_id: 9925
 assembly:
   source: GenBank

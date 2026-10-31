@@ -3,7 +3,6 @@ description: |
   Pelodytes ibericus assembly aPelIbe1.pri (GCA_036172795.1), from VGP.
 organism:
   scientific_name: Pelodytes ibericus
-  common_name: Iberian parsley frog
   taxon_id: 233781
 assembly:
   source: GenBank

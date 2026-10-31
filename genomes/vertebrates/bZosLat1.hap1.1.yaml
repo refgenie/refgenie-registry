@@ -3,7 +3,6 @@ description: |
   Zosterops lateralis assembly bZosLat1.hap1.1 (GCA_965231275.1), from VGP.
 organism:
   scientific_name: Zosterops lateralis
-  common_name: silver-eye
   taxon_id: 43581
 assembly:
   source: GenBank

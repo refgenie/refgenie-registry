@@ -3,7 +3,6 @@ description: |
   Caretta caretta assembly rCarCar1.hap1 (GCA_965140235.1), from VGP.
 organism:
   scientific_name: Caretta caretta
-  common_name: loggerhead turtle
   taxon_id: 8467
 assembly:
   source: GenBank

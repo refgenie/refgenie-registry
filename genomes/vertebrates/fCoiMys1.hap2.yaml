@@ -3,7 +3,6 @@ description: |
   Coilia mystus assembly fCoiMys1.hap2 (GCA_048544225.1), from VGP.
 organism:
   scientific_name: Coilia mystus
-  common_name: Osbeck's grenadier anchovy
   taxon_id: 286537
 assembly:
   source: GenBank

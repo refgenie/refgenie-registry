@@ -3,7 +3,6 @@ description: |
   Dendropsophus ebraccatus assembly aDenEbr1.pat (GCF_027789765.1), from VGP.
 organism:
   scientific_name: Dendropsophus ebraccatus
-  common_name: hourglass treefrog
   taxon_id: 150705
 assembly:
   source: RefSeq

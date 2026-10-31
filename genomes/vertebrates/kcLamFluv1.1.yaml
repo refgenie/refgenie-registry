@@ -3,7 +3,6 @@ description: |
   Lampetra fluviatilis assembly kcLamFluv1.1 (GCA_964198595.1), from VGP.
 organism:
   scientific_name: Lampetra fluviatilis
-  common_name: European river lamprey
   taxon_id: 7748
 assembly:
   source: GenBank

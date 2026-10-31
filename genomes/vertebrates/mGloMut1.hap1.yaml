@@ -3,7 +3,6 @@ description: |
   Glossophaga mutica assembly mGloMut1.hap1 (GCA_039655065.1), from VGP.
 organism:
   scientific_name: Glossophaga mutica
-  common_name: Merriam's long-tongued bat
   taxon_id: 2994998
 assembly:
   source: GenBank

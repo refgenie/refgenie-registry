@@ -3,7 +3,6 @@ description: |
   Rhinolophus ferrumequinum assembly mRhiFer1_v1.p (GCF_004115265.2), from VGP.
 organism:
   scientific_name: Rhinolophus ferrumequinum
-  common_name: greater horseshoe bat
   taxon_id: 59479
 assembly:
   source: RefSeq

@@ -3,7 +3,6 @@ description: |
   Sterna hirundo assembly bSteHir1.pri (GCA_009819605.1), from VGP.
 organism:
   scientific_name: Sterna hirundo
-  common_name: Common tern
   taxon_id: 108405
 assembly:
   source: GenBank

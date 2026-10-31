@@ -3,7 +3,6 @@ description: |
   Borostomias antarcticus assembly fBorAnt1.1 (GCA_949987555.1), from VGP.
 organism:
   scientific_name: Borostomias antarcticus
-  common_name: large-eye snaggletooth
   taxon_id: 473354
 assembly:
   source: GenBank

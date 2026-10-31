@@ -3,7 +3,6 @@ description: |
   Poromitra crassiceps assembly fPorCra3.hap1.1 (GCA_964638095.1), from VGP.
 organism:
   scientific_name: Poromitra crassiceps
-  common_name: crested bigscale
   taxon_id: 88708
 assembly:
   source: GenBank

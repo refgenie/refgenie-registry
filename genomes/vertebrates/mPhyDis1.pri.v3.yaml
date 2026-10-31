@@ -3,7 +3,6 @@ description: |
   Phyllostomus discolor assembly mPhyDis1.pri.v3 (GCF_004126475.2), from VGP.
 organism:
   scientific_name: Phyllostomus discolor
-  common_name: pale spear-nosed bat
   taxon_id: 89673
 assembly:
   source: RefSeq

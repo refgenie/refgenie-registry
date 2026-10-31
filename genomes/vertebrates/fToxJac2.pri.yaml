@@ -3,7 +3,6 @@ description: |
   Toxotes jaculatrix assembly fToxJac2.pri (GCF_017976425.1), from VGP.
 organism:
   scientific_name: Toxotes jaculatrix
-  common_name: banded archerfish
   taxon_id: 941984
 assembly:
   source: RefSeq

@@ -3,7 +3,6 @@ description: |
   Pipistrellus hanaki assembly mPipHan1.1 (GCA_964339955.1), from VGP.
 organism:
   scientific_name: Pipistrellus hanaki
-  common_name: Hanaki's dwarf bat
   taxon_id: 412090
 assembly:
   source: GenBank

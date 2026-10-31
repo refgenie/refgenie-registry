@@ -3,7 +3,6 @@ description: |
   Salminus brasiliensis assembly fSalBra1.hap2 (GCF_030463535.1), from VGP.
 organism:
   scientific_name: Salminus brasiliensis
-  common_name: dorado
   taxon_id: 930266
 assembly:
   source: RefSeq

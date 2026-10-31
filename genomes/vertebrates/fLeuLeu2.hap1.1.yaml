@@ -3,7 +3,6 @@ description: |
   Leuciscus leuciscus assembly fLeuLeu2.hap1.1 (GCA_965113295.1), from VGP.
 organism:
   scientific_name: Leuciscus leuciscus
-  common_name: common dace
   taxon_id: 58325
 assembly:
   source: GenBank

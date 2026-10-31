@@ -3,7 +3,6 @@ description: |
   Pagrus pagrus assembly fPagPag1.hap1.1 (GCA_965226575.1), from VGP.
 organism:
   scientific_name: Pagrus pagrus
-  common_name: common seabream
   taxon_id: 8173
 assembly:
   source: GenBank

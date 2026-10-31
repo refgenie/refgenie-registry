@@ -3,7 +3,6 @@ description: |
   Micropterus salmoides assembly HNU_Msal_1.0 (GCA_019677235.1), from VGP.
 organism:
   scientific_name: Micropterus salmoides
-  common_name: largemouth bass
   taxon_id: 27706
 assembly:
   source: GenBank

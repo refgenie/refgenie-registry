@@ -3,7 +3,6 @@ description: |
   Dasyurus maculatus assembly ASM4859328v1 (GCA_048593285.1), from VGP.
 organism:
   scientific_name: Dasyurus maculatus
-  common_name: spotted-tailed quoll
   taxon_id: 9281
 assembly:
   source: GenBank

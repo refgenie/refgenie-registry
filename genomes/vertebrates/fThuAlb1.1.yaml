@@ -3,7 +3,6 @@ description: |
   Thunnus albacares assembly fThuAlb1.1 (GCF_914725855.1), from VGP.
 organism:
   scientific_name: Thunnus albacares
-  common_name: yellowfin tuna
   taxon_id: 8236
 assembly:
   source: RefSeq

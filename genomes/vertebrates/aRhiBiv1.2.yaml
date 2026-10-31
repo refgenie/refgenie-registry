@@ -3,7 +3,6 @@ description: |
   Rhinatrema bivittatum assembly aRhiBiv1.2 (GCA_901001135.2), from VGP.
 organism:
   scientific_name: Rhinatrema bivittatum
-  common_name: two-lined caecilian
   taxon_id: 194408
 assembly:
   source: GenBank

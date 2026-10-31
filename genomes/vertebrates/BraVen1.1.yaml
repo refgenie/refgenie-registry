@@ -3,7 +3,6 @@ description: |
   Bradypodion ventrale assembly BraVen1.1 (GCA_035047345.1), from VGP.
 organism:
   scientific_name: Bradypodion ventrale
-  common_name: Southern dwarf chameleon
   taxon_id: 179890
 assembly:
   source: GenBank

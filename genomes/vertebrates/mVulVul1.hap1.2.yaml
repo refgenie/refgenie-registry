@@ -3,7 +3,6 @@ description: |
   Vulpes vulpes assembly mVulVul1.hap1.2 (GCA_964106825.2), from VGP.
 organism:
   scientific_name: Vulpes vulpes
-  common_name: red fox
   taxon_id: 9627
 assembly:
   source: GenBank

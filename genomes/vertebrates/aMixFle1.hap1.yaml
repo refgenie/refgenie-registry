@@ -3,7 +3,6 @@ description: |
   Mixophyes fleayi assembly aMixFle1.hap1 (GCA_038048845.1), from VGP.
 organism:
   scientific_name: Mixophyes fleayi
-  common_name: Fleay's barred frog
   taxon_id: 3061075
 assembly:
   source: GenBank

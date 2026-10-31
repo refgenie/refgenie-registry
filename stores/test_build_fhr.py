@@ -1,4 +1,4 @@
-"""Tests for build_fhr.py: species-list lookups and species.json.
+"""Tests for build_fhr.py: CSV-derived FHR fields, species-list lookups and species.json.
 
 No refget/gtars needed: a stub `refget.store` module stands in for FhrMetadata,
 and a fake store for RefgetStore.
@@ -19,6 +19,7 @@ sys.path.insert(0, str(STORES.parent / "tools"))
 
 import build_fhr  # noqa: E402
 import species_list  # noqa: E402
+from genome_to_fhr import FHR_SCHEMA_URL, FHR_SCHEMA_VERSION  # noqa: E402
 
 SPECIES = species_list.load_species_list()
 
@@ -63,10 +64,11 @@ HUMAN = row("hg38", "Homo sapiens", source="UCSC", genome_assembly="GRCh38",
 # fhr_fields_for_row
 # --------------------------------------------------------------------------
 
-def test_human_row_gives_todays_fields():
+def test_human_row_gives_spec_fields():
     assert build_fhr.fhr_fields_for_row(HUMAN, SPECIES) == {
-        "genome": "Homo sapiens",
-        "commonName": "human",
+        "schema": FHR_SCHEMA_URL,
+        "schemaVersion": FHR_SCHEMA_VERSION,
+        "genome": "hg38",
         "taxon": {"name": "Homo sapiens", "uri": "https://identifiers.org/taxonomy:9606"},
         "documentation": "Homo sapiens genome hg38 (GRCh38), distributed by UCSC.",
         "assemblySource": "UCSC",
@@ -76,12 +78,40 @@ def test_human_row_gives_todays_fields():
 
 def test_old_dog_name_gives_the_current_scientific_name():
     fields = build_fhr.fhr_fields_for_row(row("canFam3", "Canis familiaris"), SPECIES)
-    assert fields["genome"] == "Canis lupus familiaris"
+    assert fields["genome"] == "canFam3"
     assert fields["taxon"] == {
         "name": "Canis lupus familiaris",
         "uri": "https://identifiers.org/taxonomy:9615",
     }
     assert "genomeSynonym" not in fields
+
+
+def test_unnamed_row_has_no_genome():
+    assert "genome" not in build_fhr.fhr_fields_for_row(row("  ", "Homo sapiens"), SPECIES)
+
+
+# --------------------------------------------------------------------------
+# fill_from_accession
+# --------------------------------------------------------------------------
+
+def test_fill_from_accession_sets_version_and_level():
+    fields = {"accessionID": {"name": "GCF_000001405.40"}}
+    assert build_fhr.fill_from_accession(fields) is None
+    assert fields["version"] == "40"
+    assert fields["assemblyLevel"] == "chromosome"
+
+
+def test_fill_from_accession_leaves_a_record_without_an_accession_alone():
+    fields = {"genome": "x"}
+    assert build_fhr.fill_from_accession(fields) is None
+    assert fields == {"genome": "x"}
+
+
+def test_fill_from_accession_keeps_a_curated_version_and_reports_an_unknown_level():
+    fields = {"accessionID": {"name": "GCA_999999999.2"}, "version": "curated"}
+    assert build_fhr.fill_from_accession(fields) == "GCA_999999999.2"
+    assert fields["version"] == "curated"
+    assert "assemblyLevel" not in fields
 
 
 # --------------------------------------------------------------------------
@@ -105,7 +135,7 @@ def test_empty_organism_gets_its_own_message(capsys):
 
 
 def test_rows_with_a_curated_record_are_exempt():
-    records = {"x": {"genome": "Notarealus speciesus"}}
+    records = {"x": {"genome": "x", "taxon": {"name": "Notarealus speciesus"}}}
     build_fhr.validate_organisms([HUMAN, row("x", "Notarealus speciesus")], SPECIES, records)
 
 
@@ -114,8 +144,7 @@ def test_rows_with_a_curated_record_are_exempt():
 # --------------------------------------------------------------------------
 
 MOUSE_RECORD = {
-    "genome": "Mus musculus",
-    "commonName": "mouse",
+    "genome": "mm39",
     "taxon": {"name": "Mus musculus", "uri": "https://identifiers.org/taxonomy:10090"},
 }
 ROWS = [HUMAN, row("canFam3", "Canis familiaris"), row("mm39", "")]

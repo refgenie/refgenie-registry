@@ -3,7 +3,6 @@ description: |
   Centroberyx gerrardi assembly fCenGer3.hap1.cur.20231027 (GCA_048128805.1), from VGP.
 organism:
   scientific_name: Centroberyx gerrardi
-  common_name: bight redfish
   taxon_id: 166262
 assembly:
   source: GenBank

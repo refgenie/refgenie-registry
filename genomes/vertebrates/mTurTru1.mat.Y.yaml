@@ -3,7 +3,6 @@ description: |
   Tursiops truncatus assembly mTurTru1.mat.Y (GCF_011762595.1), from VGP.
 organism:
   scientific_name: Tursiops truncatus
-  common_name: common bottlenose dolphin
   taxon_id: 9739
 assembly:
   source: RefSeq

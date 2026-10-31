@@ -3,7 +3,6 @@ description: |
   Branta canadensis assembly bBraCan1.1 (GCA_965231335.1), from VGP.
 organism:
   scientific_name: Branta canadensis
-  common_name: Canada goose
   taxon_id: 8853
 assembly:
   source: GenBank

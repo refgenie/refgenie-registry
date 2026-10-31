@@ -6,7 +6,6 @@ description: |
 
 organism:
   scientific_name: Arabidopsis thaliana
-  common_name: thale cress
   taxon_id: 3702
 
 assembly:

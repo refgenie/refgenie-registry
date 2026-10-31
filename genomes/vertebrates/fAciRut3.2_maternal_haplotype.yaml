@@ -3,7 +3,6 @@ description: |
   Acipenser ruthenus assembly fAciRut3.2 maternal haplotype (GCF_902713425.1), from VGP.
 organism:
   scientific_name: Acipenser ruthenus
-  common_name: sterlet
   taxon_id: 7906
 assembly:
   source: RefSeq

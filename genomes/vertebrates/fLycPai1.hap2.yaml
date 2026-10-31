@@ -3,7 +3,6 @@ description: |
   Lycodopsis pacificus assembly fLycPai1.hap2 (GCA_028022725.1), from VGP.
 organism:
   scientific_name: Lycodopsis pacificus
-  common_name: blackbelly eelpout
   taxon_id: 1772091
 assembly:
   source: GenBank

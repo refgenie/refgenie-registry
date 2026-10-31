@@ -3,7 +3,6 @@ description: |
   Clavelina lepadiformis assembly kaClaLepa1.1 (GCA_947623445.1), from VGP.
 organism:
   scientific_name: Clavelina lepadiformis
-  common_name: light-bulb sea squirt
   taxon_id: 159417
 assembly:
   source: GenBank

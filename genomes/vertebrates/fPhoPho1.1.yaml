@@ -3,7 +3,6 @@ description: |
   Phoxinus phoxinus assembly fPhoPho1.1 (GCA_949152265.1), from VGP.
 organism:
   scientific_name: Phoxinus phoxinus
-  common_name: Eurasian minnow
   taxon_id: 58324
 assembly:
   source: GenBank

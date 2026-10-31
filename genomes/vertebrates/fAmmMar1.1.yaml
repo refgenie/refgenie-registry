@@ -3,7 +3,6 @@ description: |
   Ammodytes marinus assembly fAmmMar1.1 (GCA_949987685.1), from VGP.
 organism:
   scientific_name: Ammodytes marinus
-  common_name: lesser sand-eel
   taxon_id: 146480
 assembly:
   source: GenBank

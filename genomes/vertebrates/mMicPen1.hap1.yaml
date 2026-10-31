@@ -3,7 +3,6 @@ description: |
   Microtus pennsylvanicus assembly mMicPen1.hap1 (GCA_037038515.1), from VGP.
 organism:
   scientific_name: Microtus pennsylvanicus
-  common_name: meadow vole
   taxon_id: 10058
 assembly:
   source: GenBank

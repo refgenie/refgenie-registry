@@ -3,7 +3,6 @@ description: |
   Eublepharis macularius assembly MPM_Emac_v1.0 (GCF_028583425.1), from VGP.
 organism:
   scientific_name: Eublepharis macularius
-  common_name: Leopard gecko
   taxon_id: 481883
 assembly:
   source: RefSeq

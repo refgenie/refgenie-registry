@@ -3,7 +3,6 @@ description: |
   Sardina pilchardus assembly fSarPil1.1 (GCF_963854185.1), from VGP.
 organism:
   scientific_name: Sardina pilchardus
-  common_name: European sardine
   taxon_id: 27697
 assembly:
   source: RefSeq

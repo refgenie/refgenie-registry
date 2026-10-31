@@ -3,7 +3,6 @@ description: |
   Hyla sarda assembly aHylSar1.hap1 (GCF_029499605.1), from VGP.
 organism:
   scientific_name: Hyla sarda
-  common_name: Sardinian treefrog
   taxon_id: 327740
 assembly:
   source: RefSeq

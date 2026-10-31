@@ -3,7 +3,6 @@ description: |
   Pelecanus crispus assembly bPelCri1.pri (GCA_030463565.1), from VGP.
 organism:
   scientific_name: Pelecanus crispus
-  common_name: Dalmatian pelican
   taxon_id: 36300
 assembly:
   source: GenBank

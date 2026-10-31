@@ -3,7 +3,6 @@ description: |
   Chlamydotis macqueenii assembly bChlMac1.mat (GCA_036417535.1), from VGP.
 organism:
   scientific_name: Chlamydotis macqueenii
-  common_name: Macqueen's bustard
   taxon_id: 187382
 assembly:
   source: GenBank

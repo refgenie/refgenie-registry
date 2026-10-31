@@ -3,7 +3,6 @@ description: |
   Erithacus rubecula assembly bEriRub2.2 (GCA_903797595.2), from VGP.
 organism:
   scientific_name: Erithacus rubecula
-  common_name: European robin
   taxon_id: 37610
 assembly:
   source: GenBank

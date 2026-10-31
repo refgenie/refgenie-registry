@@ -3,7 +3,6 @@ description: |
   Electrophorus electricus assembly fEleEle1.pri (GCF_013358815.1), from VGP.
 organism:
   scientific_name: Electrophorus electricus
-  common_name: electric eel
   taxon_id: 8005
 assembly:
   source: RefSeq

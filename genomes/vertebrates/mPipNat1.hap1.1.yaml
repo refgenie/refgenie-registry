@@ -3,7 +3,6 @@ description: |
   Pipistrellus nathusii assembly mPipNat1.hap1.1 (GCA_964656225.1), from VGP.
 organism:
   scientific_name: Pipistrellus nathusii
-  common_name: Nathusius's pipistrelle
   taxon_id: 59473
 assembly:
   source: GenBank

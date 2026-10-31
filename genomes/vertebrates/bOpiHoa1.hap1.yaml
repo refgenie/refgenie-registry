@@ -3,7 +3,6 @@ description: |
   Opisthocomus hoazin assembly bOpiHoa1.hap1 (GCA_030867145.1), from VGP.
 organism:
   scientific_name: Opisthocomus hoazin
-  common_name: hoatzin
   taxon_id: 30419
 assembly:
   source: GenBank

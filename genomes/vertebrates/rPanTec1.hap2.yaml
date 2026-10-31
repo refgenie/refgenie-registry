@@ -3,7 +3,6 @@ description: |
   Pangshura tecta assembly rPanTec1.hap2 (GCA_045781085.1), from VGP.
 organism:
   scientific_name: Pangshura tecta
-  common_name: Indian roofed turtle
   taxon_id: 260642
 assembly:
   source: GenBank

@@ -3,7 +3,6 @@ description: |
   Rana temporaria assembly aRanTem1.1 (GCF_905171775.1), from VGP.
 organism:
   scientific_name: Rana temporaria
-  common_name: common frog
   taxon_id: 8407
 assembly:
   source: RefSeq

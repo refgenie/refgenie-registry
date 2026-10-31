@@ -3,7 +3,6 @@ description: |
   Syngnathus typhle assembly SynTyp1_v1.hap1 (GCA_048301445.1), from VGP.
 organism:
   scientific_name: Syngnathus typhle
-  common_name: broad-nosed pipefish
   taxon_id: 161592
 assembly:
   source: GenBank

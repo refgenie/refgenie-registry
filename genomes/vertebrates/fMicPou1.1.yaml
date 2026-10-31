@@ -3,7 +3,6 @@ description: |
   Micromesistius poutassou assembly fMicPou1.1 (GCA_964030765.1), from VGP.
 organism:
   scientific_name: Micromesistius poutassou
-  common_name: blue whiting
   taxon_id: 81636
 assembly:
   source: GenBank

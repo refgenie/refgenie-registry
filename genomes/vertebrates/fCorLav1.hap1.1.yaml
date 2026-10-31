@@ -3,7 +3,6 @@ description: |
   Coregonus lavaretus assembly fCorLav1.hap1.1 (GCA_964263955.1), from VGP.
 organism:
   scientific_name: Coregonus lavaretus
-  common_name: common whitefish
   taxon_id: 59291
 assembly:
   source: GenBank

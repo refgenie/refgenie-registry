@@ -3,7 +3,6 @@ description: |
   Electrophorus electricus assembly ASM4190279v1 (GCA_041902795.1), from VGP.
 organism:
   scientific_name: Electrophorus electricus
-  common_name: electric eel
   taxon_id: 8005
 assembly:
   source: GenBank

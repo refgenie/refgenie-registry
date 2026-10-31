@@ -3,7 +3,6 @@ description: |
   Hemiscyllium ocellatum assembly sHemOce1.pat.X.cur. (GCF_020745735.1), from VGP.
 organism:
   scientific_name: Hemiscyllium ocellatum
-  common_name: epaulette shark
   taxon_id: 170820
 assembly:
   source: RefSeq

@@ -3,7 +3,6 @@ description: |
   Gallinula chloropus assembly bGalChl1.hap1.1 (GCA_964237585.1), from VGP.
 organism:
   scientific_name: Gallinula chloropus
-  common_name: common moorhen
   taxon_id: 9123
 assembly:
   source: GenBank

@@ -3,7 +3,6 @@ description: |
   Sylvilagus floridanus assembly mSylFlo1.10 (GCA_949820135.1), from VGP.
 organism:
   scientific_name: Sylvilagus floridanus
-  common_name: eastern cottontail
   taxon_id: 9988
 assembly:
   source: GenBank

@@ -3,7 +3,6 @@ description: |
   Hoplias malabaricus assembly fHopMal1.hap2 (GCA_029633875.1), from VGP.
 organism:
   scientific_name: Hoplias malabaricus
-  common_name: trahira
   taxon_id: 27720
 assembly:
   source: GenBank

@@ -3,7 +3,6 @@ description: |
   Falco naumanni assembly bFalNau1.pat (GCF_017639655.2), from VGP.
 organism:
   scientific_name: Falco naumanni
-  common_name: lesser kestrel
   taxon_id: 148594
 assembly:
   source: RefSeq

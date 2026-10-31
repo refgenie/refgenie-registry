@@ -3,7 +3,6 @@ description: |
   Pipistrellus kuhlii assembly mPipKuh1.p (GCF_014108245.1), from VGP.
 organism:
   scientific_name: Pipistrellus kuhlii
-  common_name: Kuhl's pipistrelle
   taxon_id: 59472
 assembly:
   source: RefSeq

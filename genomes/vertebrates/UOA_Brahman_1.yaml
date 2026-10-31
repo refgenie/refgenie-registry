@@ -3,7 +3,6 @@ description: |
   Bos indicus x Bos taurus assembly UOA_Brahman_1 (GCF_003369695.1), from VGP.
 organism:
   scientific_name: Bos indicus x Bos taurus
-  common_name: hybrid cattle
   taxon_id: 30522
 assembly:
   source: RefSeq

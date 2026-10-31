@@ -3,7 +3,6 @@ description: |
   Rissa tridactyla assembly bRisTri1.patW.cur.20221130 (GCF_028500815.1), from VGP.
 organism:
   scientific_name: Rissa tridactyla
-  common_name: black-legged kittiwake
   taxon_id: 75485
 assembly:
   source: RefSeq

@@ -3,7 +3,6 @@ description: |
   Discoglossus pictus assembly aDisPic1.pri (GCA_027410445.1), from VGP.
 organism:
   scientific_name: Discoglossus pictus
-  common_name: painted frog
   taxon_id: 8351
 assembly:
   source: GenBank

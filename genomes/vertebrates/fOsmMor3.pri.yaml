@@ -3,7 +3,6 @@ description: |
   Osmerus mordax assembly fOsmMor3.pri (GCA_038355195.1), from VGP.
 organism:
   scientific_name: Osmerus mordax
-  common_name: rainbow smelt
   taxon_id: 8014
 assembly:
   source: GenBank

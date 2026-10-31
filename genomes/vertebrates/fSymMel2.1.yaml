@@ -3,7 +3,6 @@ description: |
   Symphodus melops assembly fSymMel2.1 (GCA_947650265.1), from VGP.
 organism:
   scientific_name: Symphodus melops
-  common_name: corkwing wrasse
   taxon_id: 171736
 assembly:
   source: GenBank

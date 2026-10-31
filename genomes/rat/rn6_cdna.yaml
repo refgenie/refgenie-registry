@@ -5,7 +5,6 @@ description: |
 
 organism:
   scientific_name: Rattus norvegicus
-  common_name: rat
   taxon_id: 10116
 
 assembly:

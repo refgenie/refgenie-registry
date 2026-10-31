@@ -3,7 +3,6 @@ description: |
   Aulostomus maculatus assembly ASM4830146v1 (GCA_048301465.1), from VGP.
 organism:
   scientific_name: Aulostomus maculatus
-  common_name: trumpetfish
   taxon_id: 150449
 assembly:
   source: GenBank

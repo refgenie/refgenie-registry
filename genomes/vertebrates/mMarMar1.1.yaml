@@ -3,7 +3,6 @@ description: |
   Martes martes assembly mMarMar1.1 (GCA_963455335.1), from VGP.
 organism:
   scientific_name: Martes martes
-  common_name: European pine marten
   taxon_id: 29065
 assembly:
   source: GenBank

@@ -3,7 +3,6 @@ description: |
   Argentina silus assembly fArgSil1.1 (GCA_951799395.1), from VGP.
 organism:
   scientific_name: Argentina silus
-  common_name: greater argentine
   taxon_id: 446415
 assembly:
   source: GenBank

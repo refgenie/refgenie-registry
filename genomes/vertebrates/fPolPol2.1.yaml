@@ -3,7 +3,6 @@ description: |
   Pollachius pollachius assembly fPolPol2.1 (GCA_949987615.1), from VGP.
 organism:
   scientific_name: Pollachius pollachius
-  common_name: pollack
   taxon_id: 185739
 assembly:
   source: GenBank

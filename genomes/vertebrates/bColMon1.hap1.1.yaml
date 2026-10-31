@@ -3,7 +3,6 @@ description: |
   Coloeus monedula assembly bColMon1.hap1.1 (GCA_965178545.1), from VGP.
 organism:
   scientific_name: Coloeus monedula
-  common_name: jackdaw
   taxon_id: 30423
 assembly:
   source: GenBank

@@ -3,7 +3,6 @@ description: |
   Chanos chanos assembly fChaCha1.1 (GCF_902362185.1), from VGP.
 organism:
   scientific_name: Chanos chanos
-  common_name: milkfish
   taxon_id: 29144
 assembly:
   source: RefSeq

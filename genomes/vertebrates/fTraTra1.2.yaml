@@ -3,7 +3,6 @@ description: |
   Trachurus trachurus assembly fTraTra1.2 (GCA_905171665.2), from VGP.
 organism:
   scientific_name: Trachurus trachurus
-  common_name: Atlantic horse mackerel
   taxon_id: 36212
 assembly:
   source: GenBank

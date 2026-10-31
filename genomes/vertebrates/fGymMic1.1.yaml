@@ -3,7 +3,6 @@ description: |
   Gymnoscopelus microlampas assembly fGymMic1.1 (GCA_963454915.1), from VGP.
 organism:
   scientific_name: Gymnoscopelus microlampas
-  common_name: minispotted lanternfish
   taxon_id: 1090481
 assembly:
   source: GenBank

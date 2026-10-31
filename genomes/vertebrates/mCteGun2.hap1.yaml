@@ -3,7 +3,6 @@ description: |
   Ctenodactylus gundi assembly mCteGun2.hap1 (GCA_048771875.1), from VGP.
 organism:
   scientific_name: Ctenodactylus gundi
-  common_name: northern gundi
   taxon_id: 10166
 assembly:
   source: GenBank

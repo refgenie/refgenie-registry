@@ -3,7 +3,6 @@ description: |
   Lutra lutra assembly mLutLut1.2 (GCF_902655055.1), from VGP.
 organism:
   scientific_name: Lutra lutra
-  common_name: Eurasian river otter
   taxon_id: 9657
 assembly:
   source: RefSeq

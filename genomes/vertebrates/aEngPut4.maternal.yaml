@@ -3,7 +3,6 @@ description: |
   Engystomops pustulosus assembly aEngPut4.maternal (GCF_040894005.1), from VGP.
 organism:
   scientific_name: Engystomops pustulosus
-  common_name: Tungara frog
   taxon_id: 76066
 assembly:
   source: RefSeq

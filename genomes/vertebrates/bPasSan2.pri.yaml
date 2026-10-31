@@ -3,7 +3,6 @@ description: |
   Passerculus sandwichensis assembly bPasSan2.pri (GCA_031885435.1), from VGP.
 organism:
   scientific_name: Passerculus sandwichensis
-  common_name: Savannah sparrow
   taxon_id: 161624
 assembly:
   source: GenBank

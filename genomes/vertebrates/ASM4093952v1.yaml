@@ -3,7 +3,6 @@ description: |
   Protopterus annectens assembly ASM4093952v1 (GCA_040939525.1), from VGP.
 organism:
   scientific_name: Protopterus annectens
-  common_name: West African lungfish
   taxon_id: 7888
 assembly:
   source: GenBank

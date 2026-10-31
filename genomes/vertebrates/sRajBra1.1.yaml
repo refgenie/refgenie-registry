@@ -3,7 +3,6 @@ description: |
   Raja brachyura assembly sRajBra1.1 (GCA_963514005.1), from VGP.
 organism:
   scientific_name: Raja brachyura
-  common_name: blonde ray
   taxon_id: 223862
 assembly:
   source: GenBank

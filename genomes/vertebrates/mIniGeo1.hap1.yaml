@@ -3,7 +3,6 @@ description: |
   Inia geoffrensis assembly mIniGeo1.hap1 (GCA_036417435.1), from VGP.
 organism:
   scientific_name: Inia geoffrensis
-  common_name: Amazon river dolphin
   taxon_id: 9725
 assembly:
   source: GenBank

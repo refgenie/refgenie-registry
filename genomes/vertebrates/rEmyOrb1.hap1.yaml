@@ -3,7 +3,6 @@ description: |
   Emys orbicularis assembly rEmyOrb1.hap1 (GCF_028017835.1), from VGP.
 organism:
   scientific_name: Emys orbicularis
-  common_name: European pond turtle
   taxon_id: 82168
 assembly:
   source: RefSeq

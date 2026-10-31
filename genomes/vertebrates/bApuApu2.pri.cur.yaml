@@ -3,7 +3,6 @@ description: |
   Apus apus assembly bApuApu2.pri.cur (GCF_020740795.1), from VGP.
 organism:
   scientific_name: Apus apus
-  common_name: common swift
   taxon_id: 8895
 assembly:
   source: RefSeq

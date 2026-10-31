@@ -3,7 +3,6 @@ description: |
   Grampus griseus assembly mGraGri1.hap1.1 (GCA_964374135.1), from VGP.
 organism:
   scientific_name: Grampus griseus
-  common_name: Risso's dolphin
   taxon_id: 83653
 assembly:
   source: GenBank

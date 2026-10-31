@@ -3,7 +3,6 @@ description: |
   Caesio teres assembly fCaeTer1.1_haplotype_1 (GCA_048129055.1), from VGP.
 organism:
   scientific_name: Caesio teres
-  common_name: yellow and blueback fusilier
   taxon_id: 1311420
 assembly:
   source: GenBank

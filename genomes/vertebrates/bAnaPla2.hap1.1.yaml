@@ -3,7 +3,6 @@ description: |
   Anas platyrhynchos assembly bAnaPla2.hap1.1 (GCA_964188345.1), from VGP.
 organism:
   scientific_name: Anas platyrhynchos
-  common_name: mallard
   taxon_id: 8839
 assembly:
   source: GenBank

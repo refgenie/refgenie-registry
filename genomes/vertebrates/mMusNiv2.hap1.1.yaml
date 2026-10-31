@@ -3,7 +3,6 @@ description: |
   Mustela nivalis assembly mMusNiv2.hap1.1 (GCA_964662115.1), from VGP.
 organism:
   scientific_name: Mustela nivalis
-  common_name: least weasel
   taxon_id: 36239
 assembly:
   source: GenBank

@@ -3,7 +3,6 @@ description: |
   Erpetoichthys calabaricus assembly fErpCal1.3 (GCF_900747795.2), from VGP.
 organism:
   scientific_name: Erpetoichthys calabaricus
-  common_name: reedfish
   taxon_id: 27687
 assembly:
   source: RefSeq

@@ -3,7 +3,6 @@ description: |
   Acomys russatus assembly mAcoRus1.1 (GCF_903995435.1), from VGP.
 organism:
   scientific_name: Acomys russatus
-  common_name: golden spiny mouse
   taxon_id: 60746
 assembly:
   source: RefSeq

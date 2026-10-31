@@ -3,7 +3,6 @@ description: |
   Agelaius phoeniceus assembly Agelaius phoeniceus 1.1 (GCF_020745825.1), from VGP.
 organism:
   scientific_name: Agelaius phoeniceus
-  common_name: red-winged blackbird
   taxon_id: 39638
 assembly:
   source: RefSeq

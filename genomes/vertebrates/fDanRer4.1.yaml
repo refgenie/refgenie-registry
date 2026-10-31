@@ -3,7 +3,6 @@ description: |
   Danio rerio assembly fDanRer4.1 (GCA_944039275.1), from VGP.
 organism:
   scientific_name: Danio rerio
-  common_name: zebrafish
   taxon_id: 7955
 assembly:
   source: GenBank

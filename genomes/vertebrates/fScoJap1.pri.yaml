@@ -3,7 +3,6 @@ description: |
   Scomber japonicus assembly fScoJap1.pri (GCF_027409825.1), from VGP.
 organism:
   scientific_name: Scomber japonicus
-  common_name: chub mackerel
   taxon_id: 13676
 assembly:
   source: RefSeq

@@ -3,7 +3,6 @@ description: |
   Chelmon rostratus assembly fCheRos1.pri (GCF_017976325.1), from VGP.
 organism:
   scientific_name: Chelmon rostratus
-  common_name: copperband butterflyfish
   taxon_id: 109905
 assembly:
   source: RefSeq

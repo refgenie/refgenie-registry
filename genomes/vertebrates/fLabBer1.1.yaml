@@ -3,7 +3,6 @@ description: |
   Labrus bergylta assembly fLabBer1.1 (GCF_963930695.1), from VGP.
 organism:
   scientific_name: Labrus bergylta
-  common_name: ballan wrasse
   taxon_id: 56723
 assembly:
   source: RefSeq

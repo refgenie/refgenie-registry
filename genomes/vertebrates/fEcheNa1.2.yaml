@@ -3,7 +3,6 @@ description: |
   Echeneis naucrates assembly fEcheNa1.2 (GCA_900963305.2), from VGP.
 organism:
   scientific_name: Echeneis naucrates
-  common_name: live sharksucker
   taxon_id: 173247
 assembly:
   source: GenBank

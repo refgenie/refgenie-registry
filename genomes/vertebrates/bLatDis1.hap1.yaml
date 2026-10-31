@@ -3,7 +3,6 @@ description: |
   Lathamus discolor assembly bLatDis1.hap1 (GCF_037157495.1), from VGP.
 organism:
   scientific_name: Lathamus discolor
-  common_name: Swift parrot
   taxon_id: 678569
 assembly:
   source: RefSeq

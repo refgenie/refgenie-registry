@@ -3,7 +3,6 @@ description: |
   Orcinus orca assembly mOrcOrc1.1 (GCF_937001465.1), from VGP.
 organism:
   scientific_name: Orcinus orca
-  common_name: killer whale
   taxon_id: 9733
 assembly:
   source: RefSeq

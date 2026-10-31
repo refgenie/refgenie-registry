@@ -3,7 +3,6 @@ description: |
   Podarcis filfolensis assembly rPodFil1.hap1.1 (GCA_964270895.1), from VGP.
 organism:
   scientific_name: Podarcis filfolensis
-  common_name: Filfola wall lizard
   taxon_id: 65481
 assembly:
   source: GenBank

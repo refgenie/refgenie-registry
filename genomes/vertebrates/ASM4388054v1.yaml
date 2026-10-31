@@ -3,7 +3,6 @@ description: |
   Rhinopoma microphyllum assembly ASM4388054v1 (GCA_043880545.1), from VGP.
 organism:
   scientific_name: Rhinopoma microphyllum
-  common_name: Greater mouse-tailed bat
   taxon_id: 173903
 assembly:
   source: GenBank

@@ -3,7 +3,6 @@ description: |
   Blennius ocellaris assembly fBleOce1.1 (GCA_963422515.1), from VGP.
 organism:
   scientific_name: Blennius ocellaris
-  common_name: butterfly blenny
   taxon_id: 195075
 assembly:
   source: GenBank

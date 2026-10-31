@@ -3,7 +3,6 @@ description: |
   Dasypus novemcinctus assembly mDasNov1.1.hap2 (GCF_030445035.2), from VGP.
 organism:
   scientific_name: Dasypus novemcinctus
-  common_name: nine-banded armadillo
   taxon_id: 9361
 assembly:
   source: RefSeq

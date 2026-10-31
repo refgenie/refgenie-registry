@@ -3,7 +3,6 @@ description: |
   Hydrolagus colliei assembly sHydCol1.hap2 (GCA_035084275.1), from VGP.
 organism:
   scientific_name: Hydrolagus colliei
-  common_name: spotted ratfish
   taxon_id: 7873
 assembly:
   source: GenBank

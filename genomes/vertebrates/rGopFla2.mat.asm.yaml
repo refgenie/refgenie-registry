@@ -3,7 +3,6 @@ description: |
   Gopherus flavomarginatus assembly rGopFla2.mat.asm (GCF_025201925.1), from VGP.
 organism:
   scientific_name: Gopherus flavomarginatus
-  common_name: Mexican gopher tortoise
   taxon_id: 286002
 assembly:
   source: RefSeq

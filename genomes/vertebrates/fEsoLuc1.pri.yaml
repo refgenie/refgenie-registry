@@ -3,7 +3,6 @@ description: |
   Esox lucius assembly fEsoLuc1.pri (GCF_011004845.1), from VGP.
 organism:
   scientific_name: Esox lucius
-  common_name: northern pike
   taxon_id: 8010
 assembly:
   source: RefSeq

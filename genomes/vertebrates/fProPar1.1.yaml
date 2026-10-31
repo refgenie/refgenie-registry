@@ -3,7 +3,6 @@ description: |
   Protomyctophum parallelum assembly fProPar1.1 (GCA_964188405.1), from VGP.
 organism:
   scientific_name: Protomyctophum parallelum
-  common_name: parallel lanternfish
   taxon_id: 1091426
 assembly:
   source: GenBank

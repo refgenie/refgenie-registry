@@ -3,7 +3,6 @@ description: |
   Doryrhina cyclops assembly ASM4388028v1 (GCA_043880285.1), from VGP.
 organism:
   scientific_name: Doryrhina cyclops
-  common_name: cyclops roundleaf bat
   taxon_id: 249021
 assembly:
   source: GenBank

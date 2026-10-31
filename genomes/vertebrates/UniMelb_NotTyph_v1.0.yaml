@@ -3,7 +3,6 @@ description: |
   Notoryctes typhlops assembly UniMelb_NotTyph_v1.0 (GCA_048126345.1), from VGP.
 organism:
   scientific_name: Notoryctes typhlops
-  common_name: marsupial mole
   taxon_id: 37699
 assembly:
   source: GenBank

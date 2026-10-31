@@ -3,7 +3,6 @@ description: |
   Ranitomeya imitator assembly aRanImi1.pri (GCF_032444005.1), from VGP.
 organism:
   scientific_name: Ranitomeya imitator
-  common_name: mimic poison frog
   taxon_id: 111125
 assembly:
   source: RefSeq

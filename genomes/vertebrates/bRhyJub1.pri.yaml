@@ -3,7 +3,6 @@ description: |
   Rhynochetos jubatus assembly bRhyJub1.pri (GCA_027574665.1), from VGP.
 organism:
   scientific_name: Rhynochetos jubatus
-  common_name: kagu
   taxon_id: 54386
 assembly:
   source: GenBank

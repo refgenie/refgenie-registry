@@ -3,7 +3,6 @@ description: |
   Theristicus caerulescens assembly bTheCae1.pri.cur (GCA_020745775.1), from VGP.
 organism:
   scientific_name: Theristicus caerulescens
-  common_name: plumbeous ibis
   taxon_id: 1118847
 assembly:
   source: GenBank

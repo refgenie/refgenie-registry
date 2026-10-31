@@ -3,7 +3,6 @@ description: |
   Nesoenas mayeri assembly bNesMay2.1 (GCA_963082525.1), from VGP.
 organism:
   scientific_name: Nesoenas mayeri
-  common_name: pink pigeon
   taxon_id: 187126
 assembly:
   source: GenBank

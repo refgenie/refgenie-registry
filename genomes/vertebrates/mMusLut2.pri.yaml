@@ -3,7 +3,6 @@ description: |
   Mustela lutreola assembly mMusLut2.pri (GCF_030435805.1), from VGP.
 organism:
   scientific_name: Mustela lutreola
-  common_name: European mink
   taxon_id: 9666
 assembly:
   source: RefSeq

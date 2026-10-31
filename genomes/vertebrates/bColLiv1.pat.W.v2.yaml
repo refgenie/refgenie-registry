@@ -3,7 +3,6 @@ description: |
   Columba livia assembly bColLiv1.pat.W.v2 (GCF_036013475.1), from VGP.
 organism:
   scientific_name: Columba livia
-  common_name: rock pigeon
   taxon_id: 8932
 assembly:
   source: RefSeq

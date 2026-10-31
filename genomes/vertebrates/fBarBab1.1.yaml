@@ -3,7 +3,6 @@ description: |
   Barbus barbus assembly fBarBab1.1 (GCA_936440315.1), from VGP.
 organism:
   scientific_name: Barbus barbus
-  common_name: barbel
   taxon_id: 40830
 assembly:
   source: GenBank

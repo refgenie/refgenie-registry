@@ -3,7 +3,6 @@ description: |
   Hippoglossus hippoglossus assembly fHipHip1.pri (GCF_009819705.1), from VGP.
 organism:
   scientific_name: Hippoglossus hippoglossus
-  common_name: Atlantic halibut
   taxon_id: 8267
 assembly:
   source: RefSeq

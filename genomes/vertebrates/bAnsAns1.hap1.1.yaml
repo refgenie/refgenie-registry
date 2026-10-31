@@ -3,7 +3,6 @@ description: |
   Anser anser assembly bAnsAns1.hap1.1 (GCA_964211835.1), from VGP.
 organism:
   scientific_name: Anser anser
-  common_name: Domestic goose
   taxon_id: 8843
 assembly:
   source: GenBank

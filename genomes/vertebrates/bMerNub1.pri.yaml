@@ -3,7 +3,6 @@ description: |
   Merops nubicus assembly bMerNub1.pri (GCA_009819595.1), from VGP.
 organism:
   scientific_name: Merops nubicus
-  common_name: carmine bee-eater
   taxon_id: 57421
 assembly:
   source: GenBank

@@ -3,7 +3,6 @@ description: |
   Muntiacus reevesi assembly mMunRee1.1_alternate_haplotype (GCA_963930665.1), from VGP.
 organism:
   scientific_name: Muntiacus reevesi
-  common_name: Reeves' muntjac
   taxon_id: 9886
 assembly:
   source: GenBank

@@ -3,7 +3,6 @@ description: |
   Podarcis liolepis assembly rPodLio1.hap1.1 (GCA_965112155.1), from VGP.
 organism:
   scientific_name: Podarcis liolepis
-  common_name: Columbretes wall lizard
   taxon_id: 662736
 assembly:
   source: GenBank

@@ -3,7 +3,6 @@ description: |
   Mastacembelus armatus assembly fMasArm1.3 (GCA_900324485.3), from VGP.
 organism:
   scientific_name: Mastacembelus armatus
-  common_name: zig-zag eel
   taxon_id: 205130
 assembly:
   source: GenBank

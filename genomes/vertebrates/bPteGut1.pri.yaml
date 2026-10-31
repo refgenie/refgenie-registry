@@ -3,7 +3,6 @@ description: |
   Pterocles gutturalis assembly bPteGut1.pri (GCA_009769525.1), from VGP.
 organism:
   scientific_name: Pterocles gutturalis
-  common_name: yellow-throated sandgrouse
   taxon_id: 240206
 assembly:
   source: GenBank

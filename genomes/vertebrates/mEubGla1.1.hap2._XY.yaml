@@ -3,7 +3,6 @@ description: |
   Eubalaena glacialis assembly mEubGla1.1.hap2.+ XY (GCF_028564815.1), from VGP.
 organism:
   scientific_name: Eubalaena glacialis
-  common_name: North Atlantic right whale
   taxon_id: 27606
 assembly:
   source: RefSeq

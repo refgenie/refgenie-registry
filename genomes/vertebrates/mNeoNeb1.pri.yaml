@@ -3,7 +3,6 @@ description: |
   Neofelis nebulosa assembly mNeoNeb1.pri (GCF_028018385.1), from VGP.
 organism:
   scientific_name: Neofelis nebulosa
-  common_name: Clouded leopard
   taxon_id: 61452
 assembly:
   source: RefSeq

@@ -3,7 +3,6 @@ description: |
   Cyclopterus lumpus assembly fCycLum1.pri (GCF_009769545.1), from VGP.
 organism:
   scientific_name: Cyclopterus lumpus
-  common_name: lumpfish
   taxon_id: 8103
 assembly:
   source: RefSeq

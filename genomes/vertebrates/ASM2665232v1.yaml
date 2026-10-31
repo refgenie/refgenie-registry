@@ -3,7 +3,6 @@ description: |
   Pleurodeles waltl assembly ASM2665232v1 (GCA_026652325.1), from VGP.
 organism:
   scientific_name: Pleurodeles waltl
-  common_name: Iberian ribbed newt
   taxon_id: 8319
 assembly:
   source: GenBank

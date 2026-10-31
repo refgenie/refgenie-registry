@@ -3,7 +3,6 @@ description: |
   Geothlypis trichas assembly bGeoTri1.pri (GCA_009764595.1), from VGP.
 organism:
   scientific_name: Geothlypis trichas
-  common_name: common yellowthroat
   taxon_id: 135433
 assembly:
   source: GenBank

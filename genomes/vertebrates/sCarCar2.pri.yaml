@@ -3,7 +3,6 @@ description: |
   Carcharodon carcharias assembly sCarCar2.pri (GCF_017639515.1), from VGP.
 organism:
   scientific_name: Carcharodon carcharias
-  common_name: great white shark
   taxon_id: 13397
 assembly:
   source: RefSeq

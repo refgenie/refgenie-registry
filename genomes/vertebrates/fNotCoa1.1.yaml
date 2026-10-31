@@ -3,7 +3,6 @@ description: |
   Notolepis coatsorum assembly fNotCoa1.1 (GCA_963971535.1), from VGP.
 organism:
   scientific_name: Notolepis coatsorum
-  common_name: Antarctic jonasfish
   taxon_id: 948063
 assembly:
   source: GenBank

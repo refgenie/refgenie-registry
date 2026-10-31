@@ -3,7 +3,6 @@ description: |
   Callospermophilus lateralis assembly mCalLat2.hap1 (GCA_048772815.1), from VGP.
 organism:
   scientific_name: Callospermophilus lateralis
-  common_name: golden-mantled ground squirrel
   taxon_id: 76772
 assembly:
   source: GenBank

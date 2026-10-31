@@ -3,7 +3,6 @@ description: |
   Notolabrus celidotus assembly fNotCel1.pri (GCF_009762535.1), from VGP.
 organism:
   scientific_name: Notolabrus celidotus
-  common_name: New Zealand spotty
   taxon_id: 1203425
 assembly:
   source: RefSeq

@@ -3,7 +3,6 @@ description: |
   Thunnus thynnus assembly fThuThy2.1 (GCF_963924715.1), from VGP.
 organism:
   scientific_name: Thunnus thynnus
-  common_name: Atlantic bluefin tuna
   taxon_id: 8237
 assembly:
   source: RefSeq

@@ -22,7 +22,7 @@ properties:
     pattern: "^[a-zA-Z0-9_.-]+$"
     description: >-
       Primary identifier for this genome assembly (e.g., hg38, mm10). Must equal
-      the YAML filename stem. Exported to FHR `version`.
+      the YAML filename stem. Exported to FHR `genome`.
   aliases:
     type: array
     items:
@@ -41,10 +41,7 @@ properties:
       scientific_name:
         type: string
         minLength: 1
-        description: Binomial name (e.g., Homo sapiens). Exported to FHR `genome` and `taxon.name`.
-      common_name:
-        type: string
-        description: Common name (e.g., human). Registry UX only; not an FHR field.
+        description: Binomial name (e.g., Homo sapiens). Exported to FHR `taxon.name`.
       taxon_id:
         type: integer
         minimum: 1
@@ -60,7 +57,10 @@ properties:
         description: Authoritative source of this assembly (e.g., NCBI, Ensembl, UCSC, Gencode, Broad).
       accession:
         type: string
-        description: Assembly accession number (e.g., GCF_000001405.40). Exported to FHR `accessionID`.
+        description: >-
+          Assembly accession number (e.g., GCF_000001405.40). Exported to FHR
+          `accessionID`; for an NCBI `GCA_`/`GCF_` accession, its version number
+          (the part after the dot, e.g. 40) becomes FHR `version`.
       level:
         type: string
         enum: [chromosome, scaffold, contig]

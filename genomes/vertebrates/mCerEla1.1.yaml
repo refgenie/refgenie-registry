@@ -3,7 +3,6 @@ description: |
   Cervus elaphus assembly mCerEla1.1 (GCF_910594005.1), from VGP.
 organism:
   scientific_name: Cervus elaphus
-  common_name: red deer
   taxon_id: 9860
 assembly:
   source: RefSeq

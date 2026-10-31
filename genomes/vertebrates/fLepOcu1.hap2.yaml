@@ -3,7 +3,6 @@ description: |
   Lepisosteus oculatus assembly fLepOcu1.hap2 (GCF_040954835.1), from VGP.
 organism:
   scientific_name: Lepisosteus oculatus
-  common_name: spotted gar
   taxon_id: 7918
 assembly:
   source: RefSeq

@@ -3,7 +3,6 @@ description: |
   Tachyglossus aculeatus assembly mTacAcu1.pri (GCF_015852505.1), from VGP.
 organism:
   scientific_name: Tachyglossus aculeatus
-  common_name: Australian echidna
   taxon_id: 9261
 assembly:
   source: RefSeq

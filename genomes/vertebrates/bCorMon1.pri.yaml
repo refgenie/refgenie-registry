@@ -3,7 +3,6 @@ description: |
   Corvus moneduloides assembly bCorMon1.pri (GCF_009650955.1), from VGP.
 organism:
   scientific_name: Corvus moneduloides
-  common_name: New Caledonian crow
   taxon_id: 1196302
 assembly:
   source: RefSeq

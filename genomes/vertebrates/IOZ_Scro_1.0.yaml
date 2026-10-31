@@ -3,7 +3,6 @@ description: |
   Shinisaurus crocodilurus assembly IOZ_Scro_1.0 (GCA_021292165.1), from VGP.
 organism:
   scientific_name: Shinisaurus crocodilurus
-  common_name: Chinese crocodile lizard
   taxon_id: 52224
 assembly:
   source: GenBank

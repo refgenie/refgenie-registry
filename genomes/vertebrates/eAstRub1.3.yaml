@@ -3,7 +3,6 @@ description: |
   Asterias rubens assembly eAstRub1.3 (GCF_902459465.1), from VGP.
 organism:
   scientific_name: Asterias rubens
-  common_name: European starfish
   taxon_id: 7604
 assembly:
   source: RefSeq

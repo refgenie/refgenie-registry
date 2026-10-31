@@ -3,7 +3,6 @@ description: |
   Dromaius novaehollandiae assembly bDroNov1.hap1 (GCF_036370855.1), from VGP.
 organism:
   scientific_name: Dromaius novaehollandiae
-  common_name: emu
   taxon_id: 8790
 assembly:
   source: RefSeq

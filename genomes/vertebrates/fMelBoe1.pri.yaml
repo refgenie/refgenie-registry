@@ -3,7 +3,6 @@ description: |
   Melanotaenia boesemani assembly fMelBoe1.pri (GCF_017639745.1), from VGP.
 organism:
   scientific_name: Melanotaenia boesemani
-  common_name: Boeseman's rainbowfish
   taxon_id: 1250792
 assembly:
   source: RefSeq

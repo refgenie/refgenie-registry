@@ -3,7 +3,6 @@ description: |
   Haliaeetus albicilla assembly bHalAlb1.1 (GCF_947461875.1), from VGP.
 organism:
   scientific_name: Haliaeetus albicilla
-  common_name: white-tailed eagle
   taxon_id: 8969
 assembly:
   source: RefSeq

@@ -3,7 +3,6 @@ description: |
   Jaculus jaculus assembly mJacJac1.mat.Y.cur (GCF_020740685.1), from VGP.
 organism:
   scientific_name: Jaculus jaculus
-  common_name: lesser Egyptian jerboa
   taxon_id: 51337
 assembly:
   source: RefSeq

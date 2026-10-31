@@ -3,7 +3,6 @@ description: |
   Netta rufina assembly bNetRuf1.1 (GCA_964035555.1), from VGP.
 organism:
   scientific_name: Netta rufina
-  common_name: red-crested pochard
   taxon_id: 30387
 assembly:
   source: GenBank

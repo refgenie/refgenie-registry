@@ -3,7 +3,6 @@ description: |
   Lepidochelys olivacea assembly rLepOli2.hap1 (GCA_965140295.1), from VGP.
 organism:
   scientific_name: Lepidochelys olivacea
-  common_name: Pacific ridley
   taxon_id: 27788
 assembly:
   source: GenBank

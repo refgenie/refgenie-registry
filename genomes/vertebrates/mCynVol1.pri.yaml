@@ -3,7 +3,6 @@ description: |
   Cynocephalus volans assembly mCynVol1.pri (GCF_027409185.1), from VGP.
 organism:
   scientific_name: Cynocephalus volans
-  common_name: Philippine flying lemur
   taxon_id: 110931
 assembly:
   source: RefSeq

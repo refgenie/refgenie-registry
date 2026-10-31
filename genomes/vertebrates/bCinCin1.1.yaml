@@ -3,7 +3,6 @@ description: |
   Cinclus cinclus assembly bCinCin1.1 (GCF_963662255.1), from VGP.
 organism:
   scientific_name: Cinclus cinclus
-  common_name: white-throated dipper
   taxon_id: 127875
 assembly:
   source: RefSeq

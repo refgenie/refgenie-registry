@@ -3,7 +3,6 @@ description: |
   Podarcis gaigeae assembly rPodGai1.hap1.2 (GCA_964106915.2), from VGP.
 organism:
   scientific_name: Podarcis gaigeae
-  common_name: Skyros wall lizard
   taxon_id: 90521
 assembly:
   source: GenBank

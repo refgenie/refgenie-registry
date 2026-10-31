@@ -3,7 +3,6 @@ description: |
   Artibeus lituratus assembly mArtLit.hap1 (GCA_038363095.2), from VGP.
 organism:
   scientific_name: Artibeus lituratus
-  common_name: great fruit-eating bat
   taxon_id: 27634
 assembly:
   source: GenBank

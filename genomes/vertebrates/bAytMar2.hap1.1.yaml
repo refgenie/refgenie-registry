@@ -3,7 +3,6 @@ description: |
   Aythya marila assembly bAytMar2.hap1.1 (GCA_965140915.1), from VGP.
 organism:
   scientific_name: Aythya marila
-  common_name: greater scaup
   taxon_id: 189534
 assembly:
   source: GenBank

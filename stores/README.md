@@ -198,20 +198,25 @@ Notes:
 ## FHR metadata (post-build)
 
 FHR (FAIR Headers Reference genome) sidecars, `fhr/<digest>.fhr.json`, carry per-collection
-organism/assembly metadata (`genome`, `commonName`, `taxon`, `documentation`,
-`assemblySource`, `accessionID`, `assemblyLevel`). These are what `refgenie genome sync`
-reads to populate the description and faceted metadata columns (species, common name,
-taxon id, assembly source/accession/level) for store-overlay genomes, so a store without
-them syncs as genomes with null metadata.
+genome/assembly metadata (`schema`, `schemaVersion`, `genome`, `taxon`, `version`,
+`documentation`, `assemblySource`, `accessionID`, `assemblyLevel`). `genome` is the
+genome's own name and `taxon` its species, as the FHR spec defines them. refgenie reads
+the description, the species (`taxon.name`), the taxon id (`taxon.uri`) and the assembly
+source/accession/level into its faceted columns for store-overlay genomes, so a store
+without sidecars syncs as genomes with null metadata. It does not read `genome` (the name
+already arrives as an alias) or `version`. Common names are not in FHR; they come from
+`species.json` (below).
 
 `build_fhr.py` resolves each `sources.csv` row to its collection digest (via the aliases
 `build.py` registered) and writes that collection's sidecar. Fields come from three
 sources, least to most specific:
 
-1. **The CSV derivation**, organism → scientific/common name + taxon URI;
-   name/genome_assembly/source → a one-sentence `documentation`; source → assemblySource;
-   accession → accessionID, plus assemblyLevel from the script's static per-accession
-   `ASSEMBLY_LEVELS` map sourced from NCBI Datasets. The organism is looked up in the
+1. **The CSV derivation**, name → `genome`; organism → `taxon` (scientific name + taxon
+   URI); name/genome_assembly/source → a one-sentence `documentation`; source →
+   assemblySource; accession → accessionID and `version` (the accession's version number,
+   `GCA_000001405.15` → `"15"`), plus assemblyLevel from the script's static per-accession
+   `ASSEMBLY_LEVELS` map sourced from NCBI Datasets. `schema` and `schemaVersion` are the
+   same constants as in YAML-derived records. The organism is looked up in the
    species list, [`tools/taxon_ids.json`](../tools/taxon_ids.json) (by key, the NCBI
    scientific name, then by synonym, so "Canis familiaris" finds *Canis lupus
    familiaris*), and the build **fails loudly**, naming the list, on any organism it
@@ -234,7 +239,7 @@ Idempotent; re-runs overwrite. It also re-commits `rgstore.json` so the manifest
 over that row's CSV-derived fields, field by field (a YAML field wins wholesale; absent
 fields keep the CSV derivation). Use these for hand-curated metadata the CSV can't
 express, corrected `assemblySource`, richer `documentation`, `relatedLink` provenance
-URLs, an explicit `assemblyLevel` (which beats the static map). For rows that share a
+URLs, an explicit `assemblyLevel` (which beats the static map) or `version`. For rows that share a
 digest, the last row still wins; put the override on the digest-winning row (mirroring
 it on same-digest twins keeps it reorder-safe). jungle's `genomes/` dir carries
 overrides capturing true provenance for the Heng-Li-guide references

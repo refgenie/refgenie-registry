@@ -3,7 +3,6 @@ description: |
   Falco biarmicus assembly bFalBia1.pri (GCF_023638135.1), from VGP.
 organism:
   scientific_name: Falco biarmicus
-  common_name: lanner falcon
   taxon_id: 345155
 assembly:
   source: RefSeq

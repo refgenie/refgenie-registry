@@ -3,7 +3,6 @@ description: |
   Pipistrellus pygmaeus assembly mPipPyg2.1 (GCA_949987585.1), from VGP.
 organism:
   scientific_name: Pipistrellus pygmaeus
-  common_name: soprano pipistrelle
   taxon_id: 246814
 assembly:
   source: GenBank

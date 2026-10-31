@@ -3,7 +3,6 @@ description: |
   Acanthisitta chloris assembly bAcaChl1.pri (GCA_016904835.1), from VGP.
 organism:
   scientific_name: Acanthisitta chloris
-  common_name: rifleman
   taxon_id: 57068
 assembly:
   source: GenBank

@@ -3,7 +3,6 @@ description: |
   Limanda limanda assembly fLimLim1.1 (GCF_963576545.1), from VGP.
 organism:
   scientific_name: Limanda limanda
-  common_name: common dab
   taxon_id: 27771
 assembly:
   source: RefSeq

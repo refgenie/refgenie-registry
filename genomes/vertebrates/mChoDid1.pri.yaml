@@ -3,7 +3,6 @@ description: |
   Choloepus didactylus assembly mChoDid1.pri (GCF_015220235.1), from VGP.
 organism:
   scientific_name: Choloepus didactylus
-  common_name: southern two-toed sloth
   taxon_id: 27675
 assembly:
   source: RefSeq

@@ -3,7 +3,6 @@ description: |
   Pararge aegeria assembly ilParAegt1.1 (GCF_905163445.1), from VGP.
 organism:
   scientific_name: Pararge aegeria
-  common_name: speckled wood butterfly
   taxon_id: 116150
 assembly:
   source: RefSeq

@@ -3,7 +3,6 @@ description: |
   Pan paniscus assembly NHGRI_mPanPan1-v2.1_pri (GCF_029289425.2), from VGP.
 organism:
   scientific_name: Pan paniscus
-  common_name: pygmy chimpanzee
   taxon_id: 9597
 assembly:
   source: RefSeq

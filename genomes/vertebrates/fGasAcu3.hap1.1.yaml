@@ -3,7 +3,6 @@ description: |
   Gasterosteus aculeatus assembly fGasAcu3.hap1.1 (GCA_964276395.1), from VGP.
 organism:
   scientific_name: Gasterosteus aculeatus
-  common_name: three-spined stickleback
   taxon_id: 69293
 assembly:
   source: GenBank

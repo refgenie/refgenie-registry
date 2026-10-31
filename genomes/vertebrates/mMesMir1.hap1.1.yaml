@@ -3,7 +3,6 @@ description: |
   Mesoplodon mirus assembly mMesMir1.hap1.1 (GCA_964341445.1), from VGP.
 organism:
   scientific_name: Mesoplodon mirus
-  common_name: True's beaked whale
   taxon_id: 52113
 assembly:
   source: GenBank

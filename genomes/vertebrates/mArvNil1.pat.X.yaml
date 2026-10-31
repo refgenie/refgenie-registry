@@ -3,7 +3,6 @@ description: |
   Arvicanthis niloticus assembly mArvNil1.pat.X (GCA_011762505.3), from VGP.
 organism:
   scientific_name: Arvicanthis niloticus
-  common_name: Nile rat
   taxon_id: 61156
 assembly:
   source: GenBank

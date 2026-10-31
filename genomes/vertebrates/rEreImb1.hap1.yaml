@@ -3,7 +3,6 @@ description: |
   Eretmochelys imbricata assembly rEreImb1.hap1 (GCA_965152235.1), from VGP.
 organism:
   scientific_name: Eretmochelys imbricata
-  common_name: hawksbill sea turtle
   taxon_id: 27787
 assembly:
   source: GenBank

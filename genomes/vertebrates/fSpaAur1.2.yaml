@@ -3,7 +3,6 @@ description: |
   Sparus aurata assembly fSpaAur1.2 (GCA_900880675.2), from VGP.
 organism:
   scientific_name: Sparus aurata
-  common_name: gilthead seabream
   taxon_id: 8175
 assembly:
   source: GenBank

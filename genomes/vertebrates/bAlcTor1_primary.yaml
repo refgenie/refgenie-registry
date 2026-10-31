@@ -3,7 +3,6 @@ description: |
   Alca torda assembly bAlcTor1 primary (GCA_008658365.1), from VGP.
 organism:
   scientific_name: Alca torda
-  common_name: razorbill
   taxon_id: 28689
 assembly:
   source: GenBank

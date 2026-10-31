@@ -3,7 +3,6 @@ description: |
   Odontesthes bonariensis assembly fOdoBon6.hap1 (GCA_027942865.1), from VGP.
 organism:
   scientific_name: Odontesthes bonariensis
-  common_name: pejerrey
   taxon_id: 219752
 assembly:
   source: GenBank

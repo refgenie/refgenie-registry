@@ -3,7 +3,6 @@ description: |
   Branchiostoma lanceolatum assembly klBraLanc5.hap2 (GCA_035083965.1), from VGP.
 organism:
   scientific_name: Branchiostoma lanceolatum
-  common_name: amphioxus
   taxon_id: 7740
 assembly:
   source: GenBank

@@ -3,7 +3,6 @@ description: |
   Scyliorhinus canicula assembly sScyCan1.2 (GCA_902713615.2), from VGP.
 organism:
   scientific_name: Scyliorhinus canicula
-  common_name: smaller spotted catshark
   taxon_id: 7830
 assembly:
   source: GenBank

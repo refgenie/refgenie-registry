@@ -3,7 +3,6 @@ description: |
   Tupaia tana assembly mTupTan1 (GCA_026018925.1), from VGP.
 organism:
   scientific_name: Tupaia tana
-  common_name: large tree shrew
   taxon_id: 70687
 assembly:
   source: GenBank

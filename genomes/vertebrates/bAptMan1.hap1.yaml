@@ -3,7 +3,6 @@ description: |
   Apteryx mantelli assembly bAptMan1.hap1 (GCF_036417845.1), from VGP.
 organism:
   scientific_name: Apteryx mantelli
-  common_name: North Island brown kiwi
   taxon_id: 2696672
 assembly:
   source: RefSeq

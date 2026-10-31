@@ -3,7 +3,6 @@ description: |
   Salarias fasciatus assembly fSalaFa1.1 (GCF_902148845.1), from VGP.
 organism:
   scientific_name: Salarias fasciatus
-  common_name: jewelled blenny
   taxon_id: 181472
 assembly:
   source: RefSeq

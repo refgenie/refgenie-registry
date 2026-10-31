@@ -3,7 +3,6 @@ description: |
   Antrozous pallidus assembly DD_ASM_mAP_20210503 (GCA_027563665.1), from VGP.
 organism:
   scientific_name: Antrozous pallidus
-  common_name: pallid bat
   taxon_id: 9440
 assembly:
   source: GenBank

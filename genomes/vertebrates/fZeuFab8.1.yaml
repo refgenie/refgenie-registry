@@ -3,7 +3,6 @@ description: |
   Zeus faber assembly fZeuFab8.1 (GCA_960531495.1), from VGP.
 organism:
   scientific_name: Zeus faber
-  common_name: John dory
   taxon_id: 64108
 assembly:
   source: GenBank

@@ -3,7 +3,6 @@ description: |
   Buteo buteo assembly bButBut1.hap1.1 (GCA_964188355.1), from VGP.
 organism:
   scientific_name: Buteo buteo
-  common_name: common buzzard
   taxon_id: 30397
 assembly:
   source: GenBank

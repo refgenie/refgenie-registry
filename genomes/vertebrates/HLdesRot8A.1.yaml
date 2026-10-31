@@ -3,7 +3,6 @@ description: |
   Desmodus rotundus assembly HLdesRot8A.1 (GCA_022682495.2), from VGP.
 organism:
   scientific_name: Desmodus rotundus
-  common_name: common vampire bat
   taxon_id: 9430
 assembly:
   source: GenBank

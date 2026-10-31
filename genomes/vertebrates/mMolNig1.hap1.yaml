@@ -3,7 +3,6 @@ description: |
   Molossus nigricans assembly mMolNig1.hap1 (GCA_039880945.1), from VGP.
 organism:
   scientific_name: Molossus nigricans
-  common_name: northern black mastiff bat
   taxon_id: 2997257
 assembly:
   source: GenBank

@@ -3,7 +3,6 @@ description: |
   Cariama cristata assembly bCarCri1.pri (GCA_009819825.1), from VGP.
 organism:
   scientific_name: Cariama cristata
-  common_name: Red-legged seriema
   taxon_id: 54380
 assembly:
   source: GenBank

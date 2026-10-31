@@ -3,7 +3,6 @@ description: |
   Solea solea assembly fSolSol10.1 (GCF_958295425.1), from VGP.
 organism:
   scientific_name: Solea solea
-  common_name: common sole
   taxon_id: 90069
 assembly:
   source: RefSeq

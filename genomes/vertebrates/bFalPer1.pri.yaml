@@ -3,7 +3,6 @@ description: |
   Falco peregrinus assembly bFalPer1.pri (GCF_023634155.1), from VGP.
 organism:
   scientific_name: Falco peregrinus
-  common_name: peregrine falcon
   taxon_id: 8954
 assembly:
   source: RefSeq

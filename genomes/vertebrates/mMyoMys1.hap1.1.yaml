@@ -3,7 +3,6 @@ description: |
   Myotis mystacinus assembly mMyoMys1.hap1.1 (GCA_964094495.2), from VGP.
 organism:
   scientific_name: Myotis mystacinus
-  common_name: whiskered bat
   taxon_id: 109479
 assembly:
   source: GenBank

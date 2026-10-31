@@ -3,7 +3,6 @@ description: |
   Salmo trutta assembly fSalTru1.2 (GCA_901001165.2), from VGP.
 organism:
   scientific_name: Salmo trutta
-  common_name: river trout
   taxon_id: 8032
 assembly:
   source: GenBank

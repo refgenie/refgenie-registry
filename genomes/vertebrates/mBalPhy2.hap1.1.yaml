@@ -3,7 +3,6 @@ description: |
   Balaenoptera physalus assembly mBalPhy2.hap1.1 (GCA_965194825.1), from VGP.
 organism:
   scientific_name: Balaenoptera physalus
-  common_name: Fin whale
   taxon_id: 9770
 assembly:
   source: GenBank

@@ -3,7 +3,6 @@ description: |
   Mustela erminea assembly mMusErm1.Pri (GCF_009829155.1), from VGP.
 organism:
   scientific_name: Mustela erminea
-  common_name: ermine
   taxon_id: 36723
 assembly:
   source: RefSeq

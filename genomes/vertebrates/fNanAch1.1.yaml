@@ -3,7 +3,6 @@ description: |
   Nannobrachium achirus assembly fNanAch1.1 (GCA_963921795.1), from VGP.
 organism:
   scientific_name: Nannobrachium achirus
-  common_name: lantern fish
   taxon_id: 473322
 assembly:
   source: GenBank
