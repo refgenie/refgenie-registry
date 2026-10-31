@@ -85,7 +85,7 @@ sbatch -p standard-rivanna -A shefflab -c 2 --mem 8G -t 02:00:00 \
   -J refgenie-build-manual \
   -o ~/refgenie-build-manual-%j.out \
   --wrap 'source /etc/profile.d/modules.sh; \
-          module load apptainer; module load miniforge/24.3.0-py3.11; \
+          module load apptainer; module load miniforge/26.9.4; \
           eval "$(bulker activate --echo databio/refgenie:1.1.1)"; \
           cd /home/ns5bc/mobot/checkouts/refgenie-registry && bash build/run_builds.sh'
 ```

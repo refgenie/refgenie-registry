@@ -38,7 +38,7 @@
 #   bash infra/rivanna/setup_env.sh --rebuild  # delete and recreate from scratch
 set -euo pipefail
 
-MINIFORGE_MODULE="miniforge/24.3.0-py3.11"
+MINIFORGE_MODULE="miniforge/26.9.4"
 VENV="${REFGENIE_VENV:-$HOME/envs/refgenie-build}"
 REFGENIE_SRC="${REFGENIE_SRC:-$HOME/deploy/refgenie1}"
 REFGET_SRC="${REFGET_SRC:-$HOME/deploy/refget}"
