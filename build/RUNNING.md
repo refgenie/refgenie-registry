@@ -4,18 +4,20 @@ The nightly `refgenie-registry-build` mobot job runs `build/run_builds.sh` as a
 SLURM driver. Sometimes you need to run it **by hand**, to test a change, force
 a rebuild, or do a scoped re-push, without waiting for the nightly. This is how.
 
-## The one rule: never hand-run `refgenie build` directly
+## Where the build tools come from
 
-`refgenie build <genome>/<asset>` on a login shell **fails** with
-`samtools: command not found` (or `bowtie2-build: not found`, etc.). The build
-tools live in the bulker crate (`databio/refgenie:1.1.1`), and the recipe's inner
-`/bin/sh` only resolves them when the build runs as a **snakemake rule under the
-crate**, the way `run_builds.sh` dispatches it. Activating the crate in your shell
-is not enough, the recipe subprocess doesn't inherit the shims.
+Each recipe names its container image in `docker_image`, and that is the only
+record of which image builds the asset. Every build rule runs
+`refgenie build <genome>/<asset> --stage --container ...`, and refgenie runs the
+recipe's commands inside that image with Apptainer (`module load apptainer`).
+It reads the tool version the asset is named after inside the same image. A
+recipe with no image (`fasta`, the `cp` and `awk` recipes) builds on the host.
+Apptainer caches the images under `$APPTAINER_CACHEDIR` (set in
+`infra/rivanna/env.sh`); the first use of an image pulls it.
 
-So: **always go through `build/run_builds.sh`** (which regenerates the Snakefile
-and fans out one crate-wrapped SLURM job per asset). Do not assemble `refgenie
-build` commands yourself.
+Real builds go through `build/run_builds.sh`, which regenerates the Snakefile
+and fans out one SLURM job per asset. To check a change on one asset without a
+full run, see [Checking one asset](#checking-one-asset) below.
 
 ## What is shared vs. what the checkout provides
 
@@ -86,17 +88,17 @@ sbatch -p standard-rivanna -A shefflab -c 2 --mem 8G -t 02:00:00 \
   -o ~/refgenie-build-manual-%j.out \
   --wrap 'source /etc/profile.d/modules.sh; \
           module load apptainer; module load miniforge/26.9.4; \
-          eval "$(bulker activate --echo databio/refgenie:1.1.1)"; \
           cd /home/ns5bc/mobot/checkouts/refgenie-registry && bash build/run_builds.sh'
 ```
 
 Notes:
-- **Crate setup is load-bearing** and must be in the submitted script (mirrors
-  `jobs.d/refgenie-registry-build.json` → `mobot.setup`). Do not drop it.
-- **`run_builds.sh` resolves `refgenie`, `snakemake`, and `aws` to absolute host
+- **`module load apptainer` is load-bearing** and must be in the submitted script
+  (mirrors `jobs.d/refgenie-registry-build.json` → `mobot.setup`): the build jobs
+  inherit the driver's PATH, and refgenie runs every recipe image with it.
+- **`run_builds.sh` resolves `refgenie`, `snakemake`, and `aws` to absolute
   paths itself** (SLURM children get a bare PATH), and sources `infra/rivanna/env.sh`,
-  so you don't set those. It uses the **host** snakemake (has the slurm executor
-  plugin), a bulker-shim snakemake would die on `--executor slurm`.
+  so you don't set those. snakemake is the build venv's, which has the slurm
+  executor plugin.
 - **Bump the driver time up to `08:00:00` for a full mammalian rebuild**
   (hg38/mm39 suffixerator alone needs ~480 min at the job level). For the 5 small
   genomes, 02:00:00 is ample.
@@ -107,6 +109,42 @@ Notes:
   `git reset --hard` at the start of each nightly. Running from it by hand is fine
   between nightlies, but your local edits there will be wiped; use a private
   checkout if you need edits to persist.
+
+## Checking one asset
+
+`run_builds.sh` is the whole nightly: besides the builds it loads changed
+stores, pushes, refreshes `index/`, and publishes the store and the catalog to
+S3. To check a refgenie or recipe change on one asset, build just that asset
+instead. Use a small genome (`t7`, `rCRSd`) and a version-named recipe
+(`bowtie2_index`, `bwa_index`), so the name probe is exercised too.
+
+1. Snapshot the catalog (see Prerequisites).
+2. Regenerate the Snakefile without building anything. `DRY_RUN=1` imports the
+   recipes, writes and patches `build/Snakefile`, and resolves every queued
+   recipe's asset name inside its image, then stops:
+   ```
+   cd /home/ns5bc/mobot/checkouts/refgenie-registry
+   module load apptainer miniforge/26.9.4
+   DRY_RUN=1 bash build/run_builds.sh
+   ```
+3. Remove the asset so snakemake sees it missing (see above), e.g.
+   `refgenie remove t7/bowtie2_index --force` with `REFGENIE_DB_CONFIG_PATH`
+   exported.
+4. Build it as a one-target snakemake run, then push it. The target is the
+   asset's build flag, `<genome folder>/builds/<genome>/<group>/<asset name>/<genome>_<group>__<asset name>.flag`:
+   ```
+   sbatch -p standard -A shefflab -c 1 --mem 4G -t 01:00:00 \
+     -J refgenie-build-check -o ~/refgenie-build-check-%j.out \
+     --wrap 'source /etc/profile.d/modules.sh; module load apptainer miniforge/26.9.4; \
+             cd /home/ns5bc/mobot/checkouts/refgenie-registry && source infra/rivanna/env.sh; \
+             export PATH=$REFGENIE_VENV/bin:$PATH REFGENIE_INPUTS=$REFGETSTORE_FASTA REFGENIE_REGISTRY_DIR=$PWD; \
+             cd $REFGENIE_BUILD_WORKDIR && $SNAKEMAKE_BIN --snakefile $REFGENIE_REGISTRY_DIR/build/Snakefile \
+               --profile $REFGENIE_REGISTRY_DIR/build/profiles/rivanna \
+               $REFGENIE_GENOME_FOLDER/builds/t7/bowtie2_index/2.5.5/t7_bowtie2_index__2.5.5.flag \
+             && $REFGENIE_BIN push --strategy per_asset'
+   ```
+   The build job's log (under `$REFGENIE_BUILD_WORKDIR/.snakemake/slurm_logs/`)
+   shows the `apptainer exec ... docker://<image>` line for each recipe command.
 
 ## Monitoring
 

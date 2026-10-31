@@ -64,14 +64,10 @@ export AWS_PROFILE=refgenie
 # there where $PATH expands correctly and yoke never sees it.
 export REFGENIE_AWS_BINDIR=/apps/software/standard/core/awscli/2.35.13/bin
 
-# Neutral working directory for the snakemake build fan-out (snakemake's
-# --directory). It MUST NOT contain an entry named after any tool subcommand:
-# bulker's shimlink absolutizes a bare argument that matches a real path in the
-# process CWD (to bind-mount it), so `bwa index ...` run from the registry root
-# (which has an `index/` dir) turns `index` into `<cwd>/index` and bwa dies with
-# "unrecognized command". Running the build from this empty, dedicated dir keeps
-# the CWD collision-free. Literal path (no $VAR) so yoke's env_files parser does
-# not mangle it. run_builds.sh mkdir -p's it.
+# Working directory for the snakemake build fan-out (snakemake's --directory).
+# Kept on brickyard, outside the git checkout, so snakemake's .snakemake/ state
+# and per-job SLURM logs survive the nightly's git reset. Literal path (no $VAR)
+# so yoke's env_files parser does not mangle it. run_builds.sh mkdir -p's it.
 export REFGENIE_BUILD_WORKDIR=/project/shefflab/brickyard/results_pipeline/refgenie/build_workdir
 
 # Apptainer's image cache. refgenie runs each recipe's container image with
@@ -89,13 +85,9 @@ export APPTAINER_CACHEDIR=/scratch/ns5bc/refgenie_apptainer_cache
 # Literal path (no $VAR) so yoke's env_files parser does not mangle it.
 export REFGENIE_BUILD_REPORTS_DIR=/project/shefflab/brickyard/results_pipeline/refgenie/build_reports
 
-# Absolute path to the host refgenie (refgenie1) entry point used by the build
-# rules. MUST be the real host binary, NOT a bulker shim: the mobot driver job
-# runs under a bulker activation, so a bare `command -v refgenie`
-# resolves to an EPHEMERAL bulker shim under /scratch/.../bulker_XXXX/ that does
-# not exist in the snakemake-submitted SLURM build children (genome_init then
-# fails with "command exited with non-zero exit code"). Pin the host wrapper so
-# run_builds.sh substitutes a stable absolute path into the generated Snakefile.
+# Absolute path to the refgenie (refgenie1) entry point used by the build rules.
+# run_builds.sh substitutes it into the generated Snakefile, so each SLURM build
+# job runs this exact binary whatever its PATH.
 #
 # ASSIGNED UNCONDITIONALLY, not `${REFGENIE_BIN:-...}`. The fallback form was
 # actively harmful here: yoke's env_files parser pre-exports a value it cached
@@ -114,20 +106,10 @@ export REFGENIE_BUILD_REPORTS_DIR=/project/shefflab/brickyard/results_pipeline/r
 # for the same reason. To point elsewhere, edit this file.
 export REFGENIE_BIN=/home/ns5bc/envs/refgenie-build/bin/refgenie
 
-# Absolute path to the host snakemake, the workflow DRIVER that submits the
-# per-asset SLURM jobs. MUST be the host binary, NOT a bulker shim: the driver
-# runs under `bulker activate databio/refgenie:1.1.0`, and under that a bare
-# `snakemake` shims into a crate container whose snakemake lacks the SLURM
-# executor plugin (--executor {local,dryrun,touch}) -> the driver dies with
-# "invalid choice: 'slurm'" and no builds run. The host snakemake HAS the plugin.
-# A SLURM-submitting driver belongs on the host anyway; the build rules still
-# containerize via bulker inside `refgenie build`. Pin the host path.
-#
-# (The activation was once the two-crate union
-# `databio/lab,databio/refgenie:1.0.0`; the same shim hazard applied. It is now
-# refgenie-only, databio/refgenie:1.1.0 imports bulker/coreutils, so nothing
-# needs databio/lab. Pinning the host path is what makes this line
-# crate-agnostic, so it did not need to change with the switch.)
+# Absolute path to snakemake, the workflow DRIVER that submits the per-asset
+# SLURM jobs. The build venv's snakemake has the SLURM executor plugin. The
+# driver runs on the host; each build rule runs its recipe in the recipe's
+# container image itself (`refgenie build --container`, under Apptainer).
 #
 # Unconditional for the same reason as REFGENIE_BIN above, see that comment.
 export SNAKEMAKE_BIN=/home/ns5bc/envs/refgenie-build/bin/snakemake

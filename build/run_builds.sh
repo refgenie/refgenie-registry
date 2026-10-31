@@ -15,9 +15,10 @@
 #      Rivanna the entry point is `refgenie`). Override with $REFGENIE_BIN.
 #   3. Run snakemake against the Rivanna SLURM profile to fan out one SLURM job
 #      per (genome, asset) in pep/samples.csv. Each rule runs
-#      `refgenie build <genome>/<asset> --stage --push-to <asset remote name>`
-#      inside the recipe's container; staging records a RemoteAssetLink push
-#      intent (pushed=False) for each asset.
+#      `refgenie build <genome>/<asset> --stage --container --push-to <remote>`:
+#      refgenie runs the recipe's commands inside the recipe's container image
+#      with Apptainer; staging records a RemoteAssetLink push intent
+#      (pushed=False) for each asset.
 #   4. Push staged assets to S3 with `refgenie push` (once, on the driver host):
 #      uploads every pushed=False link and marks it pushed. Idempotent.
 #   5. Refresh index/ from whatever assets are now present (build/update_index.py).
@@ -43,8 +44,8 @@
 #                     there is NO fallback (see the validation block below).
 #   REFGENIE_BUILD_DB the persistent catalog SQLite file. Same rules.
 #   REFGENIE_BIN      build-command binary name (default: refgenie).
-#   SNAKEMAKE_BIN     workflow-driver binary; pin to the HOST snakemake so the
-#                     driver isn't a bulker shim missing the slurm executor.
+#   SNAKEMAKE_BIN     workflow-driver binary: the build venv's snakemake, which
+#                     has the slurm executor plugin.
 #   REFGENIE_ASSET_S3 S3 prefix for built-asset push (e.g. s3://refgenie/assets).
 #                     When set, build rules get --push-to $REFGENIE_ASSET_REMOTE
 #                     (default asset-s3, the remote import_recipes.py registers
@@ -272,21 +273,9 @@ if [[ "$REFGENIE_BIN" == /* ]]; then
     esac
     echo "$(date) | run_builds: PATH includes $_refgenie_bindir for SLURM children"
 fi
-# Resolve snakemake to an ABSOLUTE HOST path, same reasoning as REFGENIE_BIN,
-# but for a different failure. The mobot driver runs under a bulker activation
-# (databio/refgenie:1.1.0) so the build children can see the index builders
-# (bowtie2-build/hisat2-build). But under it a bare `snakemake` resolves to a
-# bulker SHIM that runs snakemake inside a crate container, whose snakemake
-# LACKS the SLURM executor plugin (--executor {local,dryrun,touch}). The driver
-# then dies with "argument --executor/-e: invalid choice: 'slurm'" and ZERO
-# builds run.
-# snakemake here is the workflow DRIVER (it submits SLURM jobs via sbatch); a
-# SLURM-submitting driver belongs on the host, not in a container. The host
-# snakemake (~/.local/bin/snakemake) HAS the slurm plugin. Pin
-# it so the driver is shim-immune regardless of what crates are activated; the
-# build RULES still containerize via bulker (each rule shells out to $REFGENIE_BIN
-# build, and the slurm executor sbatches children with --export=ALL so the crate
-# shims + BULKERCRATE propagate). Override with $SNAKEMAKE_BIN.
+# Resolve snakemake to an ABSOLUTE path too: the build venv's snakemake is the
+# workflow DRIVER, and it has the SLURM executor plugin. Override with
+# $SNAKEMAKE_BIN.
 SNAKEMAKE_BIN="${SNAKEMAKE_BIN:-snakemake}"
 if [[ "$SNAKEMAKE_BIN" != /* ]]; then
     _snakemake_abs="$(command -v "$SNAKEMAKE_BIN" 2>/dev/null || true)"
@@ -294,7 +283,7 @@ if [[ "$SNAKEMAKE_BIN" != /* ]]; then
         SNAKEMAKE_BIN="$_snakemake_abs"
         echo "$(date) | run_builds: resolved SNAKEMAKE_BIN -> $SNAKEMAKE_BIN"
     else
-        echo "$(date) | run_builds: WARNING could not resolve absolute path for '$SNAKEMAKE_BIN'; the driver may hit a bulker shim missing the slurm executor" >&2
+        echo "$(date) | run_builds: WARNING could not resolve absolute path for '$SNAKEMAKE_BIN'; the driver may lack the slurm executor" >&2
     fi
 fi
 
@@ -483,6 +472,13 @@ if [[ -n "${REFGENIE_ASSET_S3:-}" ]]; then
 else
     echo "$(date) | run_builds: REFGENIE_ASSET_S3 unset; builds will stage without push intent"
 fi
+# (e) Inject `--container` into every build rule (same `--stage ` anchor), so
+#     each recipe runs inside the container image it names in `docker_image`,
+#     with Apptainer. The recipe is the only record of which image builds an
+#     asset, and the template already reads the asset NAME inside that image, so
+#     the build must run there too. A recipe with no image builds on the host.
+sed -i "s#--stage #--stage --container #g" "$SNAKEFILE"
+echo "$(date) | run_builds: injected --container into build rules"
 
 # --- 2b. reconcile genomes with the persistent catalog --------------------
 # The genome_init sentinels (under the persistent alias folder) can outlive the
@@ -532,11 +528,11 @@ if [[ "${DRY_RUN:-0}" != "1" ]]; then
 fi
 
 # --- 3. dispatch builds via snakemake ------------------------------------
-# Run from a neutral working dir, NOT the registry root: the registry has an
-# `index/` dir, and bulker's shimlink absolutizes a bare `index` arg that matches
-# a CWD path, breaking `bwa index`. All snakemake inputs are absolute (snakefile,
-# profile, pinned config/pepfile, REFGENIE_INPUTS, genome outputs), so the
-# working dir is free to move. Falls back to the registry root if unset.
+# Run from a dedicated working dir on brickyard, not the git checkout, so
+# snakemake's .snakemake/ state and per-job SLURM logs persist across the
+# nightly's git reset and stay out of the tree. All snakemake inputs are absolute
+# (snakefile, profile, pinned config/pepfile, REFGENIE_INPUTS, genome outputs),
+# so the working dir is free to move. Falls back to the registry root if unset.
 BUILD_WORKDIR="${REFGENIE_BUILD_WORKDIR:-$REGISTRY_DIR}"
 mkdir -p "$BUILD_WORKDIR"
 echo "$(date) | run_builds: snakemake --directory=$BUILD_WORKDIR"
