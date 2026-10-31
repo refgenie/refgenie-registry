@@ -170,8 +170,10 @@ python3 build/sync_stores.py \
 # that tier is a row in some store's sources.csv, and this is the step that loads
 # its sequence. Per store: ingest, register aliases, then write the curated FHR
 # sidecars (build_fhr.py reads pep/metadata/<genome>.fhr.json, so a store of
-# non-model organisms gets real species and taxonomy instead of nulls), and only
-# then sync to S3 so the sidecars and the refreshed rgstore.json ride along.
+# non-model organisms gets real species and taxonomy instead of nulls, and it
+# also writes the store's species.json from tools/taxon_ids.json, so this loop
+# needs no separate species step), and only then sync to S3 so the sidecars,
+# species.json and the refreshed rgstore.json ride along.
 #
 # Non-fatal throughout: a store that fails to load must not stop the asset builds
 # for genomes that are already loaded. The stamp is recorded only on success, so
@@ -654,6 +656,10 @@ fi
 # mirror while a server reads it is the safe default. The lock file and any
 # operator scratch files stay local.
 if [[ -n "${REFGETSTORE_S3:-}" ]]; then
+    # species.json: the names of this store's species, from tools/taxon_ids.json,
+    # for the taxa its FHR sidecars name (apply_metadata.py just wrote them).
+    python3 tools/species_list.py store-file "$REFGENIE_GENOME_FOLDER/.refget_store" \
+        || echo "$(date) | run_builds: species.json not written for the catalog store (non-fatal)" >&2
     echo "$(date) | run_builds: syncing sequence store -> $REFGETSTORE_S3/refgenie-main"
     aws s3 sync "$REFGENIE_GENOME_FOLDER/.refget_store/" "$REFGETSTORE_S3/refgenie-main/" \
         --exclude ".rgstore.lock" --exclude "*.preracetest*" --no-progress \

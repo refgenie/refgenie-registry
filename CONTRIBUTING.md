@@ -6,6 +6,8 @@ Contributions are welcome via pull requests. You can:
 
 1. **Add a genome**, define a new genome assembly, and say how far to build it
 2. **Add a recipe**, define how to build an asset (e.g., an aligner index)
+3. **Suggest a species name**, add or fix a species' names in the species list
+   (see [Species names](#species-names))
 
 ## Adding a Genome
 
@@ -20,6 +22,11 @@ file to edit and no build request to open.
 **Required fields:** `name`, `description`, `organism.scientific_name`,
 `organism.taxon_id`, `fasta` (at least one `sources[].url` or a `checksum`),
 `seqcol` (a `digest`, or `compute: true`), and `build` (a `store` and a `tier`)
+
+**The species must be on the species list.** `organism.taxon_id` must appear in
+[`tools/taxon_ids.json`](tools/taxon_ids.json); validation fails otherwise. If
+your genome's species is new, add its entry in the same PR (see
+[Species names](#species-names)).
 
 ### The `build:` block
 
@@ -267,6 +274,44 @@ genome list, so the next run picks it up.
 
 If the genome is not staged yet, the PR will fail generation with a message naming
 the genome and the `<genome>_fa` key it needs in `pep/config.yaml`.
+
+## Species names
+
+The species list, [`tools/taxon_ids.json`](tools/taxon_ids.json), is the one
+place species names are kept. Each entry is keyed by the species' scientific
+name:
+
+```json
+"Rattus norvegicus": {
+  "taxon_id": 10116,
+  "common_name": "Norway rat",
+  "synonyms": ["brown rat", "rat"]
+}
+```
+
+**Rules** (checked by `python tools/species_list.py check` and by CI):
+
+- The key is NCBI Taxonomy's current scientific name for the species.
+- `taxon_id` is the NCBI taxon id, and each one appears only once.
+- `common_name` is NCBI's main common name, unless there is a reason to pick
+  another. Leave it out if there is none.
+- `synonyms` are other names people search for: other common names, old
+  scientific names, a store's own spelling of the species. A synonym never
+  equals the key or the common name (ignoring case), never repeats, and is never
+  a plain plural of another name ("rats" next to "rat"). Leave the list out if it
+  would be empty.
+
+**What the list feeds.** Store rows that have no genome YAML get their FHR
+species fields (scientific name, common name, taxon) from it, and every store
+ships its own species from it, as `species.json`, when it is published. So a
+change reaches a store on that store's next publish.
+
+**To propose a change**, edit the entry (or add one), run
+`python tools/species_list.py check`, and open a PR titled
+"Species names: \<scientific name\>".
+
+Species names never go in genome YAMLs. A genome's `organism.common_name` is that
+genome's own display name, not a list of the species' names.
 
 ## Local Validation
 

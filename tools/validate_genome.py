@@ -9,6 +9,8 @@ Runs, per file:
   3b. `build:` checks: the store slug names a real stores/<slug>/, the tier is
      one of pep/tiers.yaml, every add/drop asset has a recipe, and the block
      never leaks into the FHR export
+  3c. Species list: `organism.taxon_id` is on tools/taxon_ids.json, and the list
+     itself passes `species_list.check_species_list` (checked once per run)
   4. Name matches filename; alias-conflict scan across the corpus
   5. FHR export self-check: map the YAML to its .fhr.json via genome_to_fhr and
      confirm the result is JSON-serializable and structurally FHR-valid (on by
@@ -31,6 +33,7 @@ import yaml
 from jsonschema import Draft202012Validator
 
 import genome_to_fhr
+import species_list
 
 REPO_ROOT = Path(__file__).resolve().parent.parent
 SCHEMA_PATH = REPO_ROOT / "schema" / "genome.schema.yaml"
@@ -132,6 +135,30 @@ def check_taxon(data: dict) -> list[str]:
     elif not isinstance(taxon_id, int) or isinstance(taxon_id, bool) or taxon_id < 1:
         errors.append(f"organism.taxon_id must be a positive integer, got: {taxon_id!r}")
     return errors
+
+
+def check_species_listed(data: dict, species_by_id: dict | None = None) -> list[str]:
+    """`organism.taxon_id` must be on the species list, tools/taxon_ids.json.
+
+    The list is where species names live, and every store's species.json is
+    written from it, so a genome whose species is missing would ship nameless.
+    A missing or malformed taxon id is check_taxon's to report, not this one's.
+    """
+    organism = data.get("organism", {}) or {}
+    taxon_id = organism.get("taxon_id")
+    if not isinstance(taxon_id, int) or isinstance(taxon_id, bool) or taxon_id < 1:
+        return []
+    if species_by_id is None:
+        species_by_id = species_list.by_taxon_id(species_list.load_species_list())
+    if taxon_id in species_by_id:
+        return []
+    name = organism.get("scientific_name")
+    return [
+        f"organism.taxon_id {taxon_id} ({name}) is not on the species list "
+        f"{species_list.LIST_NAME}. Add the species there in this PR, e.g. "
+        f'"{name}": {{"taxon_id": {taxon_id}, "common_name": "..."}} '
+        f"(see CONTRIBUTING.md, Species names)."
+    ]
 
 
 def load_tiers(path: Path = TIERS_PATH) -> dict:
@@ -396,6 +423,7 @@ def validate_genome(
     tiers: dict | None = None,
     recipes: set[str] | None = None,
     alias_index: dict | None = None,
+    species_by_id: dict | None = None,
 ) -> list[str]:
     """Run all validation checks on a single genome file. Return list of errors."""
     errors = []
@@ -411,6 +439,7 @@ def validate_genome(
     errors.extend(validate_schema(data, schema))
     errors.extend(check_required_fields(data))
     errors.extend(check_taxon(data))
+    errors.extend(check_species_listed(data, species_by_id))
     errors.extend(check_checksum_format(data))
     errors.extend(check_masking(data))
     errors.extend(check_build_store(data))
@@ -473,6 +502,23 @@ def main():
     alias_index = build_alias_index()
     all_passed = True
 
+    # The species list is checked once per run: a PR that edits only
+    # tools/taxon_ids.json re-validates the corpus, and this is where that
+    # edit itself gets checked.
+    species = species_list.load_species_list()
+    try:
+        species_by_id = species_list.by_taxon_id(species)
+    except ValueError as exc:
+        print(f"FAIL {species_list.LIST_NAME}")
+        print(f"  - {exc}")
+        sys.exit(1)
+    list_problems = species_list.check_species_list(species)
+    if list_problems:
+        all_passed = False
+        print(f"FAIL {species_list.LIST_NAME}")
+        for problem in list_problems:
+            print(f"  - {problem}")
+
     for filepath in args.files:
         if not filepath.exists():
             print(f"SKIP {filepath} (file not found)")
@@ -487,6 +533,7 @@ def main():
             tiers=tiers,
             recipes=recipes,
             alias_index=alias_index,
+            species_by_id=species_by_id,
         )
         if errors:
             all_passed = False

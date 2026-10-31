@@ -211,17 +211,19 @@ sources, least to most specific:
 1. **The CSV derivation**, organism → scientific/common name + taxon URI;
    name/genome_assembly/source → a one-sentence `documentation`; source → assemblySource;
    accession → accessionID, plus assemblyLevel from the script's static per-accession
-   `ASSEMBLY_LEVELS` map sourced from NCBI Datasets. This path knows only human and mouse
-   and **fails loudly** on any other organism (extend its `ORGANISMS` map deliberately , 
-   never guess); an accession missing from `ASSEMBLY_LEVELS` just gets no assemblyLevel.
+   `ASSEMBLY_LEVELS` map sourced from NCBI Datasets. The organism is looked up in the
+   species list, [`tools/taxon_ids.json`](../tools/taxon_ids.json) (by key, the NCBI
+   scientific name, then by synonym, so "Canis familiaris" finds *Canis lupus
+   familiaris*), and the build **fails loudly**, naming the list, on any organism it
+   cannot find: the fix is a PR to the list, never a guess. An accession missing from
+   `ASSEMBLY_LEVELS` just gets no assemblyLevel.
 2. **The curated registry record**, if a `genomes/**/*.yaml` names this store in its
    `build.store` and matches the row (on `name` or `accession`), the row's fields come from
    that genome's `pep/metadata/<genome>.fhr.json` instead. That sidecar is generated from
    the genome YAML through the one mapping module (`tools/genome_to_fhr.py`), so the store's
-   published metadata and the registry catalog's are the same record. This is what lets a
-   store of non-model organisms carry real metadata: `vgp` holds 605 vertebrate species, and
-   none of them are in `ORGANISMS`. Rows with a curated record are exempt from the
-   organism validation. Pass `--no-registry` to derive every row from the CSV instead.
+   published metadata and the registry catalog's are the same record. Rows with a curated
+   record are exempt from the organism validation. Pass `--no-registry` to derive every
+   row from the CSV instead.
 3. **A per-genome override YAML**, see below.
 
 Idempotent; re-runs overwrite. It also re-commits `rgstore.json` so the manifest's
@@ -244,7 +246,51 @@ python build_fhr.py jungle --dry-run   # preview
 python build_fhr.py jungle             # write sidecars + refresh manifest
 ```
 
-After running, sync the store's `fhr/` dir **and** `rgstore.json` to S3 (see below).
+After running, sync the store's `fhr/` dir, `species.json` **and** `rgstore.json` to S3
+(see below).
+
+### species.json (species names)
+
+`species.json` sits at the store root, next to `rgstore.json`. It lists the species
+the store holds, with every name refgenie should find them by, so a search for
+"brown rat" finds *Rattus norvegicus* genomes even though their common name is
+"Norway rat". It is not FHR: an FHR record has one `genome`, one `taxon`, and a
+`genomeSynonym` list meant for names of the genome itself, and it forbids extra
+fields. gtars ignores the file, and the RefgetStore format does not change. Readers
+treat it as optional.
+
+The contract (shared with refgenie, which reads the file during `store sync`):
+
+```json
+{"species": [
+  {"taxon_id": 10116, "scientific_name": "Rattus norvegicus", "common_name": "Norway rat", "synonyms": ["brown rat", "rat"]}
+]}
+```
+
+- `taxon_id`: the NCBI taxon id, an integer; required, and unique in the file.
+- `scientific_name`: required.
+- `common_name`: optional.
+- `synonyms`: an optional list of other names.
+- The file lists only that store's species, sorted by `taxon_id`.
+
+**Who writes it.** `build_fhr.py` writes it from the species list,
+[`tools/taxon_ids.json`](../tools/taxon_ids.json), with exactly the taxa named by the
+sidecars it writes, under the same lock as the sidecars, so it rides the same S3 sync.
+A sidecar naming a taxon the list lacks stops the run before anything is written. The
+catalog's own sequence store (`refgenie-main`) gets its copy from
+`python tools/species_list.py store-file "$REFGENIE_GENOME_FOLDER/.refget_store"`,
+which the nightly runs just before syncing that store.
+
+**Refreshing after a list edit.** A list edit reaches a store the next time the store
+is published; the nightly republishes only stores whose `sources.csv` changed. To push
+it sooner, rerun `build_fhr.py <store>` and sync the store (see below).
+
+**Checking a published copy:**
+
+```bash
+curl -s https://refgenie.s3.us-east-1.amazonaws.com/refget-store/<store>/species.json -o species.json \
+    && python tools/species_list.py check-file species.json
+```
 
 ## Deploying to S3
 

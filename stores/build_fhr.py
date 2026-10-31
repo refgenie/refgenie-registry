@@ -8,10 +8,11 @@ already-built collection digest (via the collection aliases build.py wrote)
 and given an FHR (FAIR Headers Reference genome) sidecar --
 ``fhr/<digest>.fhr.json``, built from the row's columns:
 
-    genome         <- organism            (scientific name)
-    commonName     <- derived from organism (known organisms only; the script
-                                            refuses to guess and fails loudly)
-    taxon          <- {name: organism, uri: identifiers.org taxonomy URI}
+    genome         <- the species list key the organism resolves to (the NCBI
+                      scientific name; see below)
+    commonName     <- the species list's common_name for it, when it has one
+    taxon          <- {name: that scientific name, uri: identifiers.org taxonomy
+                      URI of the list's taxon_id}
     documentation  <- one deterministic sentence from name/genome_assembly/source
     assemblySource <- source
     accessionID    <- {name: accession}   (only when the column is non-empty)
@@ -28,10 +29,29 @@ sidecar is generated from the genome YAML by ``build/generate_genome_metadata.py
 through the one mapping module (``tools/genome_to_fhr.py``), so the store's
 published metadata and the registry's catalog metadata are the same record.
 
-This is what lets a store of non-model organisms carry real metadata: the CSV
-derivation below can only annotate organisms listed in ``ORGANISMS``, and the
-``vgp`` store holds 605 vertebrate species. Rows WITHOUT a curated record still
-go through the CSV derivation and are still validated against ``ORGANISMS``.
+Rows WITHOUT a curated record go through the CSV derivation.
+
+The species list (the CSV derivation's organisms)
+-------------------------------------------------
+The CSV derivation looks each row's ``organism`` up in the species list,
+``tools/taxon_ids.json`` (``tools/species_list.py``): by key (the NCBI
+scientific name), then by key ignoring case, then by synonym, so an old name or
+a store's own spelling ("Canis familiaris") still finds its species. An
+organism the list cannot resolve is a hard failure, before anything is written:
+guessing a common name or taxon id would write wrong metadata that then
+propagates into every refgenie catalog. The fix is a pull request to the list.
+
+species.json
+------------
+Each run also writes ``species.json`` at the store root, next to
+``rgstore.json``: the taxon id, scientific name, common name and other names of
+exactly the taxa named by the sidecars this run writes, from the species list.
+FHR has no field for a species' other names, so they ship in this separate file,
+which gtars ignores. It is written under the same batch lock as the sidecars and
+the manifest, so it rides the same S3 sync. A run with nothing to write writes no
+``species.json``. A sidecar whose taxon is not on the list (a curated record or
+an override naming a species the list lacks) is a hard failure, before anything
+is written.
 
 Per-genome YAML overrides, "use YAML if it exists, use CSV otherwise":
 ``stores/<store>/genomes/<row_name>.yaml`` (override with ``--overrides``) is a
@@ -54,7 +74,8 @@ source/accession/level columns.
 Idempotent: re-running overwrites sidecars with identical content. After
 writing, the store manifest (rgstore.json) is re-committed so its
 ``fhr_digest`` advertises the sidecars, required for ``pull_fhr`` on remote
-opens. Sync the ``fhr/`` dir and ``rgstore.json`` to S3 afterward.
+opens. Sync the ``fhr/`` dir, ``species.json`` and ``rgstore.json`` to S3
+afterward.
 
 Usage:
     source ../infra/rivanna/env.sh
@@ -64,7 +85,8 @@ Usage:
     python build_fhr.py jungle --overrides /path/to/genomes_dir
     python build_fhr.py vgp --no-registry     # CSV derivation only
 
-Requirements: refget + gtars (RefgetStore) and pyyaml; Python stdlib otherwise.
+Requirements: refget + gtars (RefgetStore) and pyyaml; Python stdlib otherwise
+(``tools/species_list.py`` is stdlib only).
 """
 
 import argparse
@@ -77,16 +99,10 @@ REPO = SCRIPT_DIR.parent
 GENOMES_DIR = REPO / "genomes"
 REGISTRY_METADATA_DIR = REPO / "pep" / "metadata"
 sys.path.insert(0, str(SCRIPT_DIR))  # for build_aliases/store_config imports
+sys.path.insert(0, str(REPO / "tools"))  # for the species list
 
+import species_list
 from build_aliases import read_sources, resolve_collection_digest
-
-# The organisms this script knows how to annotate. Anything else in the
-# organism column is a hard error: guessing a common name or taxon id would
-# write wrong metadata that then propagates into every refgenie catalog.
-ORGANISMS = {
-    "Homo sapiens": ("human", 9606),
-    "Mus musculus": ("mouse", 10090),
-}
 
 # NCBI assembly level per accession, lowercased to match the registry's
 # committed pep/metadata/*.fhr.json convention ("chromosome"). Static so this
@@ -129,19 +145,22 @@ def documentation_for_row(row):
     return sentence + "."
 
 
-def fhr_fields_for_row(row):
-    """Build the camelCase FHR dict for one sources.csv row."""
+def fhr_fields_for_row(row, species):
+    """Build the camelCase FHR dict for one sources.csv row.
+
+    The organism must resolve on the species list (`validate_organisms` checks
+    every row first).
+    """
     organism = (row.get("organism") or "").strip()
-    common_name, taxon_id = ORGANISMS[organism]
-    fields = {
-        "genome": organism,
-        "commonName": common_name,
-        "taxon": {
-            "name": organism,
-            "uri": f"https://identifiers.org/taxonomy:{taxon_id}",
-        },
-        "documentation": documentation_for_row(row),
+    sci, entry = species_list.resolve_organism(organism, species)
+    fields = {"genome": sci}
+    if entry.get("common_name"):
+        fields["commonName"] = entry["common_name"]
+    fields["taxon"] = {
+        "name": sci,
+        "uri": f"https://identifiers.org/taxonomy:{entry['taxon_id']}",
     }
+    fields["documentation"] = documentation_for_row(row)
     source = (row.get("source") or "").strip()
     if source:
         fields["assemblySource"] = source
@@ -298,38 +317,55 @@ def merge_override(fields, override):
     return merged
 
 
-def validate_organisms(rows, records=None):
-    """Fail loudly (before writing anything) on any organism this script
-    cannot annotate.
+def validate_organisms(rows, species, records=None):
+    """Fail loudly (before writing anything) on any CSV-derived row whose
+    organism the species list cannot resolve.
 
     Rows covered by a curated registry record are exempt: their organism, common
-    name and taxon come from the genome YAML, not from the ORGANISMS map, so
-    demanding a mapping for them would block every non-model store for no reason.
+    name and taxon come from the genome YAML, not from the CSV. A row with an
+    empty organism column gets its own message, because the fix is in
+    sources.csv, not in the list.
     """
     records = records or {}
+    derived = [row for row in rows if registry_record_for_row(row, records) is None]
+    empty = [
+        (row.get("name") or row.get("accession") or row.get("fasta") or "").strip()
+        for row in derived
+        if not (row.get("organism") or "").strip()
+    ]
+    if empty:
+        print(
+            f"FATAL: {len(empty)} row(s) with an empty organism column: fill it in "
+            f"sources.csv. Rows: {empty!r}",
+            file=sys.stderr,
+        )
     unknown = sorted(
         {
             (row.get("organism") or "").strip()
-            for row in rows
-            if registry_record_for_row(row, records) is None
+            for row in derived
+            if (row.get("organism") or "").strip()
+            and species_list.resolve_organism(row.get("organism"), species) is None
         }
-        - set(ORGANISMS)
     )
     if unknown:
         print(
-            "FATAL: sources.csv contains organisms this script has no "
-            f"commonName/taxon mapping for: {unknown!r}.\n"
-            "Add them to ORGANISMS in build_fhr.py; refusing to guess.",
+            "FATAL: these sources.csv organisms are not on the species list "
+            f"(tools/taxon_ids.json): {unknown!r}. Add each species to "
+            "tools/taxon_ids.json in a pull request (key: NCBI scientific name, with "
+            "taxon_id and common_name), or, if the species is already there under "
+            "another name, add this spelling to its synonyms. Refusing to guess.",
             file=sys.stderr,
         )
+    if empty or unknown:
         sys.exit(1)
 
 
-def build_fhr(store, rows, dry_run=False, overrides=None, records=None):
+def build_fhr(store, rows, *, species, store_dir, dry_run=False, overrides=None,
+              records=None):
     from refget.store import FhrMetadata
 
     records = records or {}
-    validate_organisms(rows, records)
+    validate_organisms(rows, species, records)
     overrides = overrides or {}
     used_overrides = set()
     n_curated = 0
@@ -348,7 +384,7 @@ def build_fhr(store, rows, dry_run=False, overrides=None, records=None):
         # CSV columns), then a hand-written override YAML.
         curated = registry_record_for_row(row, records)
         if curated is None:
-            fields = fhr_fields_for_row(row)
+            fields = fhr_fields_for_row(row, species)
         else:
             n_curated += 1
             fields = dict(curated)
@@ -403,10 +439,36 @@ def build_fhr(store, rows, dry_run=False, overrides=None, records=None):
     print(f"  {n_curated}/{len(rows)} row(s) used a curated registry record; "
           f"{len(rows) - n_curated} fell back to the CSV derivation")
 
+    # species.json lists exactly the taxa these sidecars name, so every one of
+    # them must be on the species list. A CSV-derived row already is (validated
+    # above); a curated record or an override may name a species the list lacks.
+    record_taxa = [(label, species_list.taxon_id_from_fhr(f)) for label, _, f in to_write]
+    taxa = {tid for _, tid in record_taxa} - {None}
+    no_taxon = sum(1 for _, tid in record_taxa if tid is None)
+    if no_taxon:
+        print(f"NOTE: {no_taxon} record(s) name no taxon; they add nothing to species.json.",
+              file=sys.stderr)
+    listed = species_list.by_taxon_id(species)
+    unlisted = {}
+    for label, tid in record_taxa:
+        if tid is not None and tid not in listed:
+            unlisted.setdefault(tid, []).append(label)
+    if unlisted:
+        named = "; ".join(f"taxon {tid} (rows: {', '.join(labels)})"
+                          for tid, labels in sorted(unlisted.items()))
+        print(
+            f"FATAL: these FHR records name taxa that are not on the species list "
+            f"(tools/taxon_ids.json): {named}. Add each species to tools/taxon_ids.json "
+            "in a pull request; species.json cannot list a species the list lacks.",
+            file=sys.stderr,
+        )
+        sys.exit(1)
+
     if dry_run:
         print("\n[DRY RUN] not writing. Sample:")
         for label, digest, fields in to_write[:3]:
             print(f"  {digest}  {label}: {fields}")
+        print(f"  species.json would list {len(taxa)} species")
         return n_unresolved
 
     if not to_write:
@@ -426,6 +488,8 @@ def build_fhr(store, rows, dry_run=False, overrides=None, records=None):
         for label, digest, fields in to_write:
             store.set_fhr_metadata(digest, FhrMetadata(**fields))
         store.write()
+        wrote = species_list.write_species_file(store_dir, taxa, species)
+        print(f"species.json: {len(taxa)} species ({'written' if wrote else 'unchanged'})")
     finally:
         if has_batch_lock:
             store.release_batch_lock()
@@ -494,8 +558,10 @@ def main():
     if hasattr(store, "set_quiet"):
         store.set_quiet(True)
 
+    species = species_list.load_species_list()
     n_unresolved = build_fhr(
-        store, rows, dry_run=args.dry_run, overrides=overrides, records=records
+        store, rows, species=species, store_dir=store_path, dry_run=args.dry_run,
+        overrides=overrides, records=records,
     )
     # Unresolved rows are warnings, not failures: a store legitimately may not
     # contain every sources.csv row (build in progress, removed collections).

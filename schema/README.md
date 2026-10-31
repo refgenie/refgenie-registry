@@ -71,6 +71,10 @@ round-trips it. The **seqcol digest is the sidecar filename**
 `fasta.sources[].provider`, `fasta.checksum.md5`, `seqcol.length`, and the whole
 `metadata` and `build` blocks are registry-only and are dropped from the sidecar.
 
+Species names are not FHR fields and do not appear in genome YAMLs; they live in
+[`tools/taxon_ids.json`](../tools/taxon_ids.json) and ship to stores as `species.json`
+(see [`stores/README.md`](../stores/README.md)).
+
 ### The registry/FHR boundary
 
 `genome.schema.yaml`'s top-level fields fall into two groups, and the nesting says

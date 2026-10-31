@@ -52,7 +52,7 @@ The repository is organized as:
 - **`pep/`**, the generated nightly build queue: `tiers.yaml` defines what each build tier means; `samples.csv` and `metadata/` are generated from `genomes/` and must never be hand-edited (see [`pep/README.md`](pep/README.md))
 - **`stores/`**, RefgetStore source manifests: content-addressable sequence collections, one PEP project per store (see [`stores/README.md`](stores/README.md))
 - **`schema/`**, JSON Schemas that genome and recipe entries are validated against (see [`schema/README.md`](schema/README.md))
-- **`tools/`**, Validation scripts and helpers (see [`tools/README.md`](tools/README.md))
+- **`tools/`**, Validation scripts and helpers, plus the species list, [`tools/taxon_ids.json`](tools/taxon_ids.json): the one place species names are kept (see [`tools/README.md`](tools/README.md))
 - **`infra/`**, Operator-side build/deploy infrastructure, e.g. the Rivanna HPC layer ([`infra/rivanna/`](infra/rivanna/)); not needed to use the registry
 
 ## Data channel
@@ -78,7 +78,7 @@ no longer used by refgenie1.
 ## Contributing
 
 Contributions happen through pull requests and build-request issues. There are
-three ways to contribute; full field references, examples, and security
+four ways to contribute; full field references, examples, and security
 guidelines are in [CONTRIBUTING.md](./CONTRIBUTING.md).
 
 ### Add a genome
@@ -90,6 +90,7 @@ Define a new genome assembly. Fork, branch, and create
 - **Required fields:** `name`, `description`, `organism.scientific_name`, `organism.taxon_id`, `fasta` (a `sources[].url` or a `checksum`), `seqcol` (a `digest` or `compute: true`), `build` (a `store` and a `tier`)
 - **`build:` is the whole request.** `store` names a directory under [`stores/`](stores/) that holds the sequence; `tier` says how far to take it, `store_only` (registered and browsable, nothing built) through `sequence_only`, `standard`, `full`. `store_only` is the right default. There is no second file to edit and no build request to open.
 - The checksum, when present, is the SHA-256 of the **uncompressed** FASTA (or the `compute_on_registration` sentinel); use NCBI, Ensembl, or UCSC as the source. The schema is [FHR](https://github.com/FAIR-bioHeaders/FHR-Specification)-aligned, see [`schema/README.md`](schema/README.md).
+- The genome's species (`organism.taxon_id`) must be on the species list, [`tools/taxon_ids.json`](tools/taxon_ids.json). Validation fails otherwise; add the species in the same PR (see [Suggest a species name](#suggest-a-species-name)).
 - See [`genomes/human/hg38.yaml`](genomes/human/hg38.yaml) for a complete reference and [CONTRIBUTING.md § Adding a Genome](./CONTRIBUTING.md#adding-a-genome).
 
 #### Bulk-add genomes from a PEP
@@ -144,6 +145,15 @@ genome's `build.tier` (or add the asset to its `build.add` list) in
 `genomes/<organism>/<assembly>.yaml` and open a PR. The tier **is** the build
 queue: `pep/samples.csv` is generated from the genome list, so the next nightly
 picks the change up. See [Adding a genome](./CONTRIBUTING.md#adding-a-genome).
+
+### Suggest a species name
+
+Species names, such as the other common names people search for ("brown rat"
+for *Rattus norvegicus*), live in one list,
+[`tools/taxon_ids.json`](tools/taxon_ids.json). To add or fix one, edit that
+species' entry and open a PR; it gets the same checks and review as a genome.
+Each store ships its species from this list, as `species.json`, when it is
+published. See [CONTRIBUTING.md § Species names](./CONTRIBUTING.md#species-names).
 
 ### Validate locally before submitting
 

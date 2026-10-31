@@ -1,4 +1,4 @@
-"""Tests for the genome-YAML validator's `build:` block checks.
+"""Tests for the genome-YAML validator: `build:` block checks and species-list checks.
 
 Run: pytest tools/test_validate_genome.py
 """
@@ -103,3 +103,39 @@ def test_fhr_export_is_unchanged_by_adding_a_build_block():
 def test_every_committed_genome_exports_no_build_key(path):
     data = vg.load_genome(path)
     assert vg.check_build_not_in_fhr(data) == []
+
+
+# --------------------------------------------------------------------------
+# species names live in the species list, not in genome YAMLs or FHR
+# --------------------------------------------------------------------------
+
+def test_genome_synonym_is_exactly_the_aliases():
+    data = copy.deepcopy(MINIMAL)
+    data["organism"]["common_name"] = "human"
+    data["aliases"] = ["GRCh38", "hg38-test"]
+    assert genome_to_fhr.genome_yaml_to_fhr(data)["genomeSynonym"] == ["GRCh38", "hg38-test"]
+
+
+def test_no_aliases_means_no_genome_synonym():
+    assert "genomeSynonym" not in genome_to_fhr.genome_yaml_to_fhr(copy.deepcopy(MINIMAL))
+
+
+def test_organism_synonyms_fail_the_schema():
+    data = copy.deepcopy(MINIMAL)
+    data["organism"]["synonyms"] = ["man"]
+    errors = vg.validate_schema(data, vg.load_schema())
+    assert errors
+    assert any("synonyms" in e for e in errors)
+
+
+def test_listed_species_passes():
+    assert vg.check_species_listed(copy.deepcopy(MINIMAL)) == []
+
+
+def test_unlisted_species_fails_naming_the_list():
+    data = copy.deepcopy(MINIMAL)
+    data["organism"] = {"scientific_name": "Notarealus speciesus", "taxon_id": 999999999}
+    errors = vg.check_species_listed(data)
+    assert len(errors) == 1
+    assert "999999999" in errors[0]
+    assert "tools/taxon_ids.json" in errors[0]

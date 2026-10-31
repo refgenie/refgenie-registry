@@ -18,11 +18,14 @@ that would be written) is skipped, so a second run writes nothing.
 Taxonomy
 --------
 `organism.taxon_id` is schema-required and sources.csv has only the organism NAME,
-so the ids come from NCBI Taxonomy (esearch + esummary) and are cached in
-`tools/taxon_ids.json`. That cache is COMMITTED, so a re-run is reproducible and
-offline: `--offline` refuses to reach the network and reports any name the cache
-does not cover. A name NCBI cannot resolve is reported and its row is SKIPPED --
-a genome with no taxon id is a real gap that needs a human, not a blank field.
+so each name is looked up in the species list, `tools/taxon_ids.json` (by key,
+then by synonym; see `tools/species_list.py`). The list is COMMITTED, so a re-run
+is reproducible and offline. A name the list lacks is resolved through NCBI
+Taxonomy (esearch + esummary) and the species is added to the list under NCBI's
+scientific name, with the CSV spelling as a synonym when it differs.
+`--offline` refuses to reach the network and reports any name the list does not
+cover. A name NCBI cannot resolve is reported and its row is SKIPPED -- a genome
+with no taxon id is a real gap that needs a human, not a blank field.
 
 Usage:
     python tools/sources_to_genomes.py vgp --out-dir genomes/vertebrates
@@ -45,10 +48,17 @@ from pathlib import Path
 
 import yaml
 
+from species_list import (
+    SPECIES_LIST,
+    clean_synonyms,
+    load_species_list,
+    resolve_organism,
+    save_species_list,
+)
+
 REPO = Path(__file__).resolve().parent.parent
 GENOMES_DIR = REPO / "genomes"
 STORES_DIR = REPO / "stores"
-TAXON_CACHE = Path(__file__).resolve().parent / "taxon_ids.json"
 
 EUTILS = "https://eutils.ncbi.nlm.nih.gov/entrez/eutils"
 # NCBI asks for <= 3 requests/second without an API key.
@@ -99,23 +109,13 @@ def hub_url(accession: str) -> str | None:
 # taxonomy
 # --------------------------------------------------------------------------
 
-def load_taxon_cache(path: Path = TAXON_CACHE) -> dict:
-    if not path.exists():
-        return {}
-    return json.loads(path.read_text())
-
-
-def save_taxon_cache(cache: dict, path: Path = TAXON_CACHE) -> None:
-    path.write_text(json.dumps(cache, indent=2, sort_keys=True) + "\n")
-
-
 def _get_json(url: str) -> dict:
     with urllib.request.urlopen(url, timeout=30) as resp:
         return json.loads(resp.read().decode())
 
 
 def fetch_taxon(name: str) -> dict | None:
-    """{taxon_id, common_name} for an organism name, from NCBI Taxonomy.
+    """{taxon_id, scientific_name, common_name?} for an organism name, from NCBI Taxonomy.
 
     Returns None when NCBI resolves the name to zero or several taxa, an
     ambiguous name must not be guessed at.
@@ -133,15 +133,42 @@ def fetch_taxon(name: str) -> dict | None:
         str(taxon_id)
     ) or {}
     common = summary.get("genbankcommonname") or summary.get("commonname") or None
-    entry = {"taxon_id": taxon_id}
+    entry = {"taxon_id": taxon_id, "scientific_name": summary.get("scientificname") or name}
     if common:
         entry["common_name"] = common
     return entry
 
 
-def resolve_taxa(names: list, cache: dict, offline: bool) -> list:
-    """Fill `cache` for every name. Returns the names that stayed unresolved."""
-    missing = [n for n in names if n not in cache]
+def add_species(species: dict, spelling: str, found: dict) -> bool:
+    """File an NCBI answer for ``spelling`` in the species list.
+
+    The key is NCBI's scientific name. If it is already listed with the same
+    taxon id, the spelling becomes one of its synonyms; if it is listed with a
+    different id, nothing changes and False is returned. Otherwise a new entry
+    is added, with the spelling as a synonym when it differs from the key.
+    """
+    key = found["scientific_name"]
+    entry = species.get(key)
+    if entry is None:
+        entry = {"taxon_id": found["taxon_id"]}
+        if found.get("common_name"):
+            entry["common_name"] = found["common_name"]
+        species[key] = entry
+    elif entry.get("taxon_id") != found["taxon_id"]:
+        return False
+    synonyms = clean_synonyms(key, entry.get("common_name"),
+                              (entry.get("synonyms") or []) + [spelling])
+    if synonyms:
+        entry["synonyms"] = synonyms
+    return True
+
+
+def resolve_taxa(names: list, species: dict, offline: bool) -> list:
+    """Add every name the species list cannot resolve to it, from NCBI.
+
+    Returns the names that stayed unresolved.
+    """
+    missing = [n for n in names if resolve_organism(n, species) is None]
     if not missing:
         return []
     if offline:
@@ -150,19 +177,22 @@ def resolve_taxa(names: list, cache: dict, offline: bool) -> list:
     unresolved = []
     for i, name in enumerate(missing, 1):
         try:
-            entry = fetch_taxon(name)
+            found = fetch_taxon(name)
         except Exception as exc:  # noqa: BLE001
             print(f"  NCBI lookup failed for {name!r}: {exc}", file=sys.stderr)
-            entry = None
-        if entry is None:
+            found = None
+        if found is None:
             unresolved.append(name)
-        else:
-            cache[name] = entry
+        elif not add_species(species, name, found):
+            print(f"  {name!r}: NCBI calls it {found['scientific_name']!r} "
+                  f"(taxon {found['taxon_id']}), but the species list has that name "
+                  f"under another taxon id", file=sys.stderr)
+            unresolved.append(name)
         if i % 25 == 0 or i == len(missing):
             print(f"  taxonomy: {i}/{len(missing)} looked up", file=sys.stderr)
-            save_taxon_cache(cache)
+            save_species_list(species)
         time.sleep(NCBI_DELAY)
-    save_taxon_cache(cache)
+    save_species_list(species)
     return unresolved
 
 
@@ -189,8 +219,12 @@ def existing_records(genomes_dir: Path = GENOMES_DIR) -> tuple:
 # rendering
 # --------------------------------------------------------------------------
 
-def render_genome(row: dict, slug: str, store: str, taxon: dict) -> str:
-    """One genome YAML, in the same field order the hand-written records use."""
+def render_genome(row: dict, slug: str, store: str, scientific_name: str, entry: dict) -> str:
+    """One genome YAML, in the same field order the hand-written records use.
+
+    The organism comes from its species-list entry: the list key is the
+    scientific name, whatever the CSV spelling was.
+    """
     organism = row["organism"].strip()
     accession = (row.get("accession") or "").strip()
     source = (row.get("source") or "").strip()
@@ -203,10 +237,10 @@ def render_genome(row: dict, slug: str, store: str, taxon: dict) -> str:
         detail += f", from {source}"
     lines.append(f"  {detail}.")
     lines.append("organism:")
-    lines.append(f"  scientific_name: {organism}")
-    if taxon.get("common_name"):
-        lines.append(f"  common_name: {taxon['common_name']}")
-    lines.append(f"  taxon_id: {taxon['taxon_id']}")
+    lines.append(f"  scientific_name: {scientific_name}")
+    if entry.get("common_name"):
+        lines.append(f"  common_name: {entry['common_name']}")
+    lines.append(f"  taxon_id: {entry['taxon_id']}")
 
     if accession:
         lines.append("assembly:")
@@ -279,8 +313,8 @@ def generate(store: str, out_dir: Path, dry_run: bool, offline: bool) -> int:
         collisions.setdefault(slug, []).append(row["name"])
     duplicated = {s: n for s, n in collisions.items() if len(n) > 1}
 
-    cache = load_taxon_cache()
-    unresolved = resolve_taxa(sorted({r["organism"].strip() for r, _ in todo}), cache, offline)
+    species = load_species_list()
+    unresolved = resolve_taxa(sorted({r["organism"].strip() for r, _ in todo}), species, offline)
 
     out_dir.mkdir(parents=True, exist_ok=True)
     written = 0
@@ -289,11 +323,12 @@ def generate(store: str, out_dir: Path, dry_run: bool, offline: bool) -> int:
         if slug in duplicated:
             continue
         organism = row["organism"].strip()
-        taxon = cache.get(organism)
-        if not taxon:
+        resolved = resolve_organism(organism, species)
+        if resolved is None:
             skipped_taxon.append((slug, organism))
             continue
-        text = render_genome(row, slug, store, taxon)
+        scientific_name, entry = resolved
+        text = render_genome(row, slug, store, scientific_name, entry)
         path = out_dir / f"{slug}.yaml"
         if dry_run:
             print(f"--- {_rel(path)}")
@@ -342,7 +377,8 @@ def main(argv=None) -> int:
     parser.add_argument("--dry-run", action="store_true",
                         help="print what would be written; write nothing")
     parser.add_argument("--offline", action="store_true",
-                        help="never reach NCBI; use tools/taxon_ids.json only")
+                        help=f"never reach NCBI; use the species list "
+                             f"({SPECIES_LIST.relative_to(REPO)}) only")
     args = parser.parse_args(argv)
     try:
         return generate(args.store, args.out_dir, args.dry_run, args.offline)

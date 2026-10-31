@@ -10,8 +10,10 @@ Validation scripts and helpers used by CI and by contributors before opening a P
 | `validate_asset_class.py` | Validate asset-class YAML files in `asset_classes/` against `schema/asset_class.schema.yaml` (forthcoming) |
 | `import_recipes.py` | Thin loader: loads `asset_classes/` and the refgenie-native recipes directly into refgenie1 (no conversion, recipes are already in the native model). Used by CI/mobot (forthcoming) |
 | `migrate_build_matrix.py` | One-time, idempotent migration that folded `pep/build_matrix.yaml` into each genome YAML's `build:` block. The reproducible record of that change, including how each genome's store was resolved |
-| `sources_to_genomes.py` | Generate genome YAMLs in bulk from a store's `sources.csv`, resolving taxon ids through NCBI Taxonomy (cached in `taxon_ids.json`). How a hub import lands |
-| `taxon_ids.json` | Committed NCBI Taxonomy cache (`organism name -> {taxon_id, common_name}`) so `sources_to_genomes.py --offline` is reproducible |
+| `sources_to_genomes.py` | Generate genome YAMLs in bulk from a store's `sources.csv`, taking each organism's taxon id from the species list and adding any species it lacks (from NCBI Taxonomy) to `taxon_ids.json`. How a hub import lands |
+| `taxon_ids.json` | The species list: NCBI scientific name -> `{taxon_id, common_name, synonyms}`. The one place species names are edited (by PR). Every store's `species.json` and the CSV-derived FHR species fields (`stores/build_fhr.py`) come from it. Every genome's `organism.taxon_id` must be on it |
+| `species_list.py` | The one module for the species list: load/save, organism lookup (key, then synonym), the name rules, the list check (`check`), and writing (`store-file`) and checking (`check-file`) a store's `species.json`. Standard library only |
+| `fetch_species_names.py` | Refreshes the species list from NCBI Taxonomy by hand (common names, other names, missing store species); `--dry-run` previews. Builds never call NCBI |
 | `changed_files.sh` | List changed genome/recipe YAML files in the current branch vs. a base ref (used by CI to scope validation) |
 | `requirements.txt` | Python dependencies for the validators |
 

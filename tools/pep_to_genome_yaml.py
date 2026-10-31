@@ -324,6 +324,7 @@ def validate_doc_inmemory(doc: dict) -> list[str]:
     errs += vg.validate_schema(data, schema)
     errs += vg.check_required_fields(data)
     errs += vg.check_taxon(data)
+    errs += vg.check_species_listed(data)
     errs += vg.check_checksum_format(data)
     errs += vg.check_masking(data)
     errs += vg.check_fhr_block(data)
