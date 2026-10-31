@@ -22,8 +22,7 @@ root to sync the whole repo to `riva:~/code/refgenie-registry`.
 These scripts are specific to the `shefflab` allocation on Rivanna and assume:
 
 - The repo is checked out at `~/code/refgenie-registry` (SLURM scripts `cd` there by absolute path).
-- A Python venv at `~/envs/refgetstore-analysis` with `refget`/`gtars` installed.
-- The Lmod stack `gcc/11.4.0 openmpi/4.1.4 python/3.11.4`.
+- The build system's venv at `$REFGENIE_VENV` (`~/envs/refgenie-build`, built on `miniforge/26.9.4` by `setup_env.sh`), with `refget`/`gtars` installed. Each script sources `env.sh` and activates it.
 - An `~/.aws` `refgenie` profile (authenticates as `RefgenieDataBot`) for S3 writes.
 
 ## Usage

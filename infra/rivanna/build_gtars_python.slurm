@@ -8,14 +8,17 @@
 #SBATCH --output=/project/shefflab/brickyard/results_pipeline/refgenie/build_reports/build_gtars_python_%j.log
 
 # Build the gtars Python extension from ~/code/gtars and install it into the
-# refgetstore-analysis venv.
+# build system's venv ($REFGENIE_VENV, from env.sh), the environment the nightly
+# and every other job here run in.
 #
-# WHY: the venv ships gtars 0.9.0, whose RefgetStore.remove_collection is
-# quadratic in orphan cleanup -- it calls md5_lookup.retain() once per orphan,
-# and md5_lookup holds one entry per sequence in the store. On plantref
-# (15.2M sequences) removing the 736k-sequence wheat collection ran 78 minutes
-# at 100% CPU and deleted nothing. The fix (single HashSet pass, gtars dev
-# branch, commit 7ecc71ff merged via 59d442f1) makes it O(sequences + orphans).
+# WHY: the store fixes the source guards below check for were on the gtars dev
+# branch before any release. The first: gtars 0.9.0's
+# RefgetStore.remove_collection is quadratic in orphan cleanup -- it calls
+# md5_lookup.retain() once per orphan, and md5_lookup holds one entry per
+# sequence in the store. On plantref (15.2M sequences) removing the
+# 736k-sequence wheat collection ran 78 minutes at 100% CPU and deleted nothing.
+# The fix (single HashSet pass, commit 7ecc71ff merged via 59d442f1) makes it
+# O(sequences + orphans).
 #
 # ~/code/gtars is populated by the yoke/mutagen session `yoke-atacbase-gtars`
 # (alpha: ~/Dropbox/workspaces/intervals/repos/gtars). NOTE it is NOT a git
@@ -27,10 +30,11 @@
 
 set -uo pipefail
 
-source /etc/profile.d/00-modulepath.sh
-source /etc/profile.d/modules.sh
-module load gcc/11.4.0 openmpi/4.1.4 python/3.11.4
-
+# No modules. This used to load `gcc/11.4.0 openmpi/4.1.4 python/3.11.4`;
+# Rivanna removed that python module, and none of it is needed: maturin builds
+# against the venv's own interpreter (miniforge/26.9.4, which runs without its
+# module loaded), and cargo links with the system cc.
+REGISTRY="${REGISTRY_DIR:-$HOME/mobot/checkouts/refgenie-registry}"
 export PATH="$HOME/.cargo/bin:$PATH"
 
 SRC="$HOME/code/gtars"
@@ -41,7 +45,8 @@ SRC="$HOME/code/gtars"
 # python) has since been superseded on the cluster, so it now fails on
 # `libffi.so.8` for any import of ctypes. Installing into the environment the
 # jobs actually run in is the whole point.
-VENV="${REFGENIE_VENV:-$HOME/envs/refgenie-build}"
+source "$REGISTRY"/infra/rivanna/env.sh
+VENV="$REFGENIE_VENV"
 
 echo "===== build gtars-python  $(date) ====="
 command -v cargo || { echo "cargo not found on PATH" >&2; exit 1; }
@@ -79,6 +84,11 @@ if grep -q "struct Tombstones" "$SRC/gtars-refget/src/store/readonly.rs"; then
 fi
 echo "  source check OK: single-pass orphan cleanup + hoisted rmdir + delta commit present"
 
+if [[ ! -x "${VENV:-}/bin/python" ]]; then
+    echo "FATAL: build venv missing (REFGENIE_VENV=${VENV:-unset})." >&2
+    echo "       create it with: bash infra/rivanna/setup_env.sh" >&2
+    exit 1
+fi
 source "$VENV/bin/activate" || exit 1
 echo "  venv: $VIRTUAL_ENV"
 echo "  gtars BEFORE: $(python -c 'import gtars; print(gtars.__version__)' 2>&1)"

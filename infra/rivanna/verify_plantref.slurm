@@ -24,13 +24,20 @@ REGISTRY="${REGISTRY_DIR:-$HOME/mobot/checkouts/refgenie-registry}"
 # Usage: sbatch infra/rivanna/verify_plantref.slurm
 
 set -uo pipefail
-# Same toolchain the removal jobs use. env.sh only exports store paths -- it does
-# NOT put a python on PATH, so these four lines are load-bearing.
-source /etc/profile.d/00-modulepath.sh
-source /etc/profile.d/modules.sh
-module load gcc/11.4.0 openmpi/4.1.4 python/3.11.4
-source ~/envs/refgetstore-analysis/bin/activate
+# Same environment the removal jobs use. env.sh does not put a python on PATH,
+# so activating the venv below is load-bearing.
+# The build system's own environment: env.sh defines REFGENIE_VENV (the venv
+# infra/rivanna/setup_env.sh builds on miniforge/26.9.4). This used to load
+# `gcc/11.4.0 openmpi/4.1.4 python/3.11.4` and activate ~/envs/refgetstore-analysis;
+# Rivanna removed that python module, and build_store.slurm says why that venv
+# was the wrong one anyway.
 source "$REGISTRY"/infra/rivanna/env.sh
+if [[ ! -x "${REFGENIE_VENV:-}/bin/python" ]]; then
+    echo "FATAL: build venv missing (REFGENIE_VENV=${REFGENIE_VENV:-unset})." >&2
+    echo "       create it with: bash infra/rivanna/setup_env.sh" >&2
+    exit 1
+fi
+source "$REFGENIE_VENV/bin/activate"
 cd "$REGISTRY"/stores || exit 1
 
 # Survivors of the wheat and barley removals. These three share sequences with

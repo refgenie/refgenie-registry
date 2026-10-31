@@ -20,9 +20,20 @@ REGISTRY="${REGISTRY_DIR:-$HOME/mobot/checkouts/refgenie-registry}"
 # stores. Run this OFF the nightly (the nightly is assets-only and does not sync
 # sequence stores).
 
-module load gcc/11.4.0 openmpi/4.1.4 python/3.11.4
-source ~/envs/refgetstore-analysis/bin/activate
+# The build system's own environment: env.sh defines REFGENIE_VENV (the venv
+# infra/rivanna/setup_env.sh builds on miniforge/26.9.4). This used to load
+# `gcc/11.4.0 openmpi/4.1.4 python/3.11.4` and activate ~/envs/refgetstore-analysis;
+# Rivanna removed that python module, and build_store.slurm says why that venv
+# was the wrong one anyway.
 source "$REGISTRY"/infra/rivanna/env.sh
+if [[ ! -x "${REFGENIE_VENV:-}/bin/python" ]]; then
+    echo "FATAL: build venv missing (REFGENIE_VENV=${REFGENIE_VENV:-unset})." >&2
+    echo "       create it with: bash infra/rivanna/setup_env.sh" >&2
+    exit 1
+fi
+source "$REFGENIE_VENV/bin/activate"
+# A working aws CLI ahead of the broken ~/.local/bin/aws (see env.sh).
+export PATH="$REFGENIE_AWS_BINDIR:$PATH"
 
 # Millions of tiny per-sequence files -> latency-bound. Default 10 concurrent
 # requests would take days; crank it on the profile actually used.

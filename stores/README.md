@@ -307,8 +307,8 @@ using its own `~/.aws` `refgenie` profile (authenticates as `RefgenieDataBot`), 
 
 ```bash
 source ../infra/rivanna/env.sh
-# aws CLI needs the module env (libffi) + the venv aws; the ~/.local/bin/aws is broken:
-module load gcc/11.4.0 openmpi/4.1.4 python/3.11.4 && source ~/envs/refgetstore-analysis/bin/activate
+# The ~/.local/bin/aws is broken; use the cluster's awscli:
+export PATH="$REFGENIE_AWS_BINDIR:$PATH"
 aws s3 sync "$REFGETSTORE_BASE/vgp" "$REFGETSTORE_S3/vgp" --profile refgenie --delete
 ```
 
