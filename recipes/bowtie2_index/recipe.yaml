@@ -1,5 +1,5 @@
 name: bowtie2_index
-version: 0.0.2
+version: 0.0.3
 output_asset_class: bowtie2_index
 description: |
   Genome index for bowtie2, produced with bowtie2-build.
@@ -15,7 +15,7 @@ input_assets:
     asset_class: fasta
     description: fasta asset for genome
     default: fasta
-docker_image: quay.io/biocontainers/bowtie2:2.5.5--ha27dd3b_0
+docker_image: quay.io/biocontainers/bowtie2:2.5.5--h63e9258_2
 command_templates:
   - bowtie2-build --threads {{values.params["threads"]}} {{values.genome_folder}}/{{values.assets["fasta"].seek_keys_dict["fasta"]}} {{values.output_folder}}/{{values.genome_digest}}
 custom_seek_keys:

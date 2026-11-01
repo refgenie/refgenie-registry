@@ -1,5 +1,5 @@
 name: fasta_txome
-version: 0.0.2
+version: 0.0.3
 output_asset_class: fasta
 description:
   cDNA sequences in the FASTA format, indexed FASTA (produced with samtools
@@ -9,7 +9,7 @@ input_files:
     description: A taxome FASTA file. Gzipped or not.
 input_params: {}
 input_assets: {}
-docker_image: quay.io/biocontainers/samtools:1.24--h9dcdb79_1
+docker_image: quay.io/biocontainers/samtools:1.25--h9dcdb79_0
 command_templates:
   - cp {{values.files["fasta_txome"]}} {{values.output_folder}}/{{values.genome_digest}}.fa.gz
   # `file` isn't in the samtools biocontainers image; `gzip -t` detects a real

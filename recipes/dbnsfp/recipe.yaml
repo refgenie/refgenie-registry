@@ -1,5 +1,5 @@
 name: dbnsfp
-version: 0.0.2
+version: 0.0.3
 output_asset_class: dbnsfp
 description: |
   A database developed for functional prediction and annotation of all
@@ -13,7 +13,7 @@ input_params:
     default: "8"
     description: Number of threads to use for parallel computing
 input_assets: {}
-docker_image: quay.io/biocontainers/htslib:1.24--ha79157c_0
+docker_image: quay.io/biocontainers/htslib:1.25--ha79157c_0
 command_templates:
   - cp {{values.files["dbnsfp"]}} {{values.output_folder}}/{{values.genome_digest}}.zip
   - unzip {{values.output_folder}}/{{values.genome_digest}}.zip -d {{values.output_folder}}
