@@ -103,6 +103,28 @@ def row_name(row: dict) -> str:
     return (row.get("name") or "").strip()
 
 
+# The sources.csv columns registered as collection aliases. `name` is unique
+# per row; `accession` and `genome_assembly` are often shared (five jungle rows
+# are GCA_000001405.15, many are hg38), and an alias must name one collection.
+ROW_ALIAS_COLUMNS = ("name", "accession", "genome_assembly")
+
+
+def row_aliases(rows: list) -> list:
+    """[(namespace, value)] per row: every ROW_ALIAS_COLUMNS value that names
+    exactly one row of the store. Shared values are skipped, not guessed."""
+    counts = {}
+    for row in rows:
+        for col in ROW_ALIAS_COLUMNS:
+            val = (row.get(col) or "").strip()
+            if val:
+                counts[(col, val)] = counts.get((col, val), 0) + 1
+    return [
+        [(col, (row.get(col) or "").strip()) for col in ROW_ALIAS_COLUMNS
+         if counts.get((col, (row.get(col) or "").strip())) == 1]
+        for row in rows
+    ]
+
+
 def row_fasta(row: dict) -> str:
     return " ".join((row.get("fasta") or "").split())
 

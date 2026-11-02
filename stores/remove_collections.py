@@ -53,8 +53,8 @@ from pathlib import Path
 
 from refget.store import RefgetStore
 
-# The alias namespace build.py registers `name` values into (see ALIAS_COLUMNS
-# in build.py). --expect aliases are resolved here.
+# The alias namespace build.py registers `name` values into (see
+# genome_rows.row_aliases). --expect aliases are resolved here.
 ALIAS_NAMESPACE = "name"
 
 

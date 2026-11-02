@@ -47,7 +47,7 @@ from refget.store import RefgetStore
 
 SCRIPT_DIR = Path(__file__).parent  # the stores/ directory
 # Columns that build.py registers as collection aliases.
-ALIAS_COLUMNS = ("name", "accession", "genome_assembly")
+from genome_rows import ROW_ALIAS_COLUMNS as ALIAS_COLUMNS  # noqa: E402
 
 
 def store_path(store_name: str) -> Path:

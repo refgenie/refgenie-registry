@@ -127,3 +127,16 @@ def test_sources_to_genomes_writes_slug_back(tmp_path, monkeypatch):
     assert data["name"] == "bAlcTor1_primary"
     assert data["aliases"] == ["bAlcTor1 primary"]
     assert list(csv.DictReader(open(csv_path)))[0]["name"] == "bAlcTor1_primary"
+
+
+def test_row_aliases_skip_shared_values():
+    from genome_rows import row_aliases
+
+    rows = [
+        {"name": "a", "accession": "GCA_1.1", "genome_assembly": "hg38"},
+        {"name": "b", "accession": "GCA_1.1", "genome_assembly": "hg19"},
+    ]
+    assert row_aliases(rows) == [
+        [("name", "a"), ("genome_assembly", "hg38")],
+        [("name", "b"), ("genome_assembly", "hg19")],
+    ]

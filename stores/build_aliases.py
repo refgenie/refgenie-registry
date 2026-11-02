@@ -3,7 +3,8 @@
 
 This is a *post-build* step: it runs after ``build.py`` has ingested all the
 FASTAs for a store and registered the collection-level aliases from the
-``ALIAS_COLUMNS`` ({name, accession, genome_assembly}) in ``sources.csv``.
+``name``, ``accession`` and ``genome_assembly`` columns of ``sources.csv`` (each
+only where its value belongs to a single row; see ``genome_rows.row_aliases``).
 
 It does NOT re-ingest any FASTA. Each ``sources.csv`` row is resolved to an
 already-built collection digest through the ``.row_digests.json`` map that
@@ -64,7 +65,7 @@ import urllib.request
 from collections import defaultdict
 from pathlib import Path
 
-from genome_rows import ROW_DIGESTS, load_genomes, row_fasta
+from genome_rows import ROW_DIGESTS, load_genomes, row_aliases, row_fasta
 from store_config import aliasing as store_aliasing
 
 SCRIPT_DIR = Path(__file__).parent
@@ -269,12 +270,6 @@ def name_to_info_for_collection(store, coll_digest):
 # ---------------------------------------------------------------------------
 # Main alias accumulation
 # ---------------------------------------------------------------------------
-# The sources.csv columns build.py registers as collection aliases (its
-# ALIAS_COLUMNS). Registered here too, so a renamed row's new name lands without
-# re-running build.py.
-ROW_ALIAS_COLUMNS = ("name", "accession", "genome_assembly")
-
-
 def build_aliases(store, rows, config, cache_dir, dry_run=False,
                   row_digests=None, genome_aliases=None):
     """Accumulate collection + sequence aliases and load them into the store.
@@ -293,6 +288,9 @@ def build_aliases(store, rows, config, cache_dir, dry_run=False,
     header_ns_col = config.get("header_namespace_col")
     report_when_acc = config.get("assembly_report_when_accession", False)
 
+    # The row columns build.py registers (unique values only, see row_aliases).
+    # Registered here too, so a renamed row's new name lands without build.py.
+    unique_aliases = row_aliases(rows)
     n_resolved = n_unresolved = 0
     n_seq_matched = n_seq_unmatched = 0
 
@@ -306,10 +304,8 @@ def build_aliases(store, rows, config, cache_dir, dry_run=False,
         n_resolved += 1
 
         # 0. The row's own names, and its genome YAML's aliases.
-        for col in ROW_ALIAS_COLUMNS:
-            val = (row.get(col) or "").strip()
-            if val:
-                row_coll_aliases[col].append((val, coll_digest))
+        for col, val in unique_aliases[i - 1]:
+            row_coll_aliases[col].append((val, coll_digest))
         for alias in genome_aliases.get((row.get("name") or "").strip(), []):
             coll_aliases["name"].append((alias, coll_digest))
 

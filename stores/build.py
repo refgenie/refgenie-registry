@@ -40,7 +40,7 @@ from refget.store import RefgetStore
 # ROW_DIGESTS: {row fasta: collection digest}, written into the built store. It
 # lets build_aliases.py find a row's collection after the row is renamed, so a
 # name change needs no re-ingest.
-from genome_rows import ROW_DIGESTS, row_fasta
+from genome_rows import ROW_DIGESTS, row_aliases, row_fasta
 from fasta_naming import is_url, s3_to_https, cache_name_for, resolve_fasta_token
 from store_config import fasta_root as store_fasta_root
 from store_config import get_store_dirs
@@ -48,7 +48,6 @@ from store_config import get_store_dirs
 
 SCRIPT_DIR = Path(__file__).parent
 PEP_CONFIG = "project_config.yaml"
-ALIAS_COLUMNS = {"name", "accession", "genome_assembly"}
 
 
 def get_store_path(store_name: str) -> Path:
@@ -308,6 +307,12 @@ def build_store(
 
         # --- Phase 3: register aliases per row from the resolved metadata ---
         row_digests = {}
+        # Uniqueness is judged over every row of the store, loaded or not.
+        all_rows = [sample.to_dict() for sample in samples]
+        aliases_by_row = {
+            (row_fasta(r), r.get("name", "").strip()): a
+            for r, a in zip(all_rows, row_aliases(all_rows))
+        }
         for row, label, path in resolved_rows:
             metadata, was_new = by_path[path]
             status = "new" if was_new else "exists"
@@ -323,10 +328,8 @@ def build_store(
                 "label": label,
                 "was_new": was_new,
             })
-            for col in ALIAS_COLUMNS:
-                val = row.get(col, "").strip()
-                if val:
-                    store.add_collection_alias(col, val, metadata.digest)
+            for col, val in aliases_by_row[(row_fasta(row), row.get("name", "").strip())]:
+                store.add_collection_alias(col, val, metadata.digest)
             row_digests[row_fasta(row)] = metadata.digest
 
         write_row_digests(store_path, row_digests)
