@@ -90,7 +90,6 @@ mus_musculus/igenomes/mm38/fasta/Mus_musculus_NCBI_GRCm38_genome.fa.gz,mm38-igen
 mus_musculus/igenomes/mm9/fasta/Mus_musculus_UCSC_mm9_genome.fa.gz,mm9-igenomes-ucsc,Mus musculus,igenomes,mm9,,mus_musculus,mm9-igenomes-ucsc
 mus_musculus/ncbi/mm38/fasta/GCA_000001635.8_GRCm38.p6_genomic.fna.gz,GRCm38.p6-fasta-genomic-GCA,Mus musculus,ncbi,mm38,GCA_000001635.8,mus_musculus,GRCm38.p6-fasta-genomic-GCA
 mus_musculus/ncbi/mm38/fasta/GCF_000001635.26_GRCm38.p6_genomic.fna.gz,GRCm38.p6-fasta-genomic,Mus musculus,ncbi,mm38,GCF_000001635.26,mus_musculus,GRCm38.p6-fasta-genomic
-mus_musculus/ncbi/mm39/fasta/GCA_000001635.9_GRCm39_full_analysis_set.fna.gz,GRCm39-fasta-full-analysis-ucsc-ids,Mus musculus,ncbi,mm39,GCA_000001635.9,mus_musculus,GRCm39-fasta-full-analysis-ucsc-ids
 mus_musculus/ncbi/mm39/fasta/GCA_000001635.9_GRCm39_full_analysis_set.fna.gz,GRCm39-fasta-full-analysis,Mus musculus,ncbi,mm39,GCA_000001635.9,mus_musculus,GRCm39-fasta-full-analysis
 mus_musculus/ncbi/mm39/fasta/GCA_000001635.9_GRCm39_genomic.fna.gz,GRCm39-fasta-genomic-GCA,Mus musculus,ncbi,mm39,GCA_000001635.9,mus_musculus,GRCm39-fasta-genomic-GCA
 mus_musculus/ncbi/mm39/fasta/GCF_000001635.27_GRCm39_genomic.fna.gz,GRCm39-fasta-genomic,Mus musculus,ncbi,mm39,GCF_000001635.27,mus_musculus,GRCm39-fasta-genomic
