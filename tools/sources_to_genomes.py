@@ -12,6 +12,10 @@ row a genome YAML already covers, and writes one YAML per remaining row at
 `build: {store: <slug>, tier: store_only}`, registered and described, no assets
 built. It is also how any future hub import lands.
 
+Each new YAML and its row share one name. A row `name` that is not a legal genome
+name is slugified ('bAlcTor1 primary' -> 'bAlcTor1_primary'); the slug is written
+back to the row in sources.csv and the original spelling becomes a YAML alias.
+
 It is IDEMPOTENT: a row already covered (by assembly accession, or by the file
 that would be written) is skipped, so a second run writes nothing.
 
@@ -48,6 +52,7 @@ from pathlib import Path
 
 import yaml
 
+from align_store_names import rename_rows, yaml_scalar
 from species_list import (
     SPECIES_LIST,
     clean_synonyms,
@@ -229,8 +234,12 @@ def render_genome(row: dict, slug: str, store: str, scientific_name: str, entry:
     accession = (row.get("accession") or "").strip()
     source = (row.get("source") or "").strip()
 
-    lines = [f"name: {slug}", "description: |"]
-    detail = f"{organism} assembly {row['name'].strip()}"
+    raw = row["name"].strip()
+    lines = [f"name: {slug}"]
+    if raw != slug:
+        lines += ["aliases:", f"  - {yaml_scalar(raw)}"]
+    lines.append("description: |")
+    detail = f"{organism} assembly {raw}"
     if accession:
         detail += f" ({accession})"
     if source:
@@ -291,7 +300,8 @@ def generate(store: str, out_dir: Path, dry_run: bool, offline: bool) -> int:
     covered_by_accession = []
     covered_by_name = []
     unslugged = []
-    for row in rows:
+    for index, row in enumerate(rows):
+        row["_index"] = index
         raw = (row.get("name") or "").strip()
         accession = (row.get("accession") or "").strip()
         if accession and accession in known_accessions:
@@ -316,6 +326,7 @@ def generate(store: str, out_dir: Path, dry_run: bool, offline: bool) -> int:
 
     out_dir.mkdir(parents=True, exist_ok=True)
     written = 0
+    renamed = {}
     skipped_taxon = []
     for row, slug in todo:
         if slug in duplicated:
@@ -333,13 +344,23 @@ def generate(store: str, out_dir: Path, dry_run: bool, offline: bool) -> int:
             print(text, end="")
         else:
             path.write_text(text)
+            if slug != row["name"].strip():
+                renamed[row["_index"]] = slug
         written += 1
+
+    # The row and its YAML share one name: the row takes the safe slug, and the
+    # original spelling lives on as a YAML alias (written by render_genome).
+    if renamed:
+        rename_rows(store, renamed, STORES_DIR)
 
     print(f"sources_to_genomes: {len(rows)} rows in stores/{store}/sources.csv")
     print(f"  already covered: {len(covered_by_accession)} by accession, "
           f"{len(covered_by_name)} by name")
     print(f"  {'would write' if dry_run else 'wrote'}: {written} genome YAML(s) "
           f"to {_rel(out_dir)}")
+    if renamed:
+        print(f"  renamed {len(renamed)} row(s) in stores/{store}/sources.csv to "
+              f"their genome name")
 
     problems = 0
     for raw, existing in covered_by_accession:

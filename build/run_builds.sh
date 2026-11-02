@@ -164,10 +164,11 @@ python3 build/sync_stores.py \
 # --- load the stores whose sources changed ----------------------------------
 # Rebuilding every store nightly is wasteful; the largest hold hundreds of
 # thousands of objects. So the nightly does not rebuild unconditionally. It
-# rebuilds ONLY the stores whose sources.csv changed since they were last built.
-# sync_stores.py --changed
-# answers that from a .sources.sha256 stamp inside each built store, and a store
-# that has never been built always counts as changed.
+# fully loads ONLY the stores whose rows' fasta changed since they were last
+# built. sync_stores.py --changed answers that from a .sources.sha256 stamp
+# inside each built store, and a store that has never been built always counts
+# as changed. A store where only names or aliases changed gets an alias refresh
+# instead (--alias-changed, below the full loads).
 #
 # This is what makes `build.tier: store_only` mean something: a genome added at
 # that tier is a row in some store's sources.csv, and this is the step that loads
@@ -185,6 +186,9 @@ if [[ "${DRY_RUN:-0}" == "1" ]]; then
     echo "$(date) | run_builds: DRY RUN, WOULD load stores:"
     python3 build/sync_stores.py --changed | sed 's/^/  /' \
         || echo "  (could not determine changed stores)" >&2
+    echo "$(date) | run_builds: DRY RUN, WOULD refresh aliases of stores:"
+    python3 build/sync_stores.py --alias-changed | sed 's/^/  /' \
+        || echo "  (could not determine alias-changed stores)" >&2
 elif [[ "${REFGENIE_SKIP_STORE_BUILD:-0}" == "1" ]]; then
     echo "$(date) | run_builds: REFGENIE_SKIP_STORE_BUILD=1; skipping store loading"
 else
@@ -205,6 +209,22 @@ else
             fi
         done
     fi
+    # A store whose rows' fasta did not change but whose names or genome aliases
+    # did needs only its aliases refreshed: no FASTA is read. build_aliases.py
+    # finds each row's collection by its fasta (the store's .row_digests.json), so
+    # a renamed row still resolves.
+    _alias_stores="$(python3 build/sync_stores.py --alias-changed || true)"
+    for _store in $_alias_stores; do
+        echo "$(date) | run_builds: refreshing aliases of store $_store (names changed)"
+        if ( cd stores && python3 build_aliases.py "$_store" \
+                && python3 build_fhr.py "$_store" \
+                && python3 build.py "$_store" --sync-only ); then
+            python3 build/sync_stores.py --record "$_store" \
+                || echo "$(date) | run_builds: could not stamp $_store (retried next run)" >&2
+        else
+            echo "$(date) | run_builds: alias refresh of $_store FAILED (non-fatal); retried next run" >&2
+        fi
+    done
 fi
 
 # --- refresh species.json in every published store ----------------------------

@@ -13,6 +13,7 @@ Usage:
     python build.py all             # Build all stores
     python build.py jungle --sync   # Build and sync to S3
     python build.py jungle --sync --delete   # ...propagating local removals
+    python build.py jungle --sync-only       # upload the built store, no ingest
 
 Note that this script is ADDITIVE ONLY, it never removes a collection, so
 deleting a row from sources.csv does not drop it from a built store. Use
@@ -36,6 +37,10 @@ import peppy
 
 from refget.store import RefgetStore
 
+# ROW_DIGESTS: {row fasta: collection digest}, written into the built store. It
+# lets build_aliases.py find a row's collection after the row is renamed, so a
+# name change needs no re-ingest.
+from genome_rows import ROW_DIGESTS, row_fasta
 from fasta_naming import is_url, s3_to_https, cache_name_for, resolve_fasta_token
 from store_config import fasta_root as store_fasta_root
 from store_config import get_store_dirs
@@ -194,6 +199,17 @@ def write_build_report(
         return None
 
 
+def write_row_digests(store_path: Path, row_digests: dict) -> None:
+    """Merge {row fasta: digest} into the store's .row_digests.json.
+
+    Merged, not replaced, so a row that failed tonight keeps the digest it had.
+    """
+    path = store_path / ROW_DIGESTS
+    merged = json.loads(path.read_text()) if path.is_file() else {}
+    merged.update(row_digests)
+    path.write_text(json.dumps(merged, indent=1, sort_keys=True) + "\n")
+
+
 def build_store(
     store_name: str,
     store_dir: Path,
@@ -210,7 +226,6 @@ def build_store(
 
     project = peppy.Project(str(config_path))
     store_path = get_store_path(store_name)
-    s3_path = get_s3_path(store_name)
     samples = project.samples
 
     # Relative fasta tokens in sources.csv resolve against the store's fasta_root
@@ -292,6 +307,7 @@ def build_store(
         }
 
         # --- Phase 3: register aliases per row from the resolved metadata ---
+        row_digests = {}
         for row, label, path in resolved_rows:
             metadata, was_new = by_path[path]
             status = "new" if was_new else "exists"
@@ -311,6 +327,9 @@ def build_store(
                 val = row.get(col, "").strip()
                 if val:
                     store.add_collection_alias(col, val, metadata.digest)
+            row_digests[row_fasta(row)] = metadata.digest
+
+        write_row_digests(store_path, row_digests)
 
     stats = store.stats()
     print(f"  Done: {successes} loaded, {failures} failed, {stats}")
@@ -344,7 +363,17 @@ def build_store(
         mins, secs = divmod(int(elapsed), 60)
         print(f"  Build report -> {report_path} (duration {mins}m{secs}s)")
 
-    if sync and s3_path:
+    if sync:
+        sync_store(store_name, delete)
+
+    return failures == 0
+
+
+def sync_store(store_name: str, delete: bool = False) -> None:
+    """aws s3 sync the built store to $REFGETSTORE_S3/<store>."""
+    store_path = get_store_path(store_name)
+    s3_path = get_s3_path(store_name)
+    if s3_path:
         # --delete is opt-in: a plain sync is additive, so anything removed from
         # the local store (see remove_collections.py) would linger in the public
         # bucket forever. Pass --delete when the local store has SHRUNK, and only
@@ -356,10 +385,8 @@ def build_store(
         print(f"  Syncing to {s3_path}{' (--delete)' if delete else ''}...")
         subprocess.run(cmd, check=True)
         print("  S3 sync complete.")
-    elif sync and not s3_path:
+    else:
         print(f"  REFGETSTORE_S3 not set, skipping sync.", file=sys.stderr)
-
-    return failures == 0
 
 
 def main():
@@ -368,6 +395,11 @@ def main():
     parser = argparse.ArgumentParser(description="Build RefgetStores from PEP projects.")
     parser.add_argument("store", help="Store name or 'all'")
     parser.add_argument("--sync", action="store_true", help="Sync to S3 after building")
+    parser.add_argument(
+        "--sync-only", action="store_true",
+        help="Sync the already-built store to S3 without ingesting anything (used "
+             "after an alias-only refresh)",
+    )
     parser.add_argument(
         "--delete", action="store_true",
         help="Pass --delete to the S3 sync, so objects removed from the local store "
@@ -382,8 +414,13 @@ def main():
     )
     args = parser.parse_args()
 
-    if args.delete and not args.sync:
+    if args.delete and not (args.sync or args.sync_only):
         parser.error("--delete has no effect without --sync")
+    if args.sync_only:
+        if args.store == "all":
+            parser.error("--sync-only takes one store")
+        sync_store(args.store, args.delete)
+        return
 
     if args.store == "all":
         store_dirs = get_store_dirs()

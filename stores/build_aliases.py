@@ -6,8 +6,13 @@ FASTAs for a store and registered the collection-level aliases from the
 ``ALIAS_COLUMNS`` ({name, accession, genome_assembly}) in ``sources.csv``.
 
 It does NOT re-ingest any FASTA. Each ``sources.csv`` row is resolved to an
-already-built collection digest by looking up the collection aliases that
-``build.py`` wrote (``name`` -> ``accession`` -> ``genome_assembly``). It then
+already-built collection digest through the ``.row_digests.json`` map that
+``build.py`` writes into the store (keyed by the row's ``fasta``), falling back
+to the collection aliases ``build.py`` registered (``name`` -> ``accession`` ->
+``genome_assembly``). Because of that map it also serves as the alias-only
+refresh after a rename: it re-registers each row's ``name``/``accession``/
+``genome_assembly`` and, for a row whose ``name`` is a genome YAML's name, every
+entry of that YAML's ``aliases`` under the ``name`` namespace. It then
 registers two further kinds of aliases:
 
 1. Accession collection aliases (``insdc`` / ``refseq`` namespaces) derived
@@ -48,6 +53,7 @@ Requirements: refget + gtars (RefgetStore) and pyyaml; Python stdlib otherwise.
 
 import argparse
 import csv
+import json
 import os
 import re
 import sys
@@ -58,6 +64,7 @@ import urllib.request
 from collections import defaultdict
 from pathlib import Path
 
+from genome_rows import ROW_DIGESTS, load_genomes, row_fasta
 from store_config import aliasing as store_aliasing
 
 SCRIPT_DIR = Path(__file__).parent
@@ -96,14 +103,25 @@ def normalize_seq_digest(digest):
 # ---------------------------------------------------------------------------
 # Collection digest resolution (read-only against the built store)
 # ---------------------------------------------------------------------------
-def resolve_collection_digest(store, row):
+def read_row_digests(store_path):
+    """{row fasta: collection digest} that build.py wrote into the store, or {}."""
+    path = Path(store_path) / ROW_DIGESTS
+    return json.loads(path.read_text()) if path.is_file() else {}
+
+
+def resolve_collection_digest(store, row, row_digests=None):
     """Return the collection digest for a sources.csv row, or None.
 
-    Uses the collection aliases that build.py already registered. Tries the
+    First looks the row's `fasta` up in build.py's row -> digest map, which
+    still works after the row is renamed. Otherwise uses the collection aliases
+    that build.py registered. Tries the
     most-specific identifier first. Also tries the canonical insdc/refseq
     namespaces keyed by the accession value, so already-aliased stores (e.g.
     the legacy vgp backfill, which only filed insdc/refseq) still resolve.
     """
+    digest = (row_digests or {}).get(row_fasta(row))
+    if digest:
+        return digest
     for namespace in ("name", "accession", "genome_assembly"):
         val = (row.get(namespace) or "").strip()
         if not val:
@@ -251,10 +269,24 @@ def name_to_info_for_collection(store, coll_digest):
 # ---------------------------------------------------------------------------
 # Main alias accumulation
 # ---------------------------------------------------------------------------
-def build_aliases(store, rows, config, cache_dir, dry_run=False):
-    """Accumulate collection + sequence aliases and load them into the store."""
+# The sources.csv columns build.py registers as collection aliases (its
+# ALIAS_COLUMNS). Registered here too, so a renamed row's new name lands without
+# re-running build.py.
+ROW_ALIAS_COLUMNS = ("name", "accession", "genome_assembly")
+
+
+def build_aliases(store, rows, config, cache_dir, dry_run=False,
+                  row_digests=None, genome_aliases=None):
+    """Accumulate collection + sequence aliases and load them into the store.
+
+    ``genome_aliases`` is {genome name: [aliases]} from the genome YAMLs. A row
+    whose `name` is a genome's name gets that genome's aliases as `name`
+    collection aliases.
+    """
     seq_aliases = defaultdict(list)   # namespace -> [(alias, seq_digest)]
     coll_aliases = defaultdict(list)  # namespace -> [(alias, coll_digest)]
+    row_coll_aliases = defaultdict(list)  # registered last, so a row's own name wins
+    genome_aliases = genome_aliases or {}
 
     seq_strategy = config.get("seq_strategy", "none")
     header_ns = config.get("header_namespace")
@@ -266,12 +298,20 @@ def build_aliases(store, rows, config, cache_dir, dry_run=False):
 
     for i, row in enumerate(rows, 1):
         label = (row.get("name") or row.get("accession") or row.get("fasta", "")).strip()
-        coll_digest = resolve_collection_digest(store, row)
+        coll_digest = resolve_collection_digest(store, row, row_digests)
         if coll_digest is None:
             n_unresolved += 1
             print(f"  [{i}/{len(rows)}] UNRESOLVED {label}", file=sys.stderr)
             continue
         n_resolved += 1
+
+        # 0. The row's own names, and its genome YAML's aliases.
+        for col in ROW_ALIAS_COLUMNS:
+            val = (row.get(col) or "").strip()
+            if val:
+                row_coll_aliases[col].append((val, coll_digest))
+        for alias in genome_aliases.get((row.get("name") or "").strip(), []):
+            coll_aliases["name"].append((alias, coll_digest))
 
         accession = (row.get("accession") or "").strip()
         acc_match = ACCESSION_PATTERN.search(accession) if accession else None
@@ -312,6 +352,8 @@ def build_aliases(store, rows, config, cache_dir, dry_run=False):
         else:
             print(f"  [{i}/{len(rows)}] coll-only {label}")
 
+    for ns, pairs in row_coll_aliases.items():
+        coll_aliases[ns].extend(pairs)
     n_seq = sum(len(v) for v in seq_aliases.values())
     n_coll = sum(len(v) for v in coll_aliases.values())
     print(
@@ -456,8 +498,13 @@ def main():
     if hasattr(store, "set_quiet"):
         store.set_quiet(True)
 
+    genome_aliases = {
+        g.name: g.aliases for g in load_genomes() if g.store == store_name and g.aliases
+    }
     cache_dir = store_path.parent / f".assembly_reports_{store_name}"
-    build_aliases(store, rows, config, cache_dir, dry_run=args.dry_run)
+    build_aliases(store, rows, config, cache_dir, dry_run=args.dry_run,
+                  row_digests=read_row_digests(store_path),
+                  genome_aliases=genome_aliases)
 
 
 if __name__ == "__main__":
