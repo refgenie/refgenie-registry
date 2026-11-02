@@ -2,12 +2,12 @@ fasta,name,organism,source,accession,genome_assembly
 fasta/GCA_963993115.1.fa.gz,fAbrBra2.1,Abramis brama,VGP,GCA_963993115.1,fAbrBra2.1
 fasta/GCF_904848185.1.fa.gz,fAcaLat1.1,Acanthopagrus latus,VGP,GCF_904848185.1,fAcaLat1.1
 fasta/GCA_041753875.1.fa.gz,ASM4175387v1,Acanthopagrus schlegelii,VGP,GCA_041753875.1,ASM4175387v1
-fasta/GCF_902713425.1.fa.gz,fAciRut3.2 maternal haplotype,Acipenser ruthenus,VGP,GCF_902713425.1,fAciRut3.2 maternal haplotype
+fasta/GCF_902713425.1.fa.gz,fAciRut3.2_maternal_haplotype,Acipenser ruthenus,VGP,GCF_902713425.1,fAciRut3.2 maternal haplotype
 fasta/GCF_903995435.1.fa.gz,mAcoRus1.1,Acomys russatus,VGP,GCF_903995435.1,mAcoRus1.1
 fasta/GCA_027559615.1.fa.gz,bAcrTri1.pri,Acridotheres tristis,VGP,GCA_027559615.1,bAcrTri1.pri
 fasta/GCA_039906565.1.fa.gz,bAegAlb1.hap1,Aegotheles albertisi,VGP,GCA_039906565.1,bAegAlb1.hap1
-fasta/GCF_020745825.1.fa.gz,Agelaius phoeniceus 1.1,Agelaius phoeniceus,VGP,GCF_020745825.1,Agelaius phoeniceus 1.1
-fasta/GCA_008658365.1.fa.gz,bAlcTor1 primary,Alca torda,VGP,GCA_008658365.1,bAlcTor1 primary
+fasta/GCF_020745825.1.fa.gz,Agelaius_phoeniceus_1.1,Agelaius phoeniceus,VGP,GCF_020745825.1,Agelaius phoeniceus 1.1
+fasta/GCA_008658365.1.fa.gz,bAlcTor1_primary,Alca torda,VGP,GCA_008658365.1,bAlcTor1 primary
 fasta/GCF_030867095.1.fa.gz,rAllMis1,Alligator mississippiensis,VGP,GCF_030867095.1,rAllMis1
 fasta/GCF_018492685.1.fa.gz,fAloSap1.pri,Alosa sapidissima,VGP,GCF_018492685.1,fAloSap1.pri
 fasta/GCA_039720435.1.fa.gz,bAmaOch1.hap1,Amazona ochrocephala,VGP,GCA_039720435.1,bAmaOch1.hap1
@@ -162,7 +162,7 @@ fasta/GCA_900963305.2.fa.gz,fEcheNa1.2,Echeneis naucrates,VGP,GCA_900963305.2,fE
 fasta/GCA_963691815.1.fa.gz,fEchVip8.1,Echiichthys vipera,VGP,GCA_963691815.1,fEchVip8.1
 fasta/GCA_041902795.1.fa.gz,ASM4190279v1,Electrophorus electricus,VGP,GCA_041902795.1,ASM4190279v1
 fasta/GCF_013358815.1.fa.gz,fEleEle1.pri,Electrophorus electricus,VGP,GCF_013358815.1,fEleEle1.pri
-fasta/GCF_024166365.1.fa.gz,mEleMax1 primary haplotype,Elephas maximus indicus,VGP,GCF_024166365.1,mEleMax1 primary haplotype
+fasta/GCF_024166365.1.fa.gz,mEleMax1_primary_haplotype,Elephas maximus indicus,VGP,GCF_024166365.1,mEleMax1 primary haplotype
 fasta/GCF_035609145.1.fa.gz,aEleCoq1.hap1,Eleutherodactylus coqui,VGP,GCF_035609145.1,aEleCoq1.hap1
 fasta/GCF_023053635.1.fa.gz,rElgMul1.1.pri,Elgaria multicarinata webbii,VGP,GCF_023053635.1,rElgMul1.1.pri
 fasta/GCF_028017835.1.fa.gz,rEmyOrb1.hap1,Emys orbicularis,VGP,GCF_028017835.1,rEmyOrb1.hap1
@@ -179,7 +179,7 @@ fasta/GCF_900747795.2.fa.gz,fErpCal1.3,Erpetoichthys calabaricus,VGP,GCF_9007477
 fasta/GCF_031021105.1.fa.gz,rEryReg1.hap1,Erythrolamprus reginae,VGP,GCF_031021105.1,rEryReg1.hap1
 fasta/GCF_028021215.1.fa.gz,mEscRob2.pri,Eschrichtius robustus,VGP,GCF_028021215.1,mEscRob2.pri
 fasta/GCF_011004845.1.fa.gz,fEsoLuc1.pri,Esox lucius,VGP,GCF_011004845.1,fEsoLuc1.pri
-fasta/GCF_028564815.1.fa.gz,mEubGla1.1.hap2.+ XY,Eubalaena glacialis,VGP,GCF_028564815.1,mEubGla1.1.hap2.+ XY
+fasta/GCF_028564815.1.fa.gz,mEubGla1.1.hap2._XY,Eubalaena glacialis,VGP,GCF_028564815.1,mEubGla1.1.hap2.+ XY
 fasta/GCF_028583425.1.fa.gz,MPM_Emac_v1.0,Eublepharis macularius,VGP,GCF_028583425.1,MPM_Emac_v1.0
 fasta/GCA_047922985.1.fa.gz,bEudEle1_v1.hap1,Eudromia elegans,VGP,GCA_047922985.1,bEudEle1_v1.hap1
 fasta/GCF_029931775.1.fa.gz,rEulEur1.hap1,Euleptes europaea,VGP,GCF_029931775.1,rEulEur1.hap1
@@ -210,16 +210,16 @@ fasta/GCA_900634775.2.fa.gz,fGouWil2.2,Gouania willdenowi,VGP,GCA_900634775.2,fG
 fasta/GCA_964374135.1.fa.gz,mGraGri1.hap1.1,Grampus griseus,VGP,GCA_964374135.1,mGraGri1.hap1.1
 fasta/GCF_028858705.1.fa.gz,bGruAme1.mat,Grus americana,VGP,GCF_028858705.1,bGruAme1.mat
 fasta/GCA_964106855.1.fa.gz,bGruGru1.hap1.1,Grus grus,VGP,GCA_964106855.1,bGruGru1.hap1.1
-fasta/GCA_045345405.1.fa.gz,bGuaGua1 haplotype 1,Guaruba guarouba,VGP,GCA_045345405.1,bGuaGua1 haplotype 1
+fasta/GCA_045345405.1.fa.gz,bGuaGua1_haplotype_1,Guaruba guarouba,VGP,GCA_045345405.1,bGuaGua1 haplotype 1
 fasta/GCA_963280865.1.fa.gz,fGymBra2.1,Gymnoscopelus braueri,VGP,GCA_963280865.1,fGymBra2.1
 fasta/GCA_963454915.1.fa.gz,fGymMic1.1,Gymnoscopelus microlampas,VGP,GCA_963454915.1,fGymMic1.1
 fasta/GCF_027477595.1.fa.gz,bHaeMex1.pri,Haemorhous mexicanus,VGP,GCF_027477595.1,bHaeMex1.pri
 fasta/GCF_947461875.1.fa.gz,bHalAlb1.1,Haliaeetus albicilla,VGP,GCF_947461875.1,bHalAlb1.1
 fasta/GCA_964656455.1.fa.gz,mHalGry1.hap1.1,Halichoerus grypus,VGP,GCA_964656455.1,mHalGry1.hap1.1
-fasta/GCF_026419915.1.fa.gz,bHarHar1 primary haplotype,Harpia harpyja,VGP,GCF_026419915.1,bHarHar1 primary haplotype
+fasta/GCF_026419915.1.fa.gz,bHarHar1_primary_haplotype,Harpia harpyja,VGP,GCF_026419915.1,bHarHar1 primary haplotype
 fasta/GCF_036169615.1.fa.gz,bHelExo1.hap1,Heliangelus exortis,VGP,GCF_036169615.1,bHelExo1.hap1
 fasta/GCA_020745705.1.fa.gz,bHemCom1.pri.cur,Hemiprocne comata,VGP,GCA_020745705.1,bHemCom1.pri.cur
-fasta/GCF_020745735.1.fa.gz,sHemOce1.pat.X.cur.,Hemiscyllium ocellatum,VGP,GCF_020745735.1,sHemOce1.pat.X.cur.
+fasta/GCF_020745735.1.fa.gz,sHemOce1.pat.X.cur,Hemiscyllium ocellatum,VGP,GCF_020745735.1,sHemOce1.pat.X.cur.
 fasta/GCA_035084215.1.fa.gz,sHepPer1.hap1,Heptranchias perlo,VGP,GCA_035084215.1,sHepPer1.hap1
 fasta/GCA_036365495.1.fa.gz,sHetFra1.hap2,Heterodontus francisci,VGP,GCA_036365495.1,sHetFra1.hap2
 fasta/GCF_036365525.1.fa.gz,sHetFra1.hap1,Heterodontus francisci,VGP,GCF_036365525.1,sHetFra1.hap1
@@ -234,12 +234,12 @@ fasta/GCF_040937935.1.fa.gz,aHypRig1.pri,Hyperolius riggenbachi,VGP,GCF_04093793
 fasta/GCA_949752795.1.fa.gz,mHypAmp2.1,Hyperoodon ampullatus,VGP,GCA_949752795.1,mHypAmp2.1
 fasta/GCA_036417435.1.fa.gz,mIniGeo1.hap1,Inia geoffrensis,VGP,GCA_036417435.1,mIniGeo1.hap1
 fasta/GCF_020740685.1.fa.gz,mJacJac1.mat.Y.cur,Jaculus jaculus,VGP,GCF_020740685.1,mJacJac1.mat.Y.cur
-fasta/GCF_026419965.1.fa.gz,mKogBre1 haplotype 1,Kogia breviceps,VGP,GCF_026419965.1,mKogBre1 haplotype 1
+fasta/GCF_026419965.1.fa.gz,mKogBre1_haplotype_1,Kogia breviceps,VGP,GCF_026419965.1,mKogBre1 haplotype 1
 fasta/GCF_963930695.1.fa.gz,fLabBer1.1,Labrus bergylta,VGP,GCF_963930695.1,fLabBer1.1
 fasta/GCF_963584025.1.fa.gz,fLabMix1.1,Labrus mixtus,VGP,GCF_963584025.1,fLabMix1.1
 fasta/GCF_009819535.1.fa.gz,rLacAgi1.pri,Lacerta agilis,VGP,GCF_009819535.1,rLacAgi1.pri
 fasta/GCF_949774975.1.fa.gz,mLagAlb1.1,Lagenorhynchus albirostris,VGP,GCF_949774975.1,mLagAlb1.1
-fasta/GCF_023343835.1.fa.gz,bLagMut1 primary,Lagopus muta,VGP,GCF_023343835.1,bLagMut1 primary
+fasta/GCF_023343835.1.fa.gz,bLagMut1_primary,Lagopus muta,VGP,GCF_023343835.1,bLagMut1 primary
 fasta/GCA_964198595.1.fa.gz,kcLamFluv1.1,Lampetra fluviatilis,VGP,GCA_964198595.1,kcLamFluv1.1
 fasta/GCF_029633865.1.fa.gz,fLamInc1.hap2,Lampris incognitus,VGP,GCF_029633865.1,fLamInc1.hap2
 fasta/GCA_964417175.1.fa.gz,bLarArg3.hap1.1,Larus argentatus,VGP,GCA_964417175.1,bLarArg3.hap1.1
@@ -280,7 +280,7 @@ fasta/GCA_043880595.1.fa.gz,ASM4388059v1,Megaderma spasma,VGP,GCA_043880595.1,AS
 fasta/GCF_013368585.1.fa.gz,fMegCyp1.pri,Megalops cyprinoides,VGP,GCF_013368585.1,fMegCyp1.pri
 fasta/GCA_041834305.1.fa.gz,ASM4183430v1,Megaptera novaeangliae,VGP,GCA_041834305.1,ASM4183430v1
 fasta/GCF_017639745.1.fa.gz,fMelBoe1.pri,Melanotaenia boesemani,VGP,GCF_017639745.1,fMelBoe1.pri
-fasta/GCF_922984935.1.fa.gz,mMelMel3.1 paternal haplotype,Meles meles,VGP,GCF_922984935.1,mMelMel3.1 paternal haplotype
+fasta/GCF_922984935.1.fa.gz,mMelMel3.1_paternal_haplotype,Meles meles,VGP,GCF_922984935.1,mMelMel3.1 paternal haplotype
 fasta/GCF_012275295.1.fa.gz,bMelUnd1.mat.Z,Melopsittacus undulatus,VGP,GCF_012275295.1,bMelUnd1.mat.Z
 fasta/GCF_028018845.1.fa.gz,bMelGeo1.pri,Melospiza georgiana,VGP,GCF_028018845.1,bMelGeo1.pri
 fasta/GCF_035770615.1.fa.gz,bMelMel2.pri,Melospiza melodia melodia,VGP,GCF_035770615.1,bMelMel2.pri
@@ -288,7 +288,7 @@ fasta/GCA_048628825.1.fa.gz,ASM4862882v1,Menidia menidia,VGP,GCA_048628825.1,ASM
 fasta/GCA_036873955.1.fa.gz,bMerOct1.hap1,Mergus octosetaceus,VGP,GCA_036873955.1,bMerOct1.hap1
 fasta/GCA_009819595.1.fa.gz,bMerNub1.pri,Merops nubicus,VGP,GCA_009819595.1,bMerNub1.pri
 fasta/GCA_964165515.1.fa.gz,mMesBid2.hap1.1,Mesoplodon bidens,VGP,GCA_964165515.1,mMesBid2.hap1.1
-fasta/GCF_025265405.1.fa.gz,mMesDen1 primary haplotype,Mesoplodon densirostris,VGP,GCF_025265405.1,mMesDen1 primary haplotype
+fasta/GCF_025265405.1.fa.gz,mMesDen1_primary_haplotype,Mesoplodon densirostris,VGP,GCF_025265405.1,mMesDen1 primary haplotype
 fasta/GCA_964341445.1.fa.gz,mMesMir1.hap1.1,Mesoplodon mirus,VGP,GCA_964341445.1,mMesMir1.hap1.1
 fasta/GCA_901765095.2.fa.gz,aMicUni1.2,Microcaecilia unicolor,VGP,GCA_901765095.2,aMicUni1.2
 fasta/GCA_963457635.1.fa.gz,fMicVar1.1,Microchirus variegatus,VGP,GCA_963457635.1,fMicVar1.1
@@ -306,7 +306,7 @@ fasta/GCF_014108415.1.fa.gz,mMolMol1.p,Molossus molossus,VGP,GCF_014108415.1,mMo
 fasta/GCA_039880945.1.fa.gz,mMolNig1.hap1,Molossus nigricans,VGP,GCA_039880945.1,mMolNig1.hap1
 fasta/GCF_027887165.1.fa.gz,mMonDom1.pri,Monodelphis domestica,VGP,GCF_027887165.1,mMonDom1.pri
 fasta/GCA_043748645.1.fa.gz,ASM4374864v1,Mops condylurus,VGP,GCA_043748645.1,ASM4374864v1
-fasta/GCA_045345515.1.fa.gz,bMorGui1 haplotype 2,Morphnus guianensis,VGP,GCA_045345515.1,bMorGui1 haplotype 2
+fasta/GCA_045345515.1.fa.gz,bMorGui1_haplotype_2,Morphnus guianensis,VGP,GCA_045345515.1,bMorGui1 haplotype 2
 fasta/GCA_031468815.1.fa.gz,bMorBas2.hap2,Morus bassanus,VGP,GCA_031468815.1,bMorBas2.hap2
 fasta/GCF_963930625.1.fa.gz,mMunRee1.1,Muntiacus reevesi,VGP,GCF_963930625.1,mMunRee1.1
 fasta/GCA_963383645.1.fa.gz,mMusAve1.1,Muscardinus avellanarius,VGP,GCA_963383645.1,mMusAve1.1
@@ -395,7 +395,7 @@ fasta/GCF_027172205.1.fa.gz,rPodRaf1.pri,Podarcis raffonei,VGP,GCF_027172205.1,r
 fasta/GCA_964188175.1.fa.gz,rPodSic1.hap1.1,Podarcis siculus,VGP,GCA_964188175.1,rPodSic1.hap1.1
 fasta/GCA_965153285.1.fa.gz,rPodTil1.hap1.1,Podarcis tiliguerta,VGP,GCA_965153285.1,rPodTil1.hap1.1
 fasta/GCA_965113315.1.fa.gz,rPodVau1.hap1.1,Podarcis vaucheri,VGP,GCA_965113315.1,rPodVau1.hap1.1
-fasta/GCA_045364815.1.fa.gz,rPodExp1 haplotype 2,Podocnemis expansa,VGP,GCA_045364815.1,rPodExp1 haplotype 2
+fasta/GCA_045364815.1.fa.gz,rPodExp1_haplotype_2,Podocnemis expansa,VGP,GCA_045364815.1,rPodExp1 haplotype 2
 fasta/GCF_030490865.1.fa.gz,bPoeAtr1.hap1,Poecile atricapillus,VGP,GCF_030490865.1,bPoeAtr1.hap1
 fasta/GCF_015220805.1.fa.gz,bPogPus1.pri,Pogoniulus pusillus,VGP,GCF_015220805.1,bPogPus1.pri
 fasta/GCA_048537225.1.fa.gz,ASM4853722v1,Polymixia cf. hollisterae,VGP,GCA_048537225.1,ASM4853722v1
@@ -510,7 +510,7 @@ fasta/GCF_963924715.1.fa.gz,fThuThy2.1,Thunnus thynnus,VGP,GCF_963924715.1,fThuT
 fasta/GCA_035046505.1.fa.gz,rTilSci1.hap2,Tiliqua scincoides,VGP,GCA_035046505.1,rTilSci1.hap2
 fasta/GCF_017976425.1.fa.gz,fToxJac2.pri,Toxotes jaculatrix,VGP,GCF_017976425.1,fToxJac2.pri
 fasta/GCA_905171665.2.fa.gz,fTraTra1.2,Trachurus trachurus,VGP,GCA_905171665.2,fTraTra1.2
-fasta/GCA_046562895.1.fa.gz,mTriInu1 haplotype 2,Trichechus inunguis,VGP,GCA_046562895.1,mTriInu1 haplotype 2
+fasta/GCA_046562895.1.fa.gz,mTriInu1_haplotype_2,Trichechus inunguis,VGP,GCA_046562895.1,mTriInu1 haplotype 2
 fasta/GCF_030014385.1.fa.gz,fTriRos1.hap1,Trichomycterus rosablanca,VGP,GCF_030014385.1,fTriRos1.hap1
 fasta/GCF_011100635.1.fa.gz,mTriVul1.pri,Trichosurus vulpecula,VGP,GCF_011100635.1,mTriVul1.pri
 fasta/GCA_963675345.1.fa.gz,kaTriClin1.1,Trididemnum clinides,VGP,GCA_963675345.1,kaTriClin1.1
@@ -518,11 +518,11 @@ fasta/GCA_964204655.1.fa.gz,aTriCri1.1,Triturus cristatus,VGP,GCA_964204655.1,aT
 fasta/GCA_020746105.1.fa.gz,bTroSur1.pri.cur,Trogon surrucura,VGP,GCA_020746105.1,bTroSur1.pri.cur
 fasta/GCA_045843805.1.fa.gz,mUroPar1.hap1,Urocitellus parryii,VGP,GCA_045843805.1,mUroPar1.hap1
 fasta/GCA_965231255.1.fa.gz,bVanVan1.hap1.1,Vanellus vanellus,VGP,GCA_965231255.1,bVanVan1.hap1.1
-fasta/GCA_026979555.1.fa.gz,bVidCha1 purged dups haplotype,Vidua chalybeata,VGP,GCA_026979555.1,bVidCha1 purged dups haplotype
-fasta/GCF_026979565.1.fa.gz,bVidCha1 merged haplotype,Vidua chalybeata,VGP,GCF_026979565.1,bVidCha1 merged haplotype
+fasta/GCA_026979555.1.fa.gz,bVidCha1_purged_dups_haplotype,Vidua chalybeata,VGP,GCA_026979555.1,bVidCha1 purged dups haplotype
+fasta/GCF_026979565.1.fa.gz,bVidCha1_merged_haplotype,Vidua chalybeata,VGP,GCF_026979565.1,bVidCha1 merged haplotype
 fasta/GCA_964194415.1.fa.gz,rVipBer3.hap1.1,Vipera berus,VGP,GCA_964194415.1,rVipBer3.hap1.1
 fasta/GCA_964106825.2.fa.gz,mVulVul1.hap1.2,Vulpes vulpes,VGP,GCA_964106825.2,mVulVul1.hap1.2
-fasta/GCA_045364795.1.fa.gz,bWilVid1 haplotype 1,Willisornis vidua,VGP,GCA_045364795.1,bWilVid1 haplotype 1
+fasta/GCA_045364795.1.fa.gz,bWilVid1_haplotype_1,Willisornis vidua,VGP,GCA_045364795.1,bWilVid1 haplotype 1
 fasta/GCA_014839995.1.fa.gz,fXenCan1.pri,Xenentodon cancila,VGP,GCA_014839995.1,fXenCan1.pri
 fasta/GCA_038501925.1.fa.gz,aXenPet1.paternal.cur,Xenopus petersii,VGP,GCA_038501925.1,aXenPet1.paternal.cur
 fasta/GCF_009762305.2.fa.gz,mZalCal1.pri.v2,Zalophus californianus,VGP,GCF_009762305.2,mZalCal1.pri.v2

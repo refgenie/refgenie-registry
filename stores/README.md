@@ -28,16 +28,44 @@ Every genome YAML in [`genomes/`](../genomes) names one of these stores in its
 [`build/sync_stores.py`](../build/sync_stores.py) is what checks that claim:
 
 ```bash
-python build/sync_stores.py            # coverage report, all stores
-python build/sync_stores.py --check    # non-zero if a genome is not loadable
-python build/sync_stores.py --changed  # stores whose sources.csv changed since they were built
+python build/sync_stores.py                  # coverage report, all stores
+python build/sync_stores.py --check          # non-zero if a genome is not loadable or not aligned
+python build/sync_stores.py --changed        # stores needing a full load
+python build/sync_stores.py --alias-changed  # stores needing only an alias refresh
 ```
 
 A genome whose declared store has no row for it is **registered but unloadable**,
-and nothing else reports that. `--changed` is what the nightly
-uses to decide which stores to reload: a store is rebuilt only when its
-`sources.csv` differs from the `.sources.sha256` stamp written inside the built
-store, so plantref's ~476k objects are not re-synced every night.
+and nothing else reports that.
+
+### One name per genome
+
+A genome's names are defined in its YAML only: `name` plus `aliases`. When a
+store row has a YAML, **the row's `name` is exactly the YAML `name`**. That string
+is the link between the two lists. Any other name for the genome (the
+provider's, the old row name) goes in the YAML `aliases`, and the store
+registers every one of them. `sync_stores.py --check` fails on a row that is not
+named after its genome ("NOT ALIGNED"), and
+[`tools/align_store_names.py`](../tools/align_store_names.py) renames such rows
+and moves the old name into `aliases`. New YAMLs from
+`tools/sources_to_genomes.py` follow the rule on their own.
+
+Rows are matched to YAMLs by exact name, then by `seqcol.digest`, then by YAML
+`aliases`, then by the staged FASTA path in `pep/config.yaml`, and, for a YAML
+with no digest only, by an accession that appears once. A YAML whose
+`seqcol.digest` disagrees with its row is an error. See
+[`genome_rows.py`](genome_rows.py).
+
+### What triggers a reload
+
+The nightly reloads a store fully only when its rows' `fasta` values change
+(rows added, removed or pointed at another file), checked against the
+`.sources.sha256` stamp inside the built store, so plantref's ~476k objects are
+not re-synced every night. A change to a row's name or other columns, or to a
+genome YAML's `name` or `aliases`, only changes the `.aliases.sha256` stamp: the
+nightly then runs `build_aliases.py`, `build_fhr.py` and `build.py --sync-only`,
+which read no FASTA. `build_aliases.py` finds each row's collection through the
+`.row_digests.json` map (row `fasta` -> collection digest) that `build.py` writes
+into the store, so a renamed row still resolves.
 
 ### `sources.csv` is NOT generated from the genome list
 

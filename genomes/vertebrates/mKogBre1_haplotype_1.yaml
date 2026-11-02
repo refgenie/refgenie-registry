@@ -1,4 +1,6 @@
 name: mKogBre1_haplotype_1
+aliases:
+  - mKogBre1 haplotype 1
 description: |
   Kogia breviceps assembly mKogBre1 haplotype 1 (GCF_026419965.1), from VGP.
 organism:

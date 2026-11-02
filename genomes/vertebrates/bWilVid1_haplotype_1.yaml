@@ -1,4 +1,6 @@
 name: bWilVid1_haplotype_1
+aliases:
+  - bWilVid1 haplotype 1
 description: |
   Willisornis vidua assembly bWilVid1 haplotype 1 (GCA_045364795.1), from VGP.
 organism:

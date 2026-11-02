@@ -1,4 +1,6 @@
 name: bGuaGua1_haplotype_1
+aliases:
+  - bGuaGua1 haplotype 1
 description: |
   Guaruba guarouba assembly bGuaGua1 haplotype 1 (GCA_045345405.1), from VGP.
 organism:

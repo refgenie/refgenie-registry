@@ -1,4 +1,6 @@
 name: bVidCha1_purged_dups_haplotype
+aliases:
+  - bVidCha1 purged dups haplotype
 description: |
   Vidua chalybeata assembly bVidCha1 purged dups haplotype (GCA_026979555.1), from VGP.
 organism:

@@ -1,4 +1,6 @@
 name: bMorGui1_haplotype_2
+aliases:
+  - bMorGui1 haplotype 2
 description: |
   Morphnus guianensis assembly bMorGui1 haplotype 2 (GCA_045345515.1), from VGP.
 organism:

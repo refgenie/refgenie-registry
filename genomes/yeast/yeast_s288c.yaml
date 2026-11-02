@@ -1,4 +1,6 @@
 name: yeast_s288c
+aliases:
+  - saccharomyces_cerevisiae_ENSEMBL_release_81
 
 description: |
   Saccharomyces cerevisiae strain S288C reference assembly R64-1-1, sourced from

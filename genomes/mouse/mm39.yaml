@@ -1,6 +1,7 @@
 name: mm39
 aliases:
   - GRCm39
+  - GRCm39-fasta-genomic
 
 description: |
   Genome Reference Consortium Mouse Build 39.

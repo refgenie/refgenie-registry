@@ -1,4 +1,6 @@
 name: hg18_ucsc
+aliases:
+  - hg18-ucsc
 
 description: |
   2006 release of hg18 ucsc

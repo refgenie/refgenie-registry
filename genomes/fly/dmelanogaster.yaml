@@ -1,4 +1,6 @@
 name: dmelanogaster
+aliases:
+  - drosophila_melanogaster_ENSEMBL_release_81
 
 description: |
   Drosophila melanogaster reference assembly BDGP6, sourced from Ensembl

@@ -1,4 +1,6 @@
 name: sHemOce1.pat.X.cur
+aliases:
+  - sHemOce1.pat.X.cur.
 description: |
   Hemiscyllium ocellatum assembly sHemOce1.pat.X.cur. (GCF_020745735.1), from VGP.
 organism:

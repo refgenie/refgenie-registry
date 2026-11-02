@@ -1,4 +1,6 @@
 name: bVidCha1_merged_haplotype
+aliases:
+  - bVidCha1 merged haplotype
 description: |
   Vidua chalybeata assembly bVidCha1 merged haplotype (GCF_026979565.1), from VGP.
 organism:

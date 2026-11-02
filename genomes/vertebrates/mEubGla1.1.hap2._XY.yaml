@@ -1,4 +1,6 @@
 name: mEubGla1.1.hap2._XY
+aliases:
+  - mEubGla1.1.hap2.+ XY
 description: |
   Eubalaena glacialis assembly mEubGla1.1.hap2.+ XY (GCF_028564815.1), from VGP.
 organism:

@@ -1,4 +1,6 @@
 name: mEleMax1_primary_haplotype
+aliases:
+  - mEleMax1 primary haplotype
 description: |
   Elephas maximus indicus assembly mEleMax1 primary haplotype (GCF_024166365.1), from VGP.
 organism:

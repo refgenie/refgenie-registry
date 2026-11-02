@@ -1,4 +1,6 @@
 name: athaliana
+aliases:
+  - arabidopsis_thaliana_COL-0_TAIR10
 
 description: |
   Arabidopsis thaliana ecotype Col-0 reference assembly TAIR10, sourced from

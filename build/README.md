@@ -22,7 +22,7 @@ recipe's container.
 | `config.yaml` | Snakemake `configfile:` (placeholder, rules don't read it; satisfies the directive). |
 | `generate_samples.py` | **Generates `pep/samples.csv`** from every genome YAML's `build:` block plus `pep/tiers.yaml`. Never hand-edit the CSV. |
 | `generate_genome_metadata.py` | **Generates `pep/metadata/<genome>.fhr.json`** for every genome (not just queued ones). Never hand-edit. |
-| `sync_stores.py` | Reports which genomes their declared store cannot actually load, and (`--changed`) which stores' sources changed since they were built. It reconciles `genomes/` against `stores/*/sources.csv`; it never rewrites either (see [`stores/README.md`](../stores/README.md#sourcescsv-is-not-generated-from-the-genome-list)). |
+| `sync_stores.py` | Reports which genomes their declared store cannot actually load or whose row is not named after them, and which stores need a full load (`--changed`) or only an alias refresh (`--alias-changed`). It reconciles `genomes/` against `stores/*/sources.csv`; it never rewrites either (see [`stores/README.md`](../stores/README.md#sourcescsv-is-not-generated-from-the-genome-list)). |
 | `check_registration.py` | Reports which genomes in `genomes/` do not resolve in the catalog. The companion to `check_coverage.py`, which can only see the build queue. |
 | `update_index.py` | After builds, writes `index/<genome>/<recipe>.yaml` entries from the refgenie DB. |
 | `Snakefile` | **Generated** each run (gitignored). |

@@ -1,4 +1,6 @@
 name: bAlcTor1_primary
+aliases:
+  - bAlcTor1 primary
 description: |
   Alca torda assembly bAlcTor1 primary (GCA_008658365.1), from VGP.
 organism:

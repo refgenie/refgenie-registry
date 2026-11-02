@@ -1,4 +1,6 @@
 name: rPodExp1_haplotype_2
+aliases:
+  - rPodExp1 haplotype 2
 description: |
   Podocnemis expansa assembly rPodExp1 haplotype 2 (GCA_045364815.1), from VGP.
 organism:

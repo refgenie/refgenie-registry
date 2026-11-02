@@ -1,4 +1,6 @@
 name: mMelMel3.1_paternal_haplotype
+aliases:
+  - mMelMel3.1 paternal haplotype
 description: |
   Meles meles assembly mMelMel3.1 paternal haplotype (GCF_922984935.1), from VGP.
 organism:

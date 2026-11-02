@@ -1,4 +1,6 @@
 name: celegans
+aliases:
+  - caenorhabditis_elegans_ENSEMBL_release_81
 
 description: |
   Caenorhabditis elegans reference assembly WBcel235, sourced from Ensembl

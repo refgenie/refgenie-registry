@@ -1,4 +1,6 @@
 name: bLagMut1_primary
+aliases:
+  - bLagMut1 primary
 description: |
   Lagopus muta assembly bLagMut1 primary (GCF_023343835.1), from VGP.
 organism:

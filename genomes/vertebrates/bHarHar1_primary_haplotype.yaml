@@ -1,4 +1,6 @@
 name: bHarHar1_primary_haplotype
+aliases:
+  - bHarHar1 primary haplotype
 description: |
   Harpia harpyja assembly bHarHar1 primary haplotype (GCF_026419915.1), from VGP.
 organism:

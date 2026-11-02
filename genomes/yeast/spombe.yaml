@@ -1,4 +1,6 @@
 name: spombe
+aliases:
+  - schizosaccharomyces_pombe_ENSEMBL_fungi_release_28
 
 description: |
   Schizosaccharomyces pombe reference assembly ASM294v2, sourced from Ensembl

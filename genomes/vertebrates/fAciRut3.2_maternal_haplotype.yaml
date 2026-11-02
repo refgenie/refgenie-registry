@@ -1,4 +1,6 @@
 name: fAciRut3.2_maternal_haplotype
+aliases:
+  - fAciRut3.2 maternal haplotype
 description: |
   Acipenser ruthenus assembly fAciRut3.2 maternal haplotype (GCF_902713425.1), from VGP.
 organism:
