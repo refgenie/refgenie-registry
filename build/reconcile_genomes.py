@@ -196,6 +196,83 @@ def sentinel_path(rg, genome_name: str) -> Path:
     return Path(str(template).format(genome_name=genome_name))
 
 
+def read_pep_requests(registry_root: Path) -> list[tuple[str, str]]:
+    """The de-duplicated (genome_name, asset_group_name) pairs the PEP asks for."""
+    samples = registry_root / "pep" / "samples.csv"
+    pairs: list[tuple[str, str]] = []
+    with open(samples, newline="") as fh:
+        for row in csv.DictReader(fh):
+            pair = (
+                (row.get("genome_name") or "").strip(),
+                (row.get("asset_group_name") or "").strip(),
+            )
+            if all(pair) and pair not in pairs:
+                pairs.append(pair)
+    return pairs
+
+
+def catalog_groups(rg, genome_name: str) -> set[str] | None:
+    """Asset group names the catalog holds for ``genome_name``; None if it does not resolve."""
+    try:
+        digest = rg.alias.resolve(genome_name)
+        assets, _ = rg.asset.list_all(genome_digests=[digest])
+    except Exception:  # noqa: BLE001 - unresolvable reads as "not registered"
+        return None
+    return {entry.split(":", 1)[0] for entry in assets.get(digest, [])}
+
+
+def stale_flags(rg, genome_name: str, group: str) -> list[Path]:
+    """Every ``.flag`` in the build folders of ``genome_name``/``group``, any asset name.
+
+    The asset name is the tool version, so the PEP cannot name it; glob it.
+    Only completion flags go: refgenie's ``<genome>_<group>__<name>.flag``
+    (snakemake's declared output) and pypiper's ``*_completed.flag``, since
+    either one makes the rebuild a no-op. A build in flight also keeps
+    ``lock.*.flag`` and ``*_running.flag`` here; deleting those would break it.
+    """
+    template = Path(
+        str(rg.build.target_template(group, "x")).format(genome_name=genome_name)
+    )
+    folders = template.parent.parent
+    ours = folders.glob(f"*/{genome_name}_{group}__*.flag")
+    return sorted({*ours, *folders.glob("*/*_completed.flag")})
+
+
+def reconcile_flags(
+    rg, requests: list[tuple[str, str]], prune: bool = True
+) -> list[Path]:
+    """Remove build flags for requested assets the catalog does not hold.
+
+    A flag means "this asset is in the catalog", and snakemake skips any asset
+    whose flag exists. ``refgenie remove`` deletes flags only under the aliases
+    the genome had at that moment, so a flag under another name can outlive its
+    asset, and the asset then never rebuilds (hg19, mm10, hg18 and mm10_primary
+    sat assetless for that reason in Nov 2026). Genomes that do not resolve are
+    left to the sentinel reconcile above. Returns the stale flags found.
+    """
+    found: list[Path] = []
+    groups_by_genome: dict[str, set[str] | None] = {}
+    for genome, group in requests:
+        if genome not in groups_by_genome:
+            groups_by_genome[genome] = catalog_groups(rg, genome)
+        held = groups_by_genome[genome]
+        if held is None or group in held:
+            continue
+        for flag in stale_flags(rg, genome, group):
+            found.append(flag)
+            if not prune:
+                print(
+                    f"  reconcile: would-prune flag {flag} (asset not in catalog) [--no-prune]"
+                )
+                continue
+            try:
+                flag.unlink()
+                print(f"  reconcile: prune  flag {flag} (asset not in catalog)")
+            except OSError as exc:
+                print(f"  reconcile: WARN   could not remove flag {flag}: {exc}")
+    return found
+
+
 def _catalog_counts(rg) -> dict[str, int]:
     def _count(fn) -> int:
         try:
@@ -241,17 +318,25 @@ def reconcile(rg, genomes: list[str], prune: bool = True) -> list[str]:
         if sp.exists():
             try:
                 sp.unlink()
-                print(f"  reconcile: prune  {name} (NOT registered; removed stale sentinel {sp})")
+                print(
+                    f"  reconcile: prune  {name} (NOT registered; removed stale sentinel {sp})"
+                )
             except OSError as exc:
-                print(f"  reconcile: WARN   {name}: could not remove sentinel {sp}: {exc}")
+                print(
+                    f"  reconcile: WARN   {name}: could not remove sentinel {sp}: {exc}"
+                )
         else:
-            print(f"  reconcile: init   {name} (NOT registered; no sentinel -> genome_init will run)")
+            print(
+                f"  reconcile: init   {name} (NOT registered; no sentinel -> genome_init will run)"
+            )
     return unregistered
 
 
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--db-config", default=os.environ.get("REFGENIE_DB_CONFIG_PATH"))
+    parser.add_argument(
+        "--db-config", default=os.environ.get("REFGENIE_DB_CONFIG_PATH")
+    )
     parser.add_argument(
         "--count-genomes-only",
         action="store_true",
@@ -308,13 +393,25 @@ def main(argv: list[str] | None = None) -> int:
                 + ", ".join(doomed)
             )
             return 1
-        print("reconcile: dispatch-safe (every PEP genome is registered or will be initialized)")
+        print(
+            "reconcile: dispatch-safe (every PEP genome is registered or will be initialized)"
+        )
         return 0
 
-    print(f"reconcile: PEP queues {len(genomes)} genome(s): {', '.join(genomes) or '(none)'}")
+    print(
+        f"reconcile: PEP queues {len(genomes)} genome(s): {', '.join(genomes) or '(none)'}"
+    )
     if args.no_prune:
         print("reconcile: --no-prune (read-only), nothing will be unlinked")
     unregistered = reconcile(rg, genomes, prune=not args.no_prune)
+    flags = reconcile_flags(
+        rg, read_pep_requests(registry_root), prune=not args.no_prune
+    )
+    if flags:
+        verb = "would remove" if args.no_prune else "removed"
+        print(
+            f"reconcile: {verb} {len(flags)} stale build flag(s); those assets will rebuild"
+        )
 
     counts = _catalog_counts(rg)
     print(
