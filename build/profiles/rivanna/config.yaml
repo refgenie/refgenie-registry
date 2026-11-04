@@ -87,11 +87,13 @@ printshellcmds: true
 # fixed in refgenie1 (build_fasta.py loads only the target collection), so the caps
 # came back down. genome_init now needs roughly one genome's bytes (~3 GB for
 # human).
+# Write every runtime with a unit ("120m"). Snakemake 9.16 reads a bare
+# number from a profile as seconds, so `runtime: 120` gave jobs 2 minutes.
 default-resources:
   slurm_account: "shefflab"
   slurm_partition: "standard"
   mem_mb: 8000
-  runtime: 120                 # minutes
+  runtime: "120m"
   cpus_per_task: 4
 
 # Per-rule resource overrides for the heavy indexers. Rule names match the
@@ -99,32 +101,32 @@ default-resources:
 set-resources:
   genome_init:
     mem_mb: 8000
-    runtime: 60
+    runtime: "60m"
   build_star_index:
     mem_mb: 64000
-    runtime: 480
+    runtime: "480m"
   build_cellranger_reference:
     mem_mb: 64000
-    runtime: 480
+    runtime: "480m"
   build_bwa_index:
     mem_mb: 16000
-    runtime: 180
+    runtime: "180m"
   build_hisat2_index:
     mem_mb: 32000
-    runtime: 240
+    runtime: "240m"
   build_bowtie2_index:
     mem_mb: 16000
-    runtime: 180
+    runtime: "180m"
   build_salmon_index:
     mem_mb: 16000
-    runtime: 180
+    runtime: "180m"
   # gt suffixerator on a full human genome under an 8 GB memlimit uses the slow
   # external-memory path; the default 120 min runtime TIMEOUTs (yeast is fine).
   # Give it the STAR-class window. (Raising the recipe's memlimit param would let
   # it run in-memory and faster, but that's a separate recipe/catalog change.)
   build_suffixerator_index:
     mem_mb: 32000
-    runtime: 480
+    runtime: "480m"
 
 set-threads:
   build_star_index: 8
