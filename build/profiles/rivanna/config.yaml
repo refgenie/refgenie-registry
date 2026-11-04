@@ -114,9 +114,10 @@ set-resources:
   build_hisat2_index:
     mem_mb: 32000
     runtime: "240m"
+  # hg38_mm10 (~6 GB) TIMEOUTs at 180m with 4 threads.
   build_bowtie2_index:
     mem_mb: 16000
-    runtime: "180m"
+    runtime: "480m"
   build_salmon_index:
     mem_mb: 16000
     runtime: "180m"
@@ -132,6 +133,6 @@ set-threads:
   build_star_index: 8
   build_cellranger_reference: 8
   build_hisat2_index: 8
-  build_bowtie2_index: 4
+  build_bowtie2_index: 8
   build_salmon_index: 4
   build_bwa_index: 4
