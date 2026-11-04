@@ -3,10 +3,10 @@ genome_digest: hFwVeJXKpWP3X-g4wmJGT-eZTa1r3Y1l
 recipe: bwa_index
 recipe_version: 0.2.1
 asset_name: 0.7.19
-asset_digest: 4a557da734d5c2cecb1ccf8d9cd1952b5321363451120a1caedaa0019e7d5137
+asset_digest: 522b5ae49e6e17eb2ca76ec2ab5f641515d005fb8ef584059c3ad310d4d12cef
 build:
   status: complete
-  timestamp: '2026-08-07T07:26:20Z'
+  timestamp: '2026-11-03T23:18:14Z'
 files:
 - bwa_index
 - version

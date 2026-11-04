@@ -3,10 +3,10 @@ genome_digest: yGaojvlgReD5Gd7T630C30BK5DVaHedb
 recipe: hisat2_index
 recipe_version: 0.0.3
 asset_name: 2.2.2
-asset_digest: e42c36c7fe525b38aa67e3a59b2b37075753ffdf6fbb4bed98233ecc2360c08f
+asset_digest: 249dc4bb5a029e16b5c772ec1aeb56ec6b888cadde3d9824cb1750d77a8b239c
 build:
   status: complete
-  timestamp: '2026-08-07T08:34:25Z'
+  timestamp: '2026-11-04T03:19:48Z'
 files:
 - hisat2_index
 - version

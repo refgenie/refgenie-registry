@@ -3,10 +3,10 @@ genome_digest: Cmv0aU0aNVBw1skKIJGyvR5i49b67t84
 recipe: fasta
 recipe_version: 0.1.0
 asset_name: default
-asset_digest: 67a68a4911a51ada2ae4abf1f3c8c88ae7362be92bbc0279caa5723b9c19d946
+asset_digest: 2bf9cc0cdae2e8f5411d25613f0d235660d097af8dab8355c81dc6c4c9c66f19
 build:
   status: complete
-  timestamp: '2026-08-07T07:22:33Z'
+  timestamp: '2026-11-03T23:09:45Z'
 files:
 - chrom_sizes
 - fai

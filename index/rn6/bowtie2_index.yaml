@@ -3,10 +3,10 @@ genome_digest: yGaojvlgReD5Gd7T630C30BK5DVaHedb
 recipe: bowtie2_index
 recipe_version: 0.0.2
 asset_name: 2.5.5
-asset_digest: e0da4adba6224a1600833952d1bd22deced58cb03c2e9313a5953f6a3a02fa4a
+asset_digest: 4156a918429b088c949a34623ed5d626649c5b043c98259db17ecc9fc51124ce
 build:
   status: complete
-  timestamp: '2026-08-07T08:53:00Z'
+  timestamp: '2026-11-04T03:22:43Z'
 files:
 - bowtie2_index
 - version

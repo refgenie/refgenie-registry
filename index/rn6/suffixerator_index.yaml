@@ -3,10 +3,10 @@ genome_digest: yGaojvlgReD5Gd7T630C30BK5DVaHedb
 recipe: suffixerator_index
 recipe_version: 0.0.2
 asset_name: 1.6.6
-asset_digest: 35a853749ce7f96d80f76a23aa1dbd5841cde2098c42fb17653215866e9e4ae5
+asset_digest: bd9209a740b3cc7939385193f27c941e2692dd4c298be7c33869371d6d761a91
 build:
   status: complete
-  timestamp: '2026-08-07T07:53:56Z'
+  timestamp: '2026-11-04T02:48:47Z'
 files:
 - esa
 - version
