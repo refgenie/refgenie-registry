@@ -7,8 +7,9 @@ run replaces the store's whole alias set. It builds two kinds:
 
 1. Our own names: the collection namespaces ``name`` and ``genome_assembly``.
    The registry is the authority for these, so they need no proof, only
-   uniqueness. A sources.csv value shared by several rows is skipped, and a
-   genome YAML alias that is another row's name is skipped.
+   uniqueness. A sources.csv value carried by rows of different collections
+   is skipped (rows that are the same collection may share one), and a genome
+   YAML alias that is another row's name is skipped.
 
 2. Other authorities' accessions: the namespaces ``insdc`` and ``refseq``, for
    sequences and for whole assemblies. These are never typed in or guessed.
@@ -16,7 +17,8 @@ run replaces the store's whole alias set. It builds two kinds:
    proof is recorded:
 
    checksum        ENA's MD5 for an INSDC sequence accession equals the MD5 of
-                   a sequence in this store.
+                   a sequence in this store. ENA publishes MD5s for the current
+                   version of chromosome-level records only.
    ncbi-identical  NCBI's assembly report marks a RefSeq accession identical
                    ("=") to a GenBank accession that is already proven.
    name+length     ENA publishes no checksum (unplaced scaffolds). The
@@ -78,7 +80,7 @@ from collections import Counter, defaultdict
 from datetime import datetime, timezone
 from pathlib import Path
 
-from genome_rows import ROW_DIGESTS, load_genomes, row_aliases, row_fasta, row_name
+from genome_rows import ROW_ALIAS_COLUMNS, ROW_DIGESTS, load_genomes, row_fasta, row_name
 
 SCRIPT_DIR = Path(__file__).parent
 ACCESSION_PATTERN = re.compile(r"(GC[AF]_\d+\.\d+)")
@@ -225,10 +227,12 @@ def ena_table(gca, sources):
     """{accession.version: (md5, length)} for every sequence ENA lists under the
     assembly, or None if ENA could not be reached.
 
-    One portal query per assembly. ENA indexes assemblies without the version,
-    so the query covers all versions; the result is kept under the versioned
-    accession that needed it, which is all that accession will ever need.
-    ENA has checksums for chromosome-level records only, not for WGS scaffolds.
+    One portal query per assembly, kept under the versioned accession that
+    needed it. ENA indexes assemblies without their version and returns each
+    sequence's current version only, so an older assembly whose sequences were
+    later revised (hg19, hg18) gets few or no checksums; its sequences fall back
+    to name+length. ENA has checksums for chromosome-level records only, not
+    for WGS scaffolds.
     """
     path = sources / "ena" / f"{gca}.tsv"
     if not path.is_file():
@@ -367,14 +371,24 @@ def compute_aliases(store, rows, row_digests, genome_aliases, sources):
     print(f"  {len(resolved)}/{len(rows)} rows resolved, {len(seqs)} collections, "
           f"{len(by_md5)} distinct sequences")
 
-    # Kind 1: our own names.
-    unique = row_aliases(rows)
-    row_names = {}
+    # Kind 1: our own names. A value is an alias when every row carrying it is
+    # the same collection; a value spread over several collections names none.
+    targets = defaultdict(set)
     for idx, row, digest in resolved:
-        for col, val in unique[idx]:
-            aset.bind(COLL, col, val, digest, "registry")
-            if col == "name":
-                row_names[val] = digest
+        for col in ROW_ALIAS_COLUMNS:
+            val = (row.get(col) or "").strip()
+            if val:
+                targets[(col, val)].add(digest)
+    row_names = {}
+    for (col, val), digests in sorted(targets.items()):
+        if len(digests) > 1:
+            aset.skip(COLL, col, "value names several collections",
+                      f"{val} ({len(digests)} collections)")
+            continue
+        digest = next(iter(digests))
+        aset.bind(COLL, col, val, digest, "registry")
+        if col == "name":
+            row_names[val] = digest
     for idx, row, digest in resolved:
         for alias in genome_aliases.get(row_name(row), []):
             if row_names.get(alias, digest) != digest:
@@ -392,7 +406,13 @@ def compute_aliases(store, rows, row_digests, genome_aliases, sources):
         acc = m.group(1)
         report = ncbi_report(acc, sources)
         if report is None:
-            aset.notes.append(f"{acc}: NCBI assembly report unavailable, no accession aliases")
+            # Checksums stand on their own; without NCBI's report there is no
+            # name+length, RefSeq or assembly-level proof.
+            ena = ena_table(acc, sources) if acc.startswith("GCA_") else None
+            if ena:
+                ena_all.update(ena)
+            aset.notes.append(f"{acc}: NCBI assembly report unavailable; "
+                              f"{'ENA checksum links only' if ena else 'no accession aliases'}")
             continue
         report_rows, genbank_asm, _ = parse_assembly_report(report)
         gca = acc if acc.startswith("GCA_") else genbank_asm

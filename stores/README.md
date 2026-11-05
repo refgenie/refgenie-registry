@@ -193,15 +193,15 @@ whole alias set on each run. An alias resolves to exactly one digest within its 
 the script registers two kinds of keys:
 
 - **The registry's own names**, as collection aliases: the `name` and `genome_assembly`
-  columns of `sources.csv` (values that name a single row), and the `aliases` of each row's
-  genome YAML under `name`.
+  columns of `sources.csv` (a value is used when all rows carrying it are the same
+  collection), and the `aliases` of each row's genome YAML under `name`.
 - **Accessions from INSDC and RefSeq**, under the `insdc` and `refseq` namespaces, for
   sequences and for whole assemblies. Each link is proven against data the authority
   publishes, and the report records the proof:
 
   | Evidence | Proof |
   |---|---|
-  | `checksum` | [ENA](https://www.ebi.ac.uk/ena/browser/)'s MD5 for the INSDC sequence accession equals the MD5 of a sequence in the store |
+  | `checksum` | [ENA](https://www.ebi.ac.uk/ena/browser/)'s MD5 for the INSDC sequence accession equals the MD5 of a sequence in the store (ENA publishes MD5s for the current version of chromosome-level records) |
   | `ncbi-identical` | NCBI's assembly report marks the GenBank and RefSeq accessions identical (`=`), and one of them is proven |
   | `name+length` | for sequences ENA has no checksum for (unplaced scaffolds, RefSeq): the collection names the sequence with the accession and NCBI's length matches, in a collection whose checksummed sequences all match ENA |
   | `content` | an assembly accession names a collection whose sequence names are exactly that assembly's accessions (GenBank for `GCA_`, RefSeq for `GCF_`) with NCBI's lengths |
