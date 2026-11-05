@@ -97,12 +97,12 @@ Each store folder is a PEP project:
 store_name/
 ├── README.md            # what's in this store
 ├── sources.csv          # sample table: one FASTA per row (URL, or path relative to fasta_root)
-└── project_config.yaml  # PEP config (+ optional `fasta_root:` / `aliasing:`, see below)
+└── project_config.yaml  # PEP config (+ optional `fasta_root:`, see below)
 ```
 
 The store-build scripts in this directory are generic, they take a store name
 and read everything store-specific from that store's `project_config.yaml` /
-`sources.csv`. Two optional `project_config.yaml` keys configure them:
+`sources.csv`. One optional `project_config.yaml` key configures them:
 
 - **`fasta_root:`**, base directory for **relative** `fasta` paths in `sources.csv`.
   Environment variables are expanded, so the absolute machine location stays out of
@@ -110,7 +110,6 @@ and read everything store-specific from that store's `project_config.yaml` /
   `$REFGETSTORE_FASTA` set by [`infra/rivanna/env.sh`](../infra/rivanna/env.sh)) lets
   `sources.csv` hold `homo_sapiens/ENA/.../GRCh38.fa.gz`. A `fasta` value that is a URL
   or an absolute path is used as-is and ignores `fasta_root`.
-- **`aliasing:`**, non-default sequence-alias strategy (see [Aliases](#aliases-post-build)).
 
 A store with genuinely bespoke logic can instead ship its own script in its
 folder (e.g. [`vrs/build_aliases.py`](vrs/build_aliases.py)).
@@ -128,8 +127,8 @@ folder (e.g. [`vrs/build_aliases.py`](vrs/build_aliases.py)).
    ```
 
    Add `fasta_root:` if `sources.csv` uses relative local paths (see
-   [Per-store structure](#per-store-structure)), and an `aliasing:` block if the
-   store needs sequence aliases (see [Aliases](#aliases-post-build)).
+   [Per-store structure](#per-store-structure)). Aliases need no configuration
+   (see [Aliases](#aliases-post-build)).
 
 3. **Write `sources.csv`**, one FASTA per row. Only the **`fasta`** column is
    required; each value is either a URL (`http(s)://`, `ftp://`, `s3://`) or a
@@ -189,39 +188,58 @@ python validate_files.py all --check-urls        # also HEAD-probe uncached URLs
 
 ## Aliases (post-build)
 
-Aliases are registered **after** building, as a separate step (build.py itself only adds the
-collection-level `name`/`accession`/`genome_assembly` aliases from sources.csv). The sequence-alias
-strategy is read from each store's `aliasing:` block in `project_config.yaml`; a store with no block
-gets collection aliases only. Recognized keys:
+[`build_aliases.py`](build_aliases.py) builds every alias of a store and replaces the store's
+whole alias set on each run. An alias resolves to exactly one digest within its namespace, so
+the script registers two kinds of keys:
 
-```yaml
-# stores/<store>/project_config.yaml
-aliasing:
-  seq_strategy: none | header_names | assembly_report
-  header_namespace_col: source        # column naming the namespace (header_names)
-  assembly_report_when_accession: true # also pull assembly-report aliases for accession rows
+- **The registry's own names**, as collection aliases: the `name` and `genome_assembly`
+  columns of `sources.csv` (values that name a single row), and the `aliases` of each row's
+  genome YAML under `name`.
+- **Accessions from INSDC and RefSeq**, under the `insdc` and `refseq` namespaces, for
+  sequences and for whole assemblies. Each link is proven against data the authority
+  publishes, and the report records the proof:
+
+  | Evidence | Proof |
+  |---|---|
+  | `checksum` | [ENA](https://www.ebi.ac.uk/ena/browser/)'s MD5 for the INSDC sequence accession equals the MD5 of a sequence in the store |
+  | `ncbi-identical` | NCBI's assembly report marks the GenBank and RefSeq accessions identical (`=`), and one of them is proven |
+  | `name+length` | for sequences ENA has no checksum for (unplaced scaffolds, RefSeq): the collection names the sequence with the accession and NCBI's length matches, in a collection whose checksummed sequences all match ENA |
+  | `content` | an assembly accession names a collection whose sequence names are exactly that assembly's accessions (GenBank for `GCA_`, RefSeq for `GCF_`) with NCBI's lengths |
+
+  A row's `accession` column tells the script which assembly to check; it is a claim, and a
+  collection gets the accession only when its content passes. Analysis sets, decoy-augmented
+  and masked FASTAs keep their own `name` aliases and resolve by those.
+
+Sequence names from FASTA headers (`chr1`, `1`, ...) are each collection's `names`, looked up
+within a collection with `get_sequence_by_name(collection, name)`.
+
+Authority data is fetched once per accession and kept in a folder shared by all stores,
+`$REFGET_ALIAS_SOURCES` (default `$REFGETSTORE_BASE/../alias-sources`):
+
+```
+alias-sources/
+├── ncbi/<GCA_|GCF_...>_assembly_report.txt   # NCBI assembly report
+└── ena/<GCA_...>.tsv                         # ENA accession, version, MD5, length
 ```
 
 Run:
 
 ```bash
 source ../infra/rivanna/env.sh
-python build_aliases.py vgp       # strategy from vgp/project_config.yaml (assembly_report)
-python build_aliases.py jungle    # strategy from jungle/project_config.yaml (header_names + accession cross-aliases)
-python build_aliases.py vgp --dry-run            # preview without writing
-python build_aliases.py jungle --seq-strategy header_names  # CLI override of the config
+python build_aliases.py vgp                         # rebuild vgp's aliases
+python build_aliases.py jungle --dry-run --out /tmp/jungle   # compute, write maps + report only
+python build_aliases.py jungle --out /tmp/jungle \
+    --store-url https://refgenie.s3.us-east-1.amazonaws.com/refget-store/jungle
+    # read-only, against a published store
 ```
 
-Notes:
-- **vrs** is not config-driven, it ships its own [`vrs/build_aliases.py`](vrs/build_aliases.py) with
-  VRS-specific namespace logic (Ensembl ENST/ENSP, multiple assembly versions). Run that directly.
-- **vgp** fetches NCBI `assembly_report.txt` per accession (rate-limited). Reuse the already-staged
-  reports at `$REFGETSTORE_BASE/../refget_staging/assembly_reports/` (`<accession>_assembly_report.txt`)
-  to avoid re-downloading, pre-seed the script's `.assembly_reports_vgp/` cache from there.
-- **jungle** uses per-authority namespaces (the `source` column: ucsc/ensembl/ncbi/ENA/...) for
-  sequence aliases; only the ~24 rows with a GCA/GCF accession also get assembly-report cross-aliases.
-- `build_aliases.py` strips the VRS `SQ.` prefix from level-2 digests before registering (the bare
-  `sha512t24u` is the alias-index key); the legacy `register_aliases.py`/`backfill_*` scripts do not.
+Each run writes `aliases_<store>.md` (what was registered, by evidence, and what was not, with
+the reason) to the build reports dir, and moves the store's previous `aliases/` folder to
+`<reports dir>/aliases_previous/<store>`. `--out` also writes one `alias, digest, evidence`
+TSV per namespace.
+
+**vrs** ships its own [`vrs/build_aliases.py`](vrs/build_aliases.py) with VRS-specific
+namespaces (one namespace per assembly version, Ensembl ENST/ENSP); the generic script skips it.
 
 ## FHR metadata (post-build)
 

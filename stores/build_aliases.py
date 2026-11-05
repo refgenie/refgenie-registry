@@ -1,55 +1,65 @@
 #!/usr/bin/env python3
-"""Post-build alias registration for refgenie-registry RefgetStores.
+"""Rebuild every alias of a refgenie-registry RefgetStore from evidence.
 
-This is a *post-build* step: it runs after ``build.py`` has ingested all the
-FASTAs for a store and registered the collection-level aliases from the
-``name``, ``accession`` and ``genome_assembly`` columns of ``sources.csv`` (each
-only where its value belongs to a single row; see ``genome_rows.row_aliases``).
+An alias is a human-readable key that resolves to exactly one digest within its
+namespace. This script is the one way aliases enter a generic store, and each
+run replaces the store's whole alias set. It builds two kinds:
 
-It does NOT re-ingest any FASTA. Each ``sources.csv`` row is resolved to an
-already-built collection digest through the ``.row_digests.json`` map that
-``build.py`` writes into the store (keyed by the row's ``fasta``), falling back
-to the collection aliases ``build.py`` registered (``name`` -> ``accession`` ->
-``genome_assembly``). Because of that map it also serves as the alias-only
-refresh after a rename: it re-registers each row's ``name``/``accession``/
-``genome_assembly`` and, for a row whose ``name`` is a genome YAML's name, every
-entry of that YAML's ``aliases`` under the ``name`` namespace. It then
-registers two further kinds of aliases:
+1. Our own names: the collection namespaces ``name`` and ``genome_assembly``.
+   The registry is the authority for these, so they need no proof, only
+   uniqueness. A sources.csv value shared by several rows is skipped, and a
+   genome YAML alias that is another row's name is skipped.
 
-1. Accession collection aliases (``insdc`` / ``refseq`` namespaces) derived
-   from a GenBank/RefSeq assembly accession (GCA_/GCF_) in the ``accession``
-   column. ``build.py`` puts the raw accession under the generic ``accession``
-   namespace; this also files it under the canonical INSDC/RefSeq namespace so
-   it can be looked up the same way as the VRS store.
+2. Other authorities' accessions: the namespaces ``insdc`` and ``refseq``, for
+   sequences and for whole assemblies. These are never typed in or guessed.
+   Each link is proven against data the authority publishes, and the kind of
+   proof is recorded:
 
-2. Sequence-level aliases, via two strategies (per store config):
+   checksum        ENA's MD5 for an INSDC sequence accession equals the MD5 of
+                   a sequence in this store.
+   ncbi-identical  NCBI's assembly report marks a RefSeq accession identical
+                   ("=") to a GenBank accession that is already proven.
+   name+length     ENA publishes no checksum (unplaced scaffolds). The
+                   collection names the sequence with the accession itself, the
+                   length matches NCBI's report, and no sequence in that
+                   collection contradicts an ENA checksum.
+   content         Assembly accession -> collection. The collection's names are
+                   exactly the assembly's accessions (GenBank ones for GCA_,
+                   RefSeq ones for GCF_) with NCBI's lengths, and it contradicts
+                   no ENA checksum.
 
-   a. ``header_names``, register each collection's FASTA header name (from
-      level2 ``names``) as a sequence alias under a namespace. Useful when the
-      headers already are the desired identifier (UCSC ``chr1``, Ensembl ``1``,
-      NCBI ``NC_000001.11``). Cheap, needs no network.
+   A link without proof is not registered. When the proof points one alias at
+   two digests, the alias is withheld. The report lists both cases.
 
-   b. ``assembly_report``, download/parse the NCBI ``assembly_report.txt``
-      for each row's GCA/GCF accession (or an explicit ``assembly_report``
-      column), build the RefSeq<->GenBank<->UCSC<->name mapping, match it to
-      the collection's sequences by name+length, and register every alias form
-      (``refseq`` / ``insdc`` / ``ucsc``) pointing at the matched sequence
-      digest. This is the richest option and mirrors the legacy
-      ``backfill_sequence_aliases.py`` from refget/analysis.
+Chromosome names (chr1, 1, ...) are never aliases: they are unique only inside
+one assembly, and the store already keeps them as each collection's ``names``.
+A derived build (an analysis set, a decoy-augmented or masked FASTA) gets no
+accession alias, because its content is not the assembly's.
 
-Per-store behaviour is read from the ``aliasing:`` block in each store's
-``project_config.yaml`` (and is overridable on the command line). A store with
-no ``aliasing:`` block gets collection aliases only. Output is written into the
-store in place.
+Authority data is fetched once and kept, keyed by accession, because a
+versioned assembly never changes. One folder is shared by all stores:
+
+    $REFGET_ALIAS_SOURCES (default: $REFGETSTORE_BASE/../alias-sources)
+      ncbi/<GCA_|GCF_...>_assembly_report.txt   NCBI assembly report
+      ena/<GCA_...>.tsv                         ENA accession, version, MD5, length
+
+A run writes a report of what was registered and what was not to the build
+reports dir ($REFGENIE_BUILD_REPORTS_DIR, else a ``_build_reports`` sibling of
+the store dirs), and moves the store's previous ``aliases/`` folder to
+``<reports dir>/aliases_previous/<store>``.
+
+Stores that ship their own alias script (``stores/<store>/build_aliases.py``,
+e.g. vrs) are skipped.
 
 Usage:
     source ../infra/rivanna/env.sh
-    python build_aliases.py jungle                 # use the store's aliasing: config
-    python build_aliases.py vgp --dry-run
-    python build_aliases.py vgp --store-path /tmp/test_store
-    python build_aliases.py jungle --seq-strategy header_names
+    python build_aliases.py jungle                        # rebuild jungle's aliases
+    python build_aliases.py vgp --dry-run --out /tmp/vgp  # compute and report only
+    python build_aliases.py jungle --out /tmp/jungle \\
+        --store-url https://refgenie.s3.us-east-1.amazonaws.com/refget-store/jungle
+        # read-only: compute against a published store
 
-Requirements: refget + gtars (RefgetStore) and pyyaml; Python stdlib otherwise.
+Requirements: refget + gtars (RefgetStore); Python stdlib otherwise.
 """
 
 import argparse
@@ -57,24 +67,33 @@ import csv
 import json
 import os
 import re
+import shutil
 import sys
 import tempfile
 import time
 import urllib.error
+import urllib.parse
 import urllib.request
-from collections import defaultdict
+from collections import Counter, defaultdict
+from datetime import datetime, timezone
 from pathlib import Path
 
-from genome_rows import ROW_DIGESTS, load_genomes, row_aliases, row_fasta
-from store_config import aliasing as store_aliasing
+from genome_rows import ROW_DIGESTS, load_genomes, row_aliases, row_fasta, row_name
 
 SCRIPT_DIR = Path(__file__).parent
 ACCESSION_PATTERN = re.compile(r"(GC[AF]_\d+\.\d+)")
 NCBI_FTP_BASE = "https://ftp.ncbi.nlm.nih.gov/genomes/all"
-# get_collection_level2() returns VRS-style "SQ."/"ga4gh:SQ." prefixed sequence
-# digests, but the store's sequence-alias index is keyed by the bare
-# sha512t24u digest (matching list_sequences()[].sha512t24u). Strip the prefix
-# before registering sequence aliases or lookups silently miss.
+ENA_SEARCH = "https://www.ebi.ac.uk/ena/portal/api/search"
+USER_AGENT = "refgenie-registry-alias-builder/2.0"
+
+SEQ, COLL = "sequences", "collections"
+
+# Stronger evidence replaces weaker evidence for the same alias and digest.
+EVIDENCE_RANK = {"registry": 3, "checksum": 3, "content": 3,
+                 "ncbi-identical": 2, "name+length": 1}
+
+# get_collection() returns VRS-style "SQ."/"ga4gh:SQ." prefixed digests in some
+# builds, but the store's alias index is keyed by the bare sha512t24u digest.
 _SQ_PREFIX = re.compile(r"^(ga4gh:)?SQ\.")
 
 
@@ -83,26 +102,192 @@ def normalize_seq_digest(digest):
 
 
 # ---------------------------------------------------------------------------
-# Per-store configuration
+# The alias set being built
 # ---------------------------------------------------------------------------
-# Each store declares how its sequence aliases are built in the `aliasing:`
-# block of its stores/<store>/project_config.yaml. Recognized keys:
-#   seq_strategy:
-#     "none"            - collection aliases only (default when no block)
-#     "header_names"    - register FASTA header names as sequence aliases
-#     "assembly_report" - parse NCBI assembly reports for cross-accession aliases
-#   header_namespace:     namespace under which header-name aliases are filed
-#   header_namespace_col: column whose value names the namespace (per authority)
-#   assembly_report_when_accession: also pull assembly-report aliases for rows
-#                                    that carry a GCA/GCF accession
-#
-# (vrs is deliberately absent: it ships its own stores/vrs/build_aliases.py with
-# VRS-specific namespace logic, so it has no `aliasing:` block here.)
-# The `aliasing:` block is read via store_config.aliasing() (see main()).
+class AliasSet:
+    """kind -> namespace -> alias -> (digest, evidence), plus what was skipped."""
+
+    def __init__(self):
+        self.bindings = {SEQ: defaultdict(dict), COLL: defaultdict(dict)}
+        self.withheld = defaultdict(set)    # (kind, ns) -> aliases with two digests
+        self.skipped = Counter()            # (kind, ns, reason) -> count
+        self.examples = defaultdict(list)   # (kind, ns, reason) -> a few examples
+        self.notes = []                     # store-level problems (fetch failures, ...)
+
+    def bind(self, kind, ns, alias, digest, evidence):
+        if alias in self.withheld[(kind, ns)]:
+            return
+        ns_map = self.bindings[kind][ns]
+        old = ns_map.get(alias)
+        if old is None:
+            ns_map[alias] = (digest, evidence)
+            return
+        old_digest, old_evidence = old
+        if old_digest == digest:
+            if EVIDENCE_RANK[evidence] > EVIDENCE_RANK[old_evidence]:
+                ns_map[alias] = (digest, evidence)
+            return
+        # One alias, two digests. Keep a strictly stronger proof; otherwise
+        # withhold the alias rather than guess.
+        if EVIDENCE_RANK[evidence] < EVIDENCE_RANK[old_evidence]:
+            self.skip(kind, ns, "weaker evidence disagrees with a proven link", alias)
+            return
+        if EVIDENCE_RANK[evidence] > EVIDENCE_RANK[old_evidence]:
+            ns_map[alias] = (digest, evidence)
+            self.skip(kind, ns, "weaker evidence disagrees with a proven link", alias)
+            return
+        del ns_map[alias]
+        self.withheld[(kind, ns)].add(alias)
+        self.skip(kind, ns, "withheld: evidence points to two digests",
+                  f"{alias} ({old_digest} vs {digest})")
+
+    def get(self, kind, ns, alias):
+        hit = self.bindings[kind].get(ns, {}).get(alias)
+        return hit[0] if hit else None
+
+    def skip(self, kind, ns, reason, example=None):
+        key = (kind, ns, reason)
+        self.skipped[key] += 1
+        if example and len(self.examples[key]) < 5:
+            self.examples[key].append(example)
+
+    def namespaces(self, kind):
+        return sorted(ns for ns, m in self.bindings[kind].items() if m)
 
 
 # ---------------------------------------------------------------------------
-# Collection digest resolution (read-only against the built store)
+# Layer 1: authority data, fetched once and kept
+# ---------------------------------------------------------------------------
+def _http_get(url, timeout=60, tries=4):
+    for attempt in range(tries):
+        try:
+            req = urllib.request.Request(url, headers={"User-Agent": USER_AGENT})
+            with urllib.request.urlopen(req, timeout=timeout) as resp:
+                return resp.read()
+        except urllib.error.HTTPError as e:
+            if e.code < 500 or attempt == tries - 1:
+                raise
+        except (urllib.error.URLError, OSError):
+            if attempt == tries - 1:
+                raise
+        time.sleep(3 * (attempt + 1))
+
+
+def _write_atomic(path, data):
+    path.parent.mkdir(parents=True, exist_ok=True)
+    tmp = path.with_name(path.name + ".partial")
+    tmp.write_bytes(data)
+    tmp.replace(path)
+
+
+def accession_to_ftp_dir(accession):
+    m = re.match(r"(GC[AF])_(\d+)\.\d+", accession)
+    if not m:
+        return None
+    prefix, numeric = m.group(1), m.group(2).zfill(9)
+    return f"{NCBI_FTP_BASE}/{prefix}/{numeric[0:3]}/{numeric[3:6]}/{numeric[6:9]}/"
+
+
+def report_url_for_accession(accession):
+    """NCBI's assembly_report.txt URL, found by reading the FTP directory listing."""
+    dir_url = accession_to_ftp_dir(accession)
+    if not dir_url:
+        return None
+    try:
+        html = _http_get(dir_url, timeout=30).decode("utf-8", errors="replace")
+    except (urllib.error.URLError, OSError):
+        return None
+    m = re.search(re.escape(accession) + r"_([^/\"]+)/", html)
+    if not m:
+        return None
+    stem = f"{accession}_{m.group(1)}"
+    return f"{dir_url}{stem}/{stem}_assembly_report.txt"
+
+
+def ncbi_report(accession, sources):
+    """Path to NCBI's assembly report for `accession`, or None if unavailable."""
+    path = sources / "ncbi" / f"{accession}_assembly_report.txt"
+    if path.is_file() and path.stat().st_size > 0:
+        return path
+    url = report_url_for_accession(accession)
+    if not url:
+        return None
+    try:
+        _write_atomic(path, _http_get(url))
+    except (urllib.error.URLError, OSError) as e:
+        print(f"  NCBI report fetch failed for {accession}: {e}", file=sys.stderr)
+        return None
+    time.sleep(0.3)
+    return path
+
+
+def ena_table(gca, sources):
+    """{accession.version: (md5, length)} for every sequence ENA lists under the
+    assembly, or None if ENA could not be reached.
+
+    One portal query per assembly. ENA indexes assemblies without the version,
+    so the query covers all versions; the result is kept under the versioned
+    accession that needed it, which is all that accession will ever need.
+    ENA has checksums for chromosome-level records only, not for WGS scaffolds.
+    """
+    path = sources / "ena" / f"{gca}.tsv"
+    if not path.is_file():
+        query = urllib.parse.urlencode({
+            "result": "sequence",
+            "query": f'assembly_accession="{gca.split(".")[0]}"',
+            "fields": "accession,sequence_version,sequence_md5,base_count",
+            "format": "tsv",
+            "limit": "0",
+        })
+        try:
+            _write_atomic(path, _http_get(f"{ENA_SEARCH}?{query}", timeout=300))
+        except (urllib.error.URLError, OSError) as e:
+            print(f"  ENA fetch failed for {gca}: {e}", file=sys.stderr)
+            return None
+    table = {}
+    with open(path, newline="") as f:
+        for r in csv.DictReader(f, delimiter="\t"):
+            acc, ver, md5 = r.get("accession"), r.get("sequence_version"), r.get("sequence_md5")
+            if acc and ver and md5:
+                table[f"{acc}.{ver}"] = (md5.lower(), int(r.get("base_count") or 0))
+    return table
+
+
+def parse_assembly_report(path):
+    """(rows, genbank_assembly_accn, refseq_assembly_accn) from an assembly report.
+
+    Each row is {name, role, genbank_accn, relationship, refseq_accn, length}.
+    """
+    genbank_asm = refseq_asm = ""
+    rows = []
+    norm = lambda v: "" if v.strip() in ("na", "") else v.strip()
+    with open(path, errors="replace") as f:
+        for line in f:
+            line = line.rstrip("\r\n")
+            if line.startswith("#"):
+                m = ACCESSION_PATTERN.search(line)
+                if m and "GenBank assembly accession:" in line:
+                    genbank_asm = m.group(1)
+                elif m and "RefSeq assembly accession:" in line:
+                    refseq_asm = m.group(1)
+                continue
+            fields = line.split("\t")
+            if len(fields) < 9:
+                continue
+            length = norm(fields[8])
+            rows.append({
+                "name": fields[0].strip(),
+                "role": fields[1].strip(),
+                "genbank_accn": norm(fields[4]),
+                "relationship": fields[5].strip(),
+                "refseq_accn": norm(fields[6]),
+                "length": int(length) if length.isdigit() else None,
+            })
+    return rows, genbank_asm, refseq_asm
+
+
+# ---------------------------------------------------------------------------
+# Reading the store
 # ---------------------------------------------------------------------------
 def read_row_digests(store_path):
     """{row fasta: collection digest} that build.py wrote into the store, or {}."""
@@ -111,339 +296,272 @@ def read_row_digests(store_path):
 
 
 def resolve_collection_digest(store, row, row_digests=None):
-    """Return the collection digest for a sources.csv row, or None.
+    """The collection digest for a sources.csv row, or None.
 
-    First looks the row's `fasta` up in build.py's row -> digest map, which
-    still works after the row is renamed. Otherwise uses the collection aliases
-    that build.py registered. Tries the
-    most-specific identifier first. Also tries the canonical insdc/refseq
-    namespaces keyed by the accession value, so already-aliased stores (e.g.
-    the legacy vgp backfill, which only filed insdc/refseq) still resolve.
+    build.py's row -> digest map comes first; it still works after a row is
+    renamed. Otherwise the store's aliases: the row's `name`, its
+    `genome_assembly`, then its accession under `insdc`/`refseq`.
     """
     digest = (row_digests or {}).get(row_fasta(row))
     if digest:
         return digest
-    for namespace in ("name", "accession", "genome_assembly"):
-        val = (row.get(namespace) or "").strip()
-        if not val:
+    m = ACCESSION_PATTERN.search(row.get("accession") or "")
+    lookups = [("name", row_name(row)),
+               ("genome_assembly", (row.get("genome_assembly") or "").strip())]
+    if m:
+        lookups.append((ns_for(m.group(1)), m.group(1)))
+    for namespace, value in lookups:
+        if not value:
             continue
-        result = store.get_collection_by_alias(namespace, val)
+        try:
+            result = store.get_collection_by_alias(namespace, value)
+        except Exception:
+            result = None
         if result is not None:
             return result.digest
+    return None
 
-    acc = (row.get("accession") or "").strip()
-    m = ACCESSION_PATTERN.search(acc) if acc else None
-    if m:
+
+def _retry(fn, *args, tries=5):
+    """Remote stores drop connections now and then; retry a read a few times."""
+    for attempt in range(tries):
+        try:
+            return fn(*args)
+        except OSError:
+            if attempt == tries - 1:
+                raise
+            time.sleep(5 * (attempt + 1))
+
+
+def collection_sequences(store, digest):
+    """[(name, length, sha512t24u, md5)] for one collection, in order."""
+    coll = _retry(store.get_collection, digest)
+    out = []
+    for rec in coll.sequences:
+        m = rec.metadata
+        out.append((m.name, int(m.length), normalize_seq_digest(m.sha512t24u),
+                    (m.md5 or "").lower()))
+    return out
+
+
+# ---------------------------------------------------------------------------
+# Layer 2: the rules
+# ---------------------------------------------------------------------------
+def compute_aliases(store, rows, row_digests, genome_aliases, sources):
+    """Every alias the store should hold, with its evidence."""
+    aset = AliasSet()
+
+    # Each row's collection, and every collection's sequences.
+    resolved = []
+    for idx, row in enumerate(rows):
+        digest = resolve_collection_digest(store, row, row_digests)
+        if digest is None:
+            aset.notes.append(f"row not found in the store: {row_name(row) or row_fasta(row)}")
+            continue
+        resolved.append((idx, row, digest))
+    seqs = {}
+    for _, _, digest in resolved:
+        if digest not in seqs:
+            seqs[digest] = collection_sequences(store, digest)
+    by_md5 = {md5: sha for lst in seqs.values() for _, _, sha, md5 in lst if md5}
+    print(f"  {len(resolved)}/{len(rows)} rows resolved, {len(seqs)} collections, "
+          f"{len(by_md5)} distinct sequences")
+
+    # Kind 1: our own names.
+    unique = row_aliases(rows)
+    row_names = {}
+    for idx, row, digest in resolved:
+        for col, val in unique[idx]:
+            aset.bind(COLL, col, val, digest, "registry")
+            if col == "name":
+                row_names[val] = digest
+    for idx, row, digest in resolved:
+        for alias in genome_aliases.get(row_name(row), []):
+            if row_names.get(alias, digest) != digest:
+                aset.skip(COLL, "name", "genome YAML alias is another row's name", alias)
+                continue
+            aset.bind(COLL, "name", alias, digest, "registry")
+
+    # Kind 2: accessions. Gather authority data for each row naming an assembly.
+    claims = []
+    ena_all = {}
+    for idx, row, digest in resolved:
+        m = ACCESSION_PATTERN.search(row.get("accession") or "")
+        if not m:
+            continue
         acc = m.group(1)
-        for namespace in ("insdc", "refseq"):
-            result = store.get_collection_by_alias(namespace, acc)
-            if result is not None:
-                return result.digest
-    return None
-
-
-# ---------------------------------------------------------------------------
-# Assembly report download + parse (adapted from analysis build_ncbi_alias_table)
-# ---------------------------------------------------------------------------
-def accession_to_ftp_dir(accession):
-    m = re.match(r"(GC[AF])_(\d+)\.\d+", accession)
-    if not m:
-        return None
-    prefix, numeric = m.group(1), m.group(2).zfill(9)
-    d1, d2, d3 = numeric[0:3], numeric[3:6], numeric[6:9]
-    return f"{NCBI_FTP_BASE}/{prefix}/{d1}/{d2}/{d3}/"
-
-
-def lookup_assembly_name_from_ftp(accession):
-    """Scrape the NCBI FTP listing for the assembly-name subdirectory."""
-    dir_url = accession_to_ftp_dir(accession)
-    if not dir_url:
-        return None
-    try:
-        req = urllib.request.Request(
-            dir_url, headers={"User-Agent": "refget-alias-builder/1.0"}
-        )
-        with urllib.request.urlopen(req, timeout=15) as resp:
-            html = resp.read().decode("utf-8", errors="replace")
-        m = re.search(re.escape(accession) + r"_([^/\"]+)/", html)
-        if m:
-            return m.group(1)
-    except (urllib.error.URLError, urllib.error.HTTPError, OSError):
-        pass
-    return None
-
-
-def report_url_for_accession(accession):
-    """Construct the assembly_report.txt URL for a GCA/GCF accession."""
-    dir_url = accession_to_ftp_dir(accession)
-    if not dir_url:
-        return None
-    asm = lookup_assembly_name_from_ftp(accession)
-    if not asm:
-        return None
-    stem = f"{accession}_{asm}"
-    return f"{dir_url}{stem}/{stem}_assembly_report.txt"
-
-
-def fetch_assembly_report(accession, report_hint, cache_dir, sleep_sec=0.3):
-    """Return a local path to the assembly report, or None.
-
-    report_hint may be an explicit URL/path from an ``assembly_report`` column.
-    """
-    cache_dir.mkdir(parents=True, exist_ok=True)
-    cache_path = cache_dir / f"{accession or 'report'}_assembly_report.txt"
-    if cache_path.exists() and cache_path.stat().st_size > 0:
-        return str(cache_path)
-
-    url = None
-    if report_hint:
-        if os.path.exists(report_hint):
-            return report_hint
-        url = report_hint
-    elif accession:
-        url = report_url_for_accession(accession)
-    if not url:
-        return None
-
-    try:
-        req = urllib.request.Request(
-            url, headers={"User-Agent": "refget-alias-builder/1.0"}
-        )
-        with urllib.request.urlopen(req, timeout=30) as resp:
-            data = resp.read()
-        cache_path.write_bytes(data)
-        time.sleep(sleep_sec)
-        return str(cache_path)
-    except (urllib.error.URLError, urllib.error.HTTPError, OSError) as e:
-        print(f"    report fetch failed for {accession}: {e}", file=sys.stderr)
-        return None
-
-
-def parse_assembly_report(path):
-    """Parse an assembly_report.txt into per-sequence and assembly-level dicts.
-
-    Returns (rows, genbank_assembly_accn, refseq_assembly_accn) where each row
-    is {sequence_name, sequence_length, refseq_accn, genbank_accn, ucsc_name}.
-    """
-    genbank_asm = refseq_asm = ""
-    rows = []
-    with open(path, errors="replace") as f:
-        for line in f:
-            line = line.rstrip("\n")
-            if line.startswith("#"):
-                if "GenBank assembly accession:" in line:
-                    m = ACCESSION_PATTERN.search(line)
-                    if m:
-                        genbank_asm = m.group(1)
-                elif "RefSeq assembly accession:" in line:
-                    m = ACCESSION_PATTERN.search(line)
-                    if m:
-                        refseq_asm = m.group(1)
-                continue
-            fields = line.split("\t")
-            if len(fields) < 9:
-                continue
-            norm = lambda v: "" if v.strip() == "na" else v.strip()
-            rows.append(
-                {
-                    "sequence_name": fields[0].strip(),
-                    "genbank_accn": norm(fields[4]) if len(fields) > 4 else "",
-                    "refseq_accn": norm(fields[6]) if len(fields) > 6 else "",
-                    "sequence_length": norm(fields[8]) if len(fields) > 8 else "",
-                    "ucsc_name": norm(fields[9]) if len(fields) > 9 else "",
-                }
-            )
-    return rows, genbank_asm, refseq_asm
-
-
-# ---------------------------------------------------------------------------
-# Sequence-name -> (digest, length) lookup for one collection
-# ---------------------------------------------------------------------------
-def name_to_info_for_collection(store, coll_digest):
-    level2 = store.get_collection_level2(coll_digest)
-    names = level2.get("names", [])
-    lengths = level2.get("lengths", [])
-    sequences = level2.get("sequences", [])
-    return {n: (normalize_seq_digest(s), int(l)) for n, l, s in zip(names, lengths, sequences)}
-
-
-# ---------------------------------------------------------------------------
-# Main alias accumulation
-# ---------------------------------------------------------------------------
-def build_aliases(store, rows, config, cache_dir, dry_run=False,
-                  row_digests=None, genome_aliases=None):
-    """Accumulate collection + sequence aliases and load them into the store.
-
-    ``genome_aliases`` is {genome name: [aliases]} from the genome YAMLs. A row
-    whose `name` is a genome's name gets that genome's aliases as `name`
-    collection aliases.
-    """
-    seq_aliases = defaultdict(list)   # namespace -> [(alias, seq_digest)]
-    coll_aliases = defaultdict(list)  # namespace -> [(alias, coll_digest)]
-    row_coll_aliases = defaultdict(list)  # registered last, so a row's own name wins
-    genome_aliases = genome_aliases or {}
-
-    seq_strategy = config.get("seq_strategy", "none")
-    header_ns = config.get("header_namespace")
-    header_ns_col = config.get("header_namespace_col")
-    report_when_acc = config.get("assembly_report_when_accession", False)
-
-    # The row columns build.py registers (unique values only, see row_aliases).
-    # Registered here too, so a renamed row's new name lands without build.py.
-    unique_aliases = row_aliases(rows)
-    n_resolved = n_unresolved = 0
-    n_seq_matched = n_seq_unmatched = 0
-
-    for i, row in enumerate(rows, 1):
-        label = (row.get("name") or row.get("accession") or row.get("fasta", "")).strip()
-        coll_digest = resolve_collection_digest(store, row, row_digests)
-        if coll_digest is None:
-            n_unresolved += 1
-            print(f"  [{i}/{len(rows)}] UNRESOLVED {label}", file=sys.stderr)
+        report = ncbi_report(acc, sources)
+        if report is None:
+            aset.notes.append(f"{acc}: NCBI assembly report unavailable, no accession aliases")
             continue
-        n_resolved += 1
-
-        # 0. The row's own names, and its genome YAML's aliases.
-        for col, val in unique_aliases[i - 1]:
-            row_coll_aliases[col].append((val, coll_digest))
-        for alias in genome_aliases.get((row.get("name") or "").strip(), []):
-            coll_aliases["name"].append((alias, coll_digest))
-
-        accession = (row.get("accession") or "").strip()
-        acc_match = ACCESSION_PATTERN.search(accession) if accession else None
-
-        # 1. Canonical collection accession aliases.
-        if acc_match:
-            acc = acc_match.group(1)
-            ns = "refseq" if acc.startswith("GCF_") else "insdc"
-            coll_aliases[ns].append((acc, coll_digest))
-
-        # Decide whether this row gets assembly-report sequence aliases.
-        report_hint = (row.get("assembly_report") or "").strip()
-        use_report = seq_strategy == "assembly_report" or (
-            report_when_acc and (acc_match or report_hint)
-        )
-
-        if use_report and (acc_match or report_hint):
-            report_acc = acc_match.group(1) if acc_match else None
-            report_path = fetch_assembly_report(report_acc, report_hint, cache_dir)
-            if report_path:
-                n_seq_matched, n_seq_unmatched = _aliases_from_report(
-                    store, coll_digest, report_path, seq_aliases, coll_aliases,
-                    n_seq_matched, n_seq_unmatched,
-                )
-                print(f"  [{i}/{len(rows)}] report {label}")
-                continue
-
-        # Fall back to / primary: header-name passthrough.
-        if seq_strategy == "header_names" or (use_report and not (acc_match or report_hint)):
-            ns = header_ns or "sequence"
-            if header_ns_col:
-                ns = (row.get(header_ns_col) or ns).strip() or ns
-            level2 = store.get_collection_level2(coll_digest)
-            for name, seq_digest in zip(level2.get("names", []), level2.get("sequences", [])):
-                if name:
-                    seq_aliases[ns].append((name, normalize_seq_digest(seq_digest)))
-            print(f"  [{i}/{len(rows)}] header_names[{ns}] {label}")
-        else:
-            print(f"  [{i}/{len(rows)}] coll-only {label}")
-
-    for ns, pairs in row_coll_aliases.items():
-        coll_aliases[ns].extend(pairs)
-    n_seq = sum(len(v) for v in seq_aliases.values())
-    n_coll = sum(len(v) for v in coll_aliases.values())
-    print(
-        f"\nResolved {n_resolved} collections ({n_unresolved} unresolved); "
-        f"seq matched {n_seq_matched}, unmatched {n_seq_unmatched}"
-    )
-    print(f"Aliases to register: {n_coll} collection, {n_seq} sequence")
-
-    if dry_run:
-        print("\n[DRY RUN] not registering. Sample:")
-        for ns, pairs in list(coll_aliases.items()):
-            print(f"  collections/{ns}: {len(pairs)} (e.g. {pairs[:2]})")
-        for ns, pairs in list(seq_aliases.items()):
-            print(f"  sequences/{ns}: {len(pairs)} (e.g. {pairs[:2]})")
-        return
-
-    _load(store, seq_aliases, coll_aliases)
-    print(f"\nDone. Store stats: {store.stats()}")
-
-
-def _aliases_from_report(store, coll_digest, report_path, seq_aliases,
-                         coll_aliases, n_matched, n_unmatched):
-    rows, genbank_asm, refseq_asm = parse_assembly_report(report_path)
-    if refseq_asm:
-        coll_aliases["refseq"].append((refseq_asm, coll_digest))
-    if genbank_asm:
-        coll_aliases["insdc"].append((genbank_asm, coll_digest))
-
-    name_to_info = name_to_info_for_collection(store, coll_digest)
-    for r in rows:
-        seq_len = int(r["sequence_length"]) if r["sequence_length"] else None
-        seq_digest = None
-        for cand in (r["sequence_name"], r["refseq_accn"], r["genbank_accn"], r["ucsc_name"]):
-            if cand and cand in name_to_info:
-                sd, sl = name_to_info[cand]
-                if seq_len is None or sl == seq_len:
-                    seq_digest = sd
-                    break
-        if seq_digest is None:
-            n_unmatched += 1
+        report_rows, genbank_asm, _ = parse_assembly_report(report)
+        gca = acc if acc.startswith("GCA_") else genbank_asm
+        ena = ena_table(gca, sources) if gca else {}
+        if ena is None:
+            aset.notes.append(f"{acc}: ENA unavailable, no accession aliases this run")
             continue
-        n_matched += 1
-        if r["refseq_accn"]:
-            seq_aliases["refseq"].append((r["refseq_accn"], seq_digest))
-        if r["genbank_accn"]:
-            seq_aliases["insdc"].append((r["genbank_accn"], seq_digest))
-        if r["ucsc_name"]:
-            seq_aliases["ucsc"].append((r["ucsc_name"], seq_digest))
-    return n_matched, n_unmatched
+        ena_all.update(ena)
+        claims.append((row_name(row) or acc, acc, digest, report_rows))
+
+    # Checksum: ENA says accession X has MD5 M, and this store holds M.
+    for acc_ver, (md5, _) in ena_all.items():
+        sha = by_md5.get(md5)
+        if sha:
+            aset.bind(SEQ, "insdc", acc_ver, sha, "checksum")
+
+    # A collection that names a sequence with an accession ENA has a checksum
+    # for, but holds different content, is not the authority's file.
+    contradicting = {}
+    for label, acc, digest, _ in claims:
+        bad = [n for n, _, _, md5 in seqs[digest] if n in ena_all and ena_all[n][0] != md5]
+        if bad:
+            contradicting[digest] = bad
+
+    trusted = [c for c in claims if c[2] not in contradicting]
+    for label, acc, digest, _ in claims:
+        if digest in contradicting:
+            bad = contradicting[digest]
+            aset.skip(COLL, ns_for(acc), "collection contradicts an ENA checksum",
+                      f"{label}: {len(bad)} sequences, e.g. {bad[0]}")
+
+    # Name+length, in a trusted collection, for accessions without a checksum.
+    # ENA has no RefSeq checksums at all, and none for GenBank WGS scaffolds.
+    for label, acc, digest, report_rows in trusted:
+        by_name = {n: (length, sha) for n, length, sha, _ in seqs[digest]}
+        for r in report_rows:
+            for ns, key in (("insdc", "genbank_accn"), ("refseq", "refseq_accn")):
+                accn = r[key]
+                if not accn or accn in ena_all or aset.get(SEQ, ns, accn):
+                    continue
+                hit = by_name.get(accn)
+                if hit and hit[0] == r["length"]:
+                    aset.bind(SEQ, ns, accn, hit[1], "name+length")
+
+    # NCBI's "=" says a GenBank and a RefSeq accession are the same sequence, so
+    # a link proven on one side carries to the other. An ENA checksum outranks
+    # it: a GenBank accession whose checksum matches nothing here is not carried.
+    for label, acc, digest, report_rows in trusted:
+        for r in report_rows:
+            gb, rs = r["genbank_accn"], r["refseq_accn"]
+            if not (gb and rs and r["relationship"] == "="):
+                continue
+            g, s = aset.get(SEQ, "insdc", gb), aset.get(SEQ, "refseq", rs)
+            if g:
+                aset.bind(SEQ, "refseq", rs, g, "ncbi-identical")
+            elif s and gb not in ena_all:
+                aset.bind(SEQ, "insdc", gb, s, "ncbi-identical")
+
+    # What the trusted reports name but nothing proved, counted once each.
+    for ns, key in (("insdc", "genbank_accn"), ("refseq", "refseq_accn")):
+        named = {r[key] for _, _, _, rr in trusted for r in rr if r[key]}
+        for accn in sorted(named):
+            if aset.get(SEQ, ns, accn) or accn in aset.withheld[(SEQ, ns)]:
+                continue
+            reason = ("ENA checksum matches no sequence in the store" if accn in ena_all
+                      else "no proven sequence in the store")
+            aset.skip(SEQ, ns, reason, accn)
+
+    # Assembly accession -> collection, when the content is the assembly.
+    for label, acc, digest, report_rows in trusted:
+        ns = ns_for(acc)
+        key = "genbank_accn" if ns == "insdc" else "refseq_accn"
+        expected = {r[key]: r["length"] for r in report_rows if r[key]}
+        actual = {n: length for n, length, _, _ in seqs[digest]}
+        if actual == expected:
+            aset.bind(COLL, ns, acc, digest, "content")
+            continue
+        missing = len(expected.keys() - actual.keys())
+        extra = len(actual.keys() - expected.keys())
+        differ = sum(1 for n in expected.keys() & actual.keys() if expected[n] != actual[n])
+        aset.skip(COLL, ns, "names or lengths differ from the assembly's accessions",
+                  f"{label} ({acc}): {missing} missing, {extra} extra, {differ} length differences")
+
+    return aset
 
 
-def _load(store, seq_aliases, coll_aliases):
-    """Register every namespace under ONE store write lock.
+def ns_for(accession):
+    return "insdc" if accession.startswith("GCA_") else "refseq"
 
-    Each load_*_aliases() call is already a locked commit on its own, so this is
-    not needed for safety. It is here for two reasons:
 
-      * Atomicity. The alias step should land as a unit, a reader that catches
-        the store between namespaces would see refseq aliases resolving and insdc
-        aliases not yet existing.
-      * Cost. Every commit re-reads the store manifest and rehashes the alias
-        files; taking the lock once amortizes the acquire/release across all
-        namespaces instead of paying it per namespace.
+# ---------------------------------------------------------------------------
+# Layer 3: output
+# ---------------------------------------------------------------------------
+def write_maps(aset, out_dir):
+    """One TSV per namespace (alias, digest, evidence), for review."""
+    for kind in (SEQ, COLL):
+        for ns in aset.namespaces(kind):
+            path = out_dir / kind / f"{ns}.tsv"
+            path.parent.mkdir(parents=True, exist_ok=True)
+            with open(path, "w") as f:
+                for alias, (digest, evidence) in sorted(aset.bindings[kind][ns].items()):
+                    f.write(f"{alias}\t{digest}\t{evidence}\n")
+
+
+def report_text(aset, store_name, store_where):
+    now = datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M UTC")
+    lines = [f"# Aliases: {store_name}", "",
+             f"Built {now} by stores/build_aliases.py from {store_where}.", "",
+             "## Registered", "",
+             "| Kind | Namespace | Aliases | Evidence |", "|---|---|---:|---|"]
+    for kind in (COLL, SEQ):
+        for ns in aset.namespaces(kind):
+            m = aset.bindings[kind][ns]
+            ev = Counter(e for _, e in m.values())
+            ev_txt = ", ".join(f"{e} {n:,}" for e, n in ev.most_common())
+            lines.append(f"| {kind} | {ns} | {len(m):,} | {ev_txt} |")
+    lines += ["", "## Not registered", ""]
+    if aset.skipped:
+        lines += ["| Kind | Namespace | Reason | Count | Examples |", "|---|---|---|---:|---|"]
+        for (kind, ns, reason), n in sorted(aset.skipped.items()):
+            ex = "; ".join(aset.examples[(kind, ns, reason)][:3])
+            lines.append(f"| {kind} | {ns} | {reason} | {n:,} | {ex} |")
+    else:
+        lines.append("Nothing.")
+    if aset.notes:
+        lines += ["", "## Problems", ""] + [f"- {n}" for n in aset.notes]
+    return "\n".join(lines) + "\n"
+
+
+def replace_store_aliases(store, store_path, aset, previous_dir):
+    """Swap the store's whole alias set for `aset`, under one store write lock.
+
+    The old aliases/ folder is moved out of the store first. The store rebuilds
+    rgstore.json's namespace list and aliases digest from the files on disk at
+    every alias commit, so namespaces that are gone simply drop out. The store
+    handle still holds the old aliases in memory; force_alias lets the new
+    values replace them, which is the point of this step. A clash inside one
+    namespace file still errors.
     """
-    print("\nRegistering aliases...")
     store.lock_for_batch("build_aliases")
     try:
-        _load_locked(store, seq_aliases, coll_aliases)
+        aliases_dir = store_path / "aliases"
+        if aliases_dir.exists():
+            if previous_dir.exists():
+                shutil.rmtree(previous_dir)
+            previous_dir.parent.mkdir(parents=True, exist_ok=True)
+            shutil.move(str(aliases_dir), str(previous_dir))
+            print(f"  previous aliases moved to {previous_dir}")
+        if hasattr(store, "set_force_alias"):
+            store.set_force_alias(True)
+        with tempfile.TemporaryDirectory() as tmp:
+            for kind in (COLL, SEQ):
+                load = store.load_collection_aliases if kind == COLL else store.load_sequence_aliases
+                for ns in aset.namespaces(kind):
+                    tsv = os.path.join(tmp, f"{kind}_{ns}.tsv")
+                    with open(tsv, "w") as f:
+                        for alias, (digest, _) in sorted(aset.bindings[kind][ns].items()):
+                            f.write(f"{alias}\t{digest}\n")
+                    n = load(ns, tsv)
+                    print(f"  {kind}/{ns}: {n:,} loaded")
     finally:
+        if hasattr(store, "set_force_alias"):
+            store.set_force_alias(False)
         store.release_batch_lock()
 
 
-def _load_locked(store, seq_aliases, coll_aliases):
-    with tempfile.TemporaryDirectory() as tmp:
-        for ns, pairs in seq_aliases.items():
-            if not pairs:
-                continue
-            tsv = os.path.join(tmp, f"seq_{ns}.tsv")
-            with open(tsv, "w") as f:
-                for alias, digest in pairs:
-                    f.write(f"{alias}\t{digest}\n")
-            n = store.load_sequence_aliases(ns, tsv)
-            print(f"  sequences/{ns}: {n} loaded")
-        for ns, pairs in coll_aliases.items():
-            if not pairs:
-                continue
-            tsv = os.path.join(tmp, f"coll_{ns}.tsv")
-            with open(tsv, "w") as f:
-                for alias, digest in pairs:
-                    f.write(f"{alias}\t{digest}\n")
-            n = store.load_collection_aliases(ns, tsv)
-            print(f"  collections/{ns}: {n} loaded")
-
-
+# ---------------------------------------------------------------------------
+# CLI
+# ---------------------------------------------------------------------------
 def read_sources(path):
     with open(path, newline="") as f:
         return list(csv.DictReader(f))
@@ -452,55 +570,91 @@ def read_sources(path):
 def main():
     parser = argparse.ArgumentParser(description=__doc__,
                                      formatter_class=argparse.RawDescriptionHelpFormatter)
-    parser.add_argument("store", help="Store name (a stores/<store> dir) or 'all'")
-    parser.add_argument("--store-path", help="Override built-store path (default $REFGETSTORE_BASE/<store>)")
-    parser.add_argument("--sources", help="Override sources.csv path")
-    parser.add_argument("--seq-strategy", choices=["none", "header_names", "assembly_report"],
-                        help="Override the per-store sequence-alias strategy")
-    parser.add_argument("--dry-run", action="store_true")
+    parser.add_argument("store", help="Store name (a stores/<store> dir)")
+    parser.add_argument("--store-path", help="Built store path (default $REFGETSTORE_BASE/<store>)")
+    parser.add_argument("--store-url", help="Read a published store instead (implies --dry-run)")
+    parser.add_argument("--sources-dir", help="Authority data cache "
+                        "(default $REFGET_ALIAS_SOURCES, else $REFGETSTORE_BASE/../alias-sources)")
+    parser.add_argument("--out", help="Also write the alias maps and report here")
+    parser.add_argument("--dry-run", action="store_true", help="Compute and report; do not touch the store")
     args = parser.parse_args()
+
+    store_name = args.store
+    if (SCRIPT_DIR / store_name / "build_aliases.py").is_file():
+        print(f"{store_name} ships its own stores/{store_name}/build_aliases.py; skipping.")
+        return
+    sources_path = SCRIPT_DIR / store_name / "sources.csv"
+    if not sources_path.is_file():
+        sys.exit(f"sources.csv not found: {sources_path}")
+    out_dir = Path(args.out) if args.out else None
 
     from refget.store import RefgetStore
 
-    store_name = args.store
-    config = store_aliasing(SCRIPT_DIR / store_name)
-    if args.seq_strategy:
-        config["seq_strategy"] = args.seq_strategy
-
-    sources_path = Path(args.sources) if args.sources else SCRIPT_DIR / store_name / "sources.csv"
-    if not sources_path.exists():
-        print(f"sources.csv not found: {sources_path}", file=sys.stderr)
-        sys.exit(1)
-
-    if args.store_path:
-        store_path = Path(args.store_path)
+    base = os.environ.get("REFGETSTORE_BASE")
+    if args.store_url:
+        args.dry_run = True
+        if not out_dir:
+            sys.exit("--store-url needs --out")
+        cache = out_dir / "store_cache"
+        cache.mkdir(parents=True, exist_ok=True)
+        store = RefgetStore.open_remote(str(cache), args.store_url)
+        with urllib.request.urlopen(f"{args.store_url.rstrip('/')}/{ROW_DIGESTS}") as r:
+            row_digests = json.load(r)
+        store_path, where = None, args.store_url
     else:
-        base = os.environ.get("REFGETSTORE_BASE")
-        if not base:
-            print("REFGETSTORE_BASE not set and --store-path not given.", file=sys.stderr)
-            sys.exit(1)
-        store_path = Path(base) / store_name
-    if not store_path.exists():
-        print(f"Store not found: {store_path}", file=sys.stderr)
-        sys.exit(1)
-
-    rows = read_sources(sources_path)
-    print(f"Store:    {store_path}")
-    print(f"Sources:  {sources_path} ({len(rows)} rows)")
-    print(f"Config:   {config}")
-    print(f"Dry run:  {args.dry_run}\n")
-
-    store = RefgetStore.on_disk(str(store_path))
+        if args.store_path:
+            store_path = Path(args.store_path)
+        elif base:
+            store_path = Path(base) / store_name
+        else:
+            sys.exit("REFGETSTORE_BASE not set and --store-path not given.")
+        if not store_path.exists():
+            sys.exit(f"Store not found: {store_path}")
+        store = RefgetStore.on_disk(str(store_path))
+        row_digests = read_row_digests(store_path)
+        where = str(store_path)
     if hasattr(store, "set_quiet"):
         store.set_quiet(True)
 
-    genome_aliases = {
-        g.name: g.aliases for g in load_genomes() if g.store == store_name and g.aliases
-    }
-    cache_dir = store_path.parent / f".assembly_reports_{store_name}"
-    build_aliases(store, rows, config, cache_dir, dry_run=args.dry_run,
-                  row_digests=read_row_digests(store_path),
-                  genome_aliases=genome_aliases)
+    if args.sources_dir:
+        sources = Path(args.sources_dir)
+    elif os.environ.get("REFGET_ALIAS_SOURCES"):
+        sources = Path(os.environ["REFGET_ALIAS_SOURCES"])
+    elif base:
+        sources = Path(base).parent / "alias-sources"
+    elif out_dir:
+        sources = out_dir / "alias-sources"
+    else:
+        sys.exit("No authority data folder: set REFGET_ALIAS_SOURCES or pass --sources-dir.")
+
+    rows = read_sources(sources_path)
+    genome_aliases = {g.name: g.aliases for g in load_genomes()
+                      if g.store == store_name and g.aliases}
+    print(f"Store:    {where}")
+    print(f"Sources:  {sources_path} ({len(rows)} rows)")
+    print(f"Evidence: {sources}")
+
+    aset = compute_aliases(store, rows, row_digests, genome_aliases, sources)
+    report = report_text(aset, store_name, where)
+    print()
+    print(report)
+
+    if out_dir:
+        write_maps(aset, out_dir)
+        (out_dir / "report.md").write_text(report)
+        print(f"Maps and report written to {out_dir}")
+    if args.dry_run:
+        print("[DRY RUN] store not changed.")
+        return
+
+    reports_env = os.environ.get("REFGENIE_BUILD_REPORTS_DIR")
+    reports_dir = Path(reports_env) if reports_env else store_path.parent / "_build_reports"
+    reports_dir.mkdir(parents=True, exist_ok=True)
+    (reports_dir / f"aliases_{store_name}.md").write_text(report)
+
+    print("Replacing aliases...")
+    replace_store_aliases(store, store_path, aset, reports_dir / "aliases_previous" / store_name)
+    print(f"Done. Store stats: {store.stats()}")
 
 
 if __name__ == "__main__":

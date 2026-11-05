@@ -74,9 +74,7 @@ curl -sSfL --retry 5 --retry-delay 30 \
 # This is not cosmetic. Sequence digests depend only on sequence content, but the
 # COLLECTION digest incorporates the names digest -- header style permanently
 # fixes this collection's identity. No other plantref FASTA has a pipe in its
-# headers, and pipe-delimited names would also poison
-# `build_aliases.py --seq-strategy header_names`, which would register the whole
-# string as a sequence alias.
+# headers.
 echo "  normalizing headers ... $(date +%H:%M:%S)"
 zcat chromosomes.raw.fa.gz CAXIVX01.raw.fasta.gz \
   | sed -E 's/^>.*(chromosome|contig): (.+)$/>\2/' \

@@ -103,10 +103,13 @@ def row_name(row: dict) -> str:
     return (row.get("name") or "").strip()
 
 
-# The sources.csv columns registered as collection aliases. `name` is unique
-# per row; `accession` and `genome_assembly` are often shared (five jungle rows
-# are GCA_000001405.15, many are hg38), and an alias must name one collection.
-ROW_ALIAS_COLUMNS = ("name", "accession", "genome_assembly")
+# The sources.csv columns registered as collection aliases: the registry's own
+# names. `name` is unique per row; `genome_assembly` is often shared (many jungle
+# rows are hg38), and an alias must name one collection. `accession` is not here:
+# an accession is another authority's identifier, so build_aliases.py registers
+# it under `insdc`/`refseq` only after proving the collection's content is that
+# assembly (five jungle analysis-set rows claim GCA_000001405.15 and none is it).
+ROW_ALIAS_COLUMNS = ("name", "genome_assembly")
 
 
 def row_aliases(rows: list) -> list:
