@@ -221,3 +221,17 @@ def test_accession_matches_only_a_genome_without_a_pinned_digest(tmp_path, monke
     genomes, meta = _genome(tmp_path, "unpinned")
     records = build_fhr.load_registry_records("jungle", genomes, meta)
     assert build_fhr.registry_record_for_row(other_fasta, records) == {"genome": "unpinned"}
+
+
+def test_a_shared_file_name_matches_only_the_pinned_digest(tmp_path, monkeypatch):
+    staged = {"yeast": "ensembl/81/yeast/ENSEMBL_release_81.fa.gz",
+              "hg38_initial": "pangenome_reference/hg38.fa.gz"}
+    monkeypatch.setattr(build_fhr, "_staged_fasta_paths", lambda: staged)
+    _genome(tmp_path, "yeast")
+    genomes, meta = _genome(tmp_path, "hg38_initial", digest="D_HG38")
+    records = build_fhr.load_registry_records("jungle", genomes, meta)
+    mouse = {"name": "mouse", "fasta": "ensembl/81/mouse/ENSEMBL_release_81.fa.gz"}
+    assert build_fhr.registry_record_for_row(mouse, records, "D_MOUSE") is None
+    ddbj = {"name": "hg38-ddbj", "fasta": "ddbj/hg38/fasta/hg38.fa.gz"}
+    assert build_fhr.registry_record_for_row(ddbj, records, "D_HG38") == {"genome": "hg38_initial"}
+    assert build_fhr.registry_record_for_row(ddbj, records, "D_OTHER") is None

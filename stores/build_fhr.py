@@ -266,33 +266,41 @@ def load_registry_records(store, genomes_dir=GENOMES_DIR, metadata_dir=REGISTRY_
             continue
         with open(sidecar) as f:
             fields = json.load(f)
+        pinned = (data.get("seqcol") or {}).get("digest")
         keys = {data["name"], _slug(data["name"])}
         # An accession names an assembly, not one FASTA of it: match on it only
         # when the YAML pins no seqcol digest (same rule as genome_rows.py).
-        if not (data.get("seqcol") or {}).get("digest"):
+        if not pinned:
             keys.add((data.get("assembly") or {}).get("accession"))
         staged_path = staged.get(data["name"])
         if staged_path:
             keys.add(staged_path)
-            keys.add(os.path.basename(staged_path))
             if fasta_root and staged_path.startswith(fasta_root + "/"):
                 keys.add(staged_path[len(fasta_root) + 1:])
+            # A bare file name (e.g. ENSEMBL_release_81.fa.gz) is shared by many
+            # genomes, so it counts only when the row's digest is the pinned one.
+            if pinned:
+                records[("basename", os.path.basename(staged_path), pinned)] = fields
         for key in keys:
             if key:
                 records[key] = fields
     return records
 
 
-def registry_record_for_row(row, records):
-    """The curated record for a sources.csv row, or None."""
+def registry_record_for_row(row, records, digest=None):
+    """The curated record for a sources.csv row, or None.
+
+    ``digest`` is the row's collection digest, when known; a bare file-name
+    match needs it to equal the genome YAML's pinned digest.
+    """
+    tokens = (row.get("fasta") or "").split()
     keys = [
         (row.get("name") or "").strip(),
         _slug(row.get("name") or ""),
         (row.get("accession") or "").strip(),
+        *tokens,
     ]
-    for token in (row.get("fasta") or "").split():
-        keys.append(token)
-        keys.append(os.path.basename(token))
+    keys += [("basename", os.path.basename(t), digest) for t in tokens if digest]
     for key in keys:
         if key and key in records:
             return records[key]
@@ -416,7 +424,7 @@ def build_fhr(store, rows, *, species, store_dir, dry_run=False, overrides=None,
         # Precedence, least to most specific: CSV derivation, then the curated
         # registry record (a real genome YAML beats a sentence built from four
         # CSV columns), then a hand-written override YAML.
-        curated = registry_record_for_row(row, records)
+        curated = registry_record_for_row(row, records, coll_digest)
         if curated is None:
             fields = fhr_fields_for_row(row, species)
         else:
