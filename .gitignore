@@ -35,3 +35,4 @@ build/Snakefile
 build/inputs/
 build/.refgenie_build*
 .snakemake/
+.run_builds.lock

@@ -84,7 +84,7 @@ Submit it as its own SLURM job so it survives a disconnect:
 
 ```
 sbatch -p standard-rivanna -A shefflab -c 2 --mem 8G -t 02:00:00 \
-  -J refgenie-build-manual \
+  -J refgenie-registry-build --dependency=singleton \
   -o ~/refgenie-build-manual-%j.out \
   --wrap 'source /etc/profile.d/modules.sh; \
           module load apptainer; module load miniforge/26.9.4; \
@@ -92,6 +92,10 @@ sbatch -p standard-rivanna -A shefflab -c 2 --mem 8G -t 02:00:00 \
 ```
 
 Notes:
+- **The job name matches the nightly's** (`refgenie-registry-build`), so
+  `--dependency=singleton` queues a manual run behind a running nightly, and
+  the nightly behind it, instead of both driving snakemake in one checkout.
+  `run_builds.sh` also takes a lock and exits if another driver holds it.
 - **`module load apptainer` is load-bearing** and must be in the submitted script
   (mirrors `jobs.d/refgenie-registry-build.json` → `mobot.setup`): the build jobs
   inherit the driver's PATH, and refgenie runs every recipe image with it.

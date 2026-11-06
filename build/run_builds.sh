@@ -59,6 +59,10 @@ set -euo pipefail
 REGISTRY_DIR="$(cd "$(dirname "$(readlink -f "$0")")/.." && pwd)"
 cd "$REGISTRY_DIR"
 
+# One driver per checkout: two would fight over the snakemake lock and flags.
+exec 9>"$REGISTRY_DIR/.run_builds.lock"
+flock -n 9 || { echo "run_builds.sh: another driver is running in $REGISTRY_DIR" >&2; exit 75; }
+
 # --- environment ---------------------------------------------------------
 if [[ -f infra/rivanna/env.sh ]]; then
     # shellcheck disable=SC1091
