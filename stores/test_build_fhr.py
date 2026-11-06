@@ -192,3 +192,32 @@ def test_nothing_to_write_writes_no_species_json(tmp_path):
     store = FakeStore({})
     build_fhr.build_fhr(store, [HUMAN], species=SPECIES, store_dir=tmp_path)
     assert not (tmp_path / "species.json").exists()
+
+
+# --------------------------------------------------------------------------
+# load_registry_records
+# --------------------------------------------------------------------------
+
+
+def _genome(tmp_path, name, digest=None):
+    genomes, meta = tmp_path / "genomes", tmp_path / "meta"
+    genomes.mkdir(exist_ok=True)
+    meta.mkdir(exist_ok=True)
+    text = f"name: {name}\nassembly:\n  accession: GCA_000001405.15\nbuild:\n  store: jungle\n"
+    if digest:
+        text += f"seqcol:\n  digest: {digest}\n"
+    (genomes / f"{name}.yaml").write_text(text)
+    (meta / f"{name}.fhr.json").write_text(json.dumps({"genome": name}))
+    return genomes, meta
+
+
+def test_accession_matches_only_a_genome_without_a_pinned_digest(tmp_path, monkeypatch):
+    monkeypatch.setattr(build_fhr, "_staged_fasta_paths", lambda: {})
+    genomes, meta = _genome(tmp_path, "hg38_full_analysis_plus_decoy", digest="D_FULL")
+    records = build_fhr.load_registry_records("jungle", genomes, meta)
+    other_fasta = {"name": "", "accession": "GCA_000001405.15", "fasta": "noalt.fa"}
+    assert build_fhr.registry_record_for_row(other_fasta, records) is None
+
+    genomes, meta = _genome(tmp_path, "unpinned")
+    records = build_fhr.load_registry_records("jungle", genomes, meta)
+    assert build_fhr.registry_record_for_row(other_fasta, records) == {"genome": "unpinned"}

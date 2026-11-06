@@ -266,8 +266,11 @@ def load_registry_records(store, genomes_dir=GENOMES_DIR, metadata_dir=REGISTRY_
             continue
         with open(sidecar) as f:
             fields = json.load(f)
-        keys = {data["name"], _slug(data["name"]),
-                (data.get("assembly") or {}).get("accession")}
+        keys = {data["name"], _slug(data["name"])}
+        # An accession names an assembly, not one FASTA of it: match on it only
+        # when the YAML pins no seqcol digest (same rule as genome_rows.py).
+        if not (data.get("seqcol") or {}).get("digest"):
+            keys.add((data.get("assembly") or {}).get("accession"))
         staged_path = staged.get(data["name"])
         if staged_path:
             keys.add(staged_path)
