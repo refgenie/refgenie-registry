@@ -3,6 +3,7 @@ aliases:
   - T2T-CHM13v2.0
   - chm13v2
   - hs1
+  - Homo_sapiens/UCSC/CHM13
 
 description: |
   Telomere-to-Telomere CHM13 v2.0 assembly. The first complete,
@@ -33,7 +34,7 @@ seqcol:
   compute: true
 
 build:
-  store: jungle
+  store: igenomes
   tier: store_only
 
 metadata:
