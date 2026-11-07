@@ -59,6 +59,19 @@ def read_genome_list(root: Path) -> list:
     return genomes
 
 
+def held_stores(root: Path) -> set:
+    """Stores kept out of the nightly (``nightly: false`` in project_config.yaml).
+
+    Their genomes are on hold: not registered yet by design, so not a gap.
+    """
+    held = set()
+    for path in glob.glob(str(root / "stores" / "*" / "project_config.yaml")):
+        with open(path) as handle:
+            if (yaml.safe_load(handle) or {}).get("nightly", True) is False:
+                held.add(Path(path).parent.name)
+    return held
+
+
 def open_refgenie(db_config):
     """Open the refgenie catalog and return the client.
 
@@ -88,6 +101,10 @@ def main(argv=None) -> int:
     genomes = read_genome_list(root)
     rg = open_refgenie(args.db_config)
 
+    held = held_stores(root)
+    on_hold = sorted(name for name, store, _tier in genomes if store in held)
+    genomes = [g for g in genomes if g[1] not in held]
+
     missing = []
     for name, store, tier in genomes:
         try:
@@ -99,6 +116,9 @@ def main(argv=None) -> int:
 
     total = len(genomes)
     print(f"registration: {total - len(missing)}/{total} genomes resolve in the catalog")
+    if on_hold:
+        print(f"registration: {len(on_hold)} genome(s) on hold, their store is not "
+              f"built nightly: {', '.join(on_hold)}")
 
     if missing:
         by_store = {}

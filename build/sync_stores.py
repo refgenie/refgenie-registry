@@ -249,6 +249,10 @@ def report(check: bool) -> int:
           f"{'errors':>7}")
     totals = collections.Counter()
     for slug, info in data.items():
+        if not nightly_enabled(slug):
+            # A store kept out of the nightly (nightly: false) is on hold: its
+            # genomes cannot load yet, which is expected, not a gap.
+            info["held"], info["uncovered"] = info["uncovered"], []
         for key in ("uncovered", "unaligned", "errors"):
             totals[key] += len(info[key])
         print(f"{slug:16} {len(info['genomes']):8} {info['rows']:6} "
@@ -256,6 +260,8 @@ def report(check: bool) -> int:
               f"{len(info['errors']):7}")
     print()
     for slug, info in data.items():
+        for name, _why in info.get("held", []):
+            print(f"  ON HOLD {name}: store '{slug}' is not built nightly (nightly: false)")
         for name, why in info["uncovered"]:
             print(f"  NOT LOADABLE {name}: build.store is '{slug}', but "
                   f"stores/{slug}/sources.csv has no row for it ({why})")
