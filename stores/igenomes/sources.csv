@@ -64,7 +64,7 @@ s3://ngi-igenomes/igenomes/Homo_sapiens/NCBI/GRCh38Decoy/Sequence/WholeGenomeFas
 s3://ngi-igenomes/igenomes/Homo_sapiens/NCBI/build36.3/Sequence/WholeGenomeFasta/genome.fa,Homo_sapiens/NCBI/build36.3,Homo sapiens,NCBI,build36.3
 s3://ngi-igenomes/igenomes/Homo_sapiens/NCBI/build37.1/Sequence/WholeGenomeFasta/genome.fa,Homo_sapiens/NCBI/build37.1,Homo sapiens,NCBI,build37.1
 s3://ngi-igenomes/igenomes/Homo_sapiens/NCBI/build37.2/Sequence/WholeGenomeFasta/genome.fa,Homo_sapiens/NCBI/build37.2,Homo sapiens,NCBI,build37.2
-s3://ngi-igenomes/igenomes/Homo_sapiens/UCSC/CHM13/Sequence/WholeGenomeFasta/genome.fa,Homo_sapiens/UCSC/CHM13,Homo sapiens,UCSC,CHM13
+s3://ngi-igenomes/igenomes/Homo_sapiens/UCSC/CHM13/Sequence/WholeGenomeFasta/genome.fa,t2t-chm13,Homo sapiens,UCSC,CHM13
 s3://ngi-igenomes/igenomes/Homo_sapiens/UCSC/hg18/Sequence/WholeGenomeFasta/genome.fa,Homo_sapiens/UCSC/hg18,Homo sapiens,UCSC,hg18
 s3://ngi-igenomes/igenomes/Homo_sapiens/UCSC/hg19/Sequence/WholeGenomeFasta/genome.fa,Homo_sapiens/UCSC/hg19,Homo sapiens,UCSC,hg19
 s3://ngi-igenomes/igenomes/Homo_sapiens/UCSC/hg38/Sequence/WholeGenomeFasta/genome.fa,Homo_sapiens/UCSC/hg38,Homo sapiens,UCSC,hg38
