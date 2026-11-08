@@ -54,8 +54,9 @@ overlay store appears as a genome, in one of two states:
 - **Browse overlay**, registered with the store's curated aliases (the `name`
   alias namespace) and any FHR metadata, but with zero assets. Created by
   `refgenie store sync`, which the nightly runs over the federation registry
-  (the `store` table, managed with `refgenie store add|list|remove`; see
-  `build/run_builds.sh`). This is the state a genome at `build.tier: store_only`
+  (the `store` table, which the nightly sets with `refgenie store apply` from
+  the stores that have a `publish:` block in `stores/*/project_config.yaml`;
+  see `build/run_builds.sh`). This is the state a genome at `build.tier: store_only`
   reaches, and most of the registry sits there.
 - **Assets attached**, additionally has assets built by the recipe fan-out,
   queued by the genome's `build.tier` in `genomes/**/*.yaml`.

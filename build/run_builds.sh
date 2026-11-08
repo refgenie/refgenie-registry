@@ -159,8 +159,11 @@ fi
 # --- guard: every genome must be loadable from the store it names ------------
 # A genome YAML's `build.store` claims a store holds its sequence. Reported, not
 # enforced: a genome whose store has no row for it is registered but unloadable,
-# and nothing else reports that. It is not fatal because the fix is a data change
-# in a store's sources.csv, and a pending one must not stop the night's builds.
+# and nothing else reports that. It also reports, as NOT PUBLISHED, a store_only
+# genome whose store has no `publish:` block: store sync never ingests that store,
+# so the genome never reaches the catalog. It is not fatal because the fix is a
+# data change in a store's config or sources.csv, and a pending one must not stop
+# the night's builds.
 echo "$(date) | run_builds: checking genome -> store coverage"
 python3 build/sync_stores.py \
     || echo "$(date) | run_builds: store coverage check reported gaps (non-fatal)" >&2
@@ -661,41 +664,47 @@ echo "$(date) | run_builds: applying per-genome FHR metadata to the catalog..."
 python3 build/apply_metadata.py --db-config "$REFGENIE_DB_CONFIG_PATH" \
     || echo "$(date) | run_builds: metadata apply reported problems (non-fatal); catches up next run" >&2
 
-# --- federation: ingest every registered store into the catalog -------------
+# --- federation: ingest every published store into the catalog -------------
 # Refgenie is an OVERLAY on a RefgetStore: the store defines which genomes exist,
 # and a genome either has assets attached (built by the fan-out above) or is a
 # zero-asset browse genome. `store sync` walks the federation registry (the
-# `store` table, managed by `refgenie store add/list/remove`) and ingests each
-# enabled store's collections and curated `name` aliases into the catalog,
-# applying the priority-based alias collision policy. Idempotent, and it never
-# repoints an alias owned by a built genome.
+# `store` table) and ingests each enabled store's collections and curated `name`
+# aliases into the catalog, applying the priority-based alias collision policy.
+# Idempotent, and it never repoints an alias owned by a built genome.
 #
-# This REPLACES the old REFGENIE_OVERLAY_STORES loop, which did the same job
-# worse: `genome sync --server-url` opened a fresh remote store PER COLLECTION
-# (GenomeManager._import_remote_collection) and copied each into the local store,
-# every single night. `store sync` opens each store once.
+# The registry's stores/*/project_config.yaml is the source of truth for that
+# table: build/store_declaration.py lists every store with a `publish:` block
+# (except the catalog's own store, refgenie-main), and `store apply` upserts them
+# and disables any store not listed. A store is published by adding a `publish:`
+# block (stores/README.md), never by hand with `refgenie store add`.
 #
 # Ordering is load-bearing: AFTER apply_metadata (built genomes' metadata is
 # authoritative), BEFORE the store publish + catalog-export below so synced
 # aliases ride the store S3 sync and genome rows ride the export. Non-fatal: an
-# unreachable store must not abort publishing the built assets.
+# unreachable store must not abort publishing the built assets. A store config
+# that fails validation skips the apply, so the table keeps last night's stores.
 #
-# REQUIRES a refgenie1 with the `store` command group (the federation registry).
-# The capability is checked explicitly because a missing `store` command is a
-# provisioning gap that needs an upgrade, not a transient failure, and it must not
-# read like one in the log.
-if ! "$REFGENIE_BIN" store --help >/dev/null 2>&1; then
-    echo "$(date) | run_builds: FATAL-ADJACENT this refgenie has no 'store' command group," >&2
-    echo "  so NO store collections are being overlaid into the catalog tonight." >&2
+# REQUIRES a refgenie1 with `store apply`. The capability is checked explicitly
+# because a missing command is a provisioning gap that needs an upgrade, not a
+# transient failure, and it must not read like one in the log.
+if ! "$REFGENIE_BIN" store apply --help >/dev/null 2>&1; then
+    echo "$(date) | run_builds: FATAL-ADJACENT this refgenie has no 'store apply' command," >&2
+    echo "  so the store registry is not updated and NO store collections are being" >&2
+    echo "  overlaid into the catalog tonight." >&2
     echo "  Upgrade the build venv: bash infra/rivanna/setup_env.sh" >&2
-    echo "  Then register the stores once: refgenie store add <name> --url <url> --priority <n>" >&2
     echo "  (installed: $("$REFGENIE_BIN" --version 2>&1 | head -1))" >&2
 else
-    echo "$(date) | run_builds: syncing the federated store registry into the catalog..."
-    if [[ -z "$("$REFGENIE_BIN" store list 2>/dev/null | grep -v '^$' | tail -n +2)" ]]; then
-        echo "$(date) | run_builds: WARNING the federation registry is EMPTY; no stores will be" >&2
-        echo "  overlaid. Register them once with 'refgenie store add <name> --url <url>'." >&2
+    _store_decl="$(mktemp)"
+    if python3 build/store_declaration.py > "$_store_decl"; then
+        echo "$(date) | run_builds: applying the published store list (stores/*/project_config.yaml)..."
+        "$REFGENIE_BIN" store apply --file "$_store_decl" \
+            || echo "$(date) | run_builds: ERROR store apply failed; store sync uses last night's store list" >&2
+    else
+        echo "$(date) | run_builds: ERROR store_declaration.py rejected stores/*/project_config.yaml" >&2
+        echo "  (see above); store sync uses last night's store list. Fix the configs." >&2
     fi
+    rm -f "$_store_decl"
+    echo "$(date) | run_builds: syncing the federated store registry into the catalog..."
     "$REFGENIE_BIN" store sync \
         || echo "$(date) | run_builds: store sync reported failures (non-fatal); catches up next run" >&2
 fi
@@ -737,12 +746,24 @@ if [[ -n "${REFGENIE_CATALOG_S3:-}" && -n "${REFGENIE_ASSET_HTTPS:-}" ]]; then
     else
         echo "$(date) | run_builds: exporting publish catalog -> $REFGENIE_CATALOG_S3/publish_catalog.sqlite"
         catalog_artifact="$(dirname "$REFGENIE_DB_CONFIG_PATH")/publish_catalog.sqlite"
-        if "$REFGENIE_BIN" catalog-export --dest "$catalog_artifact" \
-                --https-prefix "$REFGENIE_ASSET_HTTPS"; then
-            aws s3 cp "$catalog_artifact" "$REFGENIE_CATALOG_S3/publish_catalog.sqlite" --no-progress \
-                || echo "$(date) | run_builds: catalog upload failed (non-fatal); server keeps previous artifact" >&2
+        # The catalog's own store (refgenie-main, the .refget_store synced
+        # above) is published as a store row beside the federated ones. Its
+        # name, url and priority come from stores/refgenie-main/project_config.yaml.
+        if ! _catalog_store="$(python3 build/store_declaration.py --catalog)"; then
+            echo "$(date) | run_builds: ERROR store_declaration.py --catalog failed; SKIPPING" >&2
+            echo "  catalog publish, server keeps previous artifact" >&2
         else
-            echo "$(date) | run_builds: catalog export failed (non-fatal); server keeps previous artifact" >&2
+            read -r _cat_name _cat_url _cat_priority <<< "$_catalog_store"
+            if "$REFGENIE_BIN" catalog-export --dest "$catalog_artifact" \
+                    --https-prefix "$REFGENIE_ASSET_HTTPS" \
+                    --catalog-store-name "$_cat_name" \
+                    --catalog-store-url "$_cat_url" \
+                    --catalog-store-priority "$_cat_priority"; then
+                aws s3 cp "$catalog_artifact" "$REFGENIE_CATALOG_S3/publish_catalog.sqlite" --no-progress \
+                    || echo "$(date) | run_builds: catalog upload failed (non-fatal); server keeps previous artifact" >&2
+            else
+                echo "$(date) | run_builds: catalog export failed (non-fatal); server keeps previous artifact" >&2
+            fi
         fi
     fi
 else

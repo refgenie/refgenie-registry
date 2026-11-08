@@ -41,3 +41,33 @@ def test_yaml_alias_edit_changes_alias_stamp(tmp_path, monkeypatch):
     monkeypatch.setattr(ss, "load_genomes",
                         lambda: [("b", {"build": {"store": "s"}, "aliases": ["bee"]})])
     assert ss.aliases_digest("s") != before
+
+
+def _report_with(monkeypatch, published, genomes):
+    info = {"genomes": [n for n, _ in genomes], "rows": len(genomes),
+            "uncovered": [], "unaligned": [], "errors": []}
+    monkeypatch.setattr(ss, "coverage", lambda: ({"s": info}, []))
+    monkeypatch.setattr(ss, "nightly_enabled", lambda slug: True)
+    monkeypatch.setattr(ss, "published_stores", lambda: published)
+    monkeypatch.setattr(ss, "load_genomes", lambda: [
+        (n, {"build": {"store": "s", "tier": t}}) for n, t in genomes])
+
+
+def test_store_only_genome_of_unpublished_store_is_reported(monkeypatch, capsys):
+    _report_with(monkeypatch, set(), [("a", "store_only"), ("b", "full")])
+    ss.report(check=False)
+    out = capsys.readouterr().out
+    assert "NOT PUBLISHED a:" in out
+    assert "NOT PUBLISHED b:" not in out  # reaches the catalog via genome_init
+
+
+def test_published_store_is_not_reported(monkeypatch, capsys):
+    _report_with(monkeypatch, {"s"}, [("a", "store_only")])
+    ss.report(check=False)
+    assert "NOT PUBLISHED" not in capsys.readouterr().out
+
+
+def test_catalog_store_is_not_a_source_store():
+    assert "refgenie-main" not in ss.store_slugs()
+    assert "refgenie-main" not in ss.published_stores()
+    assert {"jungle", "vgp", "igenomes", "plantref"} <= ss.published_stores()

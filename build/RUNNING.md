@@ -114,6 +114,25 @@ Notes:
   between nightlies, but your local edits there will be wiped; use a private
   checkout if you need edits to persist.
 
+## Which stores the catalog ingests
+
+You never run `refgenie store add` by hand. Each nightly builds the store list
+from the stores that have a `publish:` block in `stores/*/project_config.yaml`
+(see [stores/README.md](../stores/README.md#publishing-a-store)) and applies it
+before `refgenie store sync`:
+
+```
+python3 build/store_declaration.py > stores.json
+refgenie store apply --file stores.json   # upsert listed stores, disable the rest
+```
+
+The catalog's own store, `refgenie-main`, is not in that list. Its name, URL and
+priority come from `stores/refgenie-main/project_config.yaml`
+(`build/store_declaration.py --catalog`), and `refgenie catalog-export` publishes
+it as a store row through `--catalog-store-name/-url/-priority`. To add, remove
+or reprioritize a store, edit its `publish:` block and commit; the next nightly
+applies it.
+
 ## Checking one asset
 
 `run_builds.sh` is the whole nightly: besides the builds it loads changed

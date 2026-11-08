@@ -6,7 +6,11 @@ This script is the link between the two halves of that claim:
 
   * COVERAGE, for each genome, is there actually a row in that store's
     sources.csv for it? A genome whose store does not hold its sequence is
-    registered but unloadable, and nothing else notices.
+    registered but unloadable, and nothing else notices. A store_only genome
+    whose store has no `publish:` block in its project_config.yaml is reported
+    too: the catalog never ingests that store, so the genome never reaches it.
+    (A genome with assets reaches the catalog through genome_init and the
+    catalog's own store, refgenie-main, whatever store its FASTA comes from.)
   * CHANGE   -- has a store's sources.csv changed since the store was last built?
     Rebuilding every store nightly is wasteful (the largest hold hundreds of
     thousands of objects), so the nightly rebuilds a store only when its sources
@@ -60,7 +64,7 @@ STORES_DIR = REPO / "stores"
 
 sys.path.insert(0, str(STORES_DIR))
 import genome_rows  # noqa: E402
-from store_config import load_pep, store_slugs  # noqa: E402
+from store_config import get_store_dirs, load_pep, publish_settings, store_slugs  # noqa: E402
 
 PEP_CONFIG = REPO / "pep" / "config.yaml"
 STAMP = ".sources.sha256"
@@ -193,6 +197,11 @@ def nightly_enabled(slug: str) -> bool:
     return load_pep(STORES_DIR / slug).get("nightly", True) is not False
 
 
+def published_stores() -> set:
+    """Slugs of source stores with a `publish:` block (see build/store_declaration.py)."""
+    return {d.name for d in get_store_dirs(STORES_DIR) if publish_settings(d) is not None}
+
+
 def changed_stores() -> list:
     """Slugs whose `fasta` rows differ from what the built store was loaded from.
 
@@ -248,11 +257,17 @@ def report(check: bool) -> int:
     print(f"{'store':16} {'genomes':>8} {'rows':>6} {'uncovered':>10} {'unaligned':>10} "
           f"{'errors':>7}")
     totals = collections.Counter()
+    published = published_stores()
+    store_only = {name for name, rec in load_genomes()
+                  if (rec.get("build") or {}).get("tier", "store_only") == "store_only"}
     for slug, info in data.items():
         if not nightly_enabled(slug):
             # A store kept out of the nightly (nightly: false) is on hold: its
             # genomes cannot load yet, which is expected, not a gap.
             info["held"], info["uncovered"] = info["uncovered"], []
+        elif slug not in published:
+            info["unpublished"] = [n for n in info["genomes"] if n in store_only]
+            totals["unpublished"] += len(info["unpublished"])
         for key in ("uncovered", "unaligned", "errors"):
             totals[key] += len(info[key])
         print(f"{slug:16} {len(info['genomes']):8} {info['rows']:6} "
@@ -262,6 +277,9 @@ def report(check: bool) -> int:
     for slug, info in data.items():
         for name, _why in info.get("held", []):
             print(f"  ON HOLD {name}: store '{slug}' is not built nightly (nightly: false)")
+        for name in info.get("unpublished", []):
+            print(f"  NOT PUBLISHED {name}: build.store is '{slug}', which has no "
+                  f"publish: block in stores/{slug}/project_config.yaml")
         for name, why in info["uncovered"]:
             print(f"  NOT LOADABLE {name}: build.store is '{slug}', but "
                   f"stores/{slug}/sources.csv has no row for it ({why})")
@@ -274,6 +292,10 @@ def report(check: bool) -> int:
         print(f"\nsync_stores: {totals['uncovered']} genome(s) declare a store that does "
               f"not hold their sequence. Add the row to that store's sources.csv, or "
               f"correct build.store.")
+    if totals["unpublished"]:
+        print(f"\nsync_stores: WARNING {totals['unpublished']} store_only genome(s) name a "
+              f"store that is not published, so the catalog never ingests them. Add a publish: "
+              f"block to that store (stores/README.md), or correct build.store.")
     if totals["unaligned"]:
         print(f"\nsync_stores: {totals['unaligned']} row(s) are not named after their "
               f"genome. Run tools/align_store_names.py --apply.")
