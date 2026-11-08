@@ -15,6 +15,10 @@ export REFGETSTORE_FASTA=/project/shefflab/brickyard/datasets_downloaded/refgeno
 # This is the RefgetStore artifact, NOT built refgenie assets. Do not overload it.
 export REFGETSTORE_S3=s3://refgenie/refget-store
 
+# Public https face of REFGETSTORE_S3. build/store_declaration.py derives each
+# published store's URL from it: $REFGETSTORE_PUBLIC_URL/<store>/.
+export REFGETSTORE_PUBLIC_URL=https://refgenie.s3.us-east-1.amazonaws.com/refget-store
+
 # Built-asset publish target for `refgenie push`, DISTINCT from REFGETSTORE_S3.
 # This is where the nightly registry build uploads STAGED refgenie assets (the
 # <genome_digest>/<group>/<asset> tree), NOT the sequence store.
@@ -33,13 +37,10 @@ export REFGENIE_CATALOG_S3="${REFGENIE_CATALOG_S3:-s3://refgenie/catalog}"
 export REFGENIE_ASSET_HTTPS="${REFGENIE_ASSET_HTTPS:-https://refgenie.s3.us-east-1.amazonaws.com/assets}"
 
 # REFGENIE_OVERLAY_STORES is RETIRED. The stores the nightly overlays into the
-# catalog now live in refgenie's own federation registry (the `store` table),
-# managed with `refgenie store add|list|remove` and ingested by `refgenie store
-# sync` in run_builds.sh. The old env var drove `genome sync --server-url`, which
-# opened a fresh remote store per collection and copied each into the local store
-# every night; `store sync` opens each store once. Register a store with:
-#     refgenie store add jungle --url $REFGETSTORE_S3_HTTPS/jungle/ --priority 10
-# and confirm with `refgenie store list`.
+# catalog are the stores with a `publish:` block in stores/*/project_config.yaml.
+# run_builds.sh writes them into refgenie's federation registry (the `store`
+# table) with `refgenie store apply` and ingests them with `refgenie store sync`.
+# See stores/README.md to publish a store.
 
 # AWS auth for `refgenie push`. Push runs ONCE on the mobot driver/dispatcher
 # host AFTER snakemake returns, it reads the shared build DB + the staged
