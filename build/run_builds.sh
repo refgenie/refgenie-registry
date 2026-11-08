@@ -563,9 +563,12 @@ fi
 BUILD_WORKDIR="${REFGENIE_BUILD_WORKDIR:-$REGISTRY_DIR}"
 mkdir -p "$BUILD_WORKDIR"
 echo "$(date) | run_builds: snakemake --directory=$BUILD_WORKDIR"
+# --rerun-triggers repeats the profile's setting because the dry run below does
+# not load the profile: rebuild only on file mtimes, never on a reworded rule.
 SNAKEMAKE_ARGS=(
     --snakefile "$SNAKEFILE"
     --directory "$BUILD_WORKDIR"
+    --rerun-triggers mtime
 )
 if [[ "${DRY_RUN:-0}" == "1" ]]; then
     echo "$(date) | run_builds: DRY RUN (snakemake -n)"
