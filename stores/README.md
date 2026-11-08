@@ -20,6 +20,7 @@ Each subfolder defines a refgetstore, a content-addressable sequence collection.
 | **plantref** | Plant + model-organism genomes (recovered from legacy big.databio.org) |
 | **decoys** | Decoy and spike-in sequences |
 | **demo** | Test data for development |
+| **refgenie-main** | The build catalog's own store: genomes the nightly builds (`kind: catalog`, no `sources.csv`) |
 
 ## The link to `genomes/`
 
@@ -155,6 +156,48 @@ folder (e.g. [`vrs/build_aliases.py`](vrs/build_aliases.py)).
    ```
 
 7. **Aliases** (optional, post-build) and **deploy to S3**, see the sections below.
+
+8. **Publish** it, if its genomes should appear in the public catalog, see
+   [Publishing a store](#publishing-a-store).
+
+## Publishing a store
+
+A store is **published** when its `project_config.yaml` has a `publish:` block.
+Published stores are the ones the nightly ingests into the build catalog
+(`refgenie store sync`) and the catalog carries to api.refgenie.org. A store
+with no `publish:` block is not published, and its `store_only` genomes never
+reach the catalog (`sync_stores.py` reports them as NOT PUBLISHED).
+
+```yaml
+publish:
+  priority: 40                                 # lower wins alias ties; unique across stores
+  description: Illumina iGenomes reference FASTAs
+```
+
+The URL is not written: it is `$REFGETSTORE_PUBLIC_URL/<name>/` (set in
+[`infra/rivanna/env.sh`](../infra/rivanna/env.sh)), so deploy the store to S3
+first. The next nightly picks it up:
+[`build/store_declaration.py`](../build/store_declaration.py) turns the
+`publish:` blocks into a store list, and `refgenie store apply` makes the build
+catalog's store table match it (a store whose `publish:` block is removed is
+disabled, not deleted). Do not register stores by hand with `refgenie store add`;
+the next nightly would undo it. Check a change with:
+
+```bash
+REFGETSTORE_PUBLIC_URL=https://refgenie.s3.us-east-1.amazonaws.com/refget-store \
+  python build/store_declaration.py
+```
+
+Rules, checked by `store_declaration.py`: priorities are unique, and a store with
+`nightly: false` cannot be published.
+
+`stores/refgenie-main/` is the one folder that is not a source store. It has
+`kind: catalog` and no `sources.csv`: it stands for the build catalog's own
+store, which genome_init fills and the nightly syncs to
+`$REFGETSTORE_S3/refgenie-main`. Its `publish:` block sets the store row that
+`refgenie catalog-export` publishes for it. Store tooling (`build.py`,
+`sync_stores.py`, the validators) skips it, and no genome YAML may name it as
+its `build.store`.
 
 ## Building
 

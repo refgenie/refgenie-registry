@@ -4,3 +4,9 @@ sample_table_index: fasta
 
 # Root for relative fasta paths in sources.csv ($REFGETSTORE_FASTA set by env.sh).
 fasta_root: $REFGETSTORE_FASTA/vgp
+
+# Published: the nightly declares this store to the build catalog (refgenie
+# store apply) and the catalog export carries it to api.refgenie.org.
+publish:
+  priority: 20
+  description: Vertebrate Genomes Project assemblies

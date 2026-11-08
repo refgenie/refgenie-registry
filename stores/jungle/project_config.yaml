@@ -4,3 +4,9 @@ sample_table_index: pep_sample_name
 
 # Root for relative fasta paths in sources.csv ($REFGETSTORE_FASTA set by env.sh).
 fasta_root: $REFGETSTORE_FASTA/jungle
+
+# Published: the nightly declares this store to the build catalog (refgenie
+# store apply) and the catalog export carries it to api.refgenie.org.
+publish:
+  priority: 10
+  description: Human and mouse reference genomes from the reference genome jungle

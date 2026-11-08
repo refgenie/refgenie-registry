@@ -1,3 +1,9 @@
 pep_version: 2.1.0
 sample_table: sources.csv
 sample_table_index: fasta
+
+# Published: the nightly declares this store to the build catalog (refgenie
+# store apply) and the catalog export carries it to api.refgenie.org.
+publish:
+  priority: 40
+  description: Illumina iGenomes reference FASTAs

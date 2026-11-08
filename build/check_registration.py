@@ -63,12 +63,17 @@ def held_stores(root: Path) -> set:
     """Stores kept out of the nightly (``nightly: false`` in project_config.yaml).
 
     Their genomes are on hold: not registered yet by design, so not a gap.
+    A ``kind: catalog`` folder (refgenie-main) is not a source store and is
+    never held.
     """
     held = set()
     for path in glob.glob(str(root / "stores" / "*" / "project_config.yaml")):
         with open(path) as handle:
-            if (yaml.safe_load(handle) or {}).get("nightly", True) is False:
-                held.add(Path(path).parent.name)
+            config = yaml.safe_load(handle) or {}
+        if config.get("kind") == "catalog":
+            continue
+        if config.get("nightly", True) is False:
+            held.add(Path(path).parent.name)
     return held
 
 

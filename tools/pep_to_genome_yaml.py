@@ -105,9 +105,12 @@ TIERS = ("store_only", "sequence_only", "standard", "full")
 
 def store_slugs() -> list[str]:
     """Names of the stores this repo defines, i.e. the legal build.store values."""
+    # A `kind: catalog` folder (refgenie-main) has no sources and is never a
+    # build.store.
     return sorted(
         d.name for d in (_REPO / "stores").iterdir()
         if d.is_dir() and (d / "project_config.yaml").is_file()
+        and (yaml.safe_load((d / "project_config.yaml").read_text()) or {}).get("kind") != "catalog"
     )
 
 

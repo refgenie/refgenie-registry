@@ -1,0 +1,13 @@
+# The build catalog's own sequence store, not a source store.
+#
+# genome_init writes the genomes the nightly builds into the catalog's local
+# store ($REFGENIE_GENOME_FOLDER/.refget_store), and run_builds.sh syncs it to
+# $REFGETSTORE_S3/refgenie-main. Nothing here builds it, so there is no
+# sources.csv, and store tooling (sync_stores.py, build.py, validators) skips
+# `kind: catalog`. The folder exists so every published store is listed in one
+# tree: build/store_declaration.py --catalog reads it for catalog-export.
+kind: catalog
+
+publish:
+  priority: 30
+  description: Genomes built by the refgenie nightly
