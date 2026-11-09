@@ -44,7 +44,8 @@ build:
 |---|---|
 | `legacy` | The genomes the old refgenomes.databio.org server published |
 | `jungle` | Human and mouse reference assemblies (the reference-jungle dataset) |
-| `plantref` | Plants and model organisms |
+| `plantcore` | Plants and model organisms (one well-assembled genome per species) |
+| `plantsup` | Other plant assemblies (not published) |
 | `vgp` | Vertebrate Genomes Project assemblies |
 | `pangenome` | HPRC pangenome haplotypes |
 | `igenomes` | AWS iGenomes references |

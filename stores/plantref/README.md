@@ -1,5 +1,10 @@
 # plantref
 
+> **Retired (2026-11).** Split into [`plantcore`](../plantcore/README.md)
+> (published) and [`plantsup`](../plantsup/README.md) (built, not published).
+> This folder stays only until the old built store and its S3 prefix are
+> deleted. It is not published and not built nightly (`nightly: false`).
+
 Plant (and assorted algal / protist / model-organism) reference genomes from the
 lab's legacy refgenie plant-genome collection.
 

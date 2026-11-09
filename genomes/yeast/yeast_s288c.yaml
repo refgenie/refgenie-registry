@@ -23,7 +23,7 @@ seqcol:
   compute: true
 
 build:
-  store: plantref
+  store: plantcore
   tier: standard
   add: [suffixerator_index]
   drop: [star_index]

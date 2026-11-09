@@ -71,4 +71,6 @@ def test_catalog_store_is_not_a_source_store():
     assert "refgenie-main" not in ss.store_slugs()
     assert "refgenie-main" not in ss.published_stores()
     assert {"jungle", "vgp", "igenomes"} <= ss.published_stores()
-    assert "plantref" not in ss.published_stores()  # unpublished: too big for the server
+    assert "plantcore" in ss.published_stores()
+    assert "plantsup" not in ss.published_stores()  # unpublished: too big for the server
+    assert "plantref" not in ss.published_stores()  # retired

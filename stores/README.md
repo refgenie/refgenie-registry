@@ -17,7 +17,9 @@ Each subfolder defines a refgetstore, a content-addressable sequence collection.
 | **vrs** | VRS allele identification reference sequences |
 | **salmon_txomes** | Salmon/tximeta transcriptomes |
 | **igenomes** | AWS iGenomes reference genomes |
-| **plantref** | Plant + model-organism genomes (recovered from legacy big.databio.org) |
+| **plantcore** | Well-assembled plant, algal + model-organism genomes, one per species (published) |
+| **plantsup** | The rest of the legacy plant collection: fragmented or duplicate assemblies (not published) |
+| **plantref** | Retired: split into plantcore and plantsup |
 | **decoys** | Decoy and spike-in sequences |
 | **demo** | Test data for development |
 | **refgenie-main** | The build catalog's own store: genomes the nightly builds (`kind: catalog`, no `sources.csv`) |
@@ -60,7 +62,7 @@ with no digest only, by an accession that appears once. A YAML whose
 
 The nightly reloads a store fully only when its rows' `fasta` values change
 (rows added, removed or pointed at another file), checked against the
-`.sources.sha256` stamp inside the built store, so plantref's ~476k objects are
+`.sources.sha256` stamp inside the built store, so a large store's objects are
 not re-synced every night. A change to a row's name or other columns, or to a
 genome YAML's `name` or `aliases`, only changes the `.aliases.sha256` stamp: the
 nightly then runs `build_aliases.py`, `build_fhr.py` and `build.py --sync-only`,
@@ -83,7 +85,7 @@ reasons:
    reconstruct the store's.
 2. **Most store rows have no genome YAML.** Only `vgp` and `legacy` are fully
    covered. Generating `sources.csv` from the genome list would silently delete
-   most of `igenomes`, `refseq`, `salmon_txomes` and `plantref`.
+   most of `igenomes`, `refseq`, `salmon_txomes`, `plantcore` and `plantsup`.
 
 So the direction of truth differs by file: the genome list drives the build
 queue and the published metadata, and `sources.csv` drives what a store holds.

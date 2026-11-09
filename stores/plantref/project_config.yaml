@@ -5,9 +5,7 @@ sample_table_index: pep_sample_name
 # Root for relative fasta paths in sources.csv ($REFGETSTORE_FASTA set by env.sh).
 fasta_root: $REFGETSTORE_FASTA/plantref
 
-# Unpublished until the server can hold its 1.57M sequences in memory.
-# Uncomment to publish: the nightly declares this store to the build catalog
-# (refgenie store apply) and the catalog export carries it to api.refgenie.org.
-# publish:
-#   priority: 50
-#   description: Plant, algal and model-organism reference genomes
+# RETIRED. Split into plantcore (published) and plantsup (unpublished); see
+# their READMEs. Kept only until the old store folder and S3 prefix are
+# deleted. Not published (no publish: block) and not built nightly.
+nightly: false
