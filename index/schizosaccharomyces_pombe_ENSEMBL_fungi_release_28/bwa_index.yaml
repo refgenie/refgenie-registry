@@ -1,0 +1,12 @@
+genome: schizosaccharomyces_pombe_ENSEMBL_fungi_release_28
+genome_digest: vEsFJ8XMkzwm1TzsHjzwRx7zCxc_HZC_
+recipe: bwa_index
+recipe_version: 0.2.1
+asset_name: 0.7.19
+asset_digest: 54a84220fcda00d292786ee22278e710672dadb498a74e6473f942964d60da88
+build:
+  status: complete
+  timestamp: '2026-07-26T07:31:03Z'
+files:
+- bwa_index
+- version

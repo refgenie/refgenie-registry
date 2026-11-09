@@ -1,0 +1,13 @@
+genome: saccharomyces_cerevisiae_ENSEMBL_release_81
+genome_digest: ia9g4Myony-xxLsSc7eQOC_NdClGgPGu
+recipe: fasta
+recipe_version: 0.1.0
+asset_name: default
+asset_digest: c0f7888b4306b1a4b80ebb2cbe8ec3b2b7e97b96b42a120fe454bd74321c25a4
+build:
+  status: complete
+  timestamp: '2026-07-26T07:27:53Z'
+files:
+- chrom_sizes
+- fai
+- fasta

@@ -1,0 +1,12 @@
+genome: saccharomyces_cerevisiae_ENSEMBL_release_81
+genome_digest: ia9g4Myony-xxLsSc7eQOC_NdClGgPGu
+recipe: hisat2_index
+recipe_version: 0.0.3
+asset_name: 2.2.2
+asset_digest: cd84defa3b026e8faf0770f157fa5861b24f00c55ea6fed3b85f30beb7e755d9
+build:
+  status: complete
+  timestamp: '2026-07-26T07:30:43Z'
+files:
+- hisat2_index
+- version

@@ -1,0 +1,12 @@
+genome: arabidopsis_thaliana_COL-0_TAIR10
+genome_digest: AHyVecap0miRdrz6ZffizkZQUOJJBO2c
+recipe: bwa_index
+recipe_version: 0.2.1
+asset_name: 0.7.19
+asset_digest: 3d7444ec5c2e432e3605fe1733450955a235183350b860257e7698898a7800c7
+build:
+  status: complete
+  timestamp: '2026-11-03T23:16:31Z'
+files:
+- bwa_index
+- version
