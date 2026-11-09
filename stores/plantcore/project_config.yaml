@@ -8,6 +8,9 @@ fasta_root: $REFGETSTORE_FASTA/plantref
 
 # Published: the nightly declares this store to the build catalog
 # (refgenie store apply) and the catalog export carries it to api.refgenie.org.
+# Priority 45, not plantref's old 50: the build catalog still holds a disabled
+# plantref row at 50, and store sync only moves a genome to a store that
+# strictly outranks its current owner.
 publish:
-  priority: 50
+  priority: 45
   description: Well-assembled plant, algal and model-organism reference genomes
