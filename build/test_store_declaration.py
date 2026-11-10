@@ -90,6 +90,6 @@ def test_registry_stores_are_valid():
     stores = sd.read_stores(public_url=URL)
     assert [(s["name"], s["priority"]) for s in stores] == [
         ("jungle", 10), ("vgp", 20), ("refgenie-main", 30),
-        ("igenomes", 40), ("plantcore", 45),
+        ("igenomes", 40), ("plantcore", 50),
     ]
     assert sd.catalog_store(stores)["name"] == "refgenie-main"
