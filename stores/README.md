@@ -19,7 +19,6 @@ Each subfolder defines a refgetstore, a content-addressable sequence collection.
 | **igenomes** | AWS iGenomes reference genomes |
 | **plantcore** | Well-assembled plant, algal + model-organism genomes, one per species (published) |
 | **plantsup** | The rest of the legacy plant collection: fragmented or duplicate assemblies (not published) |
-| **plantref** | Retired: split into plantcore and plantsup |
 | **decoys** | Decoy and spike-in sequences |
 | **demo** | Test data for development |
 | **refgenie-main** | The build catalog's own store: genomes the nightly builds (`kind: catalog`, no `sources.csv`) |

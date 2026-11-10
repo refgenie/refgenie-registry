@@ -3,7 +3,7 @@ sample_table: sources.csv
 sample_table_index: pep_sample_name
 
 # Root for relative fasta paths in sources.csv ($REFGETSTORE_FASTA set by env.sh).
-# Shared with plantcore and the retired plantref: the FASTAs live in one place.
+# Shared with plantcore. The folder keeps the old plantref name.
 fasta_root: $REFGETSTORE_FASTA/plantref
 
 # Built nightly and mirrored to S3, but NOT published: no publish: block.

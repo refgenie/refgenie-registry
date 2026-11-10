@@ -3,14 +3,11 @@ sample_table: sources.csv
 sample_table_index: pep_sample_name
 
 # Root for relative fasta paths in sources.csv ($REFGETSTORE_FASTA set by env.sh).
-# Shared with plantsup and the retired plantref: the FASTAs live in one place.
+# Shared with plantsup. The folder keeps the old plantref name.
 fasta_root: $REFGETSTORE_FASTA/plantref
 
 # Published: the nightly declares this store to the build catalog
 # (refgenie store apply) and the catalog export carries it to api.refgenie.org.
-# Priority 45, not plantref's old 50: the build catalog still holds a disabled
-# plantref row at 50, and store sync only moves a genome to a store that
-# strictly outranks its current owner.
 publish:
-  priority: 45
+  priority: 50
   description: Well-assembled plant, algal and model-organism reference genomes
