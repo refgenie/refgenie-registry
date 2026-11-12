@@ -1,9 +1,11 @@
-name: hg38_build37_2_igenomes
+name: hg19_build37_2_igenomes
 aliases:
-  - GRCh38-igenomes-build37-2-ncbi
+  - GRCh37-igenomes-build37-2-ncbi
 
 description: |
-  igenomes hosted GRCh38 build 37.2
+  NCBI Build 37.2 of the human genome (GRCh37, the assembly UCSC calls hg19), as
+  packaged by Illumina iGenomes. Primary chromosomes named 1-22, X, Y, MT; MT is
+  the revised Cambridge Reference Sequence (16,569 bp).
 
 organism:
   scientific_name: Homo sapiens

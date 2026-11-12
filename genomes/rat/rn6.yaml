@@ -3,7 +3,9 @@ aliases:
   - Rnor_6.0
 
 description: |
-  The GCA_000001895.4_Rnor_6.0_genomic from NCBI.
+  Rnor_6.0 (rn6) from NCBI GenBank (GCA_000001895.4): chromosomes, unplaced
+  scaffolds and the mitochondrion, 955 sequences named by GenBank accession
+  (chromosome 1 is CM000072.5).
 
 organism:
   scientific_name: Rattus norvegicus
@@ -23,7 +25,8 @@ fasta:
     sha256: compute_on_registration
 
 seqcol:
-  compute: true
+  digest: yGaojvlgReD5Gd7T630C30BK5DVaHedb
+  length: 955
 
 build:
   store: legacy

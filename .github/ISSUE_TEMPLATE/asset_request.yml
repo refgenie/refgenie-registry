@@ -1,0 +1,36 @@
+name: Asset request
+description: Ask for assets (like a bowtie2 index) to be built for a genome refgenie already lists
+title: "Asset request: [GENOME]"
+labels: ["asset-request"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Use this form when a genome is in the catalog (https://refgenie.org) but the asset you need is not built.
+        To add a genome that is not listed, use the Genome proposal form. A maintainer reviews each request;
+        approved builds run in the next nightly build.
+  - type: input
+    id: genome
+    attributes:
+      label: Genome
+      description: The genome's name, as shown on refgenie.org, by `refgenie listr`, or by the MCP `search_genomes` tool.
+      placeholder: sacCer3
+    validations:
+      required: true
+  - type: input
+    id: genome_digest
+    attributes:
+      label: Genome digest (optional)
+      description: The 32-character digest from the genome page. Fill it in if the name could mean more than one genome.
+  - type: textarea
+    id: assets
+    attributes:
+      label: Assets you need
+      description: For example bowtie2_index, bwa_index, hisat2_index, fasta_index.
+    validations:
+      required: true
+  - type: textarea
+    id: use_case
+    attributes:
+      label: What will you use it for?
+      description: One sentence is enough, for example "align RNA-seq reads with HISAT2".

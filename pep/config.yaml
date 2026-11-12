@@ -64,8 +64,9 @@ sample_modifiers:
       # genomes/human/hg38_initial.yaml. "hg38" was once wrongly built from this
       # file; those assets are already built and re-homed here.
       hg38_initial_fa: "${REFGETSTORE_FASTA}/pangenome_reference/hg38.fa.gz"
-      # Primary assembly (no scaffolds/haplotypes), unmasked, the same flavor of
-      # reference as hg38 above, so index sizes and build times are comparable.
+      # mm39 = GRCm39 Ensembl release 113 primary assembly, unmasked (seqcol
+      # 2Ls1P5eUdKbvtOhjJx3s2R5r0_I-IB5Z), matching genomes/mouse/mm39.yaml and
+      # its jungle row. No haplotypes or patches, like hg38 above.
       mm39_fa: "${REFGETSTORE_FASTA}/jungle/mus_musculus/ensembl/mm39/fasta/Mus_musculus.GRCm39.dna.primary_assembly.fa.gz"
       # Small model-organism demos. All four confirmed staged and readable, with
       # single-token FASTA headers (no pipes or spaces for the ingest to trip on).
@@ -73,6 +74,8 @@ sample_modifiers:
       celegans_fa: "${REFGETSTORE_FASTA}/plantref/caenorhabditis_elegans/ensembl/ENSEMBL_release_81.fa.gz"
       athaliana_fa: "${REFGETSTORE_FASTA}/plantref/arabidopsis_thaliana/plantref/COL-0_TAIR10.fa.gz"
       dmelanogaster_fa: "${REFGETSTORE_FASTA}/plantref/drosophila_melanogaster/ensembl/ENSEMBL_release_81.fa.gz"
+      # sacCer3 = UCSC sacCer3 from iGenomes (genomes/yeast/sacCer3.yaml), staged by hand.
+      sacCer3_fa: "${REFGETSTORE_FASTA}/igenomes/sacCer3.fa.gz"
       # --- Historical genomes from the legacy refgenomes.databio.org server ------
       # Staged as clean-extension .gz symlinks under $REFGETSTORE_FASTA/legacy/
       # (targets: /project/shefflab/www/refgenie_refgenomes.databio.org/<g>-fasta-fasta,

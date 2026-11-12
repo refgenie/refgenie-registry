@@ -3,8 +3,8 @@ aliases:
   - caenorhabditis_elegans_ENSEMBL_release_81
 
 description: |
-  Caenorhabditis elegans reference assembly WBcel235, sourced from Ensembl
-  (release 81).
+  Caenorhabditis elegans reference assembly WBcel235 from Ensembl release 81.
+  Chromosomes are named I to V and X, and the mitochondrion MtDNA.
 
 organism:
   scientific_name: Caenorhabditis elegans
@@ -20,7 +20,8 @@ fasta:
     sha256: compute_on_registration
 
 seqcol:
-  compute: true
+  digest: iT3SWdnGndTXiDZrQoirIsBOdOgTMZzd
+  length: 7
 
 build:
   store: plantcore

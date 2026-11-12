@@ -3,7 +3,9 @@ aliases:
   - GRCh37
 
 description: |
-  The GRCh37 reference sequence from UCSC.
+  UCSC hg19 (GRCh37), the full release: chromosomes chr1-chr22, chrX, chrY and
+  chrM, plus unlocalized (_random), unplaced (chrUn) and nine alternate
+  haplotype (_hap) sequences. chrM is the older 16,571 bp mitochondrion.
 
 organism:
   scientific_name: Homo sapiens

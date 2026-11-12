@@ -27,7 +27,11 @@ properties:
     type: array
     items:
       type: string
-    description: Alternative names for this assembly (e.g., GRCh38 for hg38). Exported to FHR `genomeSynonym`.
+      pattern: "^[^/]+$"
+    description: >-
+      Alternative names for this assembly (e.g., GRCh38 for hg38). An alias may
+      not contain '/', which refgenie reads as a genome/asset separator.
+      Exported to FHR `genomeSynonym`.
   description:
     type: string
     minLength: 1

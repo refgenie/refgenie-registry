@@ -90,6 +90,13 @@ def test_unnamed_row_has_no_genome():
     assert "genome" not in build_fhr.fhr_fields_for_row(row("  ", "Homo sapiens"), SPECIES)
 
 
+def test_synonyms_column_gives_genome_synonyms():
+    yeast = row("sacCer3-igenomes-ucsc", "Saccharomyces cerevisiae",
+                synonyms="Saccharomyces_cerevisiae/UCSC/sacCer3; other ;")
+    fields = build_fhr.fhr_fields_for_row(yeast, SPECIES)
+    assert fields["genomeSynonym"] == ["Saccharomyces_cerevisiae/UCSC/sacCer3", "other"]
+
+
 # --------------------------------------------------------------------------
 # fill_from_accession
 # --------------------------------------------------------------------------
@@ -199,11 +206,11 @@ def test_nothing_to_write_writes_no_species_json(tmp_path):
 # --------------------------------------------------------------------------
 
 
-def _genome(tmp_path, name, digest=None):
+def _genome(tmp_path, name, digest=None, store="jungle"):
     genomes, meta = tmp_path / "genomes", tmp_path / "meta"
     genomes.mkdir(exist_ok=True)
     meta.mkdir(exist_ok=True)
-    text = f"name: {name}\nassembly:\n  accession: GCA_000001405.15\nbuild:\n  store: jungle\n"
+    text = f"name: {name}\nassembly:\n  accession: GCA_000001405.15\nbuild:\n  store: {store}\n"
     if digest:
         text += f"seqcol:\n  digest: {digest}\n"
     (genomes / f"{name}.yaml").write_text(text)
@@ -235,3 +242,16 @@ def test_a_shared_file_name_matches_only_the_pinned_digest(tmp_path, monkeypatch
     ddbj = {"name": "hg38-ddbj", "fasta": "ddbj/hg38/fasta/hg38.fa.gz"}
     assert build_fhr.registry_record_for_row(ddbj, records, "D_HG38") == {"genome": "hg38_initial"}
     assert build_fhr.registry_record_for_row(ddbj, records, "D_OTHER") is None
+
+
+def test_a_pinned_digest_matches_in_every_store(tmp_path, monkeypatch):
+    """hg38's curated text reaches the igenomes row that holds the same collection."""
+    monkeypatch.setattr(build_fhr, "_staged_fasta_paths", lambda: {})
+    _genome(tmp_path, "unpinned", store="legacy")
+    genomes, meta = _genome(tmp_path, "hg38", digest="D_HG38", store="legacy")
+    records = build_fhr.load_registry_records("igenomes", genomes, meta)
+    igenomes_row = {"name": "GRCh38-igenomes-ncbi", "fasta": "s3://x/genome.fa"}
+    assert build_fhr.registry_record_for_row(igenomes_row, records, "D_HG38") == {"genome": "hg38"}
+    assert build_fhr.registry_record_for_row(igenomes_row, records, "D_OTHER") is None
+    assert build_fhr.registry_record_for_row(igenomes_row, records) is None
+    assert {"unpinned", "hg38"}.isdisjoint(records)

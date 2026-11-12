@@ -129,6 +129,11 @@ rn6,rn6,bwa_index,rn6_fa,fhr_default
 rn6,rn6,bowtie2_index,rn6_fa,fhr_default
 rn6,rn6,hisat2_index,rn6_fa,fhr_default
 rn6,rn6,suffixerator_index,rn6_fa,fhr_default
+sacCer3,sacCer3,fasta,sacCer3_fa,fhr_default
+sacCer3,sacCer3,fasta_index,sacCer3_fa,fhr_default
+sacCer3,sacCer3,bwa_index,sacCer3_fa,fhr_default
+sacCer3,sacCer3,bowtie2_index,sacCer3_fa,fhr_default
+sacCer3,sacCer3,hisat2_index,sacCer3_fa,fhr_default
 spombe,spombe,fasta,spombe_fa,fhr_default
 spombe,spombe,fasta_index,spombe_fa,fhr_default
 spombe,spombe,bwa_index,spombe_fa,fhr_default

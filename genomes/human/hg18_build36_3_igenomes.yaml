@@ -1,9 +1,11 @@
-name: hg38_build36_3_igenomes
+name: hg18_build36_3_igenomes
 aliases:
-  - GRCh38-igenomes-build36-3-ncbi
+  - NCBI36-igenomes-build36-3-ncbi
 
 description: |
-  igenomes hosted GRCh38 build 36.3
+  NCBI Build 36.3 of the human genome (NCBI36, the assembly UCSC calls hg18), as
+  packaged by Illumina iGenomes. Chromosomes are named 1-22, X, Y and MT; MT is
+  16,571 bp.
 
 organism:
   scientific_name: Homo sapiens

@@ -1,0 +1,35 @@
+name: sacCer3
+aliases:
+  - sacCer3-igenomes-ucsc
+
+description: |
+  UCSC sacCer3 (S. cerevisiae S288C, assembly R64-1-1), as packaged by Illumina
+  iGenomes. Chromosomes are named chrI to chrXVI and chrM.
+
+organism:
+  scientific_name: Saccharomyces cerevisiae
+  taxon_id: 4932
+
+assembly:
+  source: UCSC
+  level: chromosome
+
+fasta:
+  sources:
+    - provider: iGenomes
+      url: https://ngi-igenomes.s3.eu-west-1.amazonaws.com/igenomes/Saccharomyces_cerevisiae/UCSC/sacCer3/Sequence/WholeGenomeFasta/genome.fa
+  checksum:
+    sha256: compute_on_registration
+
+seqcol:
+  digest: 8zSJ7M2oerPcCKc8x310hjyfB5u8SJNJ
+  length: 17
+
+build:
+  store: igenomes
+  tier: standard
+  drop: [star_index]
+
+metadata:
+  added: 2026-11-11
+  added_by: nsheff

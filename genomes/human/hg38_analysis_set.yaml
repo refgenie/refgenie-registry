@@ -1,6 +1,6 @@
 name: hg38_analysis_set
 aliases:
-  - hg38-p14-analysisSet-ucsc
+  - hg38-analysisSet-ucsc
   - hg38-igenomes-ucsc
 
 description: |

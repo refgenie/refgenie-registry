@@ -1,124 +1,124 @@
-fasta,name,organism,source,genome_assembly
-s3://ngi-igenomes/igenomes/Arabidopsis_thaliana/Ensembl/TAIR10/Sequence/WholeGenomeFasta/genome.fa,Arabidopsis_thaliana/Ensembl/TAIR10,Arabidopsis thaliana,Ensembl,TAIR10
-s3://ngi-igenomes/igenomes/Arabidopsis_thaliana/Ensembl/TAIR9/Sequence/WholeGenomeFasta/genome.fa,Arabidopsis_thaliana/Ensembl/TAIR9,Arabidopsis thaliana,Ensembl,TAIR9
-s3://ngi-igenomes/igenomes/Arabidopsis_thaliana/NCBI/TAIR10/Sequence/WholeGenomeFasta/genome.fa,Arabidopsis_thaliana/NCBI/TAIR10,Arabidopsis thaliana,NCBI,TAIR10
-s3://ngi-igenomes/igenomes/Arabidopsis_thaliana/NCBI/build9.1/Sequence/WholeGenomeFasta/genome.fa,Arabidopsis_thaliana/NCBI/build9.1,Arabidopsis thaliana,NCBI,build9.1
-s3://ngi-igenomes/igenomes/Bacillus_cereus_ATCC_10987/NCBI/2004-02-13/Sequence/WholeGenomeFasta/genome.fa,Bacillus_cereus_ATCC_10987/NCBI/2004-02-13,Bacillus cereus ATCC 10987,NCBI,2004-02-13
-s3://ngi-igenomes/igenomes/Bacillus_subtilis_168/Ensembl/EB2/Sequence/WholeGenomeFasta/genome.fa,Bacillus_subtilis_168/Ensembl/EB2,Bacillus subtilis 168,Ensembl,EB2
-s3://ngi-igenomes/igenomes/Bos_taurus/Ensembl/Btau_4.0/Sequence/WholeGenomeFasta/genome.fa,Bos_taurus/Ensembl/Btau_4.0,Bos taurus,Ensembl,Btau_4.0
-s3://ngi-igenomes/igenomes/Bos_taurus/Ensembl/UMD3.1/Sequence/WholeGenomeFasta/genome.fa,Bos_taurus/Ensembl/UMD3.1,Bos taurus,Ensembl,UMD3.1
-s3://ngi-igenomes/igenomes/Bos_taurus/NCBI/Btau_4.2/Sequence/WholeGenomeFasta/genome.fa,Bos_taurus/NCBI/Btau_4.2,Bos taurus,NCBI,Btau_4.2
-s3://ngi-igenomes/igenomes/Bos_taurus/NCBI/Btau_4.6.1/Sequence/WholeGenomeFasta/genome.fa,Bos_taurus/NCBI/Btau_4.6.1,Bos taurus,NCBI,Btau_4.6.1
-s3://ngi-igenomes/igenomes/Bos_taurus/NCBI/UMD_3.1.1/Sequence/WholeGenomeFasta/genome.fa,Bos_taurus/NCBI/UMD_3.1.1,Bos taurus,NCBI,UMD_3.1.1
-s3://ngi-igenomes/igenomes/Bos_taurus/NCBI/UMD_3.1/Sequence/WholeGenomeFasta/genome.fa,Bos_taurus/NCBI/UMD_3.1,Bos taurus,NCBI,UMD_3.1
-s3://ngi-igenomes/igenomes/Bos_taurus/UCSC/bosTau4/Sequence/WholeGenomeFasta/genome.fa,Bos_taurus/UCSC/bosTau4,Bos taurus,UCSC,bosTau4
-s3://ngi-igenomes/igenomes/Bos_taurus/UCSC/bosTau6/Sequence/WholeGenomeFasta/genome.fa,Bos_taurus/UCSC/bosTau6,Bos taurus,UCSC,bosTau6
-s3://ngi-igenomes/igenomes/Bos_taurus/UCSC/bosTau7/Sequence/WholeGenomeFasta/genome.fa,Bos_taurus/UCSC/bosTau7,Bos taurus,UCSC,bosTau7
-s3://ngi-igenomes/igenomes/Bos_taurus/UCSC/bosTau8/Sequence/WholeGenomeFasta/genome.fa,Bos_taurus/UCSC/bosTau8,Bos taurus,UCSC,bosTau8
-s3://ngi-igenomes/igenomes/Caenorhabditis_elegans/Ensembl/WBcel215/Sequence/WholeGenomeFasta/genome.fa,Caenorhabditis_elegans/Ensembl/WBcel215,Caenorhabditis elegans,Ensembl,WBcel215
-s3://ngi-igenomes/igenomes/Caenorhabditis_elegans/Ensembl/WBcel235/Sequence/WholeGenomeFasta/genome.fa,Caenorhabditis_elegans/Ensembl/WBcel235,Caenorhabditis elegans,Ensembl,WBcel235
-s3://ngi-igenomes/igenomes/Caenorhabditis_elegans/Ensembl/WS210/Sequence/WholeGenomeFasta/genome.fa,Caenorhabditis_elegans/Ensembl/WS210,Caenorhabditis elegans,Ensembl,WS210
-s3://ngi-igenomes/igenomes/Caenorhabditis_elegans/Ensembl/WS220/Sequence/WholeGenomeFasta/genome.fa,Caenorhabditis_elegans/Ensembl/WS220,Caenorhabditis elegans,Ensembl,WS220
-s3://ngi-igenomes/igenomes/Caenorhabditis_elegans/NCBI/WS190/Sequence/WholeGenomeFasta/genome.fa,Caenorhabditis_elegans/NCBI/WS190,Caenorhabditis elegans,NCBI,WS190
-s3://ngi-igenomes/igenomes/Caenorhabditis_elegans/NCBI/WS195/Sequence/WholeGenomeFasta/genome.fa,Caenorhabditis_elegans/NCBI/WS195,Caenorhabditis elegans,NCBI,WS195
-s3://ngi-igenomes/igenomes/Caenorhabditis_elegans/UCSC/ce10/Sequence/WholeGenomeFasta/genome.fa,Caenorhabditis_elegans/UCSC/ce10,Caenorhabditis elegans,UCSC,ce10
-s3://ngi-igenomes/igenomes/Caenorhabditis_elegans/UCSC/ce6/Sequence/WholeGenomeFasta/genome.fa,Caenorhabditis_elegans/UCSC/ce6,Caenorhabditis elegans,UCSC,ce6
-s3://ngi-igenomes/igenomes/Canis_familiaris/Ensembl/BROADD2/Sequence/WholeGenomeFasta/genome.fa,Canis_familiaris/Ensembl/BROADD2,Canis familiaris,Ensembl,BROADD2
-s3://ngi-igenomes/igenomes/Canis_familiaris/Ensembl/CanFam3.1/Sequence/WholeGenomeFasta/genome.fa,Canis_familiaris/Ensembl/CanFam3.1,Canis familiaris,Ensembl,CanFam3.1
-s3://ngi-igenomes/igenomes/Canis_familiaris/NCBI/build2.1/Sequence/WholeGenomeFasta/genome.fa,Canis_familiaris/NCBI/build2.1,Canis familiaris,NCBI,build2.1
-s3://ngi-igenomes/igenomes/Canis_familiaris/NCBI/build3.1/Sequence/WholeGenomeFasta/genome.fa,Canis_familiaris/NCBI/build3.1,Canis familiaris,NCBI,build3.1
-s3://ngi-igenomes/igenomes/Canis_familiaris/UCSC/canFam2/Sequence/WholeGenomeFasta/genome.fa,Canis_familiaris/UCSC/canFam2,Canis familiaris,UCSC,canFam2
-s3://ngi-igenomes/igenomes/Canis_familiaris/UCSC/canFam3/Sequence/WholeGenomeFasta/genome.fa,Canis_familiaris/UCSC/canFam3,Canis familiaris,UCSC,canFam3
-s3://ngi-igenomes/igenomes/Danio_rerio/Ensembl/GRCz10/Sequence/WholeGenomeFasta/genome.fa,Danio_rerio/Ensembl/GRCz10,Danio rerio,Ensembl,GRCz10
-s3://ngi-igenomes/igenomes/Danio_rerio/Ensembl/Zv9/Sequence/WholeGenomeFasta/genome.fa,Danio_rerio/Ensembl/Zv9,Danio rerio,Ensembl,Zv9
-s3://ngi-igenomes/igenomes/Danio_rerio/NCBI/GRCz10/Sequence/WholeGenomeFasta/genome.fa,Danio_rerio/NCBI/GRCz10,Danio rerio,NCBI,GRCz10
-s3://ngi-igenomes/igenomes/Danio_rerio/NCBI/Zv9/Sequence/WholeGenomeFasta/genome.fa,Danio_rerio/NCBI/Zv9,Danio rerio,NCBI,Zv9
-s3://ngi-igenomes/igenomes/Danio_rerio/UCSC/danRer10/Sequence/WholeGenomeFasta/genome.fa,Danio_rerio/UCSC/danRer10,Danio rerio,UCSC,danRer10
-s3://ngi-igenomes/igenomes/Danio_rerio/UCSC/danRer7/Sequence/WholeGenomeFasta/genome.fa,Danio_rerio/UCSC/danRer7,Danio rerio,UCSC,danRer7
-s3://ngi-igenomes/igenomes/Drosophila_melanogaster/Ensembl/BDGP5.25/Sequence/WholeGenomeFasta/genome.fa,Drosophila_melanogaster/Ensembl/BDGP5.25,Drosophila melanogaster,Ensembl,BDGP5.25
-s3://ngi-igenomes/igenomes/Drosophila_melanogaster/Ensembl/BDGP5/Sequence/WholeGenomeFasta/genome.fa,Drosophila_melanogaster/Ensembl/BDGP5,Drosophila melanogaster,Ensembl,BDGP5
-s3://ngi-igenomes/igenomes/Drosophila_melanogaster/Ensembl/BDGP6/Sequence/WholeGenomeFasta/genome.fa,Drosophila_melanogaster/Ensembl/BDGP6,Drosophila melanogaster,Ensembl,BDGP6
-s3://ngi-igenomes/igenomes/Drosophila_melanogaster/NCBI/build4.1/Sequence/WholeGenomeFasta/genome.fa,Drosophila_melanogaster/NCBI/build4.1,Drosophila melanogaster,NCBI,build4.1
-s3://ngi-igenomes/igenomes/Drosophila_melanogaster/NCBI/build5.3/Sequence/WholeGenomeFasta/genome.fa,Drosophila_melanogaster/NCBI/build5.3,Drosophila melanogaster,NCBI,build5.3
-s3://ngi-igenomes/igenomes/Drosophila_melanogaster/NCBI/build5.41/Sequence/WholeGenomeFasta/genome.fa,Drosophila_melanogaster/NCBI/build5.41,Drosophila melanogaster,NCBI,build5.41
-s3://ngi-igenomes/igenomes/Drosophila_melanogaster/NCBI/build5/Sequence/WholeGenomeFasta/genome.fa,Drosophila_melanogaster/NCBI/build5,Drosophila melanogaster,NCBI,build5
-s3://ngi-igenomes/igenomes/Drosophila_melanogaster/UCSC/dm3/Sequence/WholeGenomeFasta/genome.fa,Drosophila_melanogaster/UCSC/dm3,Drosophila melanogaster,UCSC,dm3
-s3://ngi-igenomes/igenomes/Drosophila_melanogaster/UCSC/dm6/Sequence/WholeGenomeFasta/genome.fa,Drosophila_melanogaster/UCSC/dm6,Drosophila melanogaster,UCSC,dm6
-s3://ngi-igenomes/igenomes/Enterobacteriophage_lambda/NCBI/1993-04-28/Sequence/WholeGenomeFasta/genome.fa,Enterobacteriophage_lambda/NCBI/1993-04-28,Enterobacteriophage lambda,NCBI,1993-04-28
-s3://ngi-igenomes/igenomes/Equus_caballus/Ensembl/EquCab2/Sequence/WholeGenomeFasta/genome.fa,Equus_caballus/Ensembl/EquCab2,Equus caballus,Ensembl,EquCab2
-s3://ngi-igenomes/igenomes/Equus_caballus/NCBI/EquCab2.0/Sequence/WholeGenomeFasta/genome.fa,Equus_caballus/NCBI/EquCab2.0,Equus caballus,NCBI,EquCab2.0
-s3://ngi-igenomes/igenomes/Equus_caballus/UCSC/equCab2/Sequence/WholeGenomeFasta/genome.fa,Equus_caballus/UCSC/equCab2,Equus caballus,UCSC,equCab2
-s3://ngi-igenomes/igenomes/Escherichia_coli_K_12_DH10B/Ensembl/EB1/Sequence/WholeGenomeFasta/genome.fa,Escherichia_coli_K_12_DH10B/Ensembl/EB1,Escherichia coli K 12 DH10B,Ensembl,EB1
-s3://ngi-igenomes/igenomes/Escherichia_coli_K_12_DH10B/NCBI/2008-03-17/Sequence/WholeGenomeFasta/genome.fa,Escherichia_coli_K_12_DH10B/NCBI/2008-03-17,Escherichia coli K 12 DH10B,NCBI,2008-03-17
-s3://ngi-igenomes/igenomes/Escherichia_coli_K_12_MG1655/NCBI/2001-10-15/Sequence/WholeGenomeFasta/genome.fa,Escherichia_coli_K_12_MG1655/NCBI/2001-10-15,Escherichia coli K 12 MG1655,NCBI,2001-10-15
-s3://ngi-igenomes/igenomes/Gallus_gallus/Ensembl/Galgal4/Sequence/WholeGenomeFasta/genome.fa,Gallus_gallus/Ensembl/Galgal4,Gallus gallus,Ensembl,Galgal4
-s3://ngi-igenomes/igenomes/Gallus_gallus/Ensembl/WASHUC2/Sequence/WholeGenomeFasta/genome.fa,Gallus_gallus/Ensembl/WASHUC2,Gallus gallus,Ensembl,WASHUC2
-s3://ngi-igenomes/igenomes/Gallus_gallus/NCBI/build2.1/Sequence/WholeGenomeFasta/genome.fa,Gallus_gallus/NCBI/build2.1,Gallus gallus,NCBI,build2.1
-s3://ngi-igenomes/igenomes/Gallus_gallus/NCBI/build3.1/Sequence/WholeGenomeFasta/genome.fa,Gallus_gallus/NCBI/build3.1,Gallus gallus,NCBI,build3.1
-s3://ngi-igenomes/igenomes/Gallus_gallus/UCSC/galGal3/Sequence/WholeGenomeFasta/genome.fa,Gallus_gallus/UCSC/galGal3,Gallus gallus,UCSC,galGal3
-s3://ngi-igenomes/igenomes/Gallus_gallus/UCSC/galGal4/Sequence/WholeGenomeFasta/genome.fa,Gallus_gallus/UCSC/galGal4,Gallus gallus,UCSC,galGal4
-s3://ngi-igenomes/igenomes/Glycine_max/Ensembl/Gm01/Sequence/WholeGenomeFasta/genome.fa,Glycine_max/Ensembl/Gm01,Glycine max,Ensembl,Gm01
-s3://ngi-igenomes/igenomes/Homo_sapiens/Ensembl/GRCh37/Sequence/WholeGenomeFasta/genome.fa,Homo_sapiens/Ensembl/GRCh37,Homo sapiens,Ensembl,GRCh37
-s3://ngi-igenomes/igenomes/Homo_sapiens/NCBI/GRCh38/Sequence/WholeGenomeFasta/genome.fa,Homo_sapiens/NCBI/GRCh38,Homo sapiens,NCBI,GRCh38
-s3://ngi-igenomes/igenomes/Homo_sapiens/NCBI/GRCh38Decoy/Sequence/WholeGenomeFasta/genome.fa,Homo_sapiens/NCBI/GRCh38Decoy,Homo sapiens,NCBI,GRCh38Decoy
-s3://ngi-igenomes/igenomes/Homo_sapiens/NCBI/build36.3/Sequence/WholeGenomeFasta/genome.fa,Homo_sapiens/NCBI/build36.3,Homo sapiens,NCBI,build36.3
-s3://ngi-igenomes/igenomes/Homo_sapiens/NCBI/build37.1/Sequence/WholeGenomeFasta/genome.fa,Homo_sapiens/NCBI/build37.1,Homo sapiens,NCBI,build37.1
-s3://ngi-igenomes/igenomes/Homo_sapiens/NCBI/build37.2/Sequence/WholeGenomeFasta/genome.fa,Homo_sapiens/NCBI/build37.2,Homo sapiens,NCBI,build37.2
-s3://ngi-igenomes/igenomes/Homo_sapiens/UCSC/CHM13/Sequence/WholeGenomeFasta/genome.fa,t2t-chm13,Homo sapiens,UCSC,CHM13
-s3://ngi-igenomes/igenomes/Homo_sapiens/UCSC/hg18/Sequence/WholeGenomeFasta/genome.fa,Homo_sapiens/UCSC/hg18,Homo sapiens,UCSC,hg18
-s3://ngi-igenomes/igenomes/Homo_sapiens/UCSC/hg19/Sequence/WholeGenomeFasta/genome.fa,Homo_sapiens/UCSC/hg19,Homo sapiens,UCSC,hg19
-s3://ngi-igenomes/igenomes/Homo_sapiens/UCSC/hg38/Sequence/WholeGenomeFasta/genome.fa,Homo_sapiens/UCSC/hg38,Homo sapiens,UCSC,hg38
-s3://ngi-igenomes/igenomes/Macaca_mulatta/Ensembl/Mmul_1/Sequence/WholeGenomeFasta/genome.fa,Macaca_mulatta/Ensembl/Mmul_1,Macaca mulatta,Ensembl,Mmul_1
-s3://ngi-igenomes/igenomes/Mus_musculus/Ensembl/GRCm38/Sequence/WholeGenomeFasta/genome.fa,Mus_musculus/Ensembl/GRCm38,Mus musculus,Ensembl,GRCm38
-s3://ngi-igenomes/igenomes/Mus_musculus/Ensembl/NCBIM37/Sequence/WholeGenomeFasta/genome.fa,Mus_musculus/Ensembl/NCBIM37,Mus musculus,Ensembl,NCBIM37
-s3://ngi-igenomes/igenomes/Mus_musculus/NCBI/GRCm38/Sequence/WholeGenomeFasta/genome.fa,Mus_musculus/NCBI/GRCm38,Mus musculus,NCBI,GRCm38
-s3://ngi-igenomes/igenomes/Mus_musculus/NCBI/build37.1/Sequence/WholeGenomeFasta/genome.fa,Mus_musculus/NCBI/build37.1,Mus musculus,NCBI,build37.1
-s3://ngi-igenomes/igenomes/Mus_musculus/NCBI/build37.2/Sequence/WholeGenomeFasta/genome.fa,Mus_musculus/NCBI/build37.2,Mus musculus,NCBI,build37.2
-s3://ngi-igenomes/igenomes/Mus_musculus/UCSC/mm10/Sequence/WholeGenomeFasta/genome.fa,Mus_musculus/UCSC/mm10,Mus musculus,UCSC,mm10
-s3://ngi-igenomes/igenomes/Mus_musculus/UCSC/mm9/Sequence/WholeGenomeFasta/genome.fa,Mus_musculus/UCSC/mm9,Mus musculus,UCSC,mm9
-s3://ngi-igenomes/igenomes/Mycobacterium_tuberculosis_H37RV/Ensembl/H37Rv.EB1/Sequence/WholeGenomeFasta/genome.fa,Mycobacterium_tuberculosis_H37RV/Ensembl/H37Rv.EB1,Mycobacterium tuberculosis H37RV,Ensembl,H37Rv.EB1
-s3://ngi-igenomes/igenomes/Mycobacterium_tuberculosis_H37RV/NCBI/2001-09-07/Sequence/WholeGenomeFasta/genome.fa,Mycobacterium_tuberculosis_H37RV/NCBI/2001-09-07,Mycobacterium tuberculosis H37RV,NCBI,2001-09-07
-s3://ngi-igenomes/igenomes/Oryza_sativa_japonica/Ensembl/IRGSP-1.0/Sequence/WholeGenomeFasta/genome.fa,Oryza_sativa_japonica/Ensembl/IRGSP-1.0,Oryza sativa japonica,Ensembl,IRGSP-1.0
-s3://ngi-igenomes/igenomes/Oryza_sativa_japonica/Ensembl/MSU6/Sequence/WholeGenomeFasta/genome.fa,Oryza_sativa_japonica/Ensembl/MSU6,Oryza sativa japonica,Ensembl,MSU6
-s3://ngi-igenomes/igenomes/Pan_troglodytes/Ensembl/CHIMP2.1.4/Sequence/WholeGenomeFasta/genome.fa,Pan_troglodytes/Ensembl/CHIMP2.1.4,Pan troglodytes,Ensembl,CHIMP2.1.4
-s3://ngi-igenomes/igenomes/Pan_troglodytes/Ensembl/CHIMP2.1/Sequence/WholeGenomeFasta/genome.fa,Pan_troglodytes/Ensembl/CHIMP2.1,Pan troglodytes,Ensembl,CHIMP2.1
-s3://ngi-igenomes/igenomes/Pan_troglodytes/NCBI/build2.1/Sequence/WholeGenomeFasta/genome.fa,Pan_troglodytes/NCBI/build2.1,Pan troglodytes,NCBI,build2.1
-s3://ngi-igenomes/igenomes/Pan_troglodytes/NCBI/build3.1/Sequence/WholeGenomeFasta/genome.fa,Pan_troglodytes/NCBI/build3.1,Pan troglodytes,NCBI,build3.1
-s3://ngi-igenomes/igenomes/Pan_troglodytes/UCSC/panTro2/Sequence/WholeGenomeFasta/genome.fa,Pan_troglodytes/UCSC/panTro2,Pan troglodytes,UCSC,panTro2
-s3://ngi-igenomes/igenomes/Pan_troglodytes/UCSC/panTro3/Sequence/WholeGenomeFasta/genome.fa,Pan_troglodytes/UCSC/panTro3,Pan troglodytes,UCSC,panTro3
-s3://ngi-igenomes/igenomes/Pan_troglodytes/UCSC/panTro4/Sequence/WholeGenomeFasta/genome.fa,Pan_troglodytes/UCSC/panTro4,Pan troglodytes,UCSC,panTro4
-s3://ngi-igenomes/igenomes/PhiX/Illumina/RTA/Sequence/WholeGenomeFasta/genome.fa,PhiX/Illumina/RTA,PhiX,Illumina,RTA
-s3://ngi-igenomes/igenomes/PhiX/NCBI/1993-04-28/Sequence/WholeGenomeFasta/genome.fa,PhiX/NCBI/1993-04-28,PhiX,NCBI,1993-04-28
-s3://ngi-igenomes/igenomes/Pseudomonas_aeruginosa_PAO1/NCBI/2000-09-13/Sequence/WholeGenomeFasta/genome.fa,Pseudomonas_aeruginosa_PAO1/NCBI/2000-09-13,Pseudomonas aeruginosa PAO1,NCBI,2000-09-13
-s3://ngi-igenomes/igenomes/Rattus_norvegicus/Ensembl/RGSC3.4/Sequence/WholeGenomeFasta/genome.fa,Rattus_norvegicus/Ensembl/RGSC3.4,Rattus norvegicus,Ensembl,RGSC3.4
-s3://ngi-igenomes/igenomes/Rattus_norvegicus/Ensembl/Rnor_5.0/Sequence/WholeGenomeFasta/genome.fa,Rattus_norvegicus/Ensembl/Rnor_5.0,Rattus norvegicus,Ensembl,Rnor_5.0
-s3://ngi-igenomes/igenomes/Rattus_norvegicus/Ensembl/Rnor_6.0/Sequence/WholeGenomeFasta/genome.fa,Rattus_norvegicus/Ensembl/Rnor_6.0,Rattus norvegicus,Ensembl,Rnor_6.0
-s3://ngi-igenomes/igenomes/Rattus_norvegicus/NCBI/RGSC_v3.4/Sequence/WholeGenomeFasta/genome.fa,Rattus_norvegicus/NCBI/RGSC_v3.4,Rattus norvegicus,NCBI,RGSC_v3.4
-s3://ngi-igenomes/igenomes/Rattus_norvegicus/NCBI/Rnor_5.0/Sequence/WholeGenomeFasta/genome.fa,Rattus_norvegicus/NCBI/Rnor_5.0,Rattus norvegicus,NCBI,Rnor_5.0
-s3://ngi-igenomes/igenomes/Rattus_norvegicus/NCBI/Rnor_6.0/Sequence/WholeGenomeFasta/genome.fa,Rattus_norvegicus/NCBI/Rnor_6.0,Rattus norvegicus,NCBI,Rnor_6.0
-s3://ngi-igenomes/igenomes/Rattus_norvegicus/UCSC/rn4/Sequence/WholeGenomeFasta/genome.fa,Rattus_norvegicus/UCSC/rn4,Rattus norvegicus,UCSC,rn4
-s3://ngi-igenomes/igenomes/Rattus_norvegicus/UCSC/rn5/Sequence/WholeGenomeFasta/genome.fa,Rattus_norvegicus/UCSC/rn5,Rattus norvegicus,UCSC,rn5
-s3://ngi-igenomes/igenomes/Rattus_norvegicus/UCSC/rn6/Sequence/WholeGenomeFasta/genome.fa,Rattus_norvegicus/UCSC/rn6,Rattus norvegicus,UCSC,rn6
-s3://ngi-igenomes/igenomes/Rhodobacter_sphaeroides_2.4.1/NCBI/2005-10-07/Sequence/WholeGenomeFasta/genome.fa,Rhodobacter_sphaeroides_2.4.1/NCBI/2005-10-07,Rhodobacter sphaeroides 2.4.1,NCBI,2005-10-07
-s3://ngi-igenomes/igenomes/Saccharomyces_cerevisiae/Ensembl/EF2/Sequence/WholeGenomeFasta/genome.fa,Saccharomyces_cerevisiae/Ensembl/EF2,Saccharomyces cerevisiae,Ensembl,EF2
-s3://ngi-igenomes/igenomes/Saccharomyces_cerevisiae/Ensembl/EF3/Sequence/WholeGenomeFasta/genome.fa,Saccharomyces_cerevisiae/Ensembl/EF3,Saccharomyces cerevisiae,Ensembl,EF3
-s3://ngi-igenomes/igenomes/Saccharomyces_cerevisiae/Ensembl/EF4/Sequence/WholeGenomeFasta/genome.fa,Saccharomyces_cerevisiae/Ensembl/EF4,Saccharomyces cerevisiae,Ensembl,EF4
-s3://ngi-igenomes/igenomes/Saccharomyces_cerevisiae/Ensembl/R64-1-1/Sequence/WholeGenomeFasta/genome.fa,Saccharomyces_cerevisiae/Ensembl/R64-1-1,Saccharomyces cerevisiae,Ensembl,R64-1-1
-s3://ngi-igenomes/igenomes/Saccharomyces_cerevisiae/NCBI/build2.1/Sequence/WholeGenomeFasta/genome.fa,Saccharomyces_cerevisiae/NCBI/build2.1,Saccharomyces cerevisiae,NCBI,build2.1
-s3://ngi-igenomes/igenomes/Saccharomyces_cerevisiae/NCBI/build3.1/Sequence/WholeGenomeFasta/genome.fa,Saccharomyces_cerevisiae/NCBI/build3.1,Saccharomyces cerevisiae,NCBI,build3.1
-s3://ngi-igenomes/igenomes/Saccharomyces_cerevisiae/UCSC/sacCer2/Sequence/WholeGenomeFasta/genome.fa,Saccharomyces_cerevisiae/UCSC/sacCer2,Saccharomyces cerevisiae,UCSC,sacCer2
-s3://ngi-igenomes/igenomes/Saccharomyces_cerevisiae/UCSC/sacCer3/Sequence/WholeGenomeFasta/genome.fa,Saccharomyces_cerevisiae/UCSC/sacCer3,Saccharomyces cerevisiae,UCSC,sacCer3
-s3://ngi-igenomes/igenomes/Schizosaccharomyces_pombe/Ensembl/EF1/Sequence/WholeGenomeFasta/genome.fa,Schizosaccharomyces_pombe/Ensembl/EF1,Schizosaccharomyces pombe,Ensembl,EF1
-s3://ngi-igenomes/igenomes/Schizosaccharomyces_pombe/Ensembl/EF2/Sequence/WholeGenomeFasta/genome.fa,Schizosaccharomyces_pombe/Ensembl/EF2,Schizosaccharomyces pombe,Ensembl,EF2
-s3://ngi-igenomes/igenomes/Sorangium_cellulosum_So_ce_56/NCBI/2007-11-27/Sequence/WholeGenomeFasta/genome.fa,Sorangium_cellulosum_So_ce_56/NCBI/2007-11-27,Sorangium cellulosum So ce 56,NCBI,2007-11-27
-s3://ngi-igenomes/igenomes/Sorghum_bicolor/Ensembl/Sbi1/Sequence/WholeGenomeFasta/genome.fa,Sorghum_bicolor/Ensembl/Sbi1,Sorghum bicolor,Ensembl,Sbi1
-s3://ngi-igenomes/igenomes/Staphylococcus_aureus_NCTC_8325/NCBI/2006-02-13/Sequence/WholeGenomeFasta/genome.fa,Staphylococcus_aureus_NCTC_8325/NCBI/2006-02-13,Staphylococcus aureus NCTC 8325,NCBI,2006-02-13
-s3://ngi-igenomes/igenomes/Sus_scrofa/Ensembl/Sscrofa10.2/Sequence/WholeGenomeFasta/genome.fa,Sus_scrofa/Ensembl/Sscrofa10.2,Sus scrofa,Ensembl,Sscrofa10.2
-s3://ngi-igenomes/igenomes/Sus_scrofa/Ensembl/Sscrofa9/Sequence/WholeGenomeFasta/genome.fa,Sus_scrofa/Ensembl/Sscrofa9,Sus scrofa,Ensembl,Sscrofa9
-s3://ngi-igenomes/igenomes/Sus_scrofa/NCBI/Sscrofa10.2/Sequence/WholeGenomeFasta/genome.fa,Sus_scrofa/NCBI/Sscrofa10.2,Sus scrofa,NCBI,Sscrofa10.2
-s3://ngi-igenomes/igenomes/Sus_scrofa/NCBI/Sscrofa10/Sequence/WholeGenomeFasta/genome.fa,Sus_scrofa/NCBI/Sscrofa10,Sus scrofa,NCBI,Sscrofa10
-s3://ngi-igenomes/igenomes/Sus_scrofa/NCBI/Sscrofa9.2/Sequence/WholeGenomeFasta/genome.fa,Sus_scrofa/NCBI/Sscrofa9.2,Sus scrofa,NCBI,Sscrofa9.2
-s3://ngi-igenomes/igenomes/Sus_scrofa/UCSC/susScr2/Sequence/WholeGenomeFasta/genome.fa,Sus_scrofa/UCSC/susScr2,Sus scrofa,UCSC,susScr2
-s3://ngi-igenomes/igenomes/Sus_scrofa/UCSC/susScr3/Sequence/WholeGenomeFasta/genome.fa,Sus_scrofa/UCSC/susScr3,Sus scrofa,UCSC,susScr3
-s3://ngi-igenomes/igenomes/Zea_mays/Ensembl/AGPv2/Sequence/WholeGenomeFasta/genome.fa,Zea_mays/Ensembl/AGPv2,Zea mays,Ensembl,AGPv2
-s3://ngi-igenomes/igenomes/Zea_mays/Ensembl/AGPv3/Sequence/WholeGenomeFasta/genome.fa,Zea_mays/Ensembl/AGPv3,Zea mays,Ensembl,AGPv3
+fasta,name,organism,source,genome_assembly,synonyms
+s3://ngi-igenomes/igenomes/Arabidopsis_thaliana/Ensembl/TAIR10/Sequence/WholeGenomeFasta/genome.fa,TAIR10-igenomes-ensembl,Arabidopsis thaliana,Ensembl,TAIR10,Arabidopsis_thaliana/Ensembl/TAIR10
+s3://ngi-igenomes/igenomes/Arabidopsis_thaliana/Ensembl/TAIR9/Sequence/WholeGenomeFasta/genome.fa,TAIR9-igenomes-ensembl,Arabidopsis thaliana,Ensembl,TAIR9,Arabidopsis_thaliana/Ensembl/TAIR9
+s3://ngi-igenomes/igenomes/Arabidopsis_thaliana/NCBI/TAIR10/Sequence/WholeGenomeFasta/genome.fa,TAIR10-igenomes-ncbi,Arabidopsis thaliana,NCBI,TAIR10,Arabidopsis_thaliana/NCBI/TAIR10
+s3://ngi-igenomes/igenomes/Arabidopsis_thaliana/NCBI/build9.1/Sequence/WholeGenomeFasta/genome.fa,arabidopsis_thaliana-build9.1-igenomes-ncbi,Arabidopsis thaliana,NCBI,build9.1,Arabidopsis_thaliana/NCBI/build9.1
+s3://ngi-igenomes/igenomes/Bacillus_cereus_ATCC_10987/NCBI/2004-02-13/Sequence/WholeGenomeFasta/genome.fa,bacillus_cereus_atcc_10987-2004-02-13-igenomes-ncbi,Bacillus cereus ATCC 10987,NCBI,2004-02-13,Bacillus_cereus_ATCC_10987/NCBI/2004-02-13
+s3://ngi-igenomes/igenomes/Bacillus_subtilis_168/Ensembl/EB2/Sequence/WholeGenomeFasta/genome.fa,bacillus_subtilis_168-EB2-igenomes-ensembl,Bacillus subtilis 168,Ensembl,EB2,Bacillus_subtilis_168/Ensembl/EB2
+s3://ngi-igenomes/igenomes/Bos_taurus/Ensembl/Btau_4.0/Sequence/WholeGenomeFasta/genome.fa,Btau_4.0-igenomes-ensembl,Bos taurus,Ensembl,Btau_4.0,Bos_taurus/Ensembl/Btau_4.0
+s3://ngi-igenomes/igenomes/Bos_taurus/Ensembl/UMD3.1/Sequence/WholeGenomeFasta/genome.fa,UMD3.1-igenomes-ensembl,Bos taurus,Ensembl,UMD3.1,Bos_taurus/Ensembl/UMD3.1
+s3://ngi-igenomes/igenomes/Bos_taurus/NCBI/Btau_4.2/Sequence/WholeGenomeFasta/genome.fa,Btau_4.2-igenomes-ncbi,Bos taurus,NCBI,Btau_4.2,Bos_taurus/NCBI/Btau_4.2
+s3://ngi-igenomes/igenomes/Bos_taurus/NCBI/Btau_4.6.1/Sequence/WholeGenomeFasta/genome.fa,Btau_4.6.1-igenomes-ncbi,Bos taurus,NCBI,Btau_4.6.1,Bos_taurus/NCBI/Btau_4.6.1
+s3://ngi-igenomes/igenomes/Bos_taurus/NCBI/UMD_3.1.1/Sequence/WholeGenomeFasta/genome.fa,UMD_3.1.1-igenomes-ncbi,Bos taurus,NCBI,UMD_3.1.1,Bos_taurus/NCBI/UMD_3.1.1
+s3://ngi-igenomes/igenomes/Bos_taurus/NCBI/UMD_3.1/Sequence/WholeGenomeFasta/genome.fa,UMD_3.1-igenomes-ncbi,Bos taurus,NCBI,UMD_3.1,Bos_taurus/NCBI/UMD_3.1
+s3://ngi-igenomes/igenomes/Bos_taurus/UCSC/bosTau4/Sequence/WholeGenomeFasta/genome.fa,bosTau4-igenomes-ucsc,Bos taurus,UCSC,bosTau4,Bos_taurus/UCSC/bosTau4
+s3://ngi-igenomes/igenomes/Bos_taurus/UCSC/bosTau6/Sequence/WholeGenomeFasta/genome.fa,bosTau6-igenomes-ucsc,Bos taurus,UCSC,bosTau6,Bos_taurus/UCSC/bosTau6
+s3://ngi-igenomes/igenomes/Bos_taurus/UCSC/bosTau7/Sequence/WholeGenomeFasta/genome.fa,bosTau7-igenomes-ucsc,Bos taurus,UCSC,bosTau7,Bos_taurus/UCSC/bosTau7
+s3://ngi-igenomes/igenomes/Bos_taurus/UCSC/bosTau8/Sequence/WholeGenomeFasta/genome.fa,bosTau8-igenomes-ucsc,Bos taurus,UCSC,bosTau8,Bos_taurus/UCSC/bosTau8
+s3://ngi-igenomes/igenomes/Caenorhabditis_elegans/Ensembl/WBcel215/Sequence/WholeGenomeFasta/genome.fa,WBcel215-igenomes-ensembl,Caenorhabditis elegans,Ensembl,WBcel215,Caenorhabditis_elegans/Ensembl/WBcel215
+s3://ngi-igenomes/igenomes/Caenorhabditis_elegans/Ensembl/WBcel235/Sequence/WholeGenomeFasta/genome.fa,WBcel235-igenomes-ensembl,Caenorhabditis elegans,Ensembl,WBcel235,Caenorhabditis_elegans/Ensembl/WBcel235
+s3://ngi-igenomes/igenomes/Caenorhabditis_elegans/Ensembl/WS210/Sequence/WholeGenomeFasta/genome.fa,WS210-igenomes-ensembl,Caenorhabditis elegans,Ensembl,WS210,Caenorhabditis_elegans/Ensembl/WS210
+s3://ngi-igenomes/igenomes/Caenorhabditis_elegans/Ensembl/WS220/Sequence/WholeGenomeFasta/genome.fa,WS220-igenomes-ensembl,Caenorhabditis elegans,Ensembl,WS220,Caenorhabditis_elegans/Ensembl/WS220
+s3://ngi-igenomes/igenomes/Caenorhabditis_elegans/NCBI/WS190/Sequence/WholeGenomeFasta/genome.fa,WS190-igenomes-ncbi,Caenorhabditis elegans,NCBI,WS190,Caenorhabditis_elegans/NCBI/WS190
+s3://ngi-igenomes/igenomes/Caenorhabditis_elegans/NCBI/WS195/Sequence/WholeGenomeFasta/genome.fa,WS195-igenomes-ncbi,Caenorhabditis elegans,NCBI,WS195,Caenorhabditis_elegans/NCBI/WS195
+s3://ngi-igenomes/igenomes/Caenorhabditis_elegans/UCSC/ce10/Sequence/WholeGenomeFasta/genome.fa,ce10-igenomes-ucsc,Caenorhabditis elegans,UCSC,ce10,Caenorhabditis_elegans/UCSC/ce10
+s3://ngi-igenomes/igenomes/Caenorhabditis_elegans/UCSC/ce6/Sequence/WholeGenomeFasta/genome.fa,ce6-igenomes-ucsc,Caenorhabditis elegans,UCSC,ce6,Caenorhabditis_elegans/UCSC/ce6
+s3://ngi-igenomes/igenomes/Canis_familiaris/Ensembl/BROADD2/Sequence/WholeGenomeFasta/genome.fa,BROADD2-igenomes-ensembl,Canis familiaris,Ensembl,BROADD2,Canis_familiaris/Ensembl/BROADD2
+s3://ngi-igenomes/igenomes/Canis_familiaris/Ensembl/CanFam3.1/Sequence/WholeGenomeFasta/genome.fa,CanFam3.1-igenomes-ensembl,Canis familiaris,Ensembl,CanFam3.1,Canis_familiaris/Ensembl/CanFam3.1
+s3://ngi-igenomes/igenomes/Canis_familiaris/NCBI/build2.1/Sequence/WholeGenomeFasta/genome.fa,canis_familiaris-build2.1-igenomes-ncbi,Canis familiaris,NCBI,CanFam2.0,Canis_familiaris/NCBI/build2.1
+s3://ngi-igenomes/igenomes/Canis_familiaris/NCBI/build3.1/Sequence/WholeGenomeFasta/genome.fa,canis_familiaris-build3.1-igenomes-ncbi,Canis familiaris,NCBI,CanFam3.1,Canis_familiaris/NCBI/build3.1
+s3://ngi-igenomes/igenomes/Canis_familiaris/UCSC/canFam2/Sequence/WholeGenomeFasta/genome.fa,canFam2-igenomes-ucsc,Canis familiaris,UCSC,canFam2,Canis_familiaris/UCSC/canFam2
+s3://ngi-igenomes/igenomes/Canis_familiaris/UCSC/canFam3/Sequence/WholeGenomeFasta/genome.fa,canFam3-igenomes-ucsc,Canis familiaris,UCSC,canFam3,Canis_familiaris/UCSC/canFam3
+s3://ngi-igenomes/igenomes/Danio_rerio/Ensembl/GRCz10/Sequence/WholeGenomeFasta/genome.fa,GRCz10-igenomes-ensembl,Danio rerio,Ensembl,GRCz10,Danio_rerio/Ensembl/GRCz10
+s3://ngi-igenomes/igenomes/Danio_rerio/Ensembl/Zv9/Sequence/WholeGenomeFasta/genome.fa,Zv9-igenomes-ensembl,Danio rerio,Ensembl,Zv9,Danio_rerio/Ensembl/Zv9
+s3://ngi-igenomes/igenomes/Danio_rerio/NCBI/GRCz10/Sequence/WholeGenomeFasta/genome.fa,GRCz10-igenomes-ncbi,Danio rerio,NCBI,GRCz10,Danio_rerio/NCBI/GRCz10
+s3://ngi-igenomes/igenomes/Danio_rerio/NCBI/Zv9/Sequence/WholeGenomeFasta/genome.fa,Zv9-igenomes-ncbi,Danio rerio,NCBI,Zv9,Danio_rerio/NCBI/Zv9
+s3://ngi-igenomes/igenomes/Danio_rerio/UCSC/danRer10/Sequence/WholeGenomeFasta/genome.fa,danRer10-igenomes-ucsc,Danio rerio,UCSC,danRer10,Danio_rerio/UCSC/danRer10
+s3://ngi-igenomes/igenomes/Danio_rerio/UCSC/danRer7/Sequence/WholeGenomeFasta/genome.fa,danRer7-igenomes-ucsc,Danio rerio,UCSC,danRer7,Danio_rerio/UCSC/danRer7
+s3://ngi-igenomes/igenomes/Drosophila_melanogaster/Ensembl/BDGP5.25/Sequence/WholeGenomeFasta/genome.fa,BDGP5.25-igenomes-ensembl,Drosophila melanogaster,Ensembl,BDGP5.25,Drosophila_melanogaster/Ensembl/BDGP5.25
+s3://ngi-igenomes/igenomes/Drosophila_melanogaster/Ensembl/BDGP5/Sequence/WholeGenomeFasta/genome.fa,BDGP5-igenomes-ensembl,Drosophila melanogaster,Ensembl,BDGP5,Drosophila_melanogaster/Ensembl/BDGP5
+s3://ngi-igenomes/igenomes/Drosophila_melanogaster/Ensembl/BDGP6/Sequence/WholeGenomeFasta/genome.fa,BDGP6-igenomes-ensembl,Drosophila melanogaster,Ensembl,BDGP6,Drosophila_melanogaster/Ensembl/BDGP6
+s3://ngi-igenomes/igenomes/Drosophila_melanogaster/NCBI/build4.1/Sequence/WholeGenomeFasta/genome.fa,drosophila_melanogaster-build4.1-igenomes-ncbi,Drosophila melanogaster,NCBI,BDGP5,Drosophila_melanogaster/NCBI/build4.1
+s3://ngi-igenomes/igenomes/Drosophila_melanogaster/NCBI/build5.3/Sequence/WholeGenomeFasta/genome.fa,drosophila_melanogaster-build5.3-igenomes-ncbi,Drosophila melanogaster,NCBI,BDGP5,Drosophila_melanogaster/NCBI/build5.3
+s3://ngi-igenomes/igenomes/Drosophila_melanogaster/NCBI/build5.41/Sequence/WholeGenomeFasta/genome.fa,drosophila_melanogaster-build5.41-igenomes-ncbi,Drosophila melanogaster,NCBI,BDGP5,Drosophila_melanogaster/NCBI/build5.41
+s3://ngi-igenomes/igenomes/Drosophila_melanogaster/NCBI/build5/Sequence/WholeGenomeFasta/genome.fa,drosophila_melanogaster-build5-igenomes-ncbi,Drosophila melanogaster,NCBI,BDGP5,Drosophila_melanogaster/NCBI/build5
+s3://ngi-igenomes/igenomes/Drosophila_melanogaster/UCSC/dm3/Sequence/WholeGenomeFasta/genome.fa,dm3-igenomes-ucsc,Drosophila melanogaster,UCSC,dm3,Drosophila_melanogaster/UCSC/dm3
+s3://ngi-igenomes/igenomes/Drosophila_melanogaster/UCSC/dm6/Sequence/WholeGenomeFasta/genome.fa,dm6-igenomes-ucsc,Drosophila melanogaster,UCSC,dm6,Drosophila_melanogaster/UCSC/dm6
+s3://ngi-igenomes/igenomes/Enterobacteriophage_lambda/NCBI/1993-04-28/Sequence/WholeGenomeFasta/genome.fa,enterobacteriophage_lambda-1993-04-28-igenomes-ncbi,Enterobacteriophage lambda,NCBI,1993-04-28,Enterobacteriophage_lambda/NCBI/1993-04-28
+s3://ngi-igenomes/igenomes/Equus_caballus/Ensembl/EquCab2/Sequence/WholeGenomeFasta/genome.fa,EquCab2-igenomes-ensembl,Equus caballus,Ensembl,EquCab2,Equus_caballus/Ensembl/EquCab2
+s3://ngi-igenomes/igenomes/Equus_caballus/NCBI/EquCab2.0/Sequence/WholeGenomeFasta/genome.fa,EquCab2.0-igenomes-ncbi,Equus caballus,NCBI,EquCab2.0,Equus_caballus/NCBI/EquCab2.0
+s3://ngi-igenomes/igenomes/Equus_caballus/UCSC/equCab2/Sequence/WholeGenomeFasta/genome.fa,equCab2-igenomes-ucsc,Equus caballus,UCSC,equCab2,Equus_caballus/UCSC/equCab2
+s3://ngi-igenomes/igenomes/Escherichia_coli_K_12_DH10B/Ensembl/EB1/Sequence/WholeGenomeFasta/genome.fa,escherichia_coli_k_12_dh10b-EB1-igenomes-ensembl,Escherichia coli K 12 DH10B,Ensembl,EB1,Escherichia_coli_K_12_DH10B/Ensembl/EB1
+s3://ngi-igenomes/igenomes/Escherichia_coli_K_12_DH10B/NCBI/2008-03-17/Sequence/WholeGenomeFasta/genome.fa,escherichia_coli_k_12_dh10b-2008-03-17-igenomes-ncbi,Escherichia coli K 12 DH10B,NCBI,2008-03-17,Escherichia_coli_K_12_DH10B/NCBI/2008-03-17
+s3://ngi-igenomes/igenomes/Escherichia_coli_K_12_MG1655/NCBI/2001-10-15/Sequence/WholeGenomeFasta/genome.fa,escherichia_coli_k_12_mg1655-2001-10-15-igenomes-ncbi,Escherichia coli K 12 MG1655,NCBI,2001-10-15,Escherichia_coli_K_12_MG1655/NCBI/2001-10-15
+s3://ngi-igenomes/igenomes/Gallus_gallus/Ensembl/Galgal4/Sequence/WholeGenomeFasta/genome.fa,Galgal4-igenomes-ensembl,Gallus gallus,Ensembl,Galgal4,Gallus_gallus/Ensembl/Galgal4
+s3://ngi-igenomes/igenomes/Gallus_gallus/Ensembl/WASHUC2/Sequence/WholeGenomeFasta/genome.fa,WASHUC2-igenomes-ensembl,Gallus gallus,Ensembl,WASHUC2,Gallus_gallus/Ensembl/WASHUC2
+s3://ngi-igenomes/igenomes/Gallus_gallus/NCBI/build2.1/Sequence/WholeGenomeFasta/genome.fa,gallus_gallus-build2.1-igenomes-ncbi,Gallus gallus,NCBI,WASHUC2,Gallus_gallus/NCBI/build2.1
+s3://ngi-igenomes/igenomes/Gallus_gallus/NCBI/build3.1/Sequence/WholeGenomeFasta/genome.fa,gallus_gallus-build3.1-igenomes-ncbi,Gallus gallus,NCBI,Galgal4,Gallus_gallus/NCBI/build3.1
+s3://ngi-igenomes/igenomes/Gallus_gallus/UCSC/galGal3/Sequence/WholeGenomeFasta/genome.fa,galGal3-igenomes-ucsc,Gallus gallus,UCSC,galGal3,Gallus_gallus/UCSC/galGal3
+s3://ngi-igenomes/igenomes/Gallus_gallus/UCSC/galGal4/Sequence/WholeGenomeFasta/genome.fa,galGal4-igenomes-ucsc,Gallus gallus,UCSC,galGal4,Gallus_gallus/UCSC/galGal4
+s3://ngi-igenomes/igenomes/Glycine_max/Ensembl/Gm01/Sequence/WholeGenomeFasta/genome.fa,Gm01-igenomes-ensembl,Glycine max,Ensembl,Gm01,Glycine_max/Ensembl/Gm01
+s3://ngi-igenomes/igenomes/Homo_sapiens/Ensembl/GRCh37/Sequence/WholeGenomeFasta/genome.fa,GRCh37-igenomes-ensembl,Homo sapiens,Ensembl,GRCh37,Homo_sapiens/Ensembl/GRCh37
+s3://ngi-igenomes/igenomes/Homo_sapiens/NCBI/GRCh38/Sequence/WholeGenomeFasta/genome.fa,GRCh38-igenomes-ncbi,Homo sapiens,NCBI,GRCh38,Homo_sapiens/NCBI/GRCh38
+s3://ngi-igenomes/igenomes/Homo_sapiens/NCBI/GRCh38Decoy/Sequence/WholeGenomeFasta/genome.fa,GRCh38-igenomes-decoy-ncbi,Homo sapiens,NCBI,GRCh38Decoy,Homo_sapiens/NCBI/GRCh38Decoy
+s3://ngi-igenomes/igenomes/Homo_sapiens/NCBI/build36.3/Sequence/WholeGenomeFasta/genome.fa,NCBI36-igenomes-build36-3-ncbi,Homo sapiens,NCBI,NCBI36,Homo_sapiens/NCBI/build36.3
+s3://ngi-igenomes/igenomes/Homo_sapiens/NCBI/build37.1/Sequence/WholeGenomeFasta/genome.fa,GRCh37-igenomes-build37-1-ncbi,Homo sapiens,NCBI,GRCh37,Homo_sapiens/NCBI/build37.1
+s3://ngi-igenomes/igenomes/Homo_sapiens/NCBI/build37.2/Sequence/WholeGenomeFasta/genome.fa,GRCh37-igenomes-build37-2-ncbi,Homo sapiens,NCBI,GRCh37,Homo_sapiens/NCBI/build37.2
+s3://ngi-igenomes/igenomes/Homo_sapiens/UCSC/CHM13/Sequence/WholeGenomeFasta/genome.fa,t2t-chm13,Homo sapiens,UCSC,CHM13,Homo_sapiens/UCSC/CHM13
+s3://ngi-igenomes/igenomes/Homo_sapiens/UCSC/hg18/Sequence/WholeGenomeFasta/genome.fa,hg18-igenomes-ucsc,Homo sapiens,UCSC,hg18,Homo_sapiens/UCSC/hg18
+s3://ngi-igenomes/igenomes/Homo_sapiens/UCSC/hg19/Sequence/WholeGenomeFasta/genome.fa,hg19-igenomes-ucsc,Homo sapiens,UCSC,hg19,Homo_sapiens/UCSC/hg19
+s3://ngi-igenomes/igenomes/Homo_sapiens/UCSC/hg38/Sequence/WholeGenomeFasta/genome.fa,hg38-igenomes-ucsc,Homo sapiens,UCSC,hg38,Homo_sapiens/UCSC/hg38
+s3://ngi-igenomes/igenomes/Macaca_mulatta/Ensembl/Mmul_1/Sequence/WholeGenomeFasta/genome.fa,Mmul_1-igenomes-ensembl,Macaca mulatta,Ensembl,Mmul_1,Macaca_mulatta/Ensembl/Mmul_1
+s3://ngi-igenomes/igenomes/Mus_musculus/Ensembl/GRCm38/Sequence/WholeGenomeFasta/genome.fa,GRCm38-igenomes-ensembl,Mus musculus,Ensembl,GRCm38,Mus_musculus/Ensembl/GRCm38
+s3://ngi-igenomes/igenomes/Mus_musculus/Ensembl/NCBIM37/Sequence/WholeGenomeFasta/genome.fa,NCBIM37-igenomes-ensembl,Mus musculus,Ensembl,NCBIM37,Mus_musculus/Ensembl/NCBIM37
+s3://ngi-igenomes/igenomes/Mus_musculus/NCBI/GRCm38/Sequence/WholeGenomeFasta/genome.fa,mm38-igenomes-ncbi,Mus musculus,NCBI,GRCm38,Mus_musculus/NCBI/GRCm38
+s3://ngi-igenomes/igenomes/Mus_musculus/NCBI/build37.1/Sequence/WholeGenomeFasta/genome.fa,mm37-build37.1-igenomes-ncbi,Mus musculus,NCBI,NCBIM37,Mus_musculus/NCBI/build37.1
+s3://ngi-igenomes/igenomes/Mus_musculus/NCBI/build37.2/Sequence/WholeGenomeFasta/genome.fa,mm37-build37.2-igenomes-ncbi,Mus musculus,NCBI,NCBIM37,Mus_musculus/NCBI/build37.2
+s3://ngi-igenomes/igenomes/Mus_musculus/UCSC/mm10/Sequence/WholeGenomeFasta/genome.fa,mm10-igenomes-ucsc,Mus musculus,UCSC,mm10,Mus_musculus/UCSC/mm10
+s3://ngi-igenomes/igenomes/Mus_musculus/UCSC/mm9/Sequence/WholeGenomeFasta/genome.fa,mm9-igenomes-ucsc,Mus musculus,UCSC,mm9,Mus_musculus/UCSC/mm9
+s3://ngi-igenomes/igenomes/Mycobacterium_tuberculosis_H37RV/Ensembl/H37Rv.EB1/Sequence/WholeGenomeFasta/genome.fa,H37Rv.EB1-igenomes-ensembl,Mycobacterium tuberculosis H37RV,Ensembl,H37Rv.EB1,Mycobacterium_tuberculosis_H37RV/Ensembl/H37Rv.EB1
+s3://ngi-igenomes/igenomes/Mycobacterium_tuberculosis_H37RV/NCBI/2001-09-07/Sequence/WholeGenomeFasta/genome.fa,mycobacterium_tuberculosis_h37rv-2001-09-07-igenomes-ncbi,Mycobacterium tuberculosis H37RV,NCBI,2001-09-07,Mycobacterium_tuberculosis_H37RV/NCBI/2001-09-07
+s3://ngi-igenomes/igenomes/Oryza_sativa_japonica/Ensembl/IRGSP-1.0/Sequence/WholeGenomeFasta/genome.fa,IRGSP-1.0-igenomes-ensembl,Oryza sativa japonica,Ensembl,IRGSP-1.0,Oryza_sativa_japonica/Ensembl/IRGSP-1.0
+s3://ngi-igenomes/igenomes/Oryza_sativa_japonica/Ensembl/MSU6/Sequence/WholeGenomeFasta/genome.fa,MSU6-igenomes-ensembl,Oryza sativa japonica,Ensembl,MSU6,Oryza_sativa_japonica/Ensembl/MSU6
+s3://ngi-igenomes/igenomes/Pan_troglodytes/Ensembl/CHIMP2.1.4/Sequence/WholeGenomeFasta/genome.fa,CHIMP2.1.4-igenomes-ensembl,Pan troglodytes,Ensembl,CHIMP2.1.4,Pan_troglodytes/Ensembl/CHIMP2.1.4
+s3://ngi-igenomes/igenomes/Pan_troglodytes/Ensembl/CHIMP2.1/Sequence/WholeGenomeFasta/genome.fa,CHIMP2.1-igenomes-ensembl,Pan troglodytes,Ensembl,CHIMP2.1,Pan_troglodytes/Ensembl/CHIMP2.1
+s3://ngi-igenomes/igenomes/Pan_troglodytes/NCBI/build2.1/Sequence/WholeGenomeFasta/genome.fa,pan_troglodytes-build2.1-igenomes-ncbi,Pan troglodytes,NCBI,build2.1,Pan_troglodytes/NCBI/build2.1
+s3://ngi-igenomes/igenomes/Pan_troglodytes/NCBI/build3.1/Sequence/WholeGenomeFasta/genome.fa,pan_troglodytes-build3.1-igenomes-ncbi,Pan troglodytes,NCBI,build3.1,Pan_troglodytes/NCBI/build3.1
+s3://ngi-igenomes/igenomes/Pan_troglodytes/UCSC/panTro2/Sequence/WholeGenomeFasta/genome.fa,panTro2-igenomes-ucsc,Pan troglodytes,UCSC,panTro2,Pan_troglodytes/UCSC/panTro2
+s3://ngi-igenomes/igenomes/Pan_troglodytes/UCSC/panTro3/Sequence/WholeGenomeFasta/genome.fa,panTro3-igenomes-ucsc,Pan troglodytes,UCSC,panTro3,Pan_troglodytes/UCSC/panTro3
+s3://ngi-igenomes/igenomes/Pan_troglodytes/UCSC/panTro4/Sequence/WholeGenomeFasta/genome.fa,panTro4-igenomes-ucsc,Pan troglodytes,UCSC,panTro4,Pan_troglodytes/UCSC/panTro4
+s3://ngi-igenomes/igenomes/PhiX/Illumina/RTA/Sequence/WholeGenomeFasta/genome.fa,phix-RTA-igenomes-illumina,PhiX,Illumina,RTA,PhiX/Illumina/RTA
+s3://ngi-igenomes/igenomes/PhiX/NCBI/1993-04-28/Sequence/WholeGenomeFasta/genome.fa,phix-1993-04-28-igenomes-ncbi,PhiX,NCBI,1993-04-28,PhiX/NCBI/1993-04-28
+s3://ngi-igenomes/igenomes/Pseudomonas_aeruginosa_PAO1/NCBI/2000-09-13/Sequence/WholeGenomeFasta/genome.fa,pseudomonas_aeruginosa_pao1-2000-09-13-igenomes-ncbi,Pseudomonas aeruginosa PAO1,NCBI,2000-09-13,Pseudomonas_aeruginosa_PAO1/NCBI/2000-09-13
+s3://ngi-igenomes/igenomes/Rattus_norvegicus/Ensembl/RGSC3.4/Sequence/WholeGenomeFasta/genome.fa,RGSC3.4-igenomes-ensembl,Rattus norvegicus,Ensembl,RGSC3.4,Rattus_norvegicus/Ensembl/RGSC3.4
+s3://ngi-igenomes/igenomes/Rattus_norvegicus/Ensembl/Rnor_5.0/Sequence/WholeGenomeFasta/genome.fa,Rnor_5.0-igenomes-ensembl,Rattus norvegicus,Ensembl,Rnor_5.0,Rattus_norvegicus/Ensembl/Rnor_5.0
+s3://ngi-igenomes/igenomes/Rattus_norvegicus/Ensembl/Rnor_6.0/Sequence/WholeGenomeFasta/genome.fa,Rnor_6.0-igenomes-ensembl,Rattus norvegicus,Ensembl,Rnor_6.0,Rattus_norvegicus/Ensembl/Rnor_6.0
+s3://ngi-igenomes/igenomes/Rattus_norvegicus/NCBI/RGSC_v3.4/Sequence/WholeGenomeFasta/genome.fa,RGSC_v3.4-igenomes-ncbi,Rattus norvegicus,NCBI,RGSC_v3.4,Rattus_norvegicus/NCBI/RGSC_v3.4
+s3://ngi-igenomes/igenomes/Rattus_norvegicus/NCBI/Rnor_5.0/Sequence/WholeGenomeFasta/genome.fa,Rnor_5.0-igenomes-ncbi,Rattus norvegicus,NCBI,Rnor_5.0,Rattus_norvegicus/NCBI/Rnor_5.0
+s3://ngi-igenomes/igenomes/Rattus_norvegicus/NCBI/Rnor_6.0/Sequence/WholeGenomeFasta/genome.fa,Rnor_6.0-igenomes-ncbi,Rattus norvegicus,NCBI,Rnor_6.0,Rattus_norvegicus/NCBI/Rnor_6.0
+s3://ngi-igenomes/igenomes/Rattus_norvegicus/UCSC/rn4/Sequence/WholeGenomeFasta/genome.fa,rn4-igenomes-ucsc,Rattus norvegicus,UCSC,rn4,Rattus_norvegicus/UCSC/rn4
+s3://ngi-igenomes/igenomes/Rattus_norvegicus/UCSC/rn5/Sequence/WholeGenomeFasta/genome.fa,rn5-igenomes-ucsc,Rattus norvegicus,UCSC,rn5,Rattus_norvegicus/UCSC/rn5
+s3://ngi-igenomes/igenomes/Rattus_norvegicus/UCSC/rn6/Sequence/WholeGenomeFasta/genome.fa,rn6-igenomes-ucsc,Rattus norvegicus,UCSC,rn6,Rattus_norvegicus/UCSC/rn6
+s3://ngi-igenomes/igenomes/Rhodobacter_sphaeroides_2.4.1/NCBI/2005-10-07/Sequence/WholeGenomeFasta/genome.fa,rhodobacter_sphaeroides_2.4.1-2005-10-07-igenomes-ncbi,Rhodobacter sphaeroides 2.4.1,NCBI,2005-10-07,Rhodobacter_sphaeroides_2.4.1/NCBI/2005-10-07
+s3://ngi-igenomes/igenomes/Saccharomyces_cerevisiae/Ensembl/EF2/Sequence/WholeGenomeFasta/genome.fa,saccharomyces_cerevisiae-EF2-igenomes-ensembl,Saccharomyces cerevisiae,Ensembl,EF2,Saccharomyces_cerevisiae/Ensembl/EF2
+s3://ngi-igenomes/igenomes/Saccharomyces_cerevisiae/Ensembl/EF3/Sequence/WholeGenomeFasta/genome.fa,saccharomyces_cerevisiae-EF3-igenomes-ensembl,Saccharomyces cerevisiae,Ensembl,EF3,Saccharomyces_cerevisiae/Ensembl/EF3
+s3://ngi-igenomes/igenomes/Saccharomyces_cerevisiae/Ensembl/EF4/Sequence/WholeGenomeFasta/genome.fa,saccharomyces_cerevisiae-EF4-igenomes-ensembl,Saccharomyces cerevisiae,Ensembl,EF4,Saccharomyces_cerevisiae/Ensembl/EF4
+s3://ngi-igenomes/igenomes/Saccharomyces_cerevisiae/Ensembl/R64-1-1/Sequence/WholeGenomeFasta/genome.fa,R64-1-1-igenomes-ensembl,Saccharomyces cerevisiae,Ensembl,R64-1-1,Saccharomyces_cerevisiae/Ensembl/R64-1-1
+s3://ngi-igenomes/igenomes/Saccharomyces_cerevisiae/NCBI/build2.1/Sequence/WholeGenomeFasta/genome.fa,saccharomyces_cerevisiae-build2.1-igenomes-ncbi,Saccharomyces cerevisiae,NCBI,build2.1,Saccharomyces_cerevisiae/NCBI/build2.1
+s3://ngi-igenomes/igenomes/Saccharomyces_cerevisiae/NCBI/build3.1/Sequence/WholeGenomeFasta/genome.fa,saccharomyces_cerevisiae-build3.1-igenomes-ncbi,Saccharomyces cerevisiae,NCBI,R64-1-1,Saccharomyces_cerevisiae/NCBI/build3.1
+s3://ngi-igenomes/igenomes/Saccharomyces_cerevisiae/UCSC/sacCer2/Sequence/WholeGenomeFasta/genome.fa,sacCer2-igenomes-ucsc,Saccharomyces cerevisiae,UCSC,sacCer2,Saccharomyces_cerevisiae/UCSC/sacCer2
+s3://ngi-igenomes/igenomes/Saccharomyces_cerevisiae/UCSC/sacCer3/Sequence/WholeGenomeFasta/genome.fa,sacCer3,Saccharomyces cerevisiae,UCSC,sacCer3,Saccharomyces_cerevisiae/UCSC/sacCer3
+s3://ngi-igenomes/igenomes/Schizosaccharomyces_pombe/Ensembl/EF1/Sequence/WholeGenomeFasta/genome.fa,schizosaccharomyces_pombe-EF1-igenomes-ensembl,Schizosaccharomyces pombe,Ensembl,EF1,Schizosaccharomyces_pombe/Ensembl/EF1
+s3://ngi-igenomes/igenomes/Schizosaccharomyces_pombe/Ensembl/EF2/Sequence/WholeGenomeFasta/genome.fa,schizosaccharomyces_pombe-EF2-igenomes-ensembl,Schizosaccharomyces pombe,Ensembl,EF2,Schizosaccharomyces_pombe/Ensembl/EF2
+s3://ngi-igenomes/igenomes/Sorangium_cellulosum_So_ce_56/NCBI/2007-11-27/Sequence/WholeGenomeFasta/genome.fa,sorangium_cellulosum_so_ce_56-2007-11-27-igenomes-ncbi,Sorangium cellulosum So ce 56,NCBI,2007-11-27,Sorangium_cellulosum_So_ce_56/NCBI/2007-11-27
+s3://ngi-igenomes/igenomes/Sorghum_bicolor/Ensembl/Sbi1/Sequence/WholeGenomeFasta/genome.fa,Sbi1-igenomes-ensembl,Sorghum bicolor,Ensembl,Sbi1,Sorghum_bicolor/Ensembl/Sbi1
+s3://ngi-igenomes/igenomes/Staphylococcus_aureus_NCTC_8325/NCBI/2006-02-13/Sequence/WholeGenomeFasta/genome.fa,staphylococcus_aureus_nctc_8325-2006-02-13-igenomes-ncbi,Staphylococcus aureus NCTC 8325,NCBI,2006-02-13,Staphylococcus_aureus_NCTC_8325/NCBI/2006-02-13
+s3://ngi-igenomes/igenomes/Sus_scrofa/Ensembl/Sscrofa10.2/Sequence/WholeGenomeFasta/genome.fa,Sscrofa10.2-igenomes-ensembl,Sus scrofa,Ensembl,Sscrofa10.2,Sus_scrofa/Ensembl/Sscrofa10.2
+s3://ngi-igenomes/igenomes/Sus_scrofa/Ensembl/Sscrofa9/Sequence/WholeGenomeFasta/genome.fa,Sscrofa9-igenomes-ensembl,Sus scrofa,Ensembl,Sscrofa9,Sus_scrofa/Ensembl/Sscrofa9
+s3://ngi-igenomes/igenomes/Sus_scrofa/NCBI/Sscrofa10.2/Sequence/WholeGenomeFasta/genome.fa,Sscrofa10.2-igenomes-ncbi,Sus scrofa,NCBI,Sscrofa10.2,Sus_scrofa/NCBI/Sscrofa10.2
+s3://ngi-igenomes/igenomes/Sus_scrofa/NCBI/Sscrofa10/Sequence/WholeGenomeFasta/genome.fa,Sscrofa10-igenomes-ncbi,Sus scrofa,NCBI,Sscrofa10,Sus_scrofa/NCBI/Sscrofa10
+s3://ngi-igenomes/igenomes/Sus_scrofa/NCBI/Sscrofa9.2/Sequence/WholeGenomeFasta/genome.fa,Sscrofa9.2-igenomes-ncbi,Sus scrofa,NCBI,Sscrofa9.2,Sus_scrofa/NCBI/Sscrofa9.2
+s3://ngi-igenomes/igenomes/Sus_scrofa/UCSC/susScr2/Sequence/WholeGenomeFasta/genome.fa,susScr2-igenomes-ucsc,Sus scrofa,UCSC,susScr2,Sus_scrofa/UCSC/susScr2
+s3://ngi-igenomes/igenomes/Sus_scrofa/UCSC/susScr3/Sequence/WholeGenomeFasta/genome.fa,susScr3-igenomes-ucsc,Sus scrofa,UCSC,susScr3,Sus_scrofa/UCSC/susScr3
+s3://ngi-igenomes/igenomes/Zea_mays/Ensembl/AGPv2/Sequence/WholeGenomeFasta/genome.fa,AGPv2-igenomes-ensembl,Zea mays,Ensembl,AGPv2,Zea_mays/Ensembl/AGPv2
+s3://ngi-igenomes/igenomes/Zea_mays/Ensembl/AGPv3/Sequence/WholeGenomeFasta/genome.fa,AGPv3-igenomes-ensembl,Zea mays,Ensembl,AGPv3,Zea_mays/Ensembl/AGPv3

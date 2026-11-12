@@ -3,8 +3,9 @@ aliases:
   - drosophila_melanogaster_ENSEMBL_release_81
 
 description: |
-  Drosophila melanogaster reference assembly BDGP6, sourced from Ensembl
-  (release 81).
+  Drosophila melanogaster assembly BDGP6 (Release 6) from Ensembl release 81,
+  all 1,870 top-level sequences. Chromosome arms are named 2L, 2R, 3L, 3R, 4, X
+  and Y, and the mitochondrion dmel_mitochondrion_genome.
 
 organism:
   scientific_name: Drosophila melanogaster
@@ -20,7 +21,8 @@ fasta:
     sha256: compute_on_registration
 
 seqcol:
-  compute: true
+  digest: TSJSrC0E3MMXRtQzW_lF_aJ08ehU1E-Q
+  length: 1870
 
 build:
   store: plantcore

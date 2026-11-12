@@ -3,8 +3,8 @@ aliases:
   - NCBI36
 
 description: |
-  The NCBI36 reference sequence from UCSC. The individual chromosome
-  files were concatenated prior to the asset building.
+  UCSC hg18 (NCBI36): chromosomes chr1-chr22, chrX, chrY and chrM, plus
+  unlocalized (_random) and four alternate haplotype (_hap) sequences.
 
 organism:
   scientific_name: Homo sapiens

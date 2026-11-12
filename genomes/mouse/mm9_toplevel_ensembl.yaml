@@ -1,6 +1,6 @@
 name: mm9_toplevel_ensembl
 aliases:
-  - GRCm39-toplevel-65-ensembl
+  - NCBIM37-toplevel-65-ensembl
 
 description: |
   ensembl NCBIM37.65 top level

@@ -3,7 +3,9 @@ aliases:
   - GRCm38
 
 description: |
-  The GCA_000001635.5 seqs_for_alignment_pipelines from NCBI.
+  GRCm38 (mm10) no-alt analysis set from NCBI (GCA_000001635.5, GRCm38.p3):
+  chromosomes chr1-chr19, chrX, chrY and chrM plus unlocalized and unplaced
+  scaffolds, with no alternate loci; UCSC-style names (chr1, chrM).
 
 organism:
   scientific_name: Mus musculus

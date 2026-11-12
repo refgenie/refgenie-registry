@@ -140,11 +140,16 @@ a matching `asset_classes/<name>.yaml`, then open a PR titled
 
 ### Request a build
 
-If a genome and recipe both exist but the asset hasn't been built yet, raise the
-genome's `build.tier` (or add the asset to its `build.add` list) in
-`genomes/<organism>/<assembly>.yaml` and open a PR. The tier **is** the build
-queue: `pep/samples.csv` is generated from the genome list, so the next nightly
-picks the change up. See [Adding a genome](./CONTRIBUTING.md#adding-a-genome).
+If a genome is listed but the asset you need hasn't been built, open an
+[asset request](https://github.com/refgenie/refgenie-registry/issues/new?template=asset_request.yml).
+A maintainer handles each request by hand: raise the genome's `build.tier` (or
+add the asset to its `build.add` list) in `genomes/<organism>/<assembly>.yaml`,
+add a `<genome>_fa` key to [`pep/config.yaml`](pep/config.yaml) and stage the
+FASTA if the genome has none yet, run `build/generate_samples.py`, and open a PR.
+
+You can open that PR yourself instead. The tier **is** the build queue:
+`pep/samples.csv` is generated from the genome list, so the next nightly picks
+the change up. See [Adding a genome](./CONTRIBUTING.md#adding-a-genome).
 
 ### Suggest a species name
 

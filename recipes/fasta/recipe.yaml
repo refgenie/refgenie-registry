@@ -1,10 +1,11 @@
 name: fasta
 version: 0.1.0
 output_asset_class: fasta
+# Built by exporting the genome from its RefgetStore, so the genome must be
+# initialized there first (refgenie genome init).
 description:
-  DNA sequences in the FASTA format, exported from RefgetStore. Includes
-  FASTA index (.fai) and chromosome sizes file. Requires genome to be
-  initialized in RefgetStore first (via refgenie genome init).
+  The genome's DNA sequence as a FASTA file, with its index (.fai) and a
+  chromosome sizes file. Most other assets of a genome are built from it.
 input_files: null
 input_params: null
 input_assets: null

@@ -1,7 +1,7 @@
 name: mm38_p1_ena
 aliases:
-  - GRCm39-ena-03
-  - GRCm39-ena-02
+  - GRCm38-ena-03
+  - GRCm38-ena-02
 
 description: |
   ref genome hosted on ENA Genome Reference Consortium Mouse Build 38 patch release 1 (GRCm38.p1)

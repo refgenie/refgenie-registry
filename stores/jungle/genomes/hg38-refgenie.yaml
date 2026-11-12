@@ -1,6 +1,6 @@
 # FHR override for the hg38-refgenie row (see stores/build_fhr.py). This row
 # currently WINS the digest it shares with hs38 / GRCh38-igenomes-ncbi /
-# hg38-noALT-noHLA-noDecoy-broad / GRCh38.p14-fasta-no-alt-analysis, so this
+# hg38-noALT-noHLA-noDecoy-broad / GRCh38-fasta-no-alt-analysis, so this
 # override is the one that lands; hs38.yaml mirrors it for reorder-safety.
 assemblySource: ncbi
 documentation: >-

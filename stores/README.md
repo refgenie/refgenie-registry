@@ -301,7 +301,8 @@ already arrives as an alias) or `version`. Common names are not in FHR; they com
 `build.py` registered) and writes that collection's sidecar. Fields come from three
 sources, least to most specific:
 
-1. **The CSV derivation**, name → `genome`; organism → `taxon` (scientific name + taxon
+1. **The CSV derivation**, name → `genome`; synonyms (split on `;`) →
+   `genomeSynonym`; organism → `taxon` (scientific name + taxon
    URI); name/genome_assembly/source → a one-sentence `documentation`; source →
    assemblySource; accession → accessionID and `version` (the accession's version number,
    `GCA_000001405.15` → `"15"`), plus assemblyLevel from the script's static per-accession
@@ -313,8 +314,10 @@ sources, least to most specific:
    cannot find: the fix is a PR to the list, never a guess. An accession missing from
    `ASSEMBLY_LEVELS` just gets no assemblyLevel.
 2. **The curated registry record**, if a `genomes/**/*.yaml` names this store in its
-   `build.store` and matches the row (on `name` or `accession`), the row's fields come from
-   that genome's `pep/metadata/<genome>.fhr.json` instead. That sidecar is generated from
+   `build.store` and matches the row (on `name` or `accession`), or pins the row's
+   collection digest in `seqcol.digest` (whatever its store), the row's fields come from
+   that genome's `pep/metadata/<genome>.fhr.json` instead. So every store that holds a
+   pinned genome publishes its curated description. That sidecar is generated from
    the genome YAML through the one mapping module (`tools/genome_to_fhr.py`), so the store's
    published metadata and the registry catalog's are the same record. Rows with a curated
    record are exempt from the organism validation. Pass `--no-registry` to derive every

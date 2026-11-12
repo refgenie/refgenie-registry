@@ -1,0 +1,32 @@
+name: homo_sapiens_ENSEMBL_release_81
+aliases:
+  - GRCh38-81-ensembl
+
+description: |
+  GRCh38 from Ensembl release 81, all 493 top-level sequences: chromosomes 1-22,
+  X, Y and MT, 169 unplaced and unlocalized scaffolds, and 299 haplotype and
+  patch sequences (named like CHR_HG126_PATCH). Chromosome Y is 54,106,423 bp,
+  shorter than the 57,227,415 bp of other GRCh38 copies.
+
+organism:
+  scientific_name: Homo sapiens
+  taxon_id: 9606
+
+assembly:
+  source: Ensembl
+
+fasta:
+  checksum:
+    sha256: compute_on_registration
+
+seqcol:
+  digest: EpUZgR6X_cEphzw9gboSc86rumZpXthc
+  length: 493
+
+build:
+  store: plantcore
+  tier: store_only
+
+metadata:
+  added: 2026-11-11
+  added_by: nsheff

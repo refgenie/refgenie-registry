@@ -22,3 +22,7 @@
 - name: recipe-contribution
   color: "bfdadc"
   description: "PR adds or modifies asset recipes"
+
+- name: asset-request
+  color: "5319e7"
+  description: "Issue asks for assets to be built for a listed genome"

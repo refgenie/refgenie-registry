@@ -3,8 +3,9 @@ aliases:
   - schizosaccharomyces_pombe_ENSEMBL_fungi_release_28
 
 description: |
-  Schizosaccharomyces pombe reference assembly ASM294v2, sourced from Ensembl
-  Fungi (release 28).
+  Schizosaccharomyces pombe reference assembly ASM294v2 from Ensembl Fungi
+  release 28. Chromosomes are named I, II and III, the mitochondrion MT, plus
+  two 20 kb sequences, MTR and AB325691.
 
 organism:
   scientific_name: Schizosaccharomyces pombe
@@ -20,7 +21,8 @@ fasta:
     sha256: compute_on_registration
 
 seqcol:
-  compute: true
+  digest: vEsFJ8XMkzwm1TzsHjzwRx7zCxc_HZC_
+  length: 6
 
 build:
   store: plantcore

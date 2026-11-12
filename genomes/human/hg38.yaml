@@ -3,7 +3,9 @@ aliases:
   - GRCh38
 
 description: |
-  The GCA_000001405.15 GRCh38_no_alt_analysis_set from NCBI.
+  GRCh38 (hg38) no-alt analysis set from NCBI (GCA_000001405.15): primary
+  chromosomes, unplaced and unlocalized scaffolds, chrM and chrEBV, with no ALT
+  haplotypes; UCSC-style names (chr1, chrM).
 
 organism:
   scientific_name: Homo sapiens

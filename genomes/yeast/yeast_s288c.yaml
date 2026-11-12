@@ -1,10 +1,11 @@
 name: yeast_s288c
 aliases:
   - saccharomyces_cerevisiae_ENSEMBL_release_81
+  - R64-1-1
 
 description: |
-  Saccharomyces cerevisiae strain S288C reference assembly R64-1-1, sourced from
-  Ensembl (release 81). The original refgenie canary genome.
+  Saccharomyces cerevisiae strain S288C reference genome, assembly R64-1-1, from
+  Ensembl release 81. Chromosomes are named I to XVI and Mito.
 
 organism:
   scientific_name: Saccharomyces cerevisiae
@@ -20,7 +21,8 @@ fasta:
     sha256: compute_on_registration
 
 seqcol:
-  compute: true
+  digest: ia9g4Myony-xxLsSc7eQOC_NdClGgPGu
+  length: 17
 
 build:
   store: plantcore

@@ -1,7 +1,11 @@
 name: hg38_chr22
 
 description: |
-  Includes only chromosome 22 from the hg38 reference. Useful for testing.
+  A small test genome, not a whole chromosome: 60 sequences (42.7 Mb) from NCBI
+  GRCh38.p12 chromosome 22. One 274,643 bp sequence is named chr22; the other 59
+  are RefSeq chromosome 22 scaffolds (44), alternate loci (9) and patches (6),
+  named like ref|NT_167238.1|. It does not contain the full GRCh38 chr22
+  (50,818,468 bp). Use it for testing only.
 
 organism:
   scientific_name: Homo sapiens

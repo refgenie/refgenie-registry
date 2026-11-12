@@ -1,0 +1,35 @@
+name: mm39_genomic
+aliases:
+  - GRCm39-fasta-genomic
+
+description: |
+  GRCm39 as published by NCBI RefSeq (GCF_000001635.27), with RefSeq accession
+  names such as NC_000067.7.
+
+organism:
+  scientific_name: Mus musculus
+  taxon_id: 10090
+
+assembly:
+  source: NCBI
+  accession: GCF_000001635.27
+  level: chromosome
+
+fasta:
+  sources:
+    - provider: NCBI
+      url: https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/001/635/GCF_000001635.27_GRCm39/GCF_000001635.27_GRCm39_genomic.fna.gz
+  checksum:
+    sha256: compute_on_registration
+
+seqcol:
+  digest: fXjBOJjw-DYsSnnfDBl5vtZu1N7lbnUl
+  length: 61
+
+build:
+  store: jungle
+  tier: store_only
+
+metadata:
+  added: 2026-11-11
+  added_by: nsheff

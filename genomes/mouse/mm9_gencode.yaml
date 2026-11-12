@@ -1,6 +1,6 @@
 name: mm9_gencode
 aliases:
-  - GRCm39-all-M1-gencode
+  - NCBIM37-all-M1-gencode
 
 description: |
   gencode all M1 mm9 corresponds to Ensembl version 65

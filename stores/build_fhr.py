@@ -12,6 +12,8 @@ and given an FHR (FAIR Headers Reference genome) sidecar --
     schemaVersion  <- the same constants as YAML-derived records
                       (tools/genome_to_fhr.py)
     genome         <- name (the genome's own name; left out when empty)
+    genomeSynonym  <- synonyms (other names search should find, split on ';';
+                      left out when empty)
     taxon          <- {name: the species list key the organism resolves to
                       (the NCBI scientific name; see below), uri: identifiers.org
                       taxonomy URI of the list's taxon_id}
@@ -28,8 +30,9 @@ Species common names are not FHR fields; they ship in ``species.json`` (below).
 Curated registry records (the PRIMARY source)
 ---------------------------------------------
 A row whose collection has a ``genomes/**/*.yaml`` record in this repo, matched
-on the row's ``name`` or ``accession``, against genomes whose ``build.store`` is
-this store, takes its FHR fields from that genome's CURATED sidecar,
+on the row's ``name`` or ``accession`` against genomes whose ``build.store`` is
+this store, or on its collection digest against any genome that pins one, takes
+its FHR fields from that genome's CURATED sidecar,
 ``pep/metadata/<genome>.fhr.json``, rather than from the CSV columns. That
 sidecar is generated from the genome YAML by ``build/generate_genome_metadata.py``
 through the one mapping module (``tools/genome_to_fhr.py``), so the store's
@@ -164,6 +167,9 @@ def fhr_fields_for_row(row, species):
     name = (row.get("name") or "").strip()
     if name:
         fields["genome"] = name
+    synonyms = [s.strip() for s in (row.get("synonyms") or "").split(";") if s.strip()]
+    if synonyms:
+        fields["genomeSynonym"] = synonyms
     fields["taxon"] = {
         "name": sci,
         "uri": f"https://identifiers.org/taxonomy:{entry['taxon_id']}",
@@ -236,8 +242,10 @@ def load_registry_records(store, genomes_dir=GENOMES_DIR, metadata_dir=REGISTRY_
     model organisms in ``plantref`` those are different strings for the same
     sequence, and only ``pep/config.yaml`` links them.
 
-    Only genomes whose ``build.store`` names this store are included, so one
-    store's curated metadata can never leak into another's sidecars.
+    Name, accession and path keys come only from genomes whose ``build.store``
+    names this store. A genome that pins ``seqcol.digest`` also gives a
+    ``("digest", digest)`` key in every store: the digest names the exact
+    collection, so every store that holds it publishes the same description.
     """
     import json
 
@@ -253,20 +261,26 @@ def load_registry_records(store, genomes_dir=GENOMES_DIR, metadata_dir=REGISTRY_
             data = yaml.safe_load(f)
         if not isinstance(data, dict) or not data.get("name"):
             continue
-        if ((data.get("build") or {}).get("store")) != store:
+        pinned = (data.get("seqcol") or {}).get("digest")
+        own = ((data.get("build") or {}).get("store")) == store
+        if not (own or pinned):
             continue
         sidecar = Path(metadata_dir) / f"{data['name']}.fhr.json"
         if not sidecar.is_file():
-            print(
-                f"NOTE: genome {data['name']} claims store {store!r} but has no "
-                f"curated sidecar at {sidecar}; run "
-                f"build/generate_genome_metadata.py.",
-                file=sys.stderr,
-            )
+            if own:
+                print(
+                    f"NOTE: genome {data['name']} claims store {store!r} but has no "
+                    f"curated sidecar at {sidecar}; run "
+                    f"build/generate_genome_metadata.py.",
+                    file=sys.stderr,
+                )
             continue
         with open(sidecar) as f:
             fields = json.load(f)
-        pinned = (data.get("seqcol") or {}).get("digest")
+        if pinned:
+            records[("digest", pinned)] = fields
+        if not own:
+            continue
         keys = {data["name"], _slug(data["name"])}
         # An accession names an assembly, not one FASTA of it: match on it only
         # when the YAML pins no seqcol digest (same rule as genome_rows.py).
@@ -290,13 +304,14 @@ def load_registry_records(store, genomes_dir=GENOMES_DIR, metadata_dir=REGISTRY_
 def registry_record_for_row(row, records, digest=None):
     """The curated record for a sources.csv row, or None.
 
-    ``digest`` is the row's collection digest, when known; a bare file-name
-    match needs it to equal the genome YAML's pinned digest.
+    ``digest`` is the row's collection digest, when known; it matches a genome
+    YAML that pins it, and a bare file-name match needs it to equal that digest.
     """
     tokens = (row.get("fasta") or "").split()
     keys = [
         (row.get("name") or "").strip(),
         _slug(row.get("name") or ""),
+        ("digest", digest) if digest else None,
         (row.get("accession") or "").strip(),
         *tokens,
     ]

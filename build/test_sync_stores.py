@@ -74,3 +74,18 @@ def test_catalog_store_is_not_a_source_store():
     assert "plantcore" in ss.published_stores()
     assert "plantsup" not in ss.published_stores()  # unpublished: too big for the server
     assert "plantref" not in ss.published_stores()  # retired
+
+
+def test_a_genome_staged_from_another_rows_file_is_an_error():
+    """The mm39 bug: the YAML's row is the RefSeq file, the nightly stages Ensembl's."""
+    rows = [{"fasta": "ensembl/primary.fa.gz", "name": "mm39_primary_ensembl"},
+            {"fasta": "ncbi/GCF_genomic.fna.gz", "name": "mm39"}]
+    genomes = [ss.genome_rows.Genome("mm39", {"build": {"store": "s"}}, Path("mm39.yaml"))]
+    staged = {"mm39": "ensembl/primary.fa.gz"}
+    found = ss.genome_rows.match_store(genomes, rows, {}, staged)
+    assert ss.staged_mismatches(found, rows, staged) == [
+        ("mm39", "stages ensembl/primary.fa.gz (row mm39_primary_ensembl) but its row "
+                 "is mm39 (ncbi/GCF_genomic.fna.gz)")]
+    rows[0]["name"], rows[1]["name"] = "mm39", "mm39_genomic"
+    found = ss.genome_rows.match_store(genomes, rows, {}, staged)
+    assert ss.staged_mismatches(found, rows, staged) == []

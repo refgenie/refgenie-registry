@@ -1,6 +1,6 @@
 name: hg38_full_analysis
 aliases:
-  - GRCh38.p14-fasta-full-analysis
+  - GRCh38-fasta-full-analysis
 
 description: |
   GCA_000001405.15_GRCh38_full_analysis_set from NCBI

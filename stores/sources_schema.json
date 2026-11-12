@@ -14,7 +14,8 @@
       },
       "name": {
         "type": "string",
-        "description": "A short, human-readable identifier for this sequence collection. Used for display and cross-referencing but does not affect the content-derived seqcol digest. Examples: 'hg38', 'GRCh38 primary assembly', 'GENCODE v49 human transcriptome'."
+        "pattern": "^[^/]*$",
+        "description": "A short, human-readable identifier for this sequence collection. Registered as an alias, so it may not contain '/' (refgenie reads that as a genome/asset separator). Used for display and cross-referencing but does not affect the content-derived seqcol digest. Examples: 'hg38', 'GRCh38 primary assembly', 'GENCODE v49 human transcriptome'."
       },
       "organism": {
         "type": "string",
@@ -35,6 +36,10 @@
       "accession": {
         "type": "string",
         "description": "The INSDC/RefSeq accession identifier for this assembly, following the GCA (GenBank) or GCF (RefSeq) format. Provides an unambiguous, globally unique link to the assembly record at NCBI. Examples: 'GCF_000001405.40', 'GCA_009914755.4'."
+      },
+      "synonyms": {
+        "type": "string",
+        "description": "Other names for this collection that search should find but that are not aliases, separated by ';'. Published as the FHR genomeSynonym of a row with no genome YAML. Example: the iGenomes path 'Saccharomyces_cerevisiae/UCSC/sacCer3'."
       },
       "group": {
         "type": "string",

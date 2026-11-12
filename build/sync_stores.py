@@ -99,7 +99,8 @@ def coverage() -> tuple:
       uncovered  genomes with no row (or an ambiguous one), with the reason
       unaligned  (genome, row name) where a row was found but its `name` is
                  not the genome's name; tools/align_store_names.py fixes these
-      errors     genomes whose seqcol.digest contradicts the store
+      errors     genomes whose seqcol.digest contradicts the store, or whose
+                 staged FASTA (pep/config.yaml) is not the file of their row
     Matching rules are in stores/genome_rows.py.
     """
     slugs = set(store_slugs())
@@ -114,10 +115,9 @@ def coverage() -> tuple:
     report = {}
     for slug in sorted(declared):
         rows = store_rows(slug)
+        staged = genome_rows.staged_fastas(slug, PEP_CONFIG, STORES_DIR)
         found = genome_rows.match_store(
-            declared[slug], rows,
-            genome_rows.store_row_digests(slug, rows),
-            genome_rows.staged_fastas(slug, PEP_CONFIG, STORES_DIR),
+            declared[slug], rows, genome_rows.store_row_digests(slug, rows), staged
         )
         report[slug] = {
             "genomes": [g.name for g in declared[slug]],
@@ -127,9 +127,26 @@ def coverage() -> tuple:
                 (name, genome_rows.row_name(rows[i]))
                 for name, (i, rule) in sorted(found.matches.items()) if rule != "name"
             ],
-            "errors": found.errors,
+            "errors": found.errors + staged_mismatches(found, rows, staged),
         }
     return report, unknown
+
+
+def staged_mismatches(found, rows: list, staged: dict) -> list:
+    """(genome, message) for each genome the nightly builds from another row's file.
+
+    The build reads the staged FASTA, while the catalog describes the genome's
+    row, so a mismatch builds one collection under another's name.
+    """
+    errors = []
+    for name, (i, _rule) in sorted(found.matches.items()):
+        path, row = staged.get(name), rows[i]
+        if path and path != genome_rows.row_fasta(row):
+            holder = next((genome_rows.row_name(r) for r in rows
+                           if genome_rows.row_fasta(r) == path), "none")
+            errors.append((name, f"stages {path} (row {holder}) but its row is "
+                                 f"{genome_rows.row_name(row)} ({genome_rows.row_fasta(row)})"))
+    return errors
 
 
 # --------------------------------------------------------------------------

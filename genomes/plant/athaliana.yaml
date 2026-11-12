@@ -3,8 +3,9 @@ aliases:
   - arabidopsis_thaliana_COL-0_TAIR10
 
 description: |
-  Arabidopsis thaliana ecotype Col-0 reference assembly TAIR10, sourced from
-  TAIR / Ensembl Plants.
+  Arabidopsis thaliana ecotype Col-0 reference assembly TAIR10 (GCA_000001735.1).
+  Chromosomes are named 1 to 5, and the organelle genomes chloroplast and
+  mitochondrial.
 
 organism:
   scientific_name: Arabidopsis thaliana
@@ -20,7 +21,8 @@ fasta:
     sha256: compute_on_registration
 
 seqcol:
-  compute: true
+  digest: AHyVecap0miRdrz6ZffizkZQUOJJBO2c
+  length: 7
 
 build:
   store: plantcore

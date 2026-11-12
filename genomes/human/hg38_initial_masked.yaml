@@ -1,9 +1,11 @@
-name: hg38_p14_masked
+name: hg38_initial_masked
 aliases:
-  - hg38-p14-masked-ucsc
+  - hg38-initial-masked-ucsc
 
 description: |
-  hg38 masked from UCSC patch 14
+  UCSC hg38 (GRCh38), the initial 2013 release with 261 ALT haplotypes (455
+  sequences), hard-masked: repeats are replaced with N. Despite the p14 file
+  name, it holds no p14 patch sequences. UCSC-style names (chr1, chrM).
 
 organism:
   scientific_name: Homo sapiens
