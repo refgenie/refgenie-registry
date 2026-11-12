@@ -6,7 +6,8 @@ aliases:
   - hs38DH
 
 description: |
-  GRCh38 with ALT decoy and HLA genes (not recommended)
+  GRCh38 with ALT contigs, decoys and HLA alleles (hs38DH, as in bwa-kit and
+  the GATK bundle). Use it only with an ALT-aware aligner; otherwise use hg38.
 
 organism:
   scientific_name: Homo sapiens
