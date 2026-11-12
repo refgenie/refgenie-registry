@@ -1,0 +1,13 @@
+genome: Saccharomyces_cerevisiae/UCSC/sacCer3
+genome_digest: 8zSJ7M2oerPcCKc8x310hjyfB5u8SJNJ
+recipe: fasta
+recipe_version: 0.1.0
+asset_name: default
+asset_digest: 018fc4f624c45988ce353ec5219e15efb80b4217273e807110e26173bd310a73
+build:
+  status: complete
+  timestamp: '2026-11-12T08:25:11Z'
+files:
+- chrom_sizes
+- fai
+- fasta
