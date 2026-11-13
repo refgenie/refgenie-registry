@@ -1,0 +1,12 @@
+genome: Saccharomyces_cerevisiae/UCSC/sacCer3
+genome_digest: 8zSJ7M2oerPcCKc8x310hjyfB5u8SJNJ
+recipe: bwa_index
+recipe_version: 0.2.1
+asset_name: 0.7.19
+asset_digest: b041572dc9e552bf7f227bcf027f6bcebf93b2b052d5cecae8bca4ff5575b3aa
+build:
+  status: complete
+  timestamp: '2026-11-13T08:18:35Z'
+files:
+- bwa_index
+- version

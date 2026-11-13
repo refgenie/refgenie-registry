@@ -1,0 +1,12 @@
+genome: Saccharomyces_cerevisiae/UCSC/sacCer3
+genome_digest: 8zSJ7M2oerPcCKc8x310hjyfB5u8SJNJ
+recipe: hisat2_index
+recipe_version: 0.0.3
+asset_name: 2.2.2
+asset_digest: 2d62d5acf9302f3a87901696f5f617ede17a849d18adf136ead5014e57d2e224
+build:
+  status: complete
+  timestamp: '2026-11-13T08:18:47Z'
+files:
+- hisat2_index
+- version

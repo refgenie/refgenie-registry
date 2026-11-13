@@ -1,0 +1,12 @@
+genome: Saccharomyces_cerevisiae/UCSC/sacCer3
+genome_digest: 8zSJ7M2oerPcCKc8x310hjyfB5u8SJNJ
+recipe: bowtie2_index
+recipe_version: 0.0.2
+asset_name: 2.5.5
+asset_digest: 4f4b9b7f10a843fc8cfb6fb728f798b70743f8dc133c576fdea9185e5bdcc841
+build:
+  status: complete
+  timestamp: '2026-11-13T08:18:51Z'
+files:
+- bowtie2_index
+- version

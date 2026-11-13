@@ -1,0 +1,12 @@
+genome: GRCh38-fasta-no-alt-plus-hs38d1
+genome_digest: 7hP7E8o-q6H8qcqMHBEIYdbAK49PoEUZ
+recipe: bowtie2_index
+recipe_version: 0.0.2
+asset_name: 2.5.5
+asset_digest: 10c98c28cf0c055d1cced7ea1a052a01023f099e045a5dbce4444644cf5ab2a0
+build:
+  status: complete
+  timestamp: '2026-11-04T04:21:22Z'
+files:
+- bowtie2_index
+- version
