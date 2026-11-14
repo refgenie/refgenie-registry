@@ -5,7 +5,8 @@ aliases:
 
 description: |
   Saccharomyces cerevisiae strain S288C reference genome, assembly R64-1-1, from
-  Ensembl release 81. Chromosomes are named I to XVI and Mito.
+  Ensembl release 81. Chromosomes are named I to XVI and Mito. The same 17
+  sequences, in the same order, as sacCer3, which uses UCSC names (chrI, chrM).
 
 organism:
   scientific_name: Saccharomyces cerevisiae
