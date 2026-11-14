@@ -16,6 +16,7 @@ Checks:
     asset-classes       jsonschema check of asset_classes/*.yaml
     recipe-cross-check  tools/validate_recipe.py --no-url-check recipes/*/recipe.yaml
     recipe-validation   tools/validate_recipe.py <changed recipes>
+    sources-validation  stores/validate_sources.py <changed sources.csv>
     build-test          .github/scripts/run-build.sh snakefile
 """
 
@@ -155,6 +156,7 @@ def main():
 
     changed_genomes = [f for f in changed if f.startswith("genomes/") and f.endswith((".yaml", ".yml"))]
     changed_recipes = [f for f in changed if f.startswith("recipes/") and f.endswith("recipe.yaml")]
+    changed_sources = [f for f in changed if f.startswith("stores/") and f.endswith("sources.csv")]
     genome_meta_changed = any(
         f in GENOME_META_PATHS or f.startswith("tools/") for f in changed
     )
@@ -252,6 +254,23 @@ def main():
         )
     else:
         record("recipe-validation", "skipped", "no recipe files changed")
+
+    # --- store sources (schema, and names that contradict the assembly) ----
+    if changed_sources:
+        code, parts = 0, []
+        for path in changed_sources:
+            c, out = run([sys.executable, "stores/validate_sources.py", path])
+            code |= c
+            parts.append(out)
+        record(
+            "sources-validation",
+            "pass" if code == 0 else "fail",
+            f"{len(changed_sources)} sources.csv file(s) validated"
+            if code == 0 else "sources.csv validation failed",
+            "\n".join(parts),
+        )
+    else:
+        record("sources-validation", "skipped", "no sources.csv files changed")
 
     # --- build test -------------------------------------------------------
     if build_relevant:
