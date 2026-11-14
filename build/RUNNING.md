@@ -35,17 +35,18 @@ Key paths (from `infra/rivanna/env.sh`):
 | DB config | `.../catalog/refgenie_build_db_config.yaml` |
 | Asset S3 prefix | `s3://refgenie/assets` |
 | Working `aws` (host aws is broken) | `/apps/software/standard/core/awscli/2.35.13/bin` |
-| Deployed `refgenie` (editable) | `/home/ns5bc/.local/bin/refgenie` → `~/deploy/refgenie1` |
+| Deployed `refgenie` (editable) | `~/envs/refgenie-build/bin/refgenie` → `~/deploy/refgenie` |
 
 ## Prerequisites
 
 1. **The code behavior you're testing must be deployed.** The build/stage/push
-   logic is in **refgenie1**, run from `~/deploy/refgenie1` (editable install, so
-   updating the source updates the running CLI, no reinstall). Put it on the
-   commit you want:
+   logic is in **refgenie**, run from `~/deploy/refgenie` (editable install in
+   `~/envs/refgenie-build`, so updating the source updates the running CLI). Put
+   it on the release or commit you want:
    ```
-   cd ~/deploy/refgenie1 && git fetch origin && git merge --ff-only origin/<branch>
+   cd ~/deploy/refgenie && git fetch --tags origin && git checkout v1.0.0a2
    ```
+   A release that changes dependencies needs `bash infra/rivanna/setup_env.sh`.
    `refgenie-registry` changes (`run_builds.sh`, recipes, `update_index.py`) come
    from the **checkout you run from** (below).
 

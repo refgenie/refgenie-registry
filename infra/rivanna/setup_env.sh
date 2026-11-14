@@ -40,16 +40,14 @@ set -euo pipefail
 
 MINIFORGE_MODULE="miniforge/26.9.4"
 VENV="${REFGENIE_VENV:-$HOME/envs/refgenie-build}"
-REFGENIE_SRC="${REFGENIE_SRC:-$HOME/deploy/refgenie1}"
-REFGET_SRC="${REFGET_SRC:-$HOME/deploy/refget}"
+REFGENIE_SRC="${REFGENIE_SRC:-$HOME/deploy/refgenie}"
 
 REBUILD=0
 [[ "${1:-}" == "--rebuild" ]] && REBUILD=1
 
 echo "===== refgenie build env  $(date) ====="
 echo "  venv:    $VENV"
-echo "  refgenie1: $REFGENIE_SRC"
-echo "  refget:    $REFGET_SRC"
+echo "  refgenie: $REFGENIE_SRC"
 
 # shellcheck disable=SC1091
 source /etc/profile.d/modules.sh
@@ -57,9 +55,7 @@ module load "$MINIFORGE_MODULE"
 BASE_PY="$(command -v python3)"
 echo "  base python: $BASE_PY ($($BASE_PY --version 2>&1))"
 
-for d in "$REFGENIE_SRC" "$REFGET_SRC"; do
-    [[ -d "$d" ]] || { echo "MISSING source dir: $d" >&2; exit 1; }
-done
+[[ -d "$REFGENIE_SRC" ]] || { echo "MISSING source dir: $REFGENIE_SRC" >&2; exit 1; }
 
 if [[ "$REBUILD" == "1" && -d "$VENV" ]]; then
     echo "  --rebuild: removing $VENV"
@@ -78,22 +74,13 @@ source "$VENV/bin/activate"
 [[ "$VIRTUAL_ENV" == "$VENV" ]] || { echo "venv activation failed" >&2; exit 1; }
 python -m pip install --quiet --upgrade pip wheel
 
-# ORDER MATTERS.
-#
-# refgenie1's pyproject declares gtars and refget as ordinary PyPI dependencies,
-# so installing it pulls published wheels of both. gtars stays the published
-# wheel (0.10.0+ has the store write lock; the check below confirms it). refget
-# is overwritten with its local checkout so the build tracks unreleased changes.
-# So: refgenie1 first, then refget.
-echo "  [1/3] refgenie1 (editable, with snakemake extra) ..."
+# refgenie (a git checkout at a release tag, editable) brings published gtars
+# and refget wheels as ordinary dependencies.
+echo "  [1/2] refgenie (editable, with snakemake extra) ..."
 python -m pip install --quiet -e "${REFGENIE_SRC}[snakemake]"
 
-echo "  [2/3] snakemake SLURM executor plugin ..."
+echo "  [2/2] snakemake SLURM executor plugin ..."
 python -m pip install --quiet 'snakemake-executor-plugin-slurm'
-
-echo "  [3/3] refget (editable, local branch, overrides the PyPI wheel) ..."
-python -m pip install --quiet --force-reinstall --no-deps -e "$REFGET_SRC"
-
 
 echo
 echo "===== verification ====="
@@ -111,21 +98,19 @@ check() {  # check <label> <python expr> <expected substring>
 
 # Every NON-EDITABLE import must resolve INSIDE the venv. If any of these
 # reports a path under ~/.local, isolation is broken and we are back to the
-# shared environment. refgenie and refget are deliberately excluded here: they
-# are editable installs and resolve to their source trees by design, which the
-# two dedicated checks below assert instead.
-for m in gtars snakemake peppy; do
+# shared environment. refgenie is excluded: it is an editable install and
+# resolves to its source tree by design, which the check below asserts.
+for m in gtars refget snakemake peppy; do
     check "$m resolves in venv" \
         "import $m; print($m.__file__)" "$VENV"
 done
 check "refgenie is the deploy tree" "import refgenie; print(refgenie.__file__)" "$REFGENIE_SRC"
-check "refget is the deploy tree"   "import refget; print(refget.__file__)"   "$REFGET_SRC"
 
 # ...and that the editable install is registered in THIS venv, not inherited
 # from ~/.local. The source path alone cannot tell those apart: ~/.local also
 # had editable installs pointing at the same deploy trees, which is exactly the
 # ambiguity that let the shared environment masquerade as a working one.
-for m in refgenie refget; do
+for m in refgenie; do
     check "$m dist metadata is in venv" \
         "from importlib.metadata import distribution; print(distribution('$m')._path)" "$VENV"
 done

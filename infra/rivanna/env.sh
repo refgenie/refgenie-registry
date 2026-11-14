@@ -30,7 +30,7 @@ export REFGENIE_ASSET_S3="${REFGENIE_ASSET_S3:-s3://refgenie/assets}"
 
 # Publish-catalog artifact (metadata for api.refgenie.org). The nightly runs
 # `refgenie catalog-export` and uploads the artifact here; the server imports
-# it from the matching public https URL (REFGENIE_CATALOG_URL in refgenie1
+# it from the matching public https URL (REFGENIE_CATALOG_URL in refgenie
 # deployment/task_defs/primary.json). REFGENIE_ASSET_HTTPS must be the public
 # https face of REFGENIE_ASSET_S3, download links are minted from it.
 export REFGENIE_CATALOG_S3="${REFGENIE_CATALOG_S3:-s3://refgenie/catalog}"
@@ -94,7 +94,7 @@ export APPTAINER_TMPDIR=/tmp
 # Literal path (no $VAR) so yoke's env_files parser does not mangle it.
 export REFGENIE_BUILD_REPORTS_DIR=/project/shefflab/brickyard/results_pipeline/refgenie/build_reports
 
-# Absolute path to the refgenie (refgenie1) entry point used by the build rules.
+# Absolute path to the refgenie entry point used by the build rules.
 # run_builds.sh substitutes it into the generated Snakefile, so each SLURM build
 # job runs this exact binary whatever its PATH.
 #
@@ -142,8 +142,8 @@ export SNAKEMAKE_BIN=/home/ns5bc/envs/refgenie-build/bin/snakemake
 # run_builds.sh handles REFGENIE_AWS_BINDIR.
 export REFGENIE_VENV=/home/ns5bc/envs/refgenie-build
 
-# Persistent refgenie1 build catalog (SQLite) + its DB config. This is
-# refgenie1's durable metadata store that drives the build->stage->push
+# Persistent refgenie build catalog (SQLite) + its DB config. This is
+# refgenie's durable metadata store that drives the build->stage->push
 # lifecycle; it MUST persist across nightly runs, not be wiped. Co-locate it on
 # brickyard next to the genome store and the genome_init sentinels it must stay
 # consistent with (a nightly git pull/clean on the mobot host would blow away
