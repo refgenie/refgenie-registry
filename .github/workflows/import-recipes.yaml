@@ -44,9 +44,10 @@ jobs:
         run: |
           python -m pip install --upgrade pip
           pip install pytest pyyaml
-          # refgenie1 (package name "refgenie", v1.x) provides the loader API
-          # and the build system.
-          pip install "refgenie @ git+https://github.com/refgenie/refgenie1.git"
+          # refgenie 1.x provides the loader API and the build system.
+          # Naming a pre-release lets pip pick refgenie alphas without
+          # allowing pre-release versions of its dependencies.
+          pip install "refgenie>=1.0.0a2"
 
       - name: Run loader test (load + Snakefile generation)
         run: python -m pytest tools/test_import_recipes.py -v
