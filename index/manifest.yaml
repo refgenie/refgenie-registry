@@ -1,5 +1,129 @@
-updated: '2026-11-08T11:07:22Z'
+updated: '2026-11-15T11:48:55Z'
 assets:
+  GRCh37:
+    bowtie2_index:
+      status: complete
+      recipe_version: 0.0.2
+      built: '2026-11-04T19:14:48Z'
+      files: 2
+    bwa_index:
+      status: complete
+      recipe_version: 0.2.1
+      built: '2026-11-04T19:12:06Z'
+      files: 2
+    fasta:
+      status: complete
+      recipe_version: 0.1.0
+      built: '2026-11-04T18:02:31Z'
+      files: 3
+    fasta_index:
+      status: complete
+      recipe_version: 1.1.1
+      built: '2026-11-04T18:08:17Z'
+      files: 2
+    hisat2_index:
+      status: complete
+      recipe_version: 0.0.3
+      built: '2026-11-04T18:47:10Z'
+      files: 2
+    suffixerator_index:
+      status: complete
+      recipe_version: 0.0.2
+      built: '2026-11-04T18:49:40Z'
+      files: 2
+  GRCh38:
+    bowtie2_index:
+      status: complete
+      recipe_version: 0.0.2
+      built: '2026-08-07T14:52:59Z'
+      files: 2
+    bwa_index:
+      status: complete
+      recipe_version: 0.2.1
+      built: '2026-08-07T13:59:46Z'
+      files: 2
+    fasta:
+      status: complete
+      recipe_version: 0.1.0
+      built: '2026-08-07T13:01:50Z'
+      files: 3
+    fasta_index:
+      status: complete
+      recipe_version: 1.1.1
+      built: '2026-08-07T13:04:45Z'
+      files: 2
+    hisat2_index:
+      status: complete
+      recipe_version: 0.0.3
+      built: '2026-08-07T14:12:45Z'
+      files: 2
+    suffixerator_index:
+      status: complete
+      recipe_version: 0.0.2
+      built: '2026-08-07T13:50:11Z'
+      files: 2
+  GRCh38-fasta-no-alt-analysis:
+    bowtie2_index:
+      status: complete
+      recipe_version: 0.0.2
+      built: '2026-08-07T14:52:59Z'
+      files: 2
+    bwa_index:
+      status: complete
+      recipe_version: 0.2.1
+      built: '2026-08-07T13:59:46Z'
+      files: 2
+    fasta:
+      status: complete
+      recipe_version: 0.1.0
+      built: '2026-08-07T13:01:50Z'
+      files: 3
+    fasta_index:
+      status: complete
+      recipe_version: 1.1.1
+      built: '2026-08-07T13:04:45Z'
+      files: 2
+    hisat2_index:
+      status: complete
+      recipe_version: 0.0.3
+      built: '2026-08-07T14:12:45Z'
+      files: 2
+    suffixerator_index:
+      status: complete
+      recipe_version: 0.0.2
+      built: '2026-08-07T13:50:11Z'
+      files: 2
+  GRCh38-fasta-no-alt-plus-hs38d1:
+    bowtie2_index:
+      status: complete
+      recipe_version: 0.0.2
+      built: '2026-11-04T04:21:22Z'
+      files: 2
+    bwa_index:
+      status: complete
+      recipe_version: 0.2.1
+      built: '2026-11-04T02:47:17Z'
+      files: 2
+    fasta:
+      status: complete
+      recipe_version: 0.1.0
+      built: '2026-11-03T23:12:05Z'
+      files: 3
+    fasta_index:
+      status: complete
+      recipe_version: 1.1.1
+      built: '2026-11-04T01:59:07Z'
+      files: 2
+    hisat2_index:
+      status: complete
+      recipe_version: 0.0.3
+      built: '2026-11-04T03:22:12Z'
+      files: 2
+    suffixerator_index:
+      status: complete
+      recipe_version: 0.0.2
+      built: '2026-11-04T02:40:07Z'
+      files: 2
   GRCh38-igenomes-ncbi:
     bowtie2_index:
       status: complete
@@ -62,6 +186,68 @@ assets:
       recipe_version: 0.0.2
       built: '2026-11-04T02:40:07Z'
       files: 2
+  GRCm38:
+    bowtie2_index:
+      status: complete
+      recipe_version: 0.0.2
+      built: '2026-11-04T20:04:51Z'
+      files: 2
+    bwa_index:
+      status: complete
+      recipe_version: 0.2.1
+      built: '2026-11-04T18:49:59Z'
+      files: 2
+    fasta:
+      status: complete
+      recipe_version: 0.1.0
+      built: '2026-11-04T18:02:39Z'
+      files: 3
+    fasta_index:
+      status: complete
+      recipe_version: 1.1.1
+      built: '2026-11-04T18:06:15Z'
+      files: 2
+    hisat2_index:
+      status: complete
+      recipe_version: 0.0.3
+      built: '2026-11-04T19:10:27Z'
+      files: 2
+    suffixerator_index:
+      status: complete
+      recipe_version: 0.0.2
+      built: '2026-11-04T18:38:26Z'
+      files: 2
+  GRCm39:
+    bowtie2_index:
+      status: complete
+      recipe_version: 0.0.2
+      built: '2026-07-26T09:04:22Z'
+      files: 2
+    bwa_index:
+      status: complete
+      recipe_version: 0.2.1
+      built: '2026-07-26T08:14:24Z'
+      files: 2
+    fasta:
+      status: complete
+      recipe_version: 0.1.0
+      built: '2026-07-26T07:25:30Z'
+      files: 3
+    fasta_index:
+      status: complete
+      recipe_version: 1.1.1
+      built: '2026-07-26T07:30:18Z'
+      files: 2
+    hisat2_index:
+      status: complete
+      recipe_version: 0.0.3
+      built: '2026-07-26T08:09:29Z'
+      files: 2
+    suffixerator_index:
+      status: complete
+      recipe_version: 0.0.2
+      built: '2026-07-26T08:06:39Z'
+      files: 2
   GRCm39-primary-113-ensembl:
     bowtie2_index:
       status: complete
@@ -92,6 +278,161 @@ assets:
       status: complete
       recipe_version: 0.0.2
       built: '2026-07-26T08:06:39Z'
+      files: 2
+  NCBI36:
+    bowtie2_index:
+      status: complete
+      recipe_version: 0.0.2
+      built: '2026-11-04T19:05:23Z'
+      files: 2
+    bwa_index:
+      status: complete
+      recipe_version: 0.2.1
+      built: '2026-11-04T19:19:59Z'
+      files: 2
+    fasta:
+      status: complete
+      recipe_version: 0.1.0
+      built: '2026-11-04T18:02:35Z'
+      files: 3
+    fasta_index:
+      status: complete
+      recipe_version: 1.1.1
+      built: '2026-11-04T18:06:13Z'
+      files: 2
+    hisat2_index:
+      status: complete
+      recipe_version: 0.0.3
+      built: '2026-11-04T18:40:23Z'
+      files: 2
+    suffixerator_index:
+      status: complete
+      recipe_version: 0.0.2
+      built: '2026-11-04T18:44:38Z'
+      files: 2
+  R64-1-1:
+    bowtie2_index:
+      status: complete
+      recipe_version: 0.0.2
+      built: '2026-07-26T07:30:25Z'
+      files: 2
+    bwa_index:
+      status: complete
+      recipe_version: 0.2.1
+      built: '2026-07-26T07:30:36Z'
+      files: 2
+    fasta:
+      status: complete
+      recipe_version: 0.1.0
+      built: '2026-07-26T07:27:53Z'
+      files: 3
+    fasta_index:
+      status: complete
+      recipe_version: 1.1.1
+      built: '2026-07-26T07:30:25Z'
+      files: 2
+    hisat2_index:
+      status: complete
+      recipe_version: 0.0.3
+      built: '2026-07-26T07:30:43Z'
+      files: 2
+    suffixerator_index:
+      status: complete
+      recipe_version: 0.0.2
+      built: '2026-07-26T07:30:31Z'
+      files: 2
+  Rnor_6.0:
+    bowtie2_index:
+      status: complete
+      recipe_version: 0.0.2
+      built: '2026-11-04T03:22:43Z'
+      files: 2
+    bwa_index:
+      status: complete
+      recipe_version: 0.2.1
+      built: '2026-11-04T02:45:31Z'
+      files: 2
+    fasta:
+      status: complete
+      recipe_version: 0.1.0
+      built: '2026-11-03T23:09:22Z'
+      files: 3
+    fasta_index:
+      status: complete
+      recipe_version: 1.1.1
+      built: '2026-11-04T01:59:03Z'
+      files: 2
+    hisat2_index:
+      status: complete
+      recipe_version: 0.0.3
+      built: '2026-11-04T03:19:48Z'
+      files: 2
+    suffixerator_index:
+      status: complete
+      recipe_version: 0.0.2
+      built: '2026-11-04T02:48:47Z'
+      files: 2
+  WBcel235-igenomes-ensembl:
+    bowtie2_index:
+      status: complete
+      recipe_version: 0.0.2
+      built: '2026-07-26T07:26:10Z'
+      files: 2
+    bwa_index:
+      status: complete
+      recipe_version: 0.2.1
+      built: '2026-07-26T07:26:15Z'
+      files: 2
+    fasta:
+      status: complete
+      recipe_version: 0.1.0
+      built: '2026-07-26T07:21:30Z'
+      files: 3
+    fasta_index:
+      status: complete
+      recipe_version: 1.1.1
+      built: '2026-07-26T07:24:47Z'
+      files: 2
+    hisat2_index:
+      status: complete
+      recipe_version: 0.0.3
+      built: '2026-07-26T07:26:33Z'
+      files: 2
+    suffixerator_index:
+      status: complete
+      recipe_version: 0.0.2
+      built: '2026-07-26T07:25:38Z'
+      files: 2
+  arabidopsis_thaliana_COL-0_TAIR10:
+    bowtie2_index:
+      status: complete
+      recipe_version: 0.0.2
+      built: '2026-11-03T23:18:00Z'
+      files: 2
+    bwa_index:
+      status: complete
+      recipe_version: 0.2.1
+      built: '2026-11-03T23:16:31Z'
+      files: 2
+    fasta:
+      status: complete
+      recipe_version: 0.1.0
+      built: '2026-11-03T23:08:49Z'
+      files: 3
+    fasta_index:
+      status: complete
+      recipe_version: 1.1.1
+      built: '2026-11-03T23:15:11Z'
+      files: 2
+    hisat2_index:
+      status: complete
+      recipe_version: 0.0.3
+      built: '2026-11-03T23:17:04Z'
+      files: 2
+    suffixerator_index:
+      status: complete
+      recipe_version: 0.0.2
+      built: '2026-11-03T23:16:12Z'
       files: 2
   athaliana:
     bowtie2_index:
@@ -839,6 +1180,94 @@ assets:
       recipe_version: 0.0.2
       built: '2026-11-04T02:48:47Z'
       files: 2
+  sacCer3:
+    bowtie2_index:
+      status: complete
+      recipe_version: 0.0.2
+      built: '2026-11-13T08:18:51Z'
+      files: 2
+    bwa_index:
+      status: complete
+      recipe_version: 0.2.1
+      built: '2026-11-13T08:18:35Z'
+      files: 2
+    fasta:
+      status: complete
+      recipe_version: 0.1.0
+      built: '2026-11-12T08:25:11Z'
+      files: 3
+    fasta_index:
+      status: complete
+      recipe_version: 1.1.1
+      built: '2026-11-13T08:18:33Z'
+      files: 2
+    hisat2_index:
+      status: complete
+      recipe_version: 0.0.3
+      built: '2026-11-13T08:18:47Z'
+      files: 2
+  saccharomyces_cerevisiae_ENSEMBL_release_81:
+    bowtie2_index:
+      status: complete
+      recipe_version: 0.0.2
+      built: '2026-07-26T07:30:25Z'
+      files: 2
+    bwa_index:
+      status: complete
+      recipe_version: 0.2.1
+      built: '2026-07-26T07:30:36Z'
+      files: 2
+    fasta:
+      status: complete
+      recipe_version: 0.1.0
+      built: '2026-07-26T07:27:53Z'
+      files: 3
+    fasta_index:
+      status: complete
+      recipe_version: 1.1.1
+      built: '2026-07-26T07:30:25Z'
+      files: 2
+    hisat2_index:
+      status: complete
+      recipe_version: 0.0.3
+      built: '2026-07-26T07:30:43Z'
+      files: 2
+    suffixerator_index:
+      status: complete
+      recipe_version: 0.0.2
+      built: '2026-07-26T07:30:31Z'
+      files: 2
+  schizosaccharomyces_pombe_ENSEMBL_fungi_release_28:
+    bowtie2_index:
+      status: complete
+      recipe_version: 0.0.2
+      built: '2026-07-26T07:31:13Z'
+      files: 2
+    bwa_index:
+      status: complete
+      recipe_version: 0.2.1
+      built: '2026-07-26T07:31:03Z'
+      files: 2
+    fasta:
+      status: complete
+      recipe_version: 0.1.0
+      built: '2026-07-26T07:28:39Z'
+      files: 3
+    fasta_index:
+      status: complete
+      recipe_version: 1.1.1
+      built: '2026-07-26T07:30:54Z'
+      files: 2
+    hisat2_index:
+      status: complete
+      recipe_version: 0.0.3
+      built: '2026-07-26T07:30:49Z'
+      files: 2
+    suffixerator_index:
+      status: complete
+      recipe_version: 0.0.2
+      built: '2026-07-26T07:31:17Z'
+      files: 2
   spombe:
     bowtie2_index:
       status: complete
@@ -917,4 +1346,4 @@ assets:
       recipe_version: 0.0.2
       built: '2026-07-26T07:30:31Z'
       files: 2
-total_assets: 177
+total_assets: 260
