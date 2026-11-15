@@ -7,7 +7,7 @@ description: |
   iGenomes. Chromosomes are named chrI to chrXVI and chrM. iGenomes sorts them
   by name, so chrM comes after chrIX; UCSC's own sacCer3.fa lists chrM last and
   so has a different digest (nHYYtlwZOhq203qjGUFNUaJlgiO2ISMs). Same 17
-  sequences, in the same order, as R64-1-1 (yeast_s288c), whose names are I to
+  sequences, in the same order, as R64-1-1, whose names are I to
   XVI and Mito.
 
 organism:

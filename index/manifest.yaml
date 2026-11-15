@@ -1,4 +1,4 @@
-updated: '2026-11-15T11:48:55Z'
+updated: '2026-11-15T19:51:59Z'
 assets:
   GRCh37:
     bowtie2_index:
@@ -1315,35 +1315,4 @@ assets:
       recipe_version: 1.1.1
       built: '2026-08-07T13:02:52Z'
       files: 2
-  yeast_s288c:
-    bowtie2_index:
-      status: complete
-      recipe_version: 0.0.2
-      built: '2026-07-26T07:30:25Z'
-      files: 2
-    bwa_index:
-      status: complete
-      recipe_version: 0.2.1
-      built: '2026-07-26T07:30:36Z'
-      files: 2
-    fasta:
-      status: complete
-      recipe_version: 0.1.0
-      built: '2026-07-26T07:27:53Z'
-      files: 3
-    fasta_index:
-      status: complete
-      recipe_version: 1.1.1
-      built: '2026-07-26T07:30:25Z'
-      files: 2
-    hisat2_index:
-      status: complete
-      recipe_version: 0.0.3
-      built: '2026-07-26T07:30:43Z'
-      files: 2
-    suffixerator_index:
-      status: complete
-      recipe_version: 0.0.2
-      built: '2026-07-26T07:30:31Z'
-      files: 2
-total_assets: 260
+total_assets: 254

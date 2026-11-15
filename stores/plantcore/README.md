@@ -15,7 +15,7 @@ A genome is in plantcore if it passes one of these rules:
 
 1. **It has refgenie assets.** The 5 genomes with a genome YAML and built
    assets always stay: `athaliana` (TAIR10), `celegans`, `dmelanogaster`,
-   `spombe` and `yeast_s288c`.
+   `spombe` and `R64-1-1`.
 2. **It has at most 6,000 sequences.**
 3. **It is chromosome-scale** (N50 of at least 10 Mb) **with at most 60,000
    sequences.** This adds pearl millet, red clover, pepper, *Brassica

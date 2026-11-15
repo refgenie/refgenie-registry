@@ -1,4 +1,10 @@
 sample_name,genome_name,asset_group_name,fasta_file_path,fhr_file_path
+R64-1-1,R64-1-1,fasta,R64-1-1_fa,fhr_default
+R64-1-1,R64-1-1,fasta_index,R64-1-1_fa,fhr_default
+R64-1-1,R64-1-1,bwa_index,R64-1-1_fa,fhr_default
+R64-1-1,R64-1-1,bowtie2_index,R64-1-1_fa,fhr_default
+R64-1-1,R64-1-1,hisat2_index,R64-1-1_fa,fhr_default
+R64-1-1,R64-1-1,suffixerator_index,R64-1-1_fa,fhr_default
 athaliana,athaliana,fasta,athaliana_fa,fhr_default
 athaliana,athaliana,fasta_index,athaliana_fa,fhr_default
 athaliana,athaliana,bwa_index,athaliana_fa,fhr_default
@@ -143,9 +149,3 @@ spombe,spombe,suffixerator_index,spombe_fa,fhr_default
 t7,t7,fasta,t7_fa,fhr_default
 t7,t7,fasta_index,t7_fa,fhr_default
 t7,t7,bowtie2_index,t7_fa,fhr_default
-yeast_s288c,yeast_s288c,fasta,yeast_s288c_fa,fhr_default
-yeast_s288c,yeast_s288c,fasta_index,yeast_s288c_fa,fhr_default
-yeast_s288c,yeast_s288c,bwa_index,yeast_s288c_fa,fhr_default
-yeast_s288c,yeast_s288c,bowtie2_index,yeast_s288c_fa,fhr_default
-yeast_s288c,yeast_s288c,hisat2_index,yeast_s288c_fa,fhr_default
-yeast_s288c,yeast_s288c,suffixerator_index,yeast_s288c_fa,fhr_default

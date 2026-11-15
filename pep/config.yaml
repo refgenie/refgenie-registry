@@ -22,7 +22,7 @@
 #   huge one", so a recipe that breaks on, say, many short scaffolds or an
 #   unusual header alphabet gets caught by a five-minute build instead of by hg38
 #   three hours in:
-#     - yeast_s288c    : budding yeast, the original canary (~4 MB)
+#     - R64-1-1        : budding yeast, the original canary (~4 MB)
 #     - spombe         : fission yeast (~4 MB)
 #     - celegans       : worm (~30 MB)
 #     - athaliana      : plant, TAIR10 (~36 MB)
@@ -53,7 +53,7 @@ sample_modifiers:
       # Legacy default layout (kept for portability): $REFGENIE_INPUTS/<genome>/<genome>.fa
       default_input: "${REFGENIE_INPUTS}/{genome_name}/{genome_name}.fa"
       # Staged Rivanna FASTAs (gzipped is fine; `refgenie genome init` ingests it):
-      yeast_s288c_fa: "${REFGETSTORE_FASTA}/plantref/saccharomyces_cerevisiae_strain_s288c/ensembl/ENSEMBL_release_81.fa.gz"
+      R64-1-1_fa: "${REFGETSTORE_FASTA}/plantref/saccharomyces_cerevisiae_strain_s288c/ensembl/ENSEMBL_release_81.fa.gz"
       # hg38 = GRCh38 no-alt analysis set (seqcol EiFob05aCWgVU_B_Ae0cypnQut3cxUP1),
       # matching genomes/human/hg38.yaml. Was pangenome_reference/hg38.fa.gz (full+alts,
       # NTeQ1GQMt2ocCFkS8Z3_qkvetZjabWSt), the WRONG genome under this name. The

@@ -197,7 +197,7 @@ refresh (so index/ never advertises an asset that isn't in S3).
 ## Verifying content-addressed output
 
 ```
-GEN=<genome_digest>      # e.g. yeast_s288c = ia9g4Myony-xxLsSc7eQOC_NdClGgPGu
+GEN=<genome_digest>      # e.g. R64-1-1 = ia9g4Myony-xxLsSc7eQOC_NdClGgPGu
 export AWS_PROFILE=refgenie
 export PATH=/apps/software/standard/core/awscli/2.35.13/bin:$PATH
 aws s3 ls s3://refgenie/assets/$GEN/<asset_group>/    # expect {content_digest}.tgz, NOT {name}.tgz

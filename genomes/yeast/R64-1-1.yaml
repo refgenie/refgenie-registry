@@ -1,7 +1,6 @@
-name: yeast_s288c
+name: R64-1-1
 aliases:
   - saccharomyces_cerevisiae_ENSEMBL_release_81
-  - R64-1-1
 
 description: |
   Saccharomyces cerevisiae strain S288C reference genome, assembly R64-1-1, from
