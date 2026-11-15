@@ -651,7 +651,9 @@ else
     python3 build/update_index.py || echo "$(date) | run_builds: index update skipped/failed (non-fatal)"
 fi
 
-# --- apply per-genome FHR metadata to the catalog + store sidecars ----------
+# --- apply per-genome FHR metadata and names to the catalog + store ---------
+# It also resets this node's own genome names to the registry's (genome YAML
+# `name` + `aliases`); check_catalog_names.py below refuses any other name.
 # Sentinel-independent metadata update. For every queued genome it upserts the
 # description/species_name columns and the RefgetStore FHR sidecar from
 # pep/metadata/<g>.fhr.json, funneled through GenomeManager.apply_fhr (the same
@@ -663,7 +665,7 @@ fi
 # this step, not the init rule alone, is the load-bearing metadata path. It
 # runs only in a REAL run (DRY_RUN exits above, before any genome row exists to
 # update). Non-fatal: metadata must never abort a build.
-echo "$(date) | run_builds: applying per-genome FHR metadata to the catalog..."
+echo "$(date) | run_builds: applying per-genome FHR metadata and names to the catalog..."
 python3 build/apply_metadata.py --db-config "$REFGENIE_DB_CONFIG_PATH" \
     || echo "$(date) | run_builds: metadata apply reported problems (non-fatal); catches up next run" >&2
 
@@ -762,8 +764,15 @@ if [[ -n "${REFGENIE_CATALOG_S3:-}" && -n "${REFGENIE_ASSET_HTTPS:-}" ]]; then
                     --https-prefix "$REFGENIE_ASSET_HTTPS" \
                     --catalog-store-name "$_cat_name" \
                     --catalog-store-url "$_cat_url"; then
-                aws s3 cp "$catalog_artifact" "$REFGENIE_CATALOG_S3/publish_catalog.sqlite" --no-progress \
-                    || echo "$(date) | run_builds: catalog upload failed (non-fatal); server keeps previous artifact" >&2
+                # Publish only names the registry gives (build/check_catalog_names.py).
+                if ! python3 build/check_catalog_names.py "$catalog_artifact" \
+                        --db-config "$REFGENIE_DB_CONFIG_PATH"; then
+                    echo "$(date) | run_builds: ERROR the catalog has names the registry does not" >&2
+                    echo "  give (EXTRA lines above); SKIPPING upload, server keeps previous artifact" >&2
+                else
+                    aws s3 cp "$catalog_artifact" "$REFGENIE_CATALOG_S3/publish_catalog.sqlite" --no-progress \
+                        || echo "$(date) | run_builds: catalog upload failed (non-fatal); server keeps previous artifact" >&2
+                fi
             else
                 echo "$(date) | run_builds: catalog export failed (non-fatal); server keeps previous artifact" >&2
             fi

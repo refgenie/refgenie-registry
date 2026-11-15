@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Apply per-genome FHR metadata to the persistent build catalog + store sidecars.
+"""Apply per-genome FHR metadata and names to the persistent build catalog + store.
 
 The sentinel-independent metadata update step of the nightly Rivanna pipeline. It
 is the LOAD-BEARING half of the metadata bridge: the genome_init rule carries
@@ -21,6 +21,13 @@ state), so:
   * a metadata-only YAML edit propagates on the next nightly with NO rebuild and no
     sentinel change; and
   * re-running over an already-correct catalog is a no-op.
+
+It also resets the build node's own genome names. ``genome init`` writes only the
+genome's ``name``, once, so a YAML ``aliases`` entry (hg38's ``GRCh38``) never
+reached the catalog, and a name later renamed in the registry stayed. Each run
+makes the names this node's RefgetStore holds for each genome exactly the
+``name`` plus ``aliases`` of every YAML with that digest, and none for a genome
+no YAML names. Names published stores give come from ``store sync``, not here.
 
 Metadata is NON-BLOCKING: a genome that is not yet registered (its build failed) or
 whose sidecar is missing is a WARNING, never a fatal error, a build must never fail
@@ -95,6 +102,43 @@ def _resolve_digest(rg, genome_name: str) -> str | None:
         return None
 
 
+def reset_names(rg, genomes: list[str], dry_run: bool) -> int:
+    """Make this node's own names for each genome it holds the registry's; returns failures."""
+    sys.path.insert(0, str(_registry_root() / "stores"))
+    from genome_rows import load_genomes
+
+    wanted: dict[str, set[str]] = {}
+    for g in load_genomes():
+        digest = g.digest or (_resolve_digest(rg, g.name) if g.name in genomes else None)
+        if digest:
+            wanted.setdefault(digest, set()).update(n for n in [g.name, *g.aliases] if "/" not in n)
+    store = rg.refget_store
+    have: dict[str, set[str]] = {}
+    for alias in store.list_collection_aliases("refgenie") or []:
+        meta = store.get_collection_metadata_by_alias("refgenie", alias)
+        if meta is not None:
+            have.setdefault(meta.digest, set()).add(alias)
+
+    failures = 0
+    for digest, held in sorted(have.items()):
+        names = wanted.get(digest, set())
+        changes = [("add", n) for n in sorted(names - held)]
+        changes += [("remove", n) for n in sorted(held - names)]
+        for action, alias in changes:
+            print(f"  names: {action} {alias} ({digest})" + (" (dry-run)" if dry_run else ""))
+            if dry_run:
+                continue
+            try:
+                if action == "add":
+                    rg.alias.add(alias, digest)
+                else:
+                    rg.alias.remove(alias)
+            except Exception as exc:  # noqa: BLE001 - names are non-blocking too
+                print(f"  names: WARN could not {action} {alias}: {exc}", file=sys.stderr)
+                failures += 1
+    return failures
+
+
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--db-config", default=os.environ.get("REFGENIE_DB_CONFIG_PATH"))
@@ -153,6 +197,7 @@ def main(argv: list[str] | None = None) -> int:
             print(f"  apply_metadata: WARN {name}: could not apply metadata: {exc}", file=sys.stderr)
             failures += 1
 
+    failures += reset_names(rg, genomes, args.dry_run)
     print(
         f"apply_metadata: done, applied={applied}, skipped={skipped}, failed={failures}"
         + (" (dry-run)" if args.dry_run else "")

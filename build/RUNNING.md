@@ -134,6 +134,17 @@ it as a store row through `--catalog-store-name/-url/-priority`. To add, remove
 or reprioritize a store, edit its `publish:` block and commit; the next nightly
 applies it.
 
+## Where genome names come from
+
+People write genome names only in the registry: a genome YAML's `name` and
+`aliases`, and each store's `sources.csv`. The nightly copies them everywhere
+else: `store sync` replaces each published store's names, and
+`build/apply_metadata.py` resets the build node's own names to the YAMLs. Before
+upload, `build/check_catalog_names.py` compares the exported catalog with the
+registry and refuses to publish a name the registry does not give (the server
+keeps the previous catalog). To rename or remove a genome name, edit the
+registry and let the nightly run; do not use `refgenie alias` on the build node.
+
 ## Checking one asset
 
 `run_builds.sh` is the whole nightly: besides the builds it loads changed
