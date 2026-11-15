@@ -1,0 +1,12 @@
+genome: GRCh37
+genome_digest: ThZcNYiLuWWL86NdJ8dvvJG15K9mW3Fo
+recipe: bowtie2_index
+recipe_version: 0.0.2
+asset_name: 2.5.5
+asset_digest: 778ebf4b7b51157482282e7d2ddc7a4c8535c9baeca598499f9eb14b0247ad4a
+build:
+  status: complete
+  timestamp: '2026-11-04T19:14:48Z'
+files:
+- bowtie2_index
+- version

@@ -1,0 +1,12 @@
+genome: GRCm38
+genome_digest: wsDErYxgCXiPnb2FWZ4sXtx3B0YyruRu
+recipe: hisat2_index
+recipe_version: 0.0.3
+asset_name: 2.2.2
+asset_digest: a63032df1c40873849a919a2a1a64ea8cef1a9b777b7de17ef32d443bd1490ef
+build:
+  status: complete
+  timestamp: '2026-11-04T19:10:27Z'
+files:
+- hisat2_index
+- version

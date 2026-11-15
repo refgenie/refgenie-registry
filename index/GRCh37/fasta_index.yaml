@@ -1,0 +1,12 @@
+genome: GRCh37
+genome_digest: ThZcNYiLuWWL86NdJ8dvvJG15K9mW3Fo
+recipe: fasta_index
+recipe_version: 1.1.1
+asset_name: default
+asset_digest: 4aea7e9f28712a6e4d5d31a056a94927b518301414928a77e1ee49558e46d0cf
+build:
+  status: complete
+  timestamp: '2026-11-04T18:08:17Z'
+files:
+- chrom_sizes
+- fai

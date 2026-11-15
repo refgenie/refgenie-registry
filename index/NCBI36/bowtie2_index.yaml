@@ -1,0 +1,12 @@
+genome: NCBI36
+genome_digest: YfZ0rklv8KY9DCtqG0iIX16zsgbuBgmM
+recipe: bowtie2_index
+recipe_version: 0.0.2
+asset_name: 2.5.5
+asset_digest: e354d6a2da353167b10d4685ea50182929d57c7ca78a0cfea6d9ea6d22367fe4
+build:
+  status: complete
+  timestamp: '2026-11-04T19:05:23Z'
+files:
+- bowtie2_index
+- version

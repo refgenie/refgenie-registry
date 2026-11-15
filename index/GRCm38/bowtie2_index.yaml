@@ -1,0 +1,12 @@
+genome: GRCm38
+genome_digest: wsDErYxgCXiPnb2FWZ4sXtx3B0YyruRu
+recipe: bowtie2_index
+recipe_version: 0.0.2
+asset_name: 2.5.5
+asset_digest: 66ed3211416e98bb78e05943f4297909b9752b12bd81f9be4644ef39aeac839d
+build:
+  status: complete
+  timestamp: '2026-11-04T20:04:51Z'
+files:
+- bowtie2_index
+- version

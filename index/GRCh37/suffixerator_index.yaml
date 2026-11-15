@@ -1,0 +1,12 @@
+genome: GRCh37
+genome_digest: ThZcNYiLuWWL86NdJ8dvvJG15K9mW3Fo
+recipe: suffixerator_index
+recipe_version: 0.0.2
+asset_name: 1.6.6
+asset_digest: 8a9cabb8660897b1bb38a69c73602bff8f9fc2794a6b22b6ef8cd57da84f8f4d
+build:
+  status: complete
+  timestamp: '2026-11-04T18:49:40Z'
+files:
+- esa
+- version
