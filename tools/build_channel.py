@@ -165,8 +165,8 @@ def render_landing_page(asset_files: list[str], recipe_files: list[str]) -> str:
   <h2>Use it</h2>
   <div class="card">
     <p style="margin:0 0 .25rem">Point a refgenie client at this channel:</p>
-    <pre>refgenie data-channel add -s {CHANNEL_URL}
-refgenie data-channel sync</pre>
+    <pre>refgenie data-channel add refgenie https {CHANNEL_URL}
+refgenie data-channel sync refgenie</pre>
     <p style="margin:.75rem 0 0">Machine-readable index:
     <a href="index.yaml"><code>index.yaml</code></a></p>
   </div>
