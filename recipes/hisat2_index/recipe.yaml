@@ -1,5 +1,5 @@
 name: hisat2_index
-version: 0.0.3
+version: 0.0.4
 output_asset_class: hisat2_index
 description: Genome index for HISAT2, produced with hisat2-build
 input_files: {}
@@ -9,7 +9,7 @@ input_assets:
     asset_class: fasta
     default: fasta
     description: fasta asset for genome
-docker_image: quay.io/biocontainers/hisat2:2.2.2--h503566f_0
+docker_image: quay.io/biocontainers/hisat2:2.2.3--h8471819_1
 command_templates:
   - hisat2-build {{values.genome_folder}}/{{values.assets["fasta"].seek_keys_dict["fasta"]}} {{values.output_folder}}/{{values.genome_digest}}
 custom_seek_keys:
