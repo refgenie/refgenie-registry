@@ -753,17 +753,17 @@ if [[ -n "${REFGENIE_CATALOG_S3:-}" && -n "${REFGENIE_ASSET_HTTPS:-}" ]]; then
         catalog_artifact="$(dirname "$REFGENIE_DB_CONFIG_PATH")/publish_catalog.sqlite"
         # The catalog's own store (refgenie-main, the .refget_store synced
         # above) is published as a store row beside the federated ones. Its
-        # name and url come from stores/refgenie-main/project_config.yaml;
-        # refgenie 1.0.0a2 fixes its priority at 30, the value configured there.
+        # name, url and priority come from stores/refgenie-main/project_config.yaml.
         if ! _catalog_store="$(python3 build/store_declaration.py --catalog)"; then
             echo "$(date) | run_builds: ERROR store_declaration.py --catalog failed; SKIPPING" >&2
             echo "  catalog publish, server keeps previous artifact" >&2
         else
-            read -r _cat_name _cat_url _ <<< "$_catalog_store"
+            read -r _cat_name _cat_url _cat_priority <<< "$_catalog_store"
             if "$REFGENIE_BIN" catalog-export --dest "$catalog_artifact" \
                     --https-prefix "$REFGENIE_ASSET_HTTPS" \
                     --catalog-store-name "$_cat_name" \
-                    --catalog-store-url "$_cat_url"; then
+                    --catalog-store-url "$_cat_url" \
+                    --catalog-store-priority "$_cat_priority"; then
                 # Publish only names the registry gives (build/check_catalog_names.py).
                 if ! python3 build/check_catalog_names.py "$catalog_artifact" \
                         --db-config "$REFGENIE_DB_CONFIG_PATH"; then
